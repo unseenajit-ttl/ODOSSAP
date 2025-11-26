@@ -1,0 +1,93 @@
+/* Zebra striping */
+tr:nth-of-type(even) {
+  background: #eee !important;
+}
+/* Zebra striping */
+tr:nth-of-type(odd) {
+  background: white !important;
+}
+
+.ng-select-container {
+  min-height: 36px !important;
+}
+
+.errorMessage {
+  font-size: smaller;
+  color: red;
+}
+
+.duplicatePO {
+  background-color: #ff8989;
+}
+
+#commonData {
+  border: 1px solid #dee2e6;
+  padding: 10px;
+}
+
+.Empty-BBSDesc {
+  /* border-bottom: 3px solid rgb(253, 41, 41); */
+  background-color: #ff8989;
+}
+
+.badge {
+  position: top;
+  top: -17px;
+  right: -15px;
+  padding: 5px 10px;
+  border-radius: 50%;
+  background-color: red;
+  color: white;
+}
+
+.Collapse-Common-data-view {
+  max-height: none !important;
+}
+
+.collapse-Button {
+  text-align: end;
+}
+
+.table-bordered thead th, .table-bordered thead td {
+  border: 1px solid black;
+}
+table th {
+  background-color: #e2e0e0 !important;
+  color: black;
+  padding: 10px !important;
+  font-weight: bold;
+}
+table td {
+  font: 12px Helvetica, Arial, sans-serif;
+  padding: 10px !important;
+  font-weight: bold;
+}
+:host ::ng-deep .mat-mdc-form-field-has-icon-suffix .mat-mdc-text-field-wrapper {
+  padding-bottom: 10px;
+  /* width: 250px !important; */
+  align-items: center;
+  height: 40px !important;
+  text-align: center;
+}
+:host ::ng-deep .ng-select.ng-select-single .ng-select-container {
+  height: 40px !important;
+}
+
+.cab-details {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  flex-direction: column;
+  align-content: center;
+}
+ 
+.coupler-type{
+  text-align: left;
+  padding: 5px;
+  font-size: larger;
+}
+ 
+.product-details-icon {
+  height: 3vh;
+  display:inline-block;
+}

@@ -1,0 +1,85 @@
+<div class="modal-header">
+  <h3 class="modal-title">Copy from BPC Library (笼库复制)</h3>
+  <button type="button" class="close" (click)="dismissModal()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="">Select Customer:</label>
+        <ng-select [items]="customerList"
+               bindLabel="CustomerName"
+               bindValue="CustomerCode"
+               [(ngModel)]="selectCustomerCode"
+               (change)="getOrderProjectsList()">
+        </ng-select>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="">Select Project:</label>
+        <ng-select [items]="projectList"
+               bindLabel="ProjectTitle"
+               bindValue="ProjectCode"
+               [(ngModel)]="selectedProjectCode"
+               (change)="loadData()">
+        </ng-select>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <table class="table table-hover table-bordered w-100">
+        <thead style="width: fit-content;background-color: #dee2e6;font-size: 11px;">
+          <tr>
+            <td ngbTooltip="Serial Number (序列号码)">SNo</td>
+            <td ngbTooltip="Bored pile concret cover (混凝土保护层)">Cover</td>
+            <td ngbTooltip="Bored pile type (钻孔桩类型)">Pile Type</td>
+            <td ngbTooltip="Bored pile diameter (钻孔桩直径)(mm)">Pile Dia (mm)</td>
+            <td ngbTooltip="Set Code">Set Code</td>
+            <td ngbTooltip="Main bar arrangement (主筋排法)">Main Bar Arrangement</td>
+            <td ngbTooltip="Main bar type in terms of grade and size (主筋种类)">Main Bar Type</td>
+            <td ngbTooltip="No of main bars (主筋数量)">No of Main</td>
+            <td ngbTooltip="Main bar shape (主筋图形)">Main Bar Shape</td>
+            <td ngbTooltip="Main bar grade (主筋等级)">Main Bar Grade</td>
+            <td ngbTooltip="Main bar diameter (主筋直径)">Main Bar Dia</td>
+            <td ngbTooltip="Cage length (铁笼长)">Cage Length</td>
+            <td ngbTooltip="Spiral link Type (螺旋筋类型)">Spiral Link Type</td>
+            <td ngbTooltip="Spiral link grade (螺旋筋等级)">Spiral Link Grade</td>
+            <td ngbTooltip="Spiral link diameter (螺旋筋直径)">Spiral Link Dia</td>
+            <td ngbTooltip="Spiral link spacing (螺旋筋间距)">Spiral Link Spacing</td>
+            <td ngbTooltip="Lap length reserved (桩顶重叠预留长度)">Lap Length</td>
+            <td ngbTooltip="End length (桩底预留长度)">End Length</td>
+          </tr>
+        </thead>
+        <tbody style="width: fit-content">
+          <tr *ngFor="let product of copyData;index as i;" (click)="productClicked(product);toggleClass($event);">
+            <td>{{product.lib_id}}</td>
+            <td>{{product.pile_cover}}</td>
+            <td>{{product.pile_type}}</td>
+            <td>{{product.pile_dia}}</td>
+            <td>{{product.set_code}}</td>
+            <td>{{product.main_bar_arrange}}</td>
+            <td>{{product.main_bar_type}}</td>
+            <td>{{product.main_bar_ct}}</td>
+            <td>{{product.main_bar_shape}}</td>
+            <td>{{product.main_bar_grade}}</td>
+            <td>{{product.main_bar_dia}}</td>
+            <td>{{product.cage_length}}</td>
+            <td>{{product.spiral_link_type}}</td>
+            <td>{{product.spiral_link_grade}}</td>
+            <td>{{product.spiral_link_dia}}</td>
+            <td>{{product.spiral_link_spacing}}</td>
+            <td>{{product.lap_length}}</td>
+            <td>{{product.end_length}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="dismissModal()">Close</button>
+  <button class="btn btn-primary" (click)="applyData()">Apply</button>
+</div>
+

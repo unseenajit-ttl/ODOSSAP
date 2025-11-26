@@ -1,0 +1,17 @@
+.required-label {
+    color: red;
+  }
+  .ng-select {
+    width: 200px !important;
+  }
+  input{
+    width: 160px;
+  }
+
+  table th{
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    background-color: #003ec4 !important;
+    color: #ffff;
+    padding: 1px !important;
+  }

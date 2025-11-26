@@ -1,0 +1,696 @@
+<div class="card-body table-responsive">
+
+    <!-- IMAGE TABLE START -->
+    <div *ngIf="loading" style="z-index: 500">
+
+        <div id="pause" class="d-flex align-items-center justify-content-center">
+
+            <div id="spinner" class="loader"></div>
+
+        </div>
+
+    </div>
+
+
+    <div class="row " style="padding: 0;">
+        <div class="d-flex table-responsive table-bordered" style="padding: 0; margin:0">
+            <table class="  table   table-responsive table-bordered" style="margin-bottom: 0; align-self:flex-start;">
+                <thead>
+                    <tr>
+                        <th> </th>
+                        <th style="min-width: 85px;"> Marking </th>
+                        <th class="Set_headerWidth" > WID </th>
+                        <th   class="Set_headerWidth"   > LEN  </th>
+                        <th  class="Set_headerWidth" >Total Links</th>
+                        <th>Product</th>
+                        <th>Shape</th>
+                        <th>Row <br> At <br> LEN</th>
+                        <th>C-Link <br> product <br>at length</th>
+                        <th>Qty </th>
+                        <th>Row <br>at <br> WID</th>
+                        <th>C-Link <br> product <br>at Width</th>
+                        <!-- <th class="w-125px" style="font-size: 11px;">Qty</th> -->
+                        <th>HGT</th>
+                        <th>C Lnk</th>
+                        <th>CL Only</th>
+                        <th>P/I</th>
+                        <th>B/C</th>
+                        <th> Pin Size </th>
+                        <th *ngIf="strIsReadOnly==='NO'"> Action </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container
+                        *ngFor="let item of ColumnStructureMarklist |slice: pageSize | slice: 0:itemsPerPage ; index as i; ">
+                        <ng-container *ngIf="enableColumnEditIndex != i">
+                            <tr [style.background]="item.isExpand?'#8bcce8':'inherit'" (click)="showDetails(item);selectRow(item,$event)"  [style.background-color]="giveRowcolor(item)" (dblclick)="onEdit(item, i)">
+                                <td (click)="item.isExpand = !item.isExpand">
+                                    <i *ngIf="!item.isExpand" class="bi-chevron-right" ngbTooltip="Product Marking"></i>
+                                    <i *ngIf="item.isExpand" class="bi-chevron-up" ngbTooltip="Product Marking"></i>
+                                </td>
+
+                                <td (click)="item.isExpand=!item.isExpand;" [contentEditable]="true"  (keydown.enter)="$event.preventDefault();updateStructureMarking($event,item,true)"  >{{item.StructureMarkingName}} </td>
+                                <td (click)="item.isExpand=!item.isExpand;">{{item.ColumnWidth}}</td>
+                                <td (click)="item.isExpand=!item.isExpand;">{{item.ColumnLength}}</td>
+                                <td (click)="item.isExpand=!item.isExpand;">{{item.TotalNoOfLinks}}</td>
+                                <td (click)="item.isExpand=!item.isExpand;">{{item.ProductCode.ProductCodeName}}</td>
+                                <td (click)="item.isExpand=!item.isExpand;">
+                                    {{item.Shape.ShapeCodeName}}
+                                </td>
+                                <td (click)="item.isExpand=!item.isExpand;">
+                                    {{item.RowatLength}}
+                                </td>
+                                <td (click)="item.isExpand=!item.isExpand;">{{item.ClinkProductLength.ProductCodeName}}</td>
+                                <td (click)="item.isExpand=!item.isExpand;" [contentEditable]="true" (keydown.enter)="$event.preventDefault();updateStructureMarking($event,item,false)" >{{item.MemberQty}}</td>
+                                <td (click)="item.isExpand=!item.isExpand;">{{item.RowatWidth}}</td>
+                                <td (click)="item.isExpand=!item.isExpand;">{{item.ClinkProductWidth.ProductCodeName}}</td>
+                                <!-- <td>{{item.TotalQty}}</td> -->
+                                <td (click)="item.isExpand=!item.isExpand;">{{item.ColumnHeight}}</td>
+                                <!-- <td>{{item.ProductGenerationStatus}} </td> -->
+                                <td>
+
+                                    <div class=" row custom-control custom-switch" style="margin:auto;width: 0px;">
+                                        <input [disabled]="true" type="checkbox" [checked]="item.IsCLink"
+                                            class="custom-control-input" id="IsCLink">
+                                        <label class="custom-control-label" for="IsCLink"></label>
+                                    </div>
+                                </td>
+                                <td>
+
+                                    <div class=" row custom-control custom-switch" style="margin:auto;width: 0px;">
+                                        <input [disabled]="true" type="checkbox" [checked]="item.CLOnly"
+                                            class="custom-control-input" id="CLOnly">
+                                        <label class="custom-control-label" for="CLOnly"></label>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class=" row custom-control custom-switch" style="margin:auto;width: 0px;">
+                                        <input [disabled]="true" type="checkbox" [checked]="item.ProduceIndicator"
+                                            class="custom-control-input" id="ProduceIndicator1">
+                                        <label class="custom-control-label" for="ProduceIndicator1"></label>
+                                    </div>
+                                </td>
+                                <td>
+
+                                    <div class=" row custom-control custom-switch" style="margin:auto;width: 0px;">
+                                        <input [disabled]="true" type="checkbox" [checked]="item.BendingCheckInd"
+                                            class="custom-control-input" id="BendingCheckInd1">
+                                        <label class="custom-control-label" for="BendingCheckInd1"></label>
+                                    </div>
+                                </td>
+                                <td>{{item.PinSize}}</td>
+                                <td style="width:100px" *ngIf="strIsReadOnly==='NO'">
+                                    <i class="material-icons" (click)="onEdit(item, i)" *ngIf="item.ProductGenerationStatus" 
+                                        ngbTooltip="Edit">mode_edit</i>&nbsp;
+                                    <i *ngIf="item.ProductGenerationStatus" class="bi bi-trash" style="font-size:15px;" 
+                                        (click)="DeletestructureMark(item.StructureMarkId,item.StructureMarkingName)" ngbTooltip="Delete"></i>
+                                </td>
+
+                            </tr>
+                            <tr *ngIf="item.isExpand && item.ColumnProducts.length>0">
+                                <td colspan="18">
+                                    <div class="row d-flex">
+                                        <div class="col-md-1">
+
+                                        </div>
+                                        <div class="col-md-10">
+                                            <table class="table table-sm w-100 ">
+
+                                                <thead>
+                                                    <th class="w-125px"> B/I </th>
+                                                    <th class="w-125px"> Width </th>
+                                                    <th class="w-125px"> Length </th>
+                                                    <th class="w-125px"> Qty </th>
+                                                    <th class="w-125px"> Shape</th>
+                                                    <th class="w-125px"> Main</th>
+                                                    <th class="w-125px">Cross</th>
+                                                    <th class="w-125px">MO1/MO2</th>
+                                                    <th class="w-125px">CO1/CO2</th>
+
+                                                    <th class="w-125px">No of links</th>
+                                                    <th class="w-125px">P/I</th>
+                                                    <th class="w-125px">B/C</th>
+                                                    <th class="w-125px">Shape Parameters</th>
+                                                    <th class="w-125px">Action</th>
+                                                </thead>
+                                                <tbody>
+                                                    <ng-container *ngFor="let row2 of item.ColumnProducts">
+
+                                                        <tr tooltipClass="my-tooltip-class"    [ngStyle]="{'background-color':giveErrorcolor(row2)}"
+                                                            (mouseenter)=" ProductMarkingGrid_rowLoading (row2);isTooltipHidden = !isTooltipHidden"
+                                                            (mouseleave)="isTooltipHidden = !isTooltipHidden">
+
+                                                            <td>{{row2.BOMIndicator}}</td>
+                                                            <td>{{row2.LinkWidth}}</td>
+                                                            <td>{{row2.LinkLength}}</td>
+                                                            <td>{{row2.Quantity}}</td>
+                                                            <td>{{row2.ShapeCode}}</td>
+                                                            <td>{{row2.InvoiceMWLength}}</td>
+                                                            <td>{{row2.InvoiceCWLength}}</td>
+                                                            <td>{{row2.MO1}}/{{row2.MO2}}</td>
+                                                            <td>{{row2.CO1}}/{{row2.CO2}}</td>
+                                                            <td>{{row2.NoofLinks}}</td>
+                                                            <td>
+                                                                <div class=" row custom-control custom-switch"
+                                                                    style="margin:auto;width: 0px;">
+                                                                    <input [disabled]="true" type="checkbox"
+                                                                        [checked]="row2.ProduceIndicator"
+                                                                        class="custom-control-input"
+                                                                        id="ProduceIndicator">
+                                                                    <label class="custom-control-label"
+                                                                        for="ProduceIndicator"></label>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div class=" row custom-control custom-switch"
+                                                                    style="margin:auto;width: 0px;">
+                                                                    <input [disabled]="true" type="checkbox"
+                                                                        [checked]="row2.BendCheck"
+                                                                        class="custom-control-input" id="BendCheck">
+                                                                    <label class="custom-control-label"
+                                                                        for="BendCheck"></label>
+                                                                </div>
+                                                            </td>
+                                                            <td>{{row2.ParamValues}}</td>
+                                                            <td>
+                                                                <i class="material-icons" 
+                                                                    (click)="RouteToBom(row2)"
+                                                                    ngbTooltip="View BOM">view_timeline</i>
+
+                                                            </td>
+
+                                                        </tr>
+                                                        <!-- <tr *ngIf="isTooltipHidden">
+                                                            <td colspan="18"><span style="color: red;">
+                                                                    {{ProductValidatorDescription}}</span></td>
+                                                        </tr> -->
+                                                        <tr *ngIf="isTooltipHidden">
+                                                            <td colspan="18"><span style="color: red;">
+                                                                    {{row2.ProductValidatorDescription}}</span></td>
+                                                        </tr>
+
+                                                    </ng-container>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <div class="col-md-1">
+
+                                        </div>
+                                    </div>
+
+                                </td>
+                            </tr>
+                        </ng-container>
+                        <!-- Edit -->
+                        <ng-container *ngIf="enableColumnEditIndex == i">
+                            <tr>
+
+                                <td></td>
+                                <td style="width: 0px;"> <input class="form-control" maxlength="20" type="text"
+                                        [(ngModel)]="item.StructureMarkingName" [ngModelOptions]="{standalone: true}">
+                                    <span class="text-danger validator-message"
+                                        *ngIf="isupdateRecord &&  (item.StructureMarkingName=='')">*
+                                        Structure Marking Required. </span>
+                                </td>
+                                <td> <input class="form-control" maxlength="20" type="text" style="width:50px"
+                                        [(ngModel)]="item.ColumnWidth" [ngModelOptions]="{standalone: true}">
+                                    <span class="text-danger validator-message"
+                                        *ngIf="isupdateRecord &&  (item.ColumnWidth=='')">*
+                                        Column Width Required. </span>
+                                </td>
+                                <td> <input class="form-control" maxlength="20" type="text" style="width:50px"
+                                        [(ngModel)]="item.ColumnLength" [ngModelOptions]="{standalone: true}">
+                                    <span class="text-danger validator-message"
+                                        *ngIf="isupdateRecord &&  (item.ColumnLength==='')">*
+                                        Column Length Required. </span>
+                                </td>
+                                <td> <input class="form-control" maxlength="20" type="text" style="width:45px"
+                                        [(ngModel)]="item.TotalNoOfLinks" [ngModelOptions]="{standalone: true}"
+                                        (focusout)="EditTotallinks_lostfocus(item.TotalNoOfLinks,item,i)">
+                                    <span class="text-danger validator-message"
+                                        *ngIf="isupdateRecord &&  (item.TotalNoOfLinks==='')">*
+                                        Total No Of Links Required. </span>
+                                </td>
+                                <td>
+                                    <ng-select [selectOnTab]="true" class="ng-selectcustomer" appendTo="body"
+                                        [(ngModel)]="item.ProductCode.ProductCodeId"
+                                        (keyup)="loadFilterProductCode($event.target)"
+                                        (change)="changeFilterProductCode(item,'E')" style="width:100px;">
+                                        <ng-option *ngIf="loading">
+                                            <div style="justify-content: center;display: flex;">
+                                                <div class="spinner-border text-secondary" role="status">
+                                                    <span class="sr-only">Loading...</span>
+                                                </div>
+
+                                            </div>
+                                        </ng-option>
+                                        <ng-option *ngFor="let sList of ColumnProductList"
+                                            [value]="sList.ProductCodeId">
+                                            {{sList.ProductCodeName}}
+                                        </ng-option>
+                                    </ng-select>
+                                    <span class="text-danger validator-message"
+                                        *ngIf="isupdateRecord &&  (item.ProductCode.ProductCodeId==='')">*
+                                        Product Required. </span>
+                                </td>
+                                <td>
+
+                                    <ng-select [(ngModel)]="item.Shape.ShapeID" appendTo="body"
+                                        [ngModelOptions]="{standalone: true}"
+                                        (change)="ChangeShapeCode($event,shapeList)" class="ng-selectwbs">
+                                        <ng-option *ngFor="let sList of shapeList" [value]="sList.ShapeID">
+                                            {{sList.ShapeCodeName}}
+                                        </ng-option>
+                                    </ng-select>
+
+                                    <span class="text-danger validator-message"
+                                        *ngIf="isupdateRecord &&  (item.Shape.ShapeID==='')">*
+                                        Shape Required. </span>
+
+                                </td>
+                                <td> <input class="form-control" maxlength="20" type="text" style="width:45px"
+                                        [(ngModel)]="item.RowatLength" [ngModelOptions]="{standalone: true}" />
+                                    <span class="text-danger validator-message"
+                                        *ngIf="isupdateRecord &&  (item.RowatLength==='')">*
+                                        RowatLength Required. </span>
+                                </td>
+                                <td>
+                                    <ng-select [selectOnTab]="true" class="ng-selectcustomer" appendTo="body"
+                                        [(ngModel)]="item.ClinkProductLength.ProductCodeId" [disabled]="enableClink_edit"
+                                        (keyup)="loadFilterClinkProduct($event.target)"
+                                        (change)="changeFilterClinkProductCode(pushElement.clinkatlength)"
+                                        style="width:100px;">
+                                        <ng-option *ngIf="loading">
+                                            <div style="justify-content: center;display: flex;">
+                                                <div class="spinner-border text-secondary" role="status">
+                                                    <span class="sr-only">Loading...</span>
+                                                </div>
+
+                                            </div>
+                                        </ng-option>
+                                        <ng-option *ngFor="let sList of ClinkProductList" [value]="sList.ProductCodeId">
+                                            {{sList.ProductCodeName}}
+                                        </ng-option>
+                                    </ng-select>
+                                    <span class="text-danger validator-message"
+                                        *ngIf="isupdateRecord &&  (item.ClinkProductLength.ProductCodeId==='')">*
+                                        ClinkProduct Required. </span>
+
+                                </td>
+                                <td> <input class="form-control" maxlength="20" type="text" style="width:45px"
+                                        [(ngModel)]="item.MemberQty" [ngModelOptions]="{standalone: true}" />
+                                    <span class="text-danger validator-message"
+                                        *ngIf="isupdateRecord &&  (item.MemberQty==='')">*
+                                        Qty Required. </span>
+                                </td>
+                                <td> <input class="form-control" maxlength="20" type="text" style="width:45px"
+                                        [(ngModel)]="item.RowatWidth" [ngModelOptions]="{standalone: true}" />
+                                    <span class="text-danger validator-message"
+                                        *ngIf="isupdateRecord &&  (item.RowatWidth === '')">*
+                                        Row at Width Required. </span>
+                                </td>
+                                <td>
+
+                                    <ng-select [selectOnTab]="true" class="ng-selectcustomer" appendTo="body"
+                                        [(ngModel)]="item.ClinkProductWidth.ProductCodeId"  [disabled]="enableClink_edit"
+                                        (keyup)="loadFilterClinkProduct($event.target)"
+                                        (change)="changeFilterClinkProductCode(pushElement.clinkatlength)"
+                                        style="width:100px;">
+                                        <ng-option *ngIf="loading">
+                                            <div style="justify-content: center;display: flex;">
+                                                <div class="spinner-border text-secondary" role="status">
+                                                    <span class="sr-only">Loading...</span>
+                                                </div>
+
+                                            </div>
+                                        </ng-option>
+                                        <ng-option *ngFor="let sList of ClinkProductList" [value]="sList.ProductCodeId">
+                                            {{sList.ProductCodeName}}
+                                        </ng-option>
+                                    </ng-select>
+                                    <span class="text-danger validator-message"
+                                        *ngIf="isupdateRecord &&  (item.ClinkProductWidth.ProductCodeId==='')">*
+                                        ClinkProductWidth Required. </span>
+
+                                </td>
+                                <!-- <td> <input class="form-control" maxlength="20" type="text" style="width:40px"
+                                                [(ngModel)]="item.TotalQty" [ngModelOptions]="{standalone: true}"
+                                                />
+                                        </td> -->
+                                <td> <input class="form-control" maxlength="20" type="text" style="width:50px"
+                                        [(ngModel)]="item.ColumnHeight" [ngModelOptions]="{standalone: true}"
+                                        (focusout)="EditHeighttxt_lostfocus(item.ColumnHeight,item,i)" />
+                                    <span class="text-danger validator-message"
+                                        *ngIf="isupdateRecord &&  (item.ColumnHeight==='')">*
+                                        ColumnHeight Required. </span>
+                                </td>
+
+                                <td>
+                                    <div class=" row custom-control custom-switch" style="margin:auto;width: 0px;">
+                                        <input type="checkbox" [(ngModel)]="item.IsCLink " class="custom-control-input"
+                                            id="Clnk">
+                                        <label class="custom-control-label" for="Clnk"></label>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class=" row custom-control custom-switch" style="margin:auto;width: 0px;">
+                                        <input type="checkbox" [(ngModel)]="item.CLOnly " class="custom-control-input"
+                                            id="CL">
+                                        <label class="custom-control-label" for="CL"></label>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class=" row custom-control custom-switch" style="margin:auto;width: 0px;">
+                                        <input type="checkbox" [(ngModel)]="item.ProduceIndicator "
+                                            class="custom-control-input" id="PI">
+                                        <label class="custom-control-label" for="PI"></label>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class=" row custom-control custom-switch" style="margin:auto;width: 0px;">
+                                        <input type="checkbox" [(ngModel)]="item.BendingCheckInd"
+                                            class="custom-control-input" id="BC">
+                                        <label class="custom-control-label" for="BC"></label>
+                                    </div>
+                                </td>
+                                <td> <input class="form-control" maxlength="20" type="text"
+                                        style="text-align:center;width:50px;" [(ngModel)]="item.PinSize"
+                                        [ngModelOptions]="{standalone: true}" />
+                                    <span class="text-danger validator-message"
+                                        *ngIf="isupdateRecord &&  (item.PinSize==='')">*
+                                        PinSize Required. </span>
+                                </td>
+
+                                <td class="text-center">
+                                    <i class="material-icons" (click)="Update(item,i)" ngbTooltip="Save">save</i>
+                                    &nbsp;
+                                    <i class="fa fa-refresh text-center" ngbTooltip="Reset"
+                                        style=" color:red;font-size:20px;" (click)="Reset(item,i)"></i>
+                                </td>
+
+                            </tr>
+                        </ng-container>
+                    </ng-container>
+
+
+                </tbody>
+
+                <tfoot>
+                    <tr>
+                        <!-- *ngFor="let table of new_groupmarkingBeamlist" -->
+                        <td></td>
+                        <td style="width: 0px;"> <input #strucuremarkingInput class="form-control" maxlength="20" type="text"
+                                [(ngModel)]="pushElement.structureMarking" [ngModelOptions]="{standalone: true}"
+                                (change)="structureMarkChange($event)" (keydown.enter)="Submit()">
+                            <span class="text-danger validator-message"
+                                *ngIf="isaddnewRecord &&  (pushElement.structureMarking=='')">*
+                                Structure Marking Required. </span>
+                        </td>
+                        <td> <input class="form-control" maxlength="20" type="number" [(ngModel)]="pushElement.Width"
+                                [ngModelOptions]="{standalone: true}" (keydown.enter)="Submit()">
+                            <span class="text-danger validator-message"
+                                *ngIf="isaddnewRecord &&  (pushElement.Width=='')">*
+                                Column Width Required. </span>
+                        </td>
+                        <td> <input class="form-control" maxlength="20" type="number" [(ngModel)]="pushElement.Length"
+                                [ngModelOptions]="{standalone: true}" (keydown.enter)="Submit()">
+                            <span class="text-danger validator-message"
+                                *ngIf="isaddnewRecord &&  (pushElement.Length=='')">*
+                                Column Length Required. </span>
+                        </td>
+                        <td> <input class="form-control" maxlength="20" type="number"
+                                [(ngModel)]="pushElement.Totallinks" [ngModelOptions]="{standalone: true}"
+                                (focusout)="Totallinks_lostfocus(pushElement.Totallinks)" (keydown.enter)="Submit()">
+                            <span class="text-danger validator-message"
+                                *ngIf="isaddnewRecord &&  (pushElement.Totallinks=='')">*
+                                Total Links Required. </span>
+                        </td>
+                        <td>
+                            <ng-select [selectOnTab]="true" class="ng-selectcustomer Set_width" appendTo="body" 
+                                [(ngModel)]="pushElement.Product" (keyup)="loadFilterProductCode($event.target)"
+                                (change)="changeFilterProductCode(pushElement,'S')" style="width:100px;">
+                                <ng-option *ngIf="loading">
+                                    <div style="justify-content: center;display: flex;">
+                                        <div class="spinner-border text-secondary" role="status">
+                                            <span class="sr-only">Loading...</span>
+                                        </div>
+
+                                    </div>
+                                </ng-option>
+                                <ng-option *ngFor="let sList of ColumnProductList" [value]="sList.ProductCodeId">
+                                    {{sList.ProductCodeName}}
+                                </ng-option>
+                            </ng-select>
+                            <span class="text-danger validator-message"
+                                *ngIf="isaddnewRecord &&  (pushElement.Product=='')">*
+                                Product Required. </span>
+                        </td>
+                        <td>
+                            <div>
+                                <ng-select [(ngModel)]="pushElement.Shape" [ngModelOptions]="{standalone: true}"
+                                    appendTo="body" (change)="ChangeShapeCode($event,shapeList)" style="width:100px;">
+                                    <ng-option *ngFor="let sList of shapeList" [value]="sList.ShapeID">
+                                        {{sList.ShapeCodeName}}
+                                    </ng-option>
+                                </ng-select>
+                                <span class="text-danger validator-message"
+                                    *ngIf="isaddnewRecord &&  (pushElement.Shape=='')">*
+                                    shape Required. </span>
+                            </div>
+
+                        </td>
+                        <td> <input #input3 class="form-control" maxlength="20" type="text" style="width:45px"
+                                [(ngModel)]="pushElement.RowatLength" [ngModelOptions]="{standalone: true}"
+                                (keydown.enter)="Submit()" />
+                            <span class="text-danger validator-message"
+                                *ngIf="isaddnewRecord &&  (pushElement.RowatLength==='')">*
+                                Row at Length Required. </span>
+                        </td>
+                        <td>
+
+                            <ng-select [selectOnTab]="true" class="ng-selectcustomer Set_width" appendTo="body" [disabled]="enableClink"
+                                [(ngModel)]="pushElement.ClinkProductLength"
+                                (keyup)="loadFilterClinkProduct($event.target)"
+                                (change)="changeFilterClinkProductCode(pushElement.ClinkProductLength)"
+                                style="width:100px;">
+                                <ng-option *ngIf="loading">
+                                    <div style="justify-content: center;display: flex;">
+                                        <div class="spinner-border text-secondary" role="status">
+                                            <span class="sr-only">Loading...</span>
+                                        </div>
+
+                                    </div>
+                                </ng-option>
+                                <ng-option *ngFor="let sList of ClinkProductList" [value]="sList.ProductCodeId">
+                                    {{sList.ProductCodeName}}
+                                </ng-option>
+                            </ng-select>
+                            <span class="text-danger validator-message"
+                                *ngIf="isaddnewRecord &&  (pushElement.ClinkProductLength=='')">*
+                                Clink Product Length Required. </span>
+
+                        </td>
+                        <td> <input class="form-control" maxlength="20" type="text" style="width:45px"
+                                [(ngModel)]="pushElement.MemberQty" [ngModelOptions]="{standalone: true}"
+                                (keydown.enter)="Submit()" />
+                            <span class="text-danger validator-message"
+                                *ngIf="isaddnewRecord &&  (pushElement.MemberQty=='')">*
+                                Qty Required. </span>
+                        </td>
+                        <td> <input class="form-control" maxlength="20" type="text" style="width:45px"
+                                [(ngModel)]="pushElement.rowatwid" [ngModelOptions]="{standalone: true}"
+                                (keydown.enter)="Submit()" />
+                            <span class="text-danger validator-message"
+                                *ngIf="isaddnewRecord &&  (pushElement.rowatwid==='')">*
+                                Row at Width Required. </span>
+                        </td>
+                        <td>
+                            <ng-select [selectOnTab]="true" class="ng-selectcustomer Set_width" appendTo="body" [disabled]="enableClink"
+                                [(ngModel)]="pushElement.ClinkProductWidth"
+                                (keyup)="loadFilterClinkProduct($event.target)"
+                                (change)="changeFilterClinkProductCode(pushElement.ClinkProductWidth)"
+                                style="width:100px;">
+                                <ng-option *ngIf="loading">
+                                    <div style="justify-content: center;display: flex;">
+                                        <div class="spinner-border text-secondary" role="status">
+                                            <span class="sr-only">Loading...</span>
+                                        </div>
+
+                                    </div>
+                                </ng-option>
+                                <ng-option *ngFor="let sList of ClinkProductList" [value]="sList.ProductCodeId">
+                                    {{sList.ProductCodeName}}
+                                </ng-option>
+                            </ng-select>
+                            <span class="text-danger validator-message"
+                                *ngIf="isaddnewRecord &&  (pushElement.ClinkProductWidth=='')">*
+                                Clink Product Width Required. </span>
+
+                        </td>
+                        <!-- <td>
+                                     <input class="form-control" maxlength="20" type="text" style="width:40px"
+                                        [(ngModel)]="pushElement.qtywidth" [ngModelOptions]="{standalone: true}"
+                                        (keydown.enter)="Submit()" />
+                                        <span class="text-danger validator-message"
+                                        *ngIf="isaddnewRecord &&  (pushElement.qtywidth=='')">*
+                                        Qty Required. </span>
+                                </td> -->
+                        <td> <input class="form-control" maxlength="20" type="text" style="width:50px"
+                                [(ngModel)]="pushElement.Height" [ngModelOptions]="{standalone: true}"
+                                (focusout)="Heighttxt_lostfocus(pushElement.Height)" (keydown.enter)="Submit()" />
+                            <span class="text-danger validator-message"
+                                *ngIf="isaddnewRecord &&  (pushElement.Height=='')">*
+                                Height Required. </span>
+                        </td>
+
+                        <td>
+                            <div class=" row custom-control custom-switch" style="margin:auto;width: 0px;">
+                                <input type="checkbox" [(ngModel)]="pushElement.clnk" class="custom-control-input"
+                                    id="Clnk">
+                                <label class="custom-control-label" for="Clnk"></label>
+                            </div>
+
+                        </td>
+                        <td>
+                            <div class=" row custom-control custom-switch" style="margin:auto;width: 0px;">
+                                <input type="checkbox" [(ngModel)]="pushElement.clonly" class="custom-control-input"
+                                    id="cl-only">
+                                <label class="custom-control-label" for="cl-only"></label>
+                            </div>
+
+                        </td>
+
+
+                        <td>
+                            <div class=" row custom-control custom-switch" style="margin:auto;width: 0px;">
+                                <input type="checkbox"[(ngModel)]="pushElement.pi" class="custom-control-input" id="PI">
+                                <label class="custom-control-label" for="PI"></label>
+                            </div>
+
+
+                        </td>
+                        <td>
+                            <div class=" row custom-control custom-switch" style="margin:auto;width: 0px;">
+                                <input type="checkbox" [(ngModel)]="pushElement.bc" class="custom-control-input" id="BC">
+                                <label class="custom-control-label" for="BC"></label>
+                            </div>
+                        </td>
+                        <td> <input class="form-control" maxlength="20" type="number"
+                                style="text-align:center;width:50px;" [(ngModel)]="pushElement.pinsize"
+                                [ngModelOptions]="{standalone: true}" (keydown.enter)="Submit()" />
+                            <span class="text-danger validator-message"
+                                *ngIf="isaddnewRecord &&  (pushElement.pinsize=='')">*
+                                Pinsize Required. </span>
+                        </td>
+                        <td></td>
+
+                    </tr>
+                </tfoot>
+
+            </table>
+            <!-- BUTTON -->
+            <button class="btn btn-primary" class="bi-chevron-right" ngbTooltip="Image" (click)="showImage = !showImage;LoadShapeParam();"
+                style="  padding: 0;
+                    border: 0;
+                    color: white;
+                    background-color: #0479D6;
+                    margin-left: 1px;
+                    "></button>
+        </div>
+        <!-- IMAGE -->
+        <div [class.mat-elevation-z8]="true" *ngIf="showImage"
+        id="imageBox" class="movable-container" 
+[style.right.px]="right" [style.top.px]="top" (mousedown)="onMouseDown($event)"
+(document:mousemove)="onMouseMove($event)" (document:mouseup)="onMouseUp($event)"
+            style=" position: fixed;
+                background-color: white;z-index: 10000;right: 0; top:10%; width: 32%;max-height: 100%; border-radius: 15px;">
+            <div class="row d-flex" style=" text-align:justify; background-color:#fafafa ; margin: 5px;
+            border-radius: 9px;">
+                <div class="col-md-10">
+                    <h4><b>Shape Parameters</b></h4>
+                </div>
+                <div class="col-md-2">
+                    <i class="fa-solid fa-circle-xmark fa-2xs"></i>
+                    <!-- <i class="fa-solid fa-xmark" style=" font-Weight:bold; font-size: 16px;"></i> -->
+                    <button type="button" class="btn-close" aria-label="Close" (click)="showImage=false;"></button>
+                </div>
+            </div>
+
+            <div class="d-flex ">
+                <table class="table w-25 table-striped  table-bordered" style="height: fit-content; margin: 20px;">
+                    <thead>
+                        <tr>
+                            <th>S.No</th>
+                            <th>Parameter Name</th>
+                            <th>Parameter Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of ShapeParamlist;index as j">
+                            <td>{{j+1}}</td>
+                            <td> {{item.ParameterName}}</td>
+                            <td class="text-center">
+
+                                <input [id]="j==0?'Shapeparam':j" class="form-control focusable" maxlength="20" type="text" 
+                                [readonly]="!item.EditFlag" id="test-{{item.ParameterName}}"
+                                [(ngModel)]="item.ParameterValue" [ngModelOptions]="{standalone: true}"
+                                 />
+
+                            </td>
+
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3" style="text-align:center ;"> <button class="btn btn-primary"
+                                    (click)="showImage = !showImage ;ShapeParamSubmit();">Save</button></td>
+                        </tr>
+
+                    </tfoot>
+
+                </table>
+                <div *ngIf="showImage" class="width_set">
+
+                    <img class="img-responsive" [src]="'assets/images/Shapes/'+ Imagename +''" alt="image" style="position: relative ;
+                            left: 0px;">
+                </div>
+            </div>
+            <br>
+        </div>
+
+        <div class="row ml-0 mr-0">
+            <div class="col-md-8">
+                <div class="col d-flex mt-2 ">
+                    <div>
+                        <ngb-pagination [collectionSize]="ColumnStructureMarklist.length" [pageSize]="itemsPerPage"
+                            [(page)]="currentPage" (pageChange)="onPageChange(currentPage)" [boundaryLinks]="true"
+                            [maxSize]="maxSize">
+                            <ng-template ngbPaginationPrevious>Prev</ng-template>
+                            <ng-template ngbPaginationNext>Next</ng-template>
+                        </ngb-pagination>
+                    </div>
+                    <div>
+                        <select class="custom-select mr-2 ml-3" style="width: auto" [(ngModel)]="itemsPerPage"
+                            (ngModelChange)="OnPageSizeChange(itemsPerPage);">
+                            <option [ngValue]="5">5 </option>
+                            <option [ngValue]="10">10 </option>
+                            <option [ngValue]="20">20 </option>
+                            <option [ngValue]="50">50 </option>
+                            <option [ngValue]="100">100 </option>
+                        </select>
+                        <span>Items per page</span>
+                    </div>
+                </div>                
+            </div>
+            <div class="col-md-4 mr-0" style="text-align:right !important ;">
+                <button class="btn btn-primary  btn-sm" (click)="Report_Click()">View Report</button>
+                <button class="btn btn-primary  btn-sm" (click)="NewGM_Click()">Add New Group Mark</button>
+
+            </div>
+          
+        </div>
+    </div>
+</div>

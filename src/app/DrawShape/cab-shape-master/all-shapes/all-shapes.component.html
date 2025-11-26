@@ -1,0 +1,25 @@
+<div *ngIf="isLoading" style="z-index: 500">
+  <div id="pause" class="d-flex align-items-center justify-content-center">
+    <div id="spinner" class="loader"></div>
+  </div>
+</div>
+<div class="modal-header">
+  <h3 class="modal-title">All Shape Codes</h3>
+  <button type="button" class="close" (click)="dismissModal()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body" style="height: 400px;overflow-y: scroll;">
+<button class="btn btn-info btn-md" type="button"><i class="material-icons" style="font-size:20px;" ngbTooltip="Download PDF" (click)="downloadShapePDF()">download</i></button>
+
+<div class="row" >
+  <div class="col-md-3" *ngFor="let item of AllShapes">
+    <div class="card" style="padding: 0px;">
+      <img class="card-img-top" src={{item.imageSrc}} alt="Card image cap">
+      <div class="card-body">
+        <h5 >Shape Code : {{item.CSM_SHAPE_ID}}</h5>
+        <h5 >Status : {{item.CSM_ACT_INACTIVE}}</h5>
+      </div>
+    </div>
+  </div>
+</div>

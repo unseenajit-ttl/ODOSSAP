@@ -1,0 +1,188 @@
+<div id="pause" class="d-flex align-items-center justify-content-center" *ngIf="loading">
+    <div id="spinner" class="loader"></div>
+</div>
+
+
+<div class="container-fluid">
+    <h3 class="card-header d-flex flex-column justify-content-center align-items-center">
+        <b>ESM Released Tonnage Report</b>
+    </h3>
+    <div class="card m-1">
+
+        <div class="card-body">
+            <div class="card-body mt-3">
+
+                <fieldset>
+
+                    <div class="row">
+                        <form [formGroup]="ESMTonnageReportForm">
+                            <div class="row ">
+
+
+                                <div class="col-md-3">
+                                    <label class="required-label" style="padding-right:5px;">* </label>
+                                    <label class="form-label"><b>Date From</b></label>
+                                    <input type="date" class="form-control" formControlName="FromDate"
+                                        (change)="checkSelectedDate()" [(ngModel)]="From_Date">
+                                </div>
+
+                                <div class="col-md-3">
+                                    <label class="required-label" style="padding-right:5px;">* </label>
+                                    <label class="form-label"><b>Date To</b></label>
+                                    <input type="date" class="form-control" formControlName="ToDate"
+                                        [(ngModel)]="To_Date">
+
+                                </div>
+
+                                <div class="col-md-2">
+                                    <label class="form-label"> </label>
+                                    <div class="d-flex" style="justify-content: flex-end;">
+                                        <button class="btn btn-primary btn-sm" type="button" (click)="viewReport()">View
+                                            Report
+                                        </button>
+
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-1">
+                                    <label class="form-label"></label> <br />
+                                    <div class="input-group flex-nowrap">
+
+                                        <span class="input-group-text ">
+                                            <i class="material-icons" style="font-size:20px;"
+                                                ngbTooltip="Download Excel" (click)="downloadFile()">download</i>
+                                        </span>
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </form>
+
+                       
+                    </div>
+                </fieldset><br>
+
+
+                <!-- Grid Section -->
+
+                <ng-container *ngIf="showIframe">
+                    <div class="table-responsive table-wrapper-scroll-y my-custom-scrollbar" style="padding: 0; margin:0">
+                        <table class="table  table-bordered" style="width: 250%;" id="TrackingDetailslist">
+                            <thead>
+                                <tr>
+
+                                    <th class="w-125px">Tracker Id</th>
+                                    <th style="width: 300px;">Customer Name</th>
+                                    <!-- <th class="w-125px">Customer Code</th> -->
+                                    <th style="width: 300px;">Project Name</th>
+                                    <th class="w-125px">Project Code</th>
+                                    <th class="w-125px">Contract No</th>
+                                    <th class="w-125px">Product Type</th>
+                                    <th class="w-125px">Structure Element</th>
+                                    <th class="w-125px">WBS1</th>
+                                    <th class="w-125px">WBS2</th>
+                                    <th class="w-125px">WBS3</th>
+                                    <th class="w-125px">BBS#</th>
+                                    <!-- <th class="w-125px">BBS Desc</th>
+                                    <th class="w-125px">PO Number</th>
+                                    <th class="w-125px">PO Date</th>
+                                    <th class="w-125px">Req Date</th>
+                                    <th class="w-125px">Prod Date</th>
+                                    <th class="w-125px">Order Type</th>
+                                    <th class="w-125px">Location</th>
+                                    <th class="w-125px">Over Delv Tolerance</th>
+                                    <th class="w-125px">Under Delv Tolerance</th>
+                                    <th class="w-125px">Estimated Weight</th>
+                                    <th class="w-125px">Site Contact Person</th>
+                                    <th class="w-125px">Remark</th>
+                                    <th class="w-125px">Is Posted</th>
+                                    <th class="w-125px">Is Released</th> -->
+                                    <th class="w-125px">Posted by</th>
+                                    <th class="w-125px">Posted Date</th>
+                                    <th class="w-125px">Released By</th>
+                                    <th class="w-125px">Released Date</th>
+                                    <th class="w-125px">Posted Weight</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <tr
+                                    *ngFor="let item of EsmReportList| slice: pageSize | slice: 0:itemsPerPage; index as i">
+                                    <td>{{item.TrackingNo}}</td>
+                                    <td [width]="200">{{item.CustomerName}}</td>
+                                    <!-- <td>{{item.CustomerCode}}</td> -->
+                                    <td>{{item.ProjectName}}</td>
+                                    <td>{{item.ProjectCode}}</td>
+                                    <td>{{item.ContractNo}}</td>
+                                    <td>{{item.ProductType}}</td>
+                                    <td>{{item.StructureElement}}</td>
+                                    <td>{{item.WBS1}}</td>
+                                    <td>{{item.WBS2}}</td>
+                                    <td>{{item.WBS3}}</td>
+                                    <td>{{item.BBS}}</td>
+                                    <!-- <td>{{item.BBSDesc}}</td>
+                                    <td>{{item.PONumber}}</td>
+                                    <td>{{item.PODate}}</td>
+                                    <td>{{item.ReqDate}}</td>
+                                    <td>{{item.ProdDate}}</td>
+                                    <td>{{item.OrderType}}</td>
+                                    <td>{{item.Location}}</td>
+                                    <td>{{item.OverDelvTolerance}}</td>
+                                    <td>{{item.UnderDelvTolerance}}</td>
+                                    <td>{{item.EstimatedWeight}}</td>
+                                    <td>{{item.SiteContactPerson}}</td>
+                                    <td>{{item.Remark}}</td>
+                                    <td>{{item.IsPosted}}</td>
+                                    <td>{{item.IsReleased}}</td> -->
+                                    <td>{{item.Postedby}}</td>
+                                    <td>{{item.PostedDate}}</td>
+                                    <td>{{item.ReleasedBy}}</td>
+                                    <td>{{item.ReleasedDate}}</td>
+                                    <td>{{item.PostedWeight}}</td>
+
+                                </tr>
+
+                                <tr *ngIf="EsmReportList.length==0">
+                                    <td colspan="31">
+                                        No Records Found
+                                    </td>
+
+
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+                    </div>
+
+                    <div class="d-flex mt-2">
+                        <ngb-pagination [collectionSize]="EsmReportList.length" [(page)]="currentPage"
+                            [pageSize]="itemsPerPage" (pageChange)="onPageChange(currentPage)" [boundaryLinks]="false"
+                            [maxSize]="maxSize" *ngIf="searchResult">
+                            <ng-template ngbPaginationPrevious>Prev</ng-template>
+                            <ng-template ngbPaginationNext>Next</ng-template>
+                        </ngb-pagination>
+
+                        <select class="custom-select mr-2 ml-3" style="width: auto" [(ngModel)]="itemsPerPage"
+                            (ngModelChange)="OnPageSizeChange(itemsPerPage);">
+                            <option [ngValue]="5">5 </option>
+                            <option [ngValue]="10">10 </option>
+                            <option [ngValue]="20">20 </option>
+                            <option [ngValue]="50">50 </option>
+                            <option [ngValue]="100">100 </option>
+                        </select>
+                        <span style="margin-top: 5px;">Items per page</span>
+                    </div>
+
+
+                </ng-container>
+
+
+
+            </div>
+        </div>
+    </div>

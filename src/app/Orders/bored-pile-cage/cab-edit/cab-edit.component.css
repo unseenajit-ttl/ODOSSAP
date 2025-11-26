@@ -1,0 +1,10 @@
+:host ::ng-deep .slick-headerrow{
+  display: none;
+}
+:host ::ng-deep .slickgrid-container {
+  height: 50vh !important;
+  width: 100% !important;
+}
+.modal-xxl {
+  max-width: 1480px;
+}

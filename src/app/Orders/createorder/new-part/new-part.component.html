@@ -1,0 +1,218 @@
+<div class="modal-header" >
+    <h4 class="modal-title">Create New Part</h4>
+    <i class="fa-solid fa-xmark"></i>
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+   </div>
+  <div class="modal-body " >
+    
+    <div class="row">
+      <form [formGroup]="createsNewWBSForm" >            
+        <div class="container"> 
+          <div class="row">
+            <div class="col">
+              <label class="form-label">Please enter the WBS3 extension(请输入分部的扩展部分)</label> <br>
+                <input type="text" formControlName="wbs3extension" class="form-control"/>
+              </div>
+              <!-- <div class="col">
+                <label class="form-label">Mesh Shape Group</label>
+                  <input type="text" class="form-control" formControlName="meshshapegroup"/>
+                </div>
+  
+                <div class="col">
+                  <label class="form-label"> MO CO</label> <br>               
+                    <ng-select formControlName="moco"  class="ng-selectcustomer"  >
+                      <ng-option *ngFor="let sList of MOCOList" [value]="sList.item_id">
+                          {{sList.item_text}}
+                      </ng-option>
+                  </ng-select>
+                </div>-->
+              </div>    
+           
+              <div class="row" style="margin-top: 10px;">
+                <div class="col">
+                  <label class="form-label">It will create below WBS (将要创建以下的工作分解结构):</label><br>
+                  <!-- <input type="text" class="form-control" formControlName="bends"> -->
+                </div>
+  
+                <!-- <div class=" col">
+                  <label for="bendingtype" class="form-label " >Bending Group</label><br>
+                  <input type="text" class="form-control" formControlName="bendinggroup">
+                </div>
+                      
+                <div class=" col">
+                  <label for="couplertype" class="form-label">MW bending group</label><br>
+                  <input type="text" class="form-control" formControlName="mwbending">
+  
+                </div> -->
+              </div>
+
+              <div class="row">
+                <!-- <div class="col">
+                  <label class="form-label">It will create below wbs</label><br> -->
+                  <!-- <input type="text" class="form-control" formControlName="bends"> -->
+                <!-- </div>
+   -->
+                <div class=" col">
+                  <label for="bendingtype" class="form-label " >WBS1 (大牌):</label><br>
+                  <input type="text" class="form-control" formControlName="WBS1">
+                </div>
+                      
+                <div class=" col">
+                  <label for="couplertype" class="form-label">WBS2 (楼层):</label><br>
+                  <input type="text" class="form-control" formControlName="WBS2">
+  
+                </div>
+              </div>
+              <div class="row">
+                <!-- <div class="col">
+                  <label class="form-label">It will create below wbs</label><br> -->
+                  <!-- <input type="text" class="form-control" formControlName="bends"> -->
+                <!-- </div>
+   -->
+                <div class=" col">
+                  <label for="bendingtype" class="form-label " >WBS3 (分部):</label><br>
+                  <input type="text" class="form-control" formControlName="WBS3">
+                </div>
+                      
+                
+              </div>
+           
+           
+              <div class="row" style="margin-top: 10px;">
+                <div class=" col">
+                  <label for="couplertype" class="form-label">Please Choose Structure Element (请选择结构)</label><br>
+                  <!-- <input type="text" class="form-control" formControlName="cwbending"> -->
+                </div>
+
+            
+              </div>
+              <div class="row" style="margin-top: 10px;">
+               <div class="col">
+                <div class="form-check">
+                    <label class="form-check-label">
+                      <input type="checkbox" class="form-check-input" value="">Beam (梁)
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <label class="form-check-label">
+                      <input type="checkbox" class="form-check-input" value="">Column (柱)
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <label class="form-check-label">
+                      <input type="checkbox" class="form-check-input" value="">Wall (墙)
+                    </label>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="form-check">
+                    <label class="form-check-label">
+                      <input type="checkbox" class="form-check-input" value="" >Slab (板)
+                    </label>
+                  </div>
+                
+                  <div class="form-check">
+                    <label class="form-check-label">
+                      <input type="checkbox" class="form-check-input" value="" >Slab Bottom (下板)
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <label class="form-check-label">
+                      <input type="checkbox" class="form-check-input" value="" >Slab Top (上板)
+                    </label>
+                  </div>
+                </div>
+                <div class="col">
+                  
+                  <div class="form-check">
+                    <label class="form-check-label">
+                      <input type="checkbox" class="form-check-input" value="" >Drain (垄沟)
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <label class="form-check-label">
+                      <input type="checkbox" class="form-check-input" value="" >Dwall (隔牆)
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <label class="form-check-label">
+                      <input type="checkbox" class="form-check-input" value="" >Pile (桩)
+                    </label>
+                  </div>
+                </div>
+                
+              </div>
+              <hr>
+              <div class="row" style="margin-top: 10px;">
+                <div class="col">
+                  <label for="couplertype" class="form-label">Please Choose Product Type (请选择产品类型)</label><br>
+                  <input type="text" class="form-control" formControlName="cutno">
+                </div>
+            
+              </div>
+          
+              <div class="row" style="margin-top: 10px;">
+               <div class="col">
+                <div class="form-check">
+                    <label class="form-check-label">
+                      <input type="checkbox" class="form-check-input" value="">Cut To Size Mesh (加工网)
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <label class="form-check-label">
+                      <input type="checkbox" class="form-check-input" value="">Stirrup Mesh (梁箍)
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <label class="form-check-label">
+                      <input type="checkbox" class="form-check-input" value="" >Column Mesh (柱箍)
+                    </label>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="form-check">
+                    <label class="form-check-label">
+                      <input type="checkbox" class="form-check-input" value="" >Cut & Bend (加工铁)
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <label class="form-check-label">
+                      <input type="checkbox" class="form-check-input" value="" >Pre-Cage (铁笼)
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <label class="form-check-label">
+                      <input type="checkbox" class="form-check-input" value="" >Bored Pile Cage (桩笼)
+                    </label>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="form-check">
+                    <label class="form-check-label">
+                      <input type="checkbox" class="form-check-input" value="" >Core Cage (核心笼)
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <label class="form-check-label">
+                      <input type="checkbox" class="form-check-input" value="" >Carpet (毯铁)
+                    </label>
+                  </div>
+
+                </div>
+              </div>
+
+                
+              </div>
+           </form>
+      </div>
+      <div style="align-items: center; align-content: center;">
+        
+        <button type="submit" class="btn btn-primary" [disabled]="!createsNewWBSForm.valid">Create</button>
+
+        
+      </div>
+  
+  </div>
+  
+  
+  

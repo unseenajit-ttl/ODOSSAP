@@ -1,0 +1,658 @@
+<div class="container-fluid">
+  <div class="card m-1">
+    <h3 class="card-header d-flex flex-column justify-content-center align-items-center">
+      <b> StandardMesh Orders</b>
+    </h3>
+    <div class="card-body" style="margin-top: -11px !important">
+      <div class="filter">
+        <form [formGroup]="activeorderForm" (ngSubmit)="onSubmit()">
+          <div class="row">
+            <a href="javaScript:; " (click)="SaveOrder()" style="color: blue">
+              <i class="fa fa-arrow-left arrow-left" aria-hidden="true"></i>
+              Back to order summary (返回订单汇总)
+            </a>
+          </div>
+        </form>
+        <hr />
+        <div class="mainbox" id="toptable">
+          <div class="row heading">
+            <label>Standard Mesh / Sample Mesh Order Cart (标准网片订购清单):</label>
+          </div>
+
+          <div class="table-responsive table-wrapper-scroll-y my-custom-scrollbar">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <!-- <th style="width:4px;"><i class="bi bi-search"
+                                        (click)="toggleFilters = !toggleFilters"></i>
+                                </th> -->
+                               
+                  <th>SNo<br />序号</th>
+                  <th>Product Code<br />产品编号</th>
+                  <th>Main Length<br />主筋长 (mm)</th>
+                  <th>Cross Length<br />副筋长 (mm) (mm)</th>
+                  <th>MW Dia<br />主筋直径 (mm)</th>
+                  <th>MW Spacing<br />主筋间距 (mm)</th>
+                  <th>MO1/MO2<br />主筋边长 (mm)</th>
+                  <th>CW Dia<br />副筋直径 (mm)</th>
+                  <th>CW Spacing<br />副筋间距 (mm)</th>
+                  <th>CO1/CO2<br />副筋边长 (mm) (mm)</th>
+                  <th>Unit Weight<br />单片重量 (kg)</th>
+                  <th>Order Qty<br />订购数量</th>
+                  <th>Total Weight<br />产品总重量 (kg)</th>
+                  <th>Remove<br />删除</th>
+                </tr>
+              </thead>
+              <thead *ngIf="toggleFilters">
+                <tr>
+                  <th></th>
+                  <th>
+                    <input [readonly]="!ProductDetailsEditable" class="form-control" type="text" id="searchBlock"
+                      placeholder="Search here" />
+                  </th>
+                  <th>
+                    <input [readonly]="!ProductDetailsEditable" class="form-control" type="text" id="searchFrom"
+                      placeholder="Search here" />
+                  </th>
+                  <th>
+                    <input [readonly]="!ProductDetailsEditable" class="form-control" type="text" id="searchTo"
+                      placeholder="Search here" />
+                  </th>
+                  <th>
+                    <input [readonly]="!ProductDetailsEditable" class="form-control" type="text" id="searchPart"
+                      placeholder="Search here" />
+                  </th>
+                  <th>
+                    <input [readonly]="!ProductDetailsEditable" class="form-control" type="text" id="searchStructure"
+                      placeholder="Search here" />
+                  </th>
+                  <th>
+                    <input [readonly]="!ProductDetailsEditable" class="form-control" type="text" id="searchBlock"
+                      placeholder="Search here" />
+                  </th>
+                  <th>
+                    <input [readonly]="!ProductDetailsEditable" class="form-control" type="text" id="searchFrom"
+                      placeholder="Search here" />
+                  </th>
+                  <th>
+                    <input [readonly]="!ProductDetailsEditable" class="form-control" type="text" id="searchBlock"
+                      placeholder="Search here" />
+                  </th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <ng-container *ngFor="let item of StandardMeshOrderTempArray; index as i">
+                  <tr>
+                    <!-- <td style="width:2px">
+                                        <input [readonly]="!ProductDetailsEditable" type="checkbox">
+                                    </td> -->
+
+                    <td>{{ i + 1 }}</td>
+                    <!-- <td>{{item.s_no}}</td> -->
+                    <td>{{ item.ss561_name }}</td>
+                    <td>{{ item.mw_length }}</td>
+                    <td>{{ item.cw_length }}</td>
+                    <td>{{ item.mw_size }}</td>
+                    <td>{{ item.mw_spacing }}</td>
+                    <!-- <td>{{item.mo1}}</td> -->
+                    <td>{{ item.mo1 }}/{{ item.mo2 }}</td>
+                    <td>{{ item.cw_size }}</td>
+                    <td>{{ item.cw_spacing }}</td>
+                    <!-- <td>{{item.co1}}</td>
+                                    <td>{{item.co2}}</td> -->
+                    <td>{{ item.co1 }}/{{ item.co2 }}</td>
+                    <td>{{ item.unit_weight | number : "1.3-3" }}</td>
+                    <td>
+                      <input [readonly]="!ProductDetailsEditable" type="number" class="form-control"
+                        [(ngModel)]="item.order_pcs" (input)="calculateResult(i)" pattern="[0-9]*" 
+                        #inputField
+                        (keyup.enter)="item.order_pcs && focusNextRowInput(i, inputField);SaveBBSData(false); SaveJobAdvice(false);"
+                        (keydown.Tab)="item.order_pcs && focusNextRowInput(i, inputField); SaveBBSData(false); SaveJobAdvice(false);"
+                        [ngClass]="{ 'empty-field': !item.order_pcs }"
+                      tabindex="{{i + 1}}"/>
+                    </td>
+                    <td>{{ item.order_wt | number : "1.3-3" }}</td>
+                    <td [ngbTooltip]="tooltip">
+                      <button class="btn btn-primary btn-sm tablebuttons" style="width: 130px"  type="button" [hidden]="showremovebutton"
+                        (click)="removeItem(item, i)" value="Remove 删除"   [disabled]="!ProductDetailsEditable">
+                        Remove 删除
+                      </button>
+                    </td>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
+          </div>
+
+          <div style="
+              display: flex;
+              align-items: flex-end;
+              justify-content: flex-end;
+            ">
+            <div style="margin: 0px 5px">
+              Total Bundles/WT (总件数/总重量):
+              <input [readonly]="!ProductDetailsEditable" type="text" class="form-control" value="{{ totalBundleWt }}"
+                name="total_weight" id="total_weight" style="background: #eeeeee; width: 250px" readonly />
+            </div>
+
+            <div style="margin: 0px 5px">
+              <button class="btn btn-primary btn-sm" style="width: 120px"
+                (click)="SaveBBSDataforSaveButton(false); SaveJobAdviceforSaveButton(false)" type="button">
+                Save (保存)
+              </button>
+              <button class="btn btn-primary btn-sm" style="width: 120px" (click)="orderPrint()" type="button">
+                Print (料单报表)
+              </button>
+              <!-- <button
+                class="btn btn-primary btn-sm"
+                style="width: 120px"
+                [hidden]="IsDownload"
+                (click)="download()"
+                type="button"
+              >
+                Download Pdf
+              </button> -->
+              <!-- <a class="btn btn-primary btn-sm" style="width: 120px;" [hidden]="IsDownload" href={{this.getfile}}>Download Pdf</a> -->
+            </div>
+          </div>
+        </div>
+        <hr />
+        <div class="mainbox" id="producttype">
+          <div class="row">
+            <div class="col-md-4">
+              <label class="form-label subheading">Please Choose Product Type(请点击产品类型):</label>
+              <br />
+              <ng-select class="w-auto" [(ngModel)]="SelectedProductType" (change)="ProductTypeChanged($event)">
+                <ng-option *ngFor="let sList of ProductTypeList" [value]="sList.ProdTypeCode">
+                  {{ sList.ProdTypeDesc }}
+                </ng-option>
+              </ng-select>
+            </div>
+          </div>
+        </div>
+        <!-- <div></div> -->
+        <div class="mainbox" id="productcategory">
+          <div class="row subheading">
+            <label> Please Click Product Category(请点击产品分类): </label>
+          </div>
+
+          <div *ngIf="StandardMeshProductOrderLoading" style="z-index: 500">
+            <div id="pause" class="d-flex align-items-center justify-content-center">
+              <div id="spinner" class="loader"></div>
+            </div>
+          </div>
+
+          <div class="row">
+            <!-- <div class=" col-md-2 card-body"
+                    style="border-radius: 10px; margin: 5px; height: fit-content;">
+                     -->
+            <div class="row" *ngIf="showMeshList1">
+              <!-- <div *ngFor="let item of StandardMeshOrderArray; let i = index">
+                           <button type="button" class="btn btn-primary btn"> <img [src]="item.ImagePath"></button>
+                        </div> -->
+              <div class="col">
+                <button type="button" style="background-color: {{
+                    sixmbar == true ? '#04AA6D' : '#ff9b00d6'
+                  }};" class="btn btn-primary btn" (click)="submit(6, 'A')">
+                  <img src="../../../assets/imagesuiux/A.png" />
+                </button>
+              </div>
+              <div class="col">
+                <button type="button" style="background-color: {{
+                    twelvembar == true ? '#04AA6D' : '#ff9b00d6'
+                  }};" class="btn btn-primary btn" (click)="submit(12, 'B')">
+                  <img src="../../../assets/imagesuiux/B.png" />
+                </button>
+              </div>
+              <div class="col">
+                <button type="button" style="background-color: {{
+                    fourteenmbar == true ? '#04AA6D' : '#ff9b00d6'
+                  }};" class="btn btn-primary btn" (click)="submit(14, 'D')">
+                  <img src="../../../assets/imagesuiux/D.png" />
+                </button>
+              </div>
+              <div class="col">
+                <button type="button" style="background-color: {{
+                    fifteenmbar == true ? '#04AA6D' : '#ff9b00d6'
+                  }};" class="btn btn-primary btn" (click)="submit(15, 'E')">
+                  <img src="../../../assets/imagesuiux/E.png" />
+                </button>
+              </div>
+            </div>
+
+            <div class="row" *ngIf="showMeshList2">
+              <!-- <div *ngFor="let item of StandardMeshOrderArray; let i = index">
+                           <button type="button" class="btn btn-primary btn"> <img [src]="item.ImagePath"></button>
+                        </div> -->
+              <div class="col">
+                <button type="button" style="background-color: {{
+                    sixmbar == true ? '#04AA6D' : '#ff9b00d6'
+                  }};" class="btn btn-primary btn" (click)="submit(6, 'A2')">
+                  <img src="../../../assets/imagesuiux/A2.png" />
+                </button>
+              </div>
+              <div class="col">
+                <button type="button" style="background-color: {{
+                    twelvembar == true ? '#04AA6D' : '#ff9b00d6'
+                  }};" class="btn btn-primary btn" (click)="submit(12, 'B2')">
+                  <img src="../../../assets/imagesuiux/B2.png" />
+                </button>
+              </div>
+              <div class="col">
+                <button type="button" style="background-color: {{
+                    fourteenmbar == true ? '#04AA6D' : '#ff9b00d6'
+                  }};" class="btn btn-primary btn" (click)="submit(14, 'D2')">
+                  <img src="../../../assets/imagesuiux/D2.png" />
+                </button>
+              </div>
+              <div class="col">
+                <button type="button" style="background-color: {{
+                    fifteenmbar == true ? '#04AA6D' : '#ff9b00d6'
+                  }};" class="btn btn-primary btn" (click)="submit(15, 'E2')">
+                  <img src="../../../assets/imagesuiux/E2.png" />
+                </button>
+              </div>
+            </div>
+
+            <div class="row" *ngIf="showMeshList3">
+              <!-- <div *ngFor="let item of StandardMeshOrderArray; let i = index">
+                           <button type="button" class="btn btn-primary btn"> <img [src]="item.ImagePath"></button>
+                        </div> -->
+              <div class="col">
+                <button type="button" style="background-color: {{
+                    sixmbar == true ? '#04AA6D' : '#ff9b00d6'
+                  }};" class="btn btn-primary btn" (click)="submit(6, 'A3')">
+                  <img src="../../../assets/imagesuiux/A1010TE.png" />
+                </button>
+              </div>
+              <div class="col">
+                <button type="button" style="background-color: {{
+                    twelvembar == true ? '#04AA6D' : '#ff9b00d6'
+                  }};" class="btn btn-primary btn" (click)="submit(12, 'B3')">
+                  <img src="../../../assets/imagesuiux/B1010TE.png" />
+                </button>
+              </div>
+              <div class="col">
+                <button type="button" style="background-color: {{
+                    fourteenmbar == true ? '#04AA6D' : '#ff9b00d6'
+                  }};" class="btn btn-primary btn" (click)="submit(14, 'D3')">
+                  <img src="../../../assets/imagesuiux/D1010TE.png" />
+                </button>
+              </div>
+              <div class="col">
+                <button type="button" style="background-color: {{
+                    fifteenmbar == true ? '#04AA6D' : '#ff9b00d6'
+                  }};" class="btn btn-primary btn" (click)="submit(15, 'E3')">
+                  <img src="../../../assets/imagesuiux/E1010TE.png" />
+                </button>
+              </div>
+
+              <div class="col">
+                <button type="button" style="background-color: {{
+                    fivebar == true ? '#04AA6D' : '#ff9b00d6'
+                  }};" class="btn btn-primary btn" (click)="submit(16, 'F3')">
+                  <img src="../../../assets/imagesuiux/F1010TE.png" />
+                </button>
+              </div>
+            </div>
+
+            <div class="row" *ngIf="showMeshList4">
+              <!-- <div *ngFor="let item of StandardMeshOrderArray; let i = index">
+                           <button type="button" class="btn btn-primary btn"> <img [src]="item.ImagePath"></button>
+                        </div> -->
+              <div class="col">
+                <button type="button" style="background-color: {{
+                    sixmbar == true ? '#04AA6D' : '#ff9b00d6'
+                  }};" class="btn btn-primary btn" (click)="submit(6, 'A4')">
+                  <img src="../../../assets/imagesuiux/A06M5TE.png" />
+                </button>
+              </div>
+              <div class="col">
+                <button type="button" style="background-color: {{
+                    twelvembar == true ? '#04AA6D' : '#ff9b00d6'
+                  }};" class="btn btn-primary btn" (click)="submit(12, 'B4')">
+                  <img src="../../../assets/imagesuiux/B06M5TE.png" />
+                </button>
+              </div>
+              <div class="col">
+                <button type="button" style="background-color: {{
+                    fourteenmbar == true ? '#04AA6D' : '#ff9b00d6'
+                  }};" class="btn btn-primary btn" (click)="submit(14, 'D4')">
+                  <img src="../../../assets/imagesuiux/D06M5TE.png" />
+                </button>
+              </div>
+              <div class="col">
+                <button type="button" style="background-color: {{
+                    fifteenmbar == true ? '#04AA6D' : '#ff9b00d6'
+                  }};" class="btn btn-primary btn" (click)="submit(15, 'E4')">
+                  <img src="../../../assets/imagesuiux/E06M5TE.png" />
+                </button>
+              </div>
+            </div>
+
+            <div class="row" *ngIf="showMeshList5">
+              <!-- <div *ngFor="let item of StandardMeshOrderArray; let i = index">
+                           <button type="button" class="btn btn-primary btn"> <img [src]="item.ImagePath"></button>
+                        </div> -->
+              <div class="col">
+                <button type="button" style="background-color: {{
+                    sixmbar == true ? '#04AA6D' : '#ff9b00d6'
+                  }};" class="btn btn-primary btn" (click)="submit(6, 'A5')">
+                  <img src="../../../assets/imagesuiux/A0606TE.png" />
+                </button>
+              </div>
+              <div class="col">
+                <button type="button" style="background-color: {{
+                    twelvembar == true ? '#04AA6D' : '#ff9b00d6'
+                  }};" class="btn btn-primary btn" (click)="submit(12, 'B5')">
+                  <img src="../../../assets/imagesuiux/B0606TE.png" />
+                </button>
+              </div>
+              <div class="col">
+                <button type="button" style="background-color: {{
+                    fourteenmbar == true ? '#04AA6D' : '#ff9b00d6'
+                  }};" class="btn btn-primary btn" (click)="submit(14, 'D5')">
+                  <img src="../../../assets/imagesuiux/D0606TE.png" />
+                </button>
+              </div>
+              <div class="col">
+                <button type="button" style="background-color: {{
+                    fivebar == true ? '#04AA6D' : '#ff9b00d6'
+                  }};" class="btn btn-primary btn" (click)="submit(15, 'E5')">
+                  <img src="../../../assets/imagesuiux/E0606TE.png" />
+                </button>
+              </div>
+            </div>
+
+            <div class="row" *ngIf="showMeshList6">
+              <!-- <div *ngFor="let item of StandardMeshOrderArray; let i = index">
+                           <button type="button" class="btn btn-primary btn"> <img [src]="item.ImagePath"></button>
+                        </div> -->
+              <div class="col">
+                <button type="button" style="background-color: {{
+                    sixmbar == true ? '#04AA6D' : '#ff9b00d6'
+                  }};" class="btn btn-primary btn" (click)="submit(6, 'A6')">
+                  <img src="../../../assets/imagesuiux/A21010TE.png" />
+                </button>
+              </div>
+              <div class="col">
+                <button type="button" style="background-color: {{
+                    twelvembar == true ? '#04AA6D' : '#ff9b00d6'
+                  }};" class="btn btn-primary btn" (click)="submit(12, 'B6')">
+                  <img src="../../../assets/imagesuiux/B21010TE.png" />
+                </button>
+              </div>
+              <div class="col">
+                <button type="button" style="background-color: {{
+                    fourteenmbar == true ? '#04AA6D' : '#ff9b00d6'
+                  }};" class="btn btn-primary btn" (click)="submit(14, 'D6')">
+                  <img src="../../../assets/imagesuiux/D21010TE.png" />
+                </button>
+              </div>
+              <div class="col">
+                <button type="button" style="background-color: {{
+                    fifteenmbar == true ? '#04AA6D' : '#ff9b00d6'
+                  }};" class="btn btn-primary btn" (click)="submit(15, 'E6')">
+                  <img src="../../../assets/imagesuiux/E21010TE.png" />
+                </button>
+              </div>
+              <div class="col">
+                <button type="button" style="background-color: {{
+                    fivebar == true ? '#04AA6D' : '#ff9b00d6'
+                  }};" class="btn btn-primary btn" (click)="submit(16, 'F6')">
+                  <img src="../../../assets/imagesuiux/F21010TE.png" />
+                </button>
+              </div>
+            </div>
+
+            <div class="row" *ngIf="showMeshList7">
+              <!-- <div *ngFor="let item of StandardMeshOrderArray; let i = index">
+                           <button type="button" class="btn btn-primary btn"> <img [src]="item.ImagePath"></button>
+                        </div> -->
+              <div class="col">
+                <button type="button" style="background-color: {{
+                    sixmbar == true ? '#04AA6D' : '#ff9b00d6'
+                  }};" class="btn btn-primary btn" (click)="submit(6, 'A7')">
+                  <img src="../../../assets/imagesuiux/A206M5TE.png" />
+                </button>
+              </div>
+              <div class="col">
+                <button type="button" style="background-color: {{
+                    twelvembar == true ? '#04AA6D' : '#ff9b00d6'
+                  }};" class="btn btn-primary btn" (click)="submit(12, 'B7')">
+                  <img src="../../../assets/imagesuiux/B206M5TE.png" />
+                </button>
+              </div>
+              <div class="col">
+                <button type="button" style="background-color: {{
+                    fourteenmbar == true ? '#04AA6D' : '#ff9b00d6'
+                  }};" class="btn btn-primary btn" (click)="submit(14, 'D7')">
+                  <img src="../../../assets/imagesuiux/D206M5TE.png" />
+                </button>
+              </div>
+              <div class="col">
+                <button type="button" style="background-color: {{
+                    fifteenmbar == true ? '#04AA6D' : '#ff9b00d6'
+                  }};" class="btn btn-primary btn" (click)="submit(15, 'E7')">
+                  <img src="../../../assets/imagesuiux/E206M5TE.png" />
+                </button>
+              </div>
+            </div>
+
+            <div class="row" *ngIf="showMeshList8">
+              <!-- <div *ngFor="let item of StandardMeshOrderArray; let i = index">
+                           <button type="button" class="btn btn-primary btn"> <img [src]="item.ImagePath"></button>
+                        </div> -->
+              <div class="col">
+                <button type="button" style="background-color: {{
+                    sixmbar == true ? '#04AA6D' : '#ff9b00d6'
+                  }};" class="btn btn-primary btn" (click)="submit(6, 'A8')">
+                  <img src="../../../assets/imagesuiux/A20606TE.png" />
+                </button>
+              </div>
+              <div class="col">
+                <button type="button" style="background-color: {{
+                    twelvembar == true ? '#04AA6D' : '#ff9b00d6'
+                  }};" class="btn btn-primary btn" (click)="submit(12, 'B8')">
+                  <img src="../../../assets/imagesuiux/B20606TE.png" />
+                </button>
+              </div>
+              <div class="col">
+                <button type="button" style="background-color: {{
+                    fourteenmbar == true ? '#04AA6D' : '#ff9b00d6'
+                  }};" class="btn btn-primary btn" (click)="submit(14, 'D8')">
+                  <img src="../../../assets/imagesuiux/D20606TE.png" />
+                </button>
+              </div>
+              <div class="col">
+                <button type="button" style="background-color: {{
+                    fifteenmbar == true ? '#04AA6D' : '#ff9b00d6'
+                  }};" class="btn btn-primary btn" (click)="submit(15, 'E8')">
+                  <img src="../../../assets/imagesuiux/E20606TE.png" />
+                </button>
+              </div>
+            </div>
+
+            <div class="row" *ngIf="showMeshList9">
+              <!-- <div *ngFor="let item of StandardMeshOrderArray; let i = index">
+                           <button type="button" class="btn btn-primary btn"> <img [src]="item.ImagePath"></button>
+                        </div> -->
+              <div class="col">
+                <button type="button" style="background-color: {{
+                    sixmbar == true ? '#04AA6D' : '#ff9b00d6'
+                  }};" class="btn btn-primary btn" (click)="submit(6, 'F9')">
+                  <img src="../../../assets/imagesuiux/F1414TE.png" />
+                </button>
+              </div>
+            </div>
+
+            <div class="row" *ngIf="showMeshList10">
+              <!-- <div *ngFor="let item of StandardMeshOrderArray; let i = index">
+                           <button type="button" class="btn btn-primary btn"> <img [src]="item.ImagePath"></button>
+                        </div> -->
+              <div class="col">
+                <button type="button" style="background-color: {{
+                    sixmbar == true ? '#04AA6D' : '#ff9b00d6'
+                  }};" class="btn btn-primary btn" (click)="submit(6, 'AA')">
+                  <img src="../../../assets/imagesuiux/A21210TE.png" />
+                </button>
+              </div>
+              <div class="col">
+                <button type="button" style="background-color: {{
+                    twelvembar == true ? '#04AA6D' : '#ff9b00d6'
+                  }};" class="btn btn-primary btn" (click)="submit(12, 'BA')">
+                  <img src="../../../assets/imagesuiux/B21210TE.png" />
+                </button>
+              </div>
+              <div class="col">
+                <button type="button" style="background-color: {{
+                    fourteenmbar == true ? '#04AA6D' : '#ff9b00d6'
+                  }};" class="btn btn-primary btn" (click)="submit(14, 'DA')">
+                  <img src="../../../assets/imagesuiux/D21210TE.png" />
+                </button>
+              </div>
+              <div class="col">
+                <button type="button" style="background-color: {{
+                    fifteenmbar == true ? '#04AA6D' : '#ff9b00d6'
+                  }};" class="btn btn-primary btn" (click)="submit(15, 'EA')">
+                  <img src="../../../assets/imagesuiux/E21210TE.png" />
+                </button>
+              </div>
+              <div class="col">
+                <button type="button" style="background-color: {{
+                    fivebar == true ? '#04AA6D' : '#ff9b00d6'
+                  }};" class="btn btn-primary btn" (click)="submit(16, 'FA')">
+                  <img src="../../../assets/imagesuiux/F21210TE.png" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mainbox" id="bottomTable" *ngIf="showBottomTable">
+          <div class="row subheading">
+            <label> Please Choose Products(请选择产品): </label>
+          </div>
+
+          <!--main table -->
+
+          <div class="table-responsive table-wrapper-scroll-y my-custom-scrollbar">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <!-- <th style="width: 4px"></th> -->
+                  <th style="width: 4px">
+                    <i
+                      class="bi bi-search"
+                      (click)="toggleFilters = !toggleFilters"
+                    ></i>
+                  </th>
+                  <th>SNo<br />序号</th>
+                  <th>Product Code<br />产品编号</th>
+                  <th>Main Length<br />主筋长 (mm)</th>
+                  <th>Cross Length<br />副筋长 (mm)</th>
+                  <th>MW Dia<br />主筋直径 (mm)</th>
+                  <th>MW Spacing<br />主筋间距 (mm)</th>
+                  <th>MO1/MO2<br />主筋边长 (mm)</th>
+                  <!-- <th> MO1/MO2<br>主筋边长 (mm)</th> -->
+                  <th>CW Dia<br />副筋直径 (mm)</th>
+                  <th>CW Spacing<br />副筋间距 (mm)</th>
+                  <th>CO1/CO2<br />副筋边长 (mm)</th>
+                  <th>Unit Weight<br />单片重量 (kg)</th>
+                  <th>Add to Order<br />加入订单</th>
+                </tr>
+              </thead>
+              <thead *ngIf="toggleFilters">
+                <tr>
+                  <th></th>
+                  <th> </th>
+                  <th>
+                    <input [readonly]="!ProductDetailsEditable" class="form-control" type="text" id="searchBlock"
+                    [(ngModel)]="searchSSName"
+                    (ngModelChange)="filterStandardMeshOrderArray()" placeholder="Search here" />
+                  </th>
+                  <th>
+                    <input [readonly]="!ProductDetailsEditable" class="form-control" type="text" id="searchFrom"
+                      placeholder="Search here" [(ngModel)]="searchMainLen"
+                      (ngModelChange)="filterStandardMeshOrderArray()"/>
+                  </th>
+                  <th>
+                    <input [readonly]="!ProductDetailsEditable" class="form-control" type="text" id="searchTo"
+                      placeholder="Search here" [(ngModel)]="searchCrossLen"
+                      (ngModelChange)="filterStandardMeshOrderArray()" />
+                  </th>
+                  <th>
+                    <input [readonly]="!ProductDetailsEditable" class="form-control" type="text" id="searchPart"
+                      placeholder="Search here" [(ngModel)]="searchMW_size"
+                      (ngModelChange)="filterStandardMeshOrderArray()" />
+                  </th>
+                  <th>
+                    <input [readonly]="!ProductDetailsEditable" class="form-control" type="text" id="searchStructure"
+                      placeholder="Search here" [(ngModel)]="searchMWSpacing"
+                      (ngModelChange)="filterStandardMeshOrderArray()"/>
+                  </th>
+                  <th>
+                    <input [readonly]="!ProductDetailsEditable" class="form-control" type="text" id="searchBlock"
+                      placeholder="Search here" [(ngModel)]="searchM01"
+                      (ngModelChange)="filterStandardMeshOrderArray()"/>
+                  </th>
+                  <th>
+                    <input [readonly]="!ProductDetailsEditable" class="form-control" type="text" id="searchBlock"
+                      placeholder="Search here"  [(ngModel)]="searchcw_size"
+                      (ngModelChange)="filterStandardMeshOrderArray()"/>
+                  </th>
+                  <th>
+                    <input [readonly]="!ProductDetailsEditable" class="form-control" type="text" id="searchBlock"
+                      placeholder="Search here" [(ngModel)]="searchCWSpacing"
+                      (ngModelChange)="filterStandardMeshOrderArray()"/>
+                  </th>
+                  <th>
+                    <input [readonly]="!ProductDetailsEditable" class="form-control" type="text" id="searchBlock"
+                      placeholder="Search here" [(ngModel)]="searchCO1"
+                      (ngModelChange)="filterStandardMeshOrderArray()"/>
+                  </th>
+                  <th>
+                    <input [readonly]="!ProductDetailsEditable" class="form-control" type="text" id="searchBlock"
+                      placeholder="Search here" [(ngModel)]="searchUnitWt"
+                      (ngModelChange)="filterStandardMeshOrderArray()"/>
+                  </th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <ng-container *ngFor="let item of StandardMeshOrderArray; index as i">
+                  <tr>
+                    <td style="width: 2px">
+                      <!-- <input [readonly]="!ProductDetailsEditable" type="checkbox"> -->
+                    </td>
+
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ item.ss561_name }}</td>
+                    <td>{{ item.mw_length }}</td>
+                    <td>{{ item.cw_length }}</td>
+                    <td>{{ item.mw_size }}</td>
+                    <td>{{ item.mw_spacing }}</td>
+                    <td>{{ item.mo1 }}/{{ item.mo2 }}</td>
+
+                    <td>{{ item.cw_size }}</td>
+                    <td>{{ item.cw_spacing }}</td>
+
+                    <td>{{ item.co1 }}/{{ item.co2 }}</td>
+                    <td>{{ item.unit_weight }}</td>
+                    <!-- <td>{{item.sap_mcode}}</td> -->
+                    <td [ngbTooltip]="atotooltip">
+                      <button class="btn btn-primary btn-sm tablebuttons" type="button" (click)="transferItem(item, i)"
+                        value="Add to Order 加入订单"  [hidden]="showaddorderbutton"   [disabled]="!ProductDetailsEditable">
+                        Add to Order 加入订单
+                      </button>
+                    </td>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

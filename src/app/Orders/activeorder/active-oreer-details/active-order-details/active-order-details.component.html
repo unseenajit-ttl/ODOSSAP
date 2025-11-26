@@ -1,0 +1,59 @@
+<div id="mydiv" cdkDrag cdkDragRootElement=".your-custom-dialog-class">
+    <div class="movable-container">
+        <div class="container-fluid" style="max-height: 80vh; overflow-y: auto;">
+            <div class="card m-1">
+                <div class="mainHeading" cdkDragHandle>
+                    <span>PO: {{heading}}</span>
+                    <!-- <span>PO Details</span> -->
+                </div>
+
+                <div class="mainBody">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead class="custom-header">
+                                <tr>
+                                    <!-- <th>PO Number</th> -->
+                                    <th>BBS Number</th>
+                                    <th>Product</th>
+                                    <th>WBS</th>
+                                    <th>Tonnage(MT)</th>
+                                    <th>Quantity</th>
+                                    <th>LoadNumber</th>
+                                    <th>Transport</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of OrderDetailsArray; index as i">
+                                    <!-- <td>{{PoNumber}}</td> -->
+                                    <td>{{item.BBSNo}}</td>
+                                    <td>{{productType}}</td>
+                                    <!-- <td>{{item.WBS}}/{{item.WBS}}/{{item.WBS}}</td> -->
+                                    <td>{{item.WBS}}</td>
+                                    <td>{{ item.TotalMtSAP}}</td>
+                                    <td>{{item.TotalPcsSAP}}</td>
+                                      <td>{{item.LOAD_NO}}</td>
+                                     <td>{{item.Vehicle_type}}</td>
+
+                                </tr>
+                                <tr *ngIf="OrderDetailsArray.length==0">
+                                    <td colspan="6" style="background-color:azure ;">
+                                        No Records Found
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    <div class="footer">
+        <button type="button" class="btn btn-primary me-2" (click)="activeModal.dismiss('Cross click')">
+            Close (关闭)
+        </button>
+    </div>
+</div>

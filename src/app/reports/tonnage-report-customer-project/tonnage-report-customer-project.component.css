@@ -1,0 +1,9 @@
+.required-label {
+  color: red;
+}
+.ng-select {
+  width: 200px !important;
+}
+input{
+  width: 160px;
+}

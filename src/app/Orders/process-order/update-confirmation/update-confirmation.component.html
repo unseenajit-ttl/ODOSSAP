@@ -1,0 +1,70 @@
+<div cdkDrag cdkDragRootElement=".your-custom-dialog-class">
+  <div class="container-fluid">
+    <div class="card m-1">
+      <div class="mainHeading" cdkDragHandle>
+        <span>Update Confirmation</span>
+      </div>
+      <div class="body">
+        <div class="subHeading"><span>Please confirm to update fields</span></div>
+        <div class="row">
+          <div class="col-md-4">
+
+            <label class="checkbox-container"> <input type="checkbox" [(ngModel)]="SelectedValue.ReqDate" />&nbsp; <span
+                class="custom-checkbox"></span>&nbsp;Required Date</label>
+          </div>
+          <div class="col-md-4">
+
+            <label class="checkbox-container"> <input type="checkbox" [(ngModel)]="SelectedValue.PONO" />&nbsp; <span
+                class="custom-checkbox"></span>&nbsp;PO Number</label>
+          </div>
+          <div class="col-md-4">
+
+            <label class="checkbox-container"> <input type="checkbox" [(ngModel)]="SelectedValue.VehicleType" />&nbsp;
+              <span class="custom-checkbox"></span>&nbsp;Vehicle Type</label>
+          </div>
+          <div class="col-md-4">
+
+            <label class="checkbox-container"> <input type="checkbox" [(ngModel)]="SelectedValue.BookIndicator" />&nbsp;
+              <span class="custom-checkbox"></span>&nbsp;Instr./Book Indicators</label>
+          </div>
+          <div class="col-md-4">
+
+            <label class="checkbox-container"> <input type="checkbox" [(ngModel)]="SelectedValue.BBSNO"
+                [disabled]="true" />&nbsp; <span class="custom-checkbox"></span>&nbsp;BBS No.</label>
+          </div>
+          <div class="col-md-4">
+
+            <label class="checkbox-container"> <input type="checkbox" [(ngModel)]="SelectedValue.BBSDesc" />&nbsp; <span
+                class="custom-checkbox"></span>&nbsp;BBS Description</label>
+          </div>
+          <div class="col-md-4">
+
+            <label class="checkbox-container"> <input type="checkbox"
+                [(ngModel)]="SelectedValue.IntReamrks" />&nbsp;<span class="custom-checkbox"></span>&nbsp;Internal
+              Remarks</label>
+          </div>
+          <div class="col-md-4">
+
+            <label class="checkbox-container"> <input type="checkbox"
+                [(ngModel)]="SelectedValue.ExternalRemarks" />&nbsp;<span class="custom-checkbox"></span>&nbsp;External
+              Remarks</label>
+          </div>
+          <div class="col-md-4">
+
+            <label class="checkbox-container"> <input type="checkbox"
+                [(ngModel)]="SelectedValue.InvoiceRemarks" />&nbsp;<span class="custom-checkbox"></span>&nbsp;Invoice
+              Remarks</label>
+          </div>
+        </div>
+      </div>
+      <div class="footer">
+        <button type="button" class="btn btn-primary me-2" (click)="Update()">
+          Start Update
+        </button>
+        <button type="button" class="btn btn-primary me-2" (click)="activeModal.dismiss('Cross click')">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

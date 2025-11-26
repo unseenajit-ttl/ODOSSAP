@@ -1,0 +1,356 @@
+<div class="container-fluid">
+  <div class="card m-1">
+    <h3
+      class="card-header d-flex flex-column justify-content-center align-items-center"
+    >
+      <b> StandardBar Orders</b>
+    </h3>
+    <div class="card-body" style="margin-top: -11px !important">
+      <div class="filter">
+        <form [formGroup]="activeorderForm" (ngSubmit)="onSubmit()">
+          <div class="row">
+            <a href="javaScript:; " (click)="SaveOrder()" style="color: blue">
+              <i class="fa fa-arrow-left arrow-left" aria-hidden="true"></i>
+              Back to order summary (返回订单汇总)
+            </a>
+          </div>
+        </form>
+        <hr />
+        <div class="mainbox" id="toptable">
+          <div class="row heading">
+            <label>Standard Bar Order Cart (标准直铁订购清单):</label>
+          </div>
+
+          <div class="table-responsive table-wrapper-scroll-y my-custom-scrollbar" >
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <!-- <th style="width:4px;"><i class="bi bi-search"
+                                        (click)="toggleFilters = !toggleFilters"></i>
+                                </th> -->
+                  <th>SNo<br />序号</th>
+                  <th>Product Code<br />产品编号</th>
+                  <th>Product Description<br />产品概述</th>
+                  <th>Diameter<br />直径 (mm)</th>
+                  <th>Grade<br />类型</th>
+                  <th>Unit Weight<br />单位重量 (kg)</th>
+                  <th>Order Qty (Bundle)<br />订购数量 (捆)</th>
+                  <th>Estimated Weight<br />估计总重量 (kg)</th>
+                  <th>Remove<br />删除</th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container
+                  *ngFor="let item of StandardbarOrderTempArray; index as i"
+                >
+                  <tr>
+                    <!-- <td style="width:2px">
+                                        <input [readonly]="!ProductDetailsEditable" type="checkbox">
+                                    </td> -->
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ item.ProdCode }}</td>
+                  <td>{{ item.ProdDesc }}</td>
+                  <td>{{ item.Diameter }}</td>
+                  <td>{{ item.Grade }}</td>
+                  <td>{{ item.UnitWT | number:'1.3-3'}}</td>
+                  <td>
+                    <input [readonly]="!ProductDetailsEditable"
+                      class="form-control"
+                      type="number"
+                      [(ngModel)]="item.order_pcs"
+                      (input)="calculateResult(i)"
+                      pattern="[0-9]*"
+                      #inputField
+                      (keyup.enter)="item.order_pcs && focusNextRowInput(i, inputField);SaveBBSData(false); SaveJobAdvice(false);"
+                      (keydown.Tab)="item.order_pcs && focusNextRowInput(i, inputField); SaveBBSData(false); SaveJobAdvice(false);"
+                      [ngClass]="{ 'empty-field': !item.order_pcs }"
+                      tabindex="{{i + 1}}"
+                    />
+                  </td>
+                  <td>{{ item.order_wt | number:'1.3-3' }}</td>
+                  <td [ngbTooltip]="tooltip">
+                    <button 
+                      class="btn btn-primary btn-sm tablebuttons"
+                      style="width: 130px"
+                      type="button"
+                      (click)="removeItem(item, i)"
+                      value="Remove 删除"
+                      [hidden]="showremovebutton"
+                      [disabled]="!ProductDetailsEditable"
+                    >
+                      Remove 删除
+                    </button>
+                  </td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
+        </div>
+
+          <div
+            style="
+              display: flex;
+              align-items: flex-end;
+              justify-content: flex-end;
+            "
+          >
+          <div class="Green-steel-perc-label"><label class="form-label bold">Low Carbon: {{GreenSteelCarbonValue}}%</label></div>
+              <div class="Green-Steel-label">
+                <label class="form-label bold">Low Carbon Indicator: </label>
+              </div>
+              <div class=" Green-Steel form-check form-switch" [matTooltip]="greenSteelToolTip()">
+                <input _ngcontent-vlm-c257="" type="checkbox" role="switch" id="flexSwitchCheckDefault"
+                  class="form-check-input ng-valid ng-dirty ng-touched" ng-reflect-model="false" [(ngModel)]="gGreenSteelSelection"
+                  [ngModelOptions]="{ standalone: true }" (change)="UpdateGreenSteel()" [disabled]="true">
+                <label _ngcontent-vlm-c257="" for="flexSwitchCheckDefault" class="form-check-label"></label>
+              </div>
+              
+            <div style="margin: 0px 5px">
+              Total Bundles/WT (总件数/总重量):
+              <input
+                type="text"
+                class="form-control"
+                value="{{ totalBundleWt }}"
+                name="total_weight"
+                id="total_weight"
+                style="background: #eeeeee; width: 250px"
+                readonly
+              />
+            </div>
+
+            <div style="margin: 0px 5px" id="saveButtons">
+              <button 
+                class="btn btn-primary btn-sm"
+                style="width: 120px"
+                (click)="SaveBBSDataforSaveButton(false); SaveJobAdvice(false)"
+                type="button"
+              >
+                Save (保存)
+              </button>
+              <button 
+                class="btn btn-primary btn-sm"
+                style="width: 120px"
+                (click)="orderPrint()"
+                type="button"
+              >
+                Print (料单报表)
+              </button>
+              <!-- <a
+                class="btn btn-primary btn-sm"
+                style="width: 120px"
+                [hidden]="IsDownload"
+                (click)="download()"
+                >Download Pdf</a
+              > -->
+            </div>
+          </div>
+        </div>
+        <div class="mainbox" id="productcategory">
+          <div class="row subheading">
+            <label> Please Click Product Category(请点击产品分类): </label>
+          </div>
+          <div *ngIf="StandardBarProductOrderLoading" style="z-index: 500">
+            <div
+              id="pause"
+              class="d-flex align-items-center justify-content-center"
+            >
+              <div id="spinner" class="loader"></div>
+            </div>
+          </div>
+
+          <div class="row">
+            <!-- <div class=" col-md-2 card-body"
+                    style="border-radius: 10px; margin: 5px; height: fit-content;">
+                     -->
+            <div class="row">
+              <!-- <div *ngFor="let item of StandardbarOrderArray; let i = index">
+                           <button  type="button" class="btn btn-primary btn"> <img [src]="item.ImagePath"></button>
+                        </div> -->
+              <div class="col">
+                <button 
+                  type="button"
+                  *ngIf="showbutton1"
+                  style="background-color: {{
+                    sixmbar == true ? '#04AA6D' : '#ff9b00d6'
+                  }};"
+                  class="btn btn-primary btn"
+                  (click)="submit(6, 'BAR6')"
+                >
+                  <img src="../../../../assets/images/rebar_6.png" />
+                </button>
+              </div>
+              <div class="col">
+                <button 
+                  type="button"
+                  *ngIf="showbutton2"
+                  style="background-color: {{
+                    twelvembar == true ? '#04AA6D' : '#ff9b00d6'
+                  }};"
+                  class="btn btn-primary btn"
+                  (click)="submit(12, 'BAR12')"
+                >
+                  <img src="../../../../assets/images/rebar_12.png" />
+                </button>
+              </div>
+              <div class="col">
+                <button 
+                  type="button"
+                  *ngIf="showbutton3"
+                  style="background-color: {{
+                    fourteenmbar == true ? '#04AA6D' : '#ff9b00d6'
+                  }};"
+                  class="btn btn-primary btn"
+                  (click)="submit(14, 'BAR14')"
+                >
+                  <img src="../../../../assets/images/rebar_14.png" />
+                </button>
+              </div>
+              <div class="col">
+                <button 
+                  type="button"
+                  *ngIf="showbutton4"
+                  style="background-color: {{
+                    fifteenmbar == true ? '#04AA6D' : '#ff9b00d6'
+                  }};"
+                  class="btn btn-primary btn"
+                  (click)="submit(15, 'BAR15')"
+                >
+                  <img src="../../../../assets/images/rebar_15.png" />
+                </button>
+              </div>
+              <div class="col">
+                <button 
+                  type="button"
+                  *ngIf="showbutton5"
+                  style="background-color: {{
+                    fivebar == true ? '#04AA6D' : '#ff9b00d6'
+                  }};"
+                  class="btn btn-primary btn"
+                  (click)="submit(12 / 500, '500M')"
+                >
+                  <img src="../../../../assets/images/rebar_500m.png" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mainbox" id="bottomtable" *ngIf="showBottomTable">
+          <div class="row subheading">
+            <label> Please Choose Products(请选择产品): </label>
+          </div>
+
+          <!--main table -->
+
+          <div class="table-responsive table-wrapper-scroll-y my-custom-scrollbar">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th style="width: 4px">
+                    <i
+                      class="bi bi-search"
+                      (click)="toggleFilters = !toggleFilters"
+                    ></i>
+                  </th>
+                  <th>SNo<br />序号</th>
+                  <th>Product Code<br />产品编号</th>
+                  <th>Product Description<br />产品概述</th>
+                  <th>Diameter<br />直径 (mm)</th>
+                  <th>Grade<br />类型</th>
+                  <th>Unit Weight<br />单位重量 (kg)</th>
+                  <th>Add to Order<br />加入订单</th>
+                </tr>
+              </thead>
+              <thead *ngIf="toggleFilters">
+                <tr>
+                  <th></th>
+                  <th> </th>
+                  <th>
+                    <input 
+                      class="form-control"
+                      type="text"
+                      id="searchFrom"
+                      [(ngModel)]="searchProductCode"
+                      (ngModelChange)="filterStandardbarOrderArray()"
+                      placeholder="Search here"
+                    />
+                  </th>
+                  <th>
+                    <input 
+                      class="form-control"
+                      type="text"
+                      id="searchTo"
+                      [(ngModel)]="searchProductDesc"
+                      (ngModelChange)="filterStandardbarOrderArray()"
+                      placeholder="Search here"
+                    />
+                  </th>
+                  <th>
+                    <input 
+                      class="form-control"
+                      type="text"
+                      id="searchPart"
+                      [(ngModel)]="searchDiameter"
+                      (ngModelChange)="filterStandardbarOrderArray()"
+                      placeholder="Search here"
+                    />
+                  </th>
+                  <th>
+                    <input 
+                      class="form-control"
+                      type="text"
+                      id="searchStructure"
+                      [(ngModel)]="searchGrade"
+                      (ngModelChange)="filterStandardbarOrderArray()"
+                      placeholder="Search here"
+                    />
+                  </th>
+                  <th>
+                    <input 
+                      class="form-control"
+                      type="text"
+                      id="searchBlock"
+                      [(ngModel)]="searchUnitWeight"
+                      (ngModelChange)="filterStandardbarOrderArray()"
+                      placeholder="Search here"
+                    />
+                  </th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <ng-container
+                  *ngFor="let item of StandardbarOrderArray; index as i"
+                >
+                  <tr>
+                    <td style="width: 2px">
+                      <!-- <input [readonly]="!ProductDetailsEditable" type="checkbox"> -->
+                    </td>
+
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ item.ProdCode }}</td>
+                    <td>{{ item.ProdDesc }}</td>
+                    <td>{{ item.Diameter }}</td>
+                    <td>{{ item.Grade }}</td>
+                    <td>{{ item.UnitWT }}</td>
+                    <td [ngbTooltip]="atotooltip">
+                      <button 
+                        class="btn btn-primary btn-sm tablebuttons"
+                        type="button"
+                        (click)="transferItem(item, i)"
+                        value="Add to Order 加入订单"
+                        [hidden]="showaddorderbutton"
+                        [disabled]="!ProductDetailsEditable"
+                      >
+                        Add to Order 加入订单
+                      </button>
+                    </td>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

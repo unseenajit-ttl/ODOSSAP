@@ -1,0 +1,355 @@
+<div class="container-fluid">
+  <div class="logo2">
+    <div class="card m-1">
+      <h3 class="card-header d-flex flex-column justify-content-center">
+        <span> <img src="../../../assets/imagesuiux/saved.png" style="width: 40px;height: 40px;">
+        <b> Draft Orders (预备订单)</b>
+      </span>
+      </h3>
+      <div class="card-body" style="margin-top: -47px !important">
+        <div class="filter">
+          <form [formGroup]="draftOrderForm">
+            <div class="row" class="mobile-customer-project">
+              <ngb-accordion #acc="ngbAccordion" [activeIds]="['panel1']" style="padding-top: 14px">
+                <ngb-panel id="panel1">
+                  <!-- <ng-template ngbPanelTitle>
+                                    <span style="color:#0880ae;"><b>Filters</b></span>
+                                </ng-template> -->
+                  <ng-template ngbPanelContent>
+                    <div class="card-body" style="padding: 0.5%">
+                      <div class="row">
+                        <div class="col-md-4">
+                          <label class="form-label"><b>Customer</b></label> <br />
+                          <ng-select formControlName="customer" class="w-auto" (change)="changecustomer($event)">
+                            <ng-option *ngFor="let sList of CustomerList" [value]="sList.CustomerCode">
+                              {{ sList.CustomerName }} ({{
+                              sList.CustomerCode
+                              }})
+                            </ng-option>
+                          </ng-select>
+                        </div>
+
+                        <div class="col-md-4">
+                          <label class="form-label"><b>Project</b></label> <br />
+                          <ng-select formControlName="project" [(ngModel)]="SelectedProjectCodes" [closeOnSelect]="false"
+                            class="w-auto" [multiple]="true" (change)="changeproject($event)"
+                            style="max-height: 65px; z-index: 5">
+                            <ng-template ng-header-tmp *ngIf="ProjectList.length != 0">
+                              <div style="
+                                  justify-content: space-between;
+                                  display: flex;
+                                ">
+                                <button class="btn btn-link" style="padding: 4px; border: 0px; margin: 0px"
+                                  (click)="selectAllProject()">
+                                  Select All
+                                </button>
+                                <button class="btn btn-link" style="padding: 4px; border: 0px; margin: 0px"
+                                  (click)="clearAllProject()">
+                                  Clear All
+                                </button>
+                              </div>
+                            </ng-template>
+                            <ng-option *ngFor="let sList of ProjectList" [value]="sList.ProjectCode">
+                              {{ sList.ProjectTitle }} ({{ sList.ProjectCode }})
+                            </ng-option>
+                          </ng-select>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-template>
+                </ngb-panel>
+              </ngb-accordion>
+            </div>
+          </form>
+
+          <div class="row logo2 customerandprojecthideonweb">
+            <div _ngcontent-auh-c182="" class="col-md-7"><label _ngcontent-auh-c182="" class="form-label"></label><br _ngcontent-auh-c182=""><br><b _ngcontent-auh-c182="">Select All Project button to Include All Optional Projects (选择全部项目按钮至包括全部可选工程项目)</b>
+            </div>
+            <div class="col-md-4 float-right">
+              <label class="form-label"></label> <br />
+              <div class="input-group flex-nowrap" *ngIf="searchResult" style="padding-right: 30px">
+                <input class="form-control" type="search" placeholder="Search (查找)" value="search"
+                  id="example-search-input" name="search" [(ngModel)]="searchText" 
+                  [ngModelOptions]="{ standalone: true }" />
+                <span class="input-group-append ms-n5">
+                  <span class="input-group-text">
+                    <i class="bi bi-search"></i>
+                  </span>
+                </span>
+              </div>
+            </div>
+            <div class="col-md-1">
+              <label class="form-label"></label> <br />
+              <div class="input-group flex-nowrap">
+                <div class="mr-0 d-flex" style="margin-top: -6px">
+                  <span class="btn input-group-text">
+                    <i class="material-icons" style="font-size: 20px" ngbTooltip="Export   (导出)"
+                      (click)="ExportDraftOrdersToExcel()">download</i>
+                  </span>&nbsp;&nbsp;
+                  <span class="btn input-group-text" (click)="editColumn = !editColumn" (mouseenter)="HoverSetting=true"
+                    (mouseleave)="HoverSetting=false">
+                    <i class="bi bi-gear-fill" style="font-size: medium; z-index: 1" ngbTooltip="Edit Column"></i></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="setting-menu float-right logo2"
+            [class.mat-elevation-z8]="true" *ngIf="editColumn" (mouseenter)="HoverSetting=true" (mouseleave)="HoverSetting=false">
+            <div class="d-flex heading">
+              <div class="d-flex" style="width: 50%; justify-content: space-between">
+                <label class="fixed-xolumn-head">Fixed Columns: </label>
+                <input class="form-control" type="number" max="7" min="0" [(ngModel)]="fixedColumn"
+                  (change)="UpdateFixedColumns(fixedColumn)" />
+              </div>
+              <button type="button" class="btn-close" aria-label="Close" (click)="editColumn = false"></button>
+            </div>
+            <hr style="margin: 10px;border-top: 1px solid #101112;" />
+            <div class="d-flex" style="
+                                    justify-content: space-between;
+                                    align-items: flex-end;
+                                    padding-left: 5px;
+                                  ">
+              <span>Visible Columns</span>
+            </div>
+            <div class="d-flex">
+
+              <table class="table table-bordered mobile2" style="height: fit-content" style="min-width: 0">
+                <tbody>
+                  <tr *ngFor="let headerColumn of splitArray(1,draftColumns);">
+                    <td>{{headerColumn.displayName}}</td>
+                    <td><input type="checkbox" [(ngModel)]="headerColumn.isVisible" [checked]="headerColumn.isVisible"
+                        (ngModelChange)="SaveColumnsSetting()">
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <table class="table table-bordered mobile2" style="height: fit-content" style="min-width: 0">
+                <tbody>
+                  <tr *ngFor="let headerColumn of splitArray(0,draftColumns);">
+                    <td>{{headerColumn.displayName}}</td>
+                    <td><input type="checkbox" [(ngModel)]="headerColumn.isVisible" [checked]="headerColumn.isVisible"
+                        (ngModelChange)="SaveColumnsSetting()">
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div *ngIf="DraftOrderLoading" style="z-index: 500">
+            <div id="pause" class="d-flex align-items-center justify-content-center">
+              <div id="spinner" class="loader"></div>
+            </div>
+          </div>
+          <div>
+            <div class="table-responsive table-wrapper-scroll-y my-custom-scrollbar order-table">
+              <cdk-virtual-scroll-viewport itemSize="50" #scrollViewportENT (scroll)="syncScroll($event)" style="height: 53vh;">
+              <form [formGroup]="searchForm">
+                <table class="table new-table">
+                  <thead [style.top]="inverseOfENT" id="DraftOrderHeading" [ngStyle]="{'position':'sticky','top': '0px'}">
+
+                    <tr [style.top]="inverseOfENT" cdkDropList cdkDropListOrientation="horizontal" [cdkDropListData]="draftColumns"
+                      (cdkDropListDropped)="dropCol($event)">
+
+                      <ng-container *ngFor="let headerColumn of draftColumns;index as headIndex;">
+                        <th #thNomVar [style.top]="inverseOfENT" (click)="toggleSortingOrder(headerColumn.field,headerColumn.colName)"
+                          [style.cursor]="'pointer'"
+                          [style.left]="(headIndex+1) <= fixedColumn ? getRightWidthTest(thNomVar,headIndex) : 'inherit'"
+                          [style.display]="'table-cell'" [class.FixedColumn]="(headIndex+1) <= fixedColumn" *ngIf="headerColumn.isVisible"
+                          style="cursor: pointer; background-color: #003ec4b3; border-radius: 0px;" cdkDrag>
+                          <div
+                          [style.max-width.px]="headerColumn.resizeWidth" role="columnheader">
+                            <div class="d-flex" [style.max-width.px]="headerColumn.resizeWidth" style="
+                                                    align-items: center;
+                                                    justify-content: space-between;
+                                                  ">
+                              <span style="color: white; font-size: medium;" [style.max-width.px]="headerColumn.resizeWidth">
+                                {{headerColumn.displayName}}<br />{{headerColumn.chineseDisplayName}}</span><i class="bi bi-arrow-up" *ngIf="
+                                                      !isAscending && currentSortingColumn == headerColumn.field"></i><i
+                                class="bi bi-arrow-down" *ngIf="
+                                                      isAscending && currentSortingColumn == headerColumn.field"></i>
+                            </div>
+                          </div>
+                          <div [style.width.px]="headerColumn.resizeWidth" *ngIf="isMobile > 768"></div>
+
+                        </th>
+                      </ng-container>
+
+                      <th width='4%' [style.top]="inverseOfENT" style="color: white; font-size: medium;border-radius: 0px;">Select<br />选择</th>
+                      <th width='4%' [style.top]="inverseOfENT"  style="color: white; font-size: medium;border-radius: 0px;">
+                        Action
+                        <br />行动
+                      </th>
+                    </tr>
+                  </thead>
+                  <thead id="searchBar" *ngIf="toggleFilters" [style.top]="inverseOfENTSearch"
+                    [ngStyle]="{'position':'sticky','top.px': getMinHeightIncoming('DraftOrderHeading')}">
+                    <tr [style.top]="inverseOfENTSearch">
+                      <ng-container *ngFor="let searchColumn of draftColumns;let j = index;">
+                        <th [style.top]="inverseOfENTSearch" class="resize-column" style="text-align: center;background-color: white !important;"
+                          [style.width]="searchColumn.width+ 'px !important'"
+                          [style.left]="(j+1) <= fixedColumn ? searchColumn.left+'px !important' : 'inherit'"
+                          [style.display]="'table-cell'" [class.FixedColumn]="(j+1) <= fixedColumn"
+                          *ngIf="searchColumn.isVisible && searchColumn.controlName != 'RequiredDate' && searchColumn.controlName != 'UpdateDate'">
+                          <input class="form-control" formControlName="{{searchColumn.controlName}}" />
+                          <div class="bar" appColumnResize [colName]="searchColumn.controlName" [colIndex]="j"
+                            (widthChangeEvent)="onWidthChange($event)" cdkDrag></div>
+                        </th>
+                        <th [style.top]="inverseOfENTSearch" class="resize-column" style="text-align: center; background-color: white !important;"
+                          *ngIf="searchColumn.isVisible && (searchColumn.controlName == 'RequiredDate' || searchColumn.controlName == 'UpdateDate')">
+                          <app-bootsrtap-date-range-picker-for-search [clearInput]="clearInput"
+                            [controlName]="searchColumn.controlName"  [highlightToday]="true"  (dateRangeSelection)="onGetDateSelected($event)">
+                          </app-bootsrtap-date-range-picker-for-search>
+                        </th>
+                      </ng-container>
+                      <th [style.top]="inverseOfENTSearch" style="background-color: white !important;"></th>
+                      <th [style.top]="inverseOfENTSearch" style="background-color: white !important;">
+                        <span style="margin: auto; padding: 2px">
+                          <i class="fa fa-refresh" ngbTooltip="Reset" style="color: red; font-size: 20px"
+                            (click)="Reset_Filter()"></i>&nbsp;
+                          <label (click)="Reset_Filter()">Clear</label>
+                        </span>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="no-record" *ngIf="DraftedOrderArray.length == 0">
+                      <td colspan="16" style="text-align: center">
+                        No Record Found
+                      </td>
+                    </tr>
+                    <ng-container *ngFor="
+                      let item of DraftedOrderArray | filter : searchText;
+                      index as i
+                    ">
+                      <!-- <tr *ngIf="DraftOrderLoading">
+                                        <td colspan="5">
+                                            <div style="justify-content: center;display: flex;">
+                                                <div class="spinner-border text-secondary" role="status">
+                                                    <span class="sr-only">Loading...</span>
+                                                </div>
+
+                                            </div>
+
+                                        </td>
+                                    </tr> -->
+                      <tr class="draft-table"  [class.selected-draft-table]="item.rowSelected"
+                        [class.shared-draft-table]="item.OrderShared" (click)="changeColor(i)">
+                        <ng-container *ngFor="let showDataColumn of draftColumns;index as searchIndex;">
+                          <td (click)="selectRow(item,DraftedOrderArray,$event)" [style.width]="showDataColumn.width+ 'px !important'"
+                            [style.left]="(searchIndex+1) <= fixedColumn ? showDataColumn.left+'px !important' : 'inherit'"
+                            [style.display]="'table-cell'" [class.FixedColumn]="(searchIndex+1) <= fixedColumn"
+                            *ngIf="showDataColumn.isVisible"> {{
+                            item[showDataColumn.colName] }}</td>
+                        </ng-container>
+                        <td>
+                          <!-- <input type="checkbox" [(ngModel)]="item.isSelected"
+                                                [checked]="item.isSelected" (ngModelChange)="recordSelected()"> -->
+                          <input type="checkbox" (click)="SelectAllChecked(item)" [checked]="item.isSelected" (change)="recordSelected(item,i)" />
+                        </td>
+                        <td>
+                          <i class="bi bi-eye" ngbTooltip="View" (click)="ViewOrderDetails(item)"
+                            style="font-size: medium"></i>
+                          <!-- <i class="material-icons" (click)="Copy(item)" style="font-size: medium"
+                          ngbTooltip="Copy">content_copy</i> -->
+
+                        </td>
+                      </tr>
+                    </ng-container>
+                  </tbody>
+                </table>
+              </form>
+            </cdk-virtual-scroll-viewport>
+            </div>
+
+            <div style="
+                display: flex;
+                flex-wrap: nowrap;
+                justify-content: end;
+              ">
+              <div>
+                <button class="btn btn-primary btn-sm" [hidden]="ShowSelectUnselect()" style="width: 80px" type="button"
+                  (click)="SelectAll(true)">
+                  Select-All
+                </button>
+                <button class="btn btn-primary btn-sm" [hidden]="ShowSelectUnselect()" style="width: 90px" type="button"
+                  (click)="SelectAll(false)">
+                  UnSelect-All
+                </button>
+              </div>
+
+              <div>
+                <button class="btn btn-primary btn-sm" [disabled]="(hideUnshare || SelectAllFlag)" 
+                  type="button" (click)="Update('Exclusive')">
+                  Unshare (独有)
+                </button>
+                <button class="btn btn-primary btn-sm" [disabled]="(hideShare || SelectAllFlag)" 
+                  type="button" (click)="Update('Shared')">
+                  Share (共享)
+                </button>
+                <button class="btn btn-primary btn-sm" [disabled]="hideDelete"  type="button"
+                  (click)="Update('Delete')">
+                  Delete (删除)
+                </button>
+                <button *ngIf="Submission == 'Yes'" class="btn btn-primary btn-sm" [disabled]="(hideSubmit)" type="button"
+                  (click)="Update('Submitted')">
+                  Submit Order (提交)
+                </button>
+                <button *ngIf="Submission != 'Yes'" class="btn btn-primary btn-sm" [disabled]="(hideSent)" type="button"
+                  (click)="Update('Sent')">
+                  Send for Approval (请批)
+                </button>
+              </div>
+            </div>
+
+            <div class="row d-flex">
+              <div class="col-md-6">
+                <span style="font-weight: bold;">
+                  Total Saved Orders :
+                </span >
+                <!-- <span> -->
+                <span style="font-weight: bold;">
+                  {{ DraftedOrderArray.length ? DraftedOrderArray.length : 0 }}
+                </span><br>
+                <span _ngcontent-nlc-c225="" style=" font-weight: bold;" class="ng-tns-c225-25"> Color Legend:
+                </span><br>
+                <span class="box color font-weight-bold" style="background-color: #dffac7">Shared Orders</span>
+                <!-- / <b>MESH :</b>{{MESHtotalWeight}} /
+                                <b>CORE-CAGE:</b>{{COREtotalWeight}}/ <b>CAB:</b>{{CABtotalWeight}}/
+                                <b>PRE-CAGE:</b>{{PREtotalWeight}} (ton)</span> -->
+              </div>
+              <!-- <br><br> -->
+              <div class="col-md-6 float-right logo">
+                <div class="col md- 6 float-right desktop" style="display: flex; justify-content: flex-end">
+                  <!-- <span style="color: #0880ae; font-weight: bold;">Color Legend : </span>-->
+                  <!-- &nbsp; <div class='box gray' style="background-color: #fbbb6f;"></div> &nbsp; Pending
+                            Approval -->
+                  <!-- &nbsp;
+                  <div class="box color" style="background-color: #dffac7">Shared Orders</div>
+                  &nbsp; Shared Orders -->
+                  <!-- &nbsp; <div class='box blue'></div> &nbsp; To Deliver on the Next Day -->
+                </div>
+                <div class="mobile">
+                  <!-- <span style="color: #0880ae; font-weight: bold;">Color Legend : </span>-->
+                  <!-- &nbsp; <div class='box gray' style="background-color: #fbbb6f;"></div> &nbsp; Pending
+                        Approval -->
+                  &nbsp;
+                  <div class="box color" style="background-color: #dffac7" ngbTooltip="Shared Orders"></div>
+                  &nbsp;
+                  <!-- &nbsp; <div class='box blue'></div> &nbsp; To Deliver on the Next Day -->
+                </div>
+              </div>
+
+              <!-- <div class="col-md-3 float-right">
+                            <button class="btn btn-primary btn-sm" type="button" style="width:29%" (click)="Withdraw()"
+                                [disabled]="disablewithdraw" [ngClass]="{'btn-secondary': disablewithdraw===true}">Withdraw</button>
+                            <button class="btn btn-primary btn-sm" type="button" style="width:29%"
+                                [ngClass]="{'btn-secondary': disablesubmit===true}" (click)="Submit()"
+                                [disabled]="disablesubmit">Submit</button>
+                        </div> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

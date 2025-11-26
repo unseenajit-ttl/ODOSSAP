@@ -1,0 +1,52 @@
+<div id="mydiv1">
+<div class="modal-header">
+  <h4 class="modal-title">Copy BBS (复制 BBS)</h4>
+  <i class="fa-solid fa-xmark"></i>
+  <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+</div>
+
+<div class="modal-body">
+  <div class="row">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <label>Customer (客户名称):</label>
+          <ng-select class="w-auto" style="min-width: 160px" [(ngModel)]="CustomerCode" [desibled]="true">
+            <ng-option *ngFor="let sList of CustomerList" [value]="sList.Value">
+              {{ sList.Text }}</ng-option>
+          </ng-select>
+        </div>
+        <div class="col-md-6">
+          <label>Project (工程项目):</label>
+          <ng-select class="w-auto" style="min-width: 160px" [(ngModel)]="ProjectCode"
+            (ngModelChange)="onProjectChange()">
+            <ng-option *ngFor="let sList of ProjectList" [value]="sList.ProjectCode">
+              {{ sList.ProjectTitle }}</ng-option>
+          </ng-select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <label>Orders (订单选项):</label>
+          <ng-select class="w-auto" style="min-width: 160px" [(ngModel)]="Ordersddl" (change)='OnOrderChange()'>
+            <ng-option *ngFor="let sList of OrderList" [value]="sList">
+              {{ sList.PONumber }} ({{ sList.StructureElement }} - {{sList.OrderNumber}})</ng-option>
+          </ng-select>
+        </div>
+        <div class="col-md-6">
+          <label>BBS (钢筋加工表):</label>
+          <ng-select class="w-auto" style="min-width: 160px" [(ngModel)]="BBSddl">
+            <ng-option *ngFor="let sList of orderBBSList" [value]="sList">
+              {{ sList.BBSNo }}</ng-option>
+          </ng-select>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary me-2" (click)="CopyOrder()">Copy</button>
+      <button type="button" class="btn btn-transparent" (click)="Cancel()">Cancel</button>
+    </div>
+  </div>
+</div>
+</div>

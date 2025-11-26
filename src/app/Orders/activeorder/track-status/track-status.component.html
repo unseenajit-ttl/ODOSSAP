@@ -1,0 +1,87 @@
+<div id="mydiv" cdkDrag cdkDragRootElement=".your-custom-dialog-class">
+    <div class="movable-container">
+        <div class="container-fluid">
+            <div class="card m-1">
+                <div class="mainHeading" cdkDragHandle>
+                    <span>Order Tracking (订单跟踪)</span>
+                </div>
+                <div>
+                    <p style="text-align: center;
+                    font-weight: bold;">TRACK ORDER</p>
+                    <div class="track-order-inner">
+                        <div class="track-icon">
+                            <img class="trach-img" [src]="preparedpath">
+                        </div>
+                        <h4 style="text-align: center;font-weight: bold;">Prepared</h4>
+                    </div>
+                    <div class="track-order-inner">
+                        <div class="track-icon">
+                            <img class="trach-img" [src]="submittedpath">
+                        </div>
+                        <h4 style="text-align: center;font-weight: bold;">Submitted</h4>
+                    </div>
+                    <div class="track-order-inner">
+                        <div class="track-icon">
+                            <img class="trach-img" [src]="reviewedpath">
+                        </div>
+                        <h4 style="text-align: center;font-weight: bold;">Reviewed</h4>
+                    </div>
+                    <div class="track-order-inner">
+                        <div class="track-icon">
+                            <img class="trach-img" [src]="productionpath">
+                        </div>
+                        <h4 style="text-align: center;font-weight: bold;">Production</h4>
+                    </div>
+                    <div class="track-order-inner">
+                        <div class="track-icon">
+                            <img class="trach-img" [src]="deliveredpath">
+                        </div>
+                        <h4 style="text-align: center;font-weight: bold;">Delivered</h4>
+                    </div>
+
+                </div>
+                <div class="row" style="text-align: center;">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-4" style="text-align: right;">
+                        <label style="font-weight: bold;">Order Tracking Number:</label>
+                    </div>
+                    <div class="col-md-4" style="text-align: left;">
+                        <label style="font-weight: bold;">{{OrderNumber}}</label>
+                    </div>
+
+                    <div class="col-md-2"></div>
+                    <div class="col-md-2"></div>
+                    <div class="col-md-4" style="text-align: right;">
+                        <label style="font-weight: bold;">PO Number:</label>
+                    </div>
+                    <div class="col-md-4" style="text-align: left;">
+                        <label style="font-weight: bold;">{{PONumber}}</label><br />
+                    </div>
+                    <div class="col-md-2"></div>
+                    <div class="col-md-2"></div>
+                    <div class="col-md-4" style="text-align: right;">
+                        <label style="font-weight: bold;">Required Date:</label>
+                    </div>
+                    <div class="col-md-4" style="text-align: left;">
+                        <label style="font-weight: bold;">{{RequiredDate}}</label><br />
+                    </div>
+                    <div class="col-md-2"></div>
+                    <div class="col-md-2"></div>
+                    <div class="col-md-4" style="text-align: right;">
+                        <label style="font-weight: bold;">Status:</label>
+                    </div>
+                    <div class="col-md-4" style="text-align: left;">
+                        <label style="font-weight: bold;">{{Status}}</label><br />
+                    </div>
+                    <div class="col-md-2"></div>
+                </div>
+            </div>
+
+        </div>
+        <div class="footer">
+            <button type="button" class="btn btn-primary me-2" (click)="activeModal.dismiss('Cross click')">
+                Close (关闭)
+            </button>
+        </div>
+    </div>
+</div>

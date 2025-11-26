@@ -1,0 +1,21 @@
+<div class="container-fluid">
+  <div class="card m-1">
+    <div id="mainheading" style="background: #dfdfdf; font-size: medium">
+      <label>Select Print Options</label>
+    </div>
+    <div
+      id="mainbody"
+      class="d-flex"
+      style="flex-wrap: wrap; justify-content: center"
+    >
+      <button class="btn btn-sm printbutton" (click)="downloadOrderDetails()">Print Order Details</button>
+      <button class="btn btn-sm printbutton" (click)="downloadOrderSummary()">Print Order Summary</button>
+    </div>
+    <hr />
+    <div id="footer" class="d-flex" style="justify-content: flex-end">
+      <button class="btn btn-primary btn-sm" (click)="activeModal.dismiss('Cross click')">
+        Close
+      </button>
+    </div>
+  </div>
+</div>

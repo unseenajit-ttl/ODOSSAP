@@ -1,0 +1,13 @@
+diff --git a/node_modules/@slickgrid-universal/common/dist/types/services/domUtilities.d.ts b/node_modules/@slickgrid-universal/common/dist/types/services/domUtilities.d.ts
+index ee41b97..a3a7cac 100644
+--- a/node_modules/@slickgrid-universal/common/dist/types/services/domUtilities.d.ts
++++ b/node_modules/@slickgrid-universal/common/dist/types/services/domUtilities.d.ts
+@@ -98,7 +98,7 @@ export declare function sanitizeHtmlToText(htmlString: string): string;
+  * @param dirtyHtml: dirty html string
+  * @param domPurifyOptions: optional DOMPurify options when using that sanitizer
+  */
+-export declare function sanitizeTextByAvailableSanitizer(gridOptions: GridOption, dirtyHtml: string, domPurifyOptions?: DOMPurify_.Config): string;
++export declare function sanitizeTextByAvailableSanitizer(gridOptions: GridOption, dirtyHtml: string, domPurifyOptions?: DOMPurify.Config): string;
+ /**
+  * Get the Window Scroll top/left Position
+  * @returns

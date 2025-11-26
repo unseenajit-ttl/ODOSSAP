@@ -1,0 +1,581 @@
+<div class="container-fluid">
+  <!-- <div class="modal-header">
+        <h4 class="modal-title"></h4>
+        <i class="fa-solid fa-xmark"></i>
+        <button type="button" class="btn-close" aria-label="Close"
+            (click)="activeModal.dismiss('Cross click')"></button>
+    </div> -->
+
+  <div *ngIf="OrderdetailsLoading" style="z-index: 500">
+    <div id="pause" class="d-flex align-items-center justify-content-center">
+      <div id="spinner" class="loader"></div>
+    </div>
+  </div>
+  <div class="card m-1">
+    <tabset>
+      <tab heading="Order Summary" style="background: #fff" (selectTab)="
+          showTable = false;SelectOrderSummary();saveSelectedRow(this.lastSelectedOrder);
+        ">
+        <div style="padding: 10px">
+          <div class="row">
+            <span style="display: flex; align-items: center">
+              <i class="bi bi-arrow-left-short" style="font-size: x-large; color: blue" ngbTooltip="Back"
+                (click)="goBack()"></i>
+              <a (click)="goBack()" style="color: blue">Back to order summary (返回订单汇总)</a></span>
+            <br />
+            <div>
+              <h3 style="font-size: larger; color: #005599">
+                CUT&BEND AND STANDARD LENGTH BAR DETAILS (加工铁与标准直铁料表)
+              </h3>
+            </div>
+          </div>
+          <div>
+            <div class="row">
+              <div class="col-md-4 row">
+                <div class="col-md-4">
+                  <label class="form-label subHeading_CAB">CAB WT<br>(加工铁)(kg):</label>
+                </div>
+                <div class="col-md-8">
+                  <input type="number" class="form-control inputTabs" [(ngModel)]="TotalCABWeight" readonly />
+                </div>
+              </div>
+              <div class="col-md-4 row">
+                <div class="col-md-4">
+                  <label class="form-label subHeading_CAB">SB WT<br>(直铁重)(kg):</label>
+                </div>
+                <div class="col-md-8">
+                  <input type="number" class="form-control inputTabs" [(ngModel)]="TotalSTDWeight" readonly />
+                </div>
+              </div>
+              <div class="col-md-4 row">
+                <div class="col-md-4">
+                  <label class="form-label subHeading_CAB">Total WT<br>(总重)(kg):</label>
+                </div>
+                <div class="col-md-8">
+                  <input type="number" class="form-control inputTabs" [(ngModel)]="TotalWeight" readonly />
+                </div>
+              </div>
+            </div>
+            <br />
+            <div class="row">
+              <div class="col-md-4 row">
+                <div class="col-md-4">
+                  <label class="form-label subHeading_CAB">Coupler<br>(续接器):</label>
+                </div>
+                <div class="col-md-8">
+                  <ng-select [selectOnTab]="true" class="ng-selectcustomer" [(ngModel)]="CouplerType"
+                    (ngModelChange)="OnChangeCouplerType()" [disabled]="NON_Editable">
+                    <ng-option *ngFor="let sList of CouplerList" [value]="sList">
+                      {{ sList }}
+                    </ng-option>
+                  </ng-select>
+                </div>
+              </div>
+              <div class="col-md-4 row">
+                <div class="col-md-4">
+                  <label class="form-label subHeading_CAB">Transport<br>(运输):</label>
+                </div>
+                <div class="col-md-8">
+                  <input type="text" class="form-control inputTabs" [(ngModel)]="TransportMode" readonly />
+                </div>
+              </div>
+              <div class="col-md-4 row">
+                <div class="col-md-4">
+                  <label class="form-label subHeading_CAB">BBS Standard<br>(加工标准):</label>
+                </div>
+                <div class="col-md-8">
+                  <ng-select [disabled]="true" [selectOnTab]="true" class="ng-selectcustomer"
+                    [(ngModel)]="BBSStandard" (ngModelChange)="SaveJobAdvice()">
+                    <ng-option *ngFor="let sList of BBSList" [value]="sList">
+                      {{ sList }}
+                    </ng-option>
+                  </ng-select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <br />
+          <div #table>
+            <div class="table-responsive table-wrapper-scroll-y my-custom-scrollbar">
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th>SNo<br>序号</th>
+                    <th>Structure Element<br>构件</th>
+                    <th>BBS No.<br>加工表号</th>
+                    <th>BBS Description<br>详细说明</th>
+                    <th>CAB Weight<br>弯铁重量(kg)</th>
+                    <th>SB Weight<br>标铁重量(kg)</th>
+                    <th>Order Weight<br>订单重量(kg)</th>
+                    <th>Cancelled WT<br>取消重量(kg)</th>
+                    <th>Total Weight<br>总重量(kg)</th>
+                    <th *ngIf="isEditible()">Actions<br>行动</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <ng-container>
+                    <tr (click)="SelectOrderDetailsTable(orderDetailsTable, item, i, $event)"
+                      [class.details-row-highlight]="item.isSelected"
+                      *ngFor="let item of orderDetailsTable; index as i">
+                      <td>{{ item.SNo }}</td>
+                      <td>{{ item.StructureElement }}</td>
+                      <td *ngIf="!editTable || EnableEditIndex != i" (click)="EditBBSTable(i)" [ngClass]="{
+                          'Duplicate-BBS': (item.DuplicateBBS == true || item.DuplicateBBS_DB == true)
+                        }">
+                        {{ item.BBSNo }}
+                      </td>
+                      <td *ngIf="editTable && EnableEditIndex == i">
+                        <div ng-controller="DemoCtrl">
+                        <input id="bbsInput"
+                            type="text"
+                            class="form-control"
+                            [(ngModel)]="item.BBSNo"
+                            (click)="editTable = true;selectInputText($event);"
+                            [ngClass]="{'Duplicate-BBS': (item.DuplicateBBS == true || item.DuplicateBBS_DB == true)}"
+                            (keyup.enter)="item.BBSNo = ConvertToUpper(item.BBSNo);SaveBBS_CAB(item, 'bbsInput')"
+                            (blur)="item.BBSNo = ConvertToUpper(item.BBSNo);SaveBBS_CAB(item, 'bbsInput')"
+                            (keydown)="handleBBSKeyDown($event, i, 'bbsInput')"
+                            maxlength="12" />
+                        </div>
+                        </td>
+
+                        <td *ngIf="!editTable || EnableEditIndex != i" (click)="EditBBSTable(i)"
+                          [ngClass]="{ 'Empty-BBS': !item.BBSDescription }">
+                          {{ item.BBSDescription }}
+                        </td>
+
+                        <td *ngIf="editTable  && EnableEditIndex == i">
+                        <input id="bbsDescInput"
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="item.BBSDescription"
+                          (click)="editTable = true;selectInputText($event);"
+                          (keyup.enter)="item.BBSDescription = ConvertToUpper(item.BBSDescription);SaveBBS_CAB(item, 'bbsDescInput')"
+                          (blur)="item.BBSDescription = ConvertToUpper(item.BBSDescription);SaveBBS_CAB(item, 'bbsDescInput')"
+                          (keydown)="handleBBSKeyDown($event, i, 'bbsDescInput')"
+                          maxlength="40" />
+                        </td>
+
+                      <td>{{ item.CABWeight }}</td>
+                      <td>{{ item.SBWeight }}</td>
+                      <td>{{ item.OrderWeight }}</td>
+                      <td>{{ item.CancelledWT }}</td>
+                      <td>{{ item.TotalWeight }}</td>
+                      <td *ngIf="isEditible()">
+                        <i class="bi bi-cloud-download" ngbTooltip="Import(导入)" (click)="Import(item)"></i>
+                        &nbsp;
+                        <i class="material-icons confirm" ngbTooltip="Copy(复制)" (click)="Copy(item)">content_copy</i>
+                        &nbsp;
+                        <i class="bi bi-trash" ngbTooltip="Delete(删除)" style="color: red" (click)="DeleteBBSData(item)"
+                          *ngIf="isEditible()"></i>
+                      </td>
+                    </tr>
+                    <tr (dblclick)="addNewRecord()" *ngIf="isEditible()">
+                      <td>
+                        <i class="bi bi-plus-circle" (click)="addNewRecord()"></i>
+                      </td>
+                      <td colspan=" 9"></td>
+                    </tr>
+                  </ng-container>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div #buttons class="order-details-button" style="text-align: center">     
+<button class="btn btn-primary btn-sm" type="button" (click)="PrintBBSOrder()">
+  Print BBS<br />(料单报告)</button>&nbsp;
+            <button class="btn btn-primary btn-sm" type="button" (click)="PrintBBSShape()">
+              Print BBS Shape<br />(图形料单)</button>&nbsp;
+            <button *ngIf="ShowImportButton()" class="btn btn-primary btn-sm" type="button" (click)="ImportOES()">
+              Import OES<br />(导入)</button>&nbsp;
+            <button *ngIf="ShowImportButton()" class="btn btn-primary btn-sm" type="button" (click)="ImportIFC()">
+              Import IFC<br />(导入IFC)</button>&nbsp;
+            <button class="btn btn-primary btn-sm" type="button" (click)="ExportToExcel()">
+              Export to Excel<br />(导出)</button>&nbsp;
+            <button class="btn btn-primary btn-sm" type="button" (click)="ExportToExcelDiaSummary()">
+              Dia Summary<br />(直径汇总)
+            </button>
+          </div>
+        </div>
+      </tab>
+      <tab heading="{{ order.BBSNo }}" style="background: #fff;font-size: smaller !important;" *ngFor="let order of orderDetailsTable" (selectTab)="
+         changeSelectionTab(order);
+        ">
+        <!-- <b>START</b> -->
+        <!-- <app-bbsorderdetails [bbsNo]="order.BBSNo"></app-bbsorderdetails> -->
+        <!-- <b>END</b> -->
+      </tab>
+    </tabset>
+    <div id="tabs" [ngClass]="{ tabData: showTable }" style="display: none">
+      <!-- START -->
+      <div class="side-menu" [ngStyle]="{'display': sideMenuVisible == 2 ? '' : 'none'}">
+        <div id="firstBox">
+          <div class="table-responsive table-wrapper-scroll-y my-custom-scrollbar">
+            <table class="table table-bordered">
+              <tbody>
+                <tr>
+                  <td class="subHeading_CAB">CAB Weight(加工铁重量):</td>
+                  <td>{{ totalCABWeight }}</td>
+                </tr>
+                <tr>
+                  <td class="subHeading_CAB">SB Weight(标准铁重量):</td>
+                  <td>{{ totalSBWeight }}</td>
+                </tr>
+                <tr>
+                  <td class="subHeading_CAB">Cancelled WT(取消铁重量):</td>
+                  <td>{{ totalCancelledWT }}</td>
+                </tr>
+                <tr>
+                  <td class="subHeading_CAB">Total Weight(总重量)</td>
+                  <td>{{ totalTotalWeight }}</td>
+                </tr>
+                <tr>
+                  <td class="subHeading_CAB">No of Line Items(有效行数):</td>
+                  <td>{{ totalNoofitems }}</td>
+                </tr>
+                <tr>
+                  <td class="subHeading_CAB">Total Bar Qty(总数量):</td>
+                  <td>{{ totalTotalBarQty }}</td>
+                </tr>
+                <tr>
+                  <td class="subHeading_CAB">Total Coupler/Thread Bar Qty(总耦合器/螺纹杆数量):</td>
+                  <td>{{ totalTotalCouplerBarQty }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- <div class="d-flex" style="
+                align-items: center;
+                max-height: 25px;
+                padding: 5px;
+                justify-content: space-between;
+              ">
+            <label class="form-label">CAB Weight(加工铁重量):</label>&nbsp;
+            <label class="form-label">{{ totalCABWeight }}</label>
+          </div>
+          <div class="d-flex" style="
+                align-items: center;
+                max-height: 25px;
+                padding: 5px;
+                justify-content: space-between;
+              ">
+            <label class="form-label">SB Weight(标准铁重量):</label>&nbsp;
+            <label class="form-label">{{ totalSBWeight }}</label>
+          </div>
+          <div class="d-flex" style="
+                align-items: center;
+                max-height: 25px;
+                padding: 5px;
+                justify-content: space-between;
+              ">
+            <label class="form-label">Cancelled WT(取消铁重量):</label>&nbsp;
+            <label class="form-label">{{ totalCancelledWT }}</label>
+          </div>
+          <div class="d-flex" style="
+                align-items: center;
+                max-height: 25px;
+                padding: 5px;
+                justify-content: space-between;
+              ">
+            <label class="form-label">Total Weight(总重量)</label>&nbsp;
+            <label class="form-label">{{ totalTotalWeight }}</label>
+          </div>
+          <div class="d-flex" style="
+                align-items: center;
+                max-height: 25px;
+                padding: 5px;
+                justify-content: space-between;
+              ">
+            <label class="form-label">No of Line Items(有效行数):</label>&nbsp;
+            <label class="form-label">{{ totalNoofitems }}</label>
+          </div>
+          <div class="d-flex" style="
+                align-items: center;
+                max-height: 25px;
+                padding: 5px;
+                justify-content: space-between;
+              ">
+            <label class="form-label">Total Bar Qty(总数量):</label>&nbsp;
+            <label class="form-label">{{ totalTotalBarQty }}</label>
+          </div> -->
+        </div>
+        <div id="imageBox">
+          <!-- IMAGE HERE ONLY-->
+          <div>
+            <canvas #myCanvas  style="display: {{
+                showShapeImage ? 'block' : 'none'
+              }} ;width: 256px; height: 256px"></canvas>
+          </div>
+        </div>
+        <div id="secondBox">
+          <!-- <legend style="font-size: medium">Shape Finder</legend>  -->
+
+          <div class="table-responsive table-wrapper-scroll-y my-custom-scrollbar">
+            <table class="table table-bordered">
+              <tbody>
+                <tr>
+                  <td class="subHeading_CAB">Category(类别):</td>
+                  <td>
+                    <ng-select class="w-auto" style="min-width: 160px" appendTo="body" [(ngModel)]="Shape_Category"
+                      (ngModelChange)="OnCategoryChange(Shape_Category)">
+                      <ng-option *ngFor="let sList of ShapeCatList" [value]="sList">
+                        {{ sList }}</ng-option>
+                    </ng-select>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="subHeading_CAB">Shape List(图形报告):</td>
+                  <td>
+                    <button class="btn btn-primary btn-sm" type="button" (click)="DownlaodShapeList()">
+                      Shape List
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="subHeading_CAB">New Shape(创建图形):</td>
+                  <td>
+                    <button class="btn btn-primary btn-sm" type="button" (click)="CreateNewShape()">
+                      New Shape
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="subHeading_CAB">Bending Limit(局限):</td>
+                  <td>
+                    <button class="btn btn-primary btn-sm" type="button" (click)="openBending()">
+                      Bending Limit
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="subHeading_CAB">Checking(核对):</td>
+                  <td>
+                    <button class="btn btn-primary btn-sm" type="button" [disabled]="disableDoubleCapture" (click)="DoubleCapture()">
+                      Double Capture
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="subHeading_CAB">Find(找出差异):</td>
+                  <td>
+                    <button class="btn btn-primary btn-sm" type="button" (click)="PrintDiscrepancy()">
+                      Discrepancy Rpt.
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="subHeading_CAB">DIM Rule(度量规则):</td>
+                  <td>
+                    <button class="btn btn-primary btn-sm" type="button" (click)="OpenDimensionalComponent()">
+                      Dimensioning Rule
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- <div class="d-flex" style="
+                align-items: center;
+                padding: 2px;
+                justify-content: space-between;
+              ">
+            <label class="form-label">Category(类别): </label>&nbsp;
+            <ng-select class="w-auto" style="min-width: 160px">
+              <ng-option *ngFor="let sList of ShapeCatList" [value]="sList">
+                {{ sList }}</ng-option>
+            </ng-select>
+          </div>
+          <div class="d-flex" style="
+                align-items: center;
+                padding: 2px;
+                justify-content: space-between;
+              ">
+            <label class="form-label">Shape List(图形报告):</label>&nbsp;
+            <button class="btn btn-primary btn-sm" type="button">
+              Shape List
+            </button>
+          </div>
+          <div class="d-flex" style="
+                align-items: center;
+                padding: 2px;
+                justify-content: space-between;
+              ">
+            <label class="form-label">New Shape(创建图形): </label>&nbsp;
+            <button class="btn btn-primary btn-sm" type="button">
+              New Shape
+            </button>
+          </div>
+          <div class="d-flex" style="
+                align-items: center;
+                padding: 2px;
+                justify-content: space-between;
+              ">
+            <label class="form-label">Bending Limit(局限): </label>&nbsp;
+            <button class="btn btn-primary btn-sm" type="button" (click)="openBending()">
+              Bending Limit
+            </button>
+          </div>
+          <div class="d-flex" style="
+                align-items: center;
+                padding: 2px;
+                justify-content: space-between;
+              ">
+            <label class="form-label">Checking(核对): </label>&nbsp;
+            <button class="btn btn-primary btn-sm" type="button">
+              Double Capture
+            </button>
+          </div>
+          <div class="d-flex" style="
+                align-items: center;
+                padding: 2px;
+                justify-content: space-between;
+              ">
+            <label class="form-label">Find(找出差异): </label>&nbsp;
+            <button class="btn btn-primary btn-sm" type="button">
+              Discrepancy Rpt.
+            </button>
+          </div> -->
+        </div>
+        <!-- </fieldset> -->
+      </div>
+      <!-- END -->
+        <div class="d-flex">
+          <div class="slickgrid-table" id="slickgrid-table" [ngClass]="sideMenuVisible == 2 ? 'col-12' : 'firstBox'">
+            <ul id="contextMenuCAB" style="display: none; position: absolute">
+              <li data="insert" (click)="OnClickContextMenuCAB('insert')">Insert</li>
+              <li data="delete" (click)="OnClickContextMenuCAB('delete')">Delete</li>
+              <li data="clear" (click)="OnClickContextMenuCAB('clear')">Clear Contents</li>
+              <li data="" style="background: url('../../../../assets/images/line.png') no-repeat center left"></li>
+              <li data="copy" (click)="OnClickContextMenuCAB('copy')">Copy</li>
+              <li data="paste" (click)="OnClickContextMenuCAB('paste')">Paste</li>
+              <li data="" style="background: url('../../../../assets/images/line.png') no-repeat center left"></li>
+              <li data="weight" (click)="OnClickContextMenuCAB('weight')">Sub-total Weight</li>
+              <li data="qty" (click)="OnClickContextMenuCAB('qty')">Sub-total Qty</li>
+              <li data="" style="background: url('../../../../assets/images/line.png') no-repeat center left"></li>
+              <li data="MoreInfo" (click)="OnClickContextMenuCAB('MoreInfo')">More Info</li>
+            </ul>
+            <angular-slickgrid gridId="grid2"
+            [columnDefinitions]="templateColumns"
+            [gridOptions]="gridOptions"
+            [dataset]="bbsOrderdataset"
+            (onAngularGridCreated)="angularGridReady($event)">
+            </angular-slickgrid>
+            <img class="side-menu-btn" src="assets/images/small-up-down.png" height="20" width="20"
+              style="position: absolute;right: 250px;top: 37%;" *ngIf="sideMenuVisible == 1" (click)="sideMenuChange(2)">
+            <img class="side-menu-btn" src="assets//images/small-left-right.png" height="20" width="20"
+              style="position: absolute;right: 37%;;top: 0px;z-index:999" *ngIf="sideMenuVisible == 2"
+              (click)="sideMenuChange(1)">
+          </div>
+          <div class="p-0 vertical-side-menu" [ngStyle]="{'display': sideMenuVisible == 1 ? 'block' : 'none','width':'257px'}"
+            [ngClass]="sideMenuVisible == 2 ? '' : 'secondBox'">
+            <div id="row p-0">
+              <div class="col-12 p-0">
+                <canvas #myCanvas1
+                [ngStyle]="{
+                  'display': showShapeImage ? 'block' : 'none',
+                  'height': '256px',
+                  'width': '256px'
+                }"></canvas>
+                <table class="table borderless-table">
+                  <tbody>
+                    <tr>
+                      <td>CAB Weight(加工铁重量):</td>
+                      <td>{{ totalCABWeight }}</td>
+                    </tr>
+                    <tr>
+                      <td>SB Weight(标准铁重量):</td>
+                      <td>{{ totalSBWeight }}</td>
+                    </tr>
+                    <tr>
+                      <td>Cancelled WT(取消铁重量):</td>
+                      <td>{{ totalCancelledWT }}</td>
+                    </tr>
+                    <tr>
+                      <td>Total Weight(总重量)</td>
+                      <td>{{ totalTotalWeight }}</td>
+                    </tr>
+                    <tr>
+                      <td>No of Line Items(有效行数):</td>
+                      <td>{{ totalNoofitems }}</td>
+                    </tr>
+                    <tr>
+                      <td>Total Bar Qty(总数量):</td>
+                      <td>{{ totalTotalBarQty }}</td>
+                    </tr>
+                    <tr>
+                      <td>Total Coupler/Thread Bar Qty(总耦合器/螺纹杆数量):</td>
+                      <td>{{ totalTotalCouplerBarQty }}</td>
+                    </tr>
+                    <tr>
+                      <td>Category(类别):</td>
+                      <td>
+                        <ng-select class="w-auto" style="max-width: 100px" appendTo="body" [(ngModel)]="Shape_Category"
+                          (ngModelChange)="OnCategoryChange(Shape_Category)">
+                          <ng-option *ngFor="let sList of ShapeCatList" [value]="sList">
+                            {{ sList }}</ng-option>
+                        </ng-select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Shape List(图形报告):</td>
+                      <td>
+                        <button class="btn btn-primary btn-sm" type="button" (click)="DownlaodShapeList()">
+                          Shape List
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>New Shape(创建图形):</td>
+                      <td>
+                        <button class="btn btn-primary btn-sm" type="button" (click)="CreateNewShape()">
+                          New Shape
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Bending Limit(局限):</td>
+                      <td>
+                        <button class="btn btn-primary btn-sm" type="button" (click)="openBending()">
+                          Bending Limit
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Checking(核对):</td>
+                      <td>
+                        <button class="btn btn-primary btn-sm" type="button" [disabled]="disableDoubleCapture"  (click)="DoubleCapture()">
+                          Double Capture
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Find(找出差异):</td>
+                      <td>
+                        <button class="btn btn-primary btn-sm" type="button" (click)="PrintDiscrepancy()">
+                          Discrepancy Rpt.
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>DIM Rule(度量规则):</td>
+                      <td>
+                        <button class="btn btn-primary btn-sm" type="button" (click)="OpenDimensionalComponent()">
+                          Dimensioning Rule
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      <div class="order-details-footer">
+        <span>
+          Notes: All dimensions and length are in "mm" unless otherwise. Maximum number of various bar items is 26.
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,44 @@
+diff --git a/node_modules/@types/fabric/fabric-impl.d.ts b/node_modules/@types/fabric/fabric-impl.d.ts
+index b77e1f2..1c699df 100644
+--- a/node_modules/@types/fabric/fabric-impl.d.ts
++++ b/node_modules/@types/fabric/fabric-impl.d.ts
+@@ -2211,6 +2211,7 @@ export class Canvas {
+ //////////////////////////////////////////////////////////////////////////////
+ 
+ interface ICircleOptions extends IObjectOptions {
++    id?:any | undefined;
+     /**
+      * Radius of this circle
+      */
+@@ -2263,6 +2264,7 @@ export class Circle {
+ }
+ 
+ interface IEllipseOptions extends IObjectOptions {
++    id?:any | undefined;
+     /**
+      * Horizontal radius
+      */
+@@ -2618,6 +2620,7 @@ export class Image {
+ }
+ 
+ interface ILineOptions extends IObjectOptions {
++    id?:any | undefined;
+     /**
+      * x value or first line edge
+      */
+@@ -4082,6 +4085,7 @@ export class Polyline extends Object {
+ }
+ 
+ interface IRectOptions extends IObjectOptions {
++    id?:any | undefined;
+     /**
+      * Horizontal border radius
+      */
+@@ -4118,6 +4122,7 @@ export class Rect extends Object {
+ }
+ 
+ interface TextOptions extends IObjectOptions {
++    id?:any | undefined;
+     type?: string | undefined;
+     /**
+      * Font size (in pixels)

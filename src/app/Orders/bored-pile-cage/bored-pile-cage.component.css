@@ -1,0 +1,586 @@
+@import "../../../../node_modules/slickgrid/slick.grid.css";
+@import "../../../../node_modules/slickgrid/slick-default-theme.css";
+@import "../../../../node_modules/slickgrid/controls/slick.gridmenu.css";
+@import "../../../../node_modules/slickgrid/controls/slick.pager.css";
+@import "../../../../node_modules/slickgrid/controls/slick.columnpicker.css";
+
+#contextMenu {
+  background: #e1efc7;
+  border: 1px solid gray;
+  padding: 2px;
+  display: inline-block;
+  min-width: 100px;
+  -moz-box-shadow: 2px 2px 2px silver;
+  -webkit-box-shadow: 2px 2px 2px silver;
+  z-index: 99999;
+}
+
+#contextMenu li {
+  padding: 4px 4px 4px 14px;
+  list-style: none;
+  cursor: pointer;
+  /* background: url('@Url.Content("~/Content/images/arrow_right_peppermint.png")') no-repeat center left; */
+}
+
+#contextMenu li:hover {
+  background-color: white;
+}
+div#corner-triangle {
+  display: normal;
+  width: 25px;
+  height: 25px;
+  border-style: solid;
+  border-width: 0 50px 50px 0;
+  border-color: transparent #da0039 transparent transparent;
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  z-index: 99999;
+  color: white;
+  text-shadow: 0 0 25px 9px #fff;
+  -webkit-filter: drop-shadow(0 1px 9px #000000);
+  filter: drop-shadow(0 1px 9px #000000);
+}
+
+div#corner-triangle .corner-triangle-text {
+  position: relative;
+  font-size: 10px;
+  top: 0;
+  right: -12px;
+  font-family: sans-serif, "Helvetica Neue", Helvetica, Arial;
+  font-weight: 200;
+  line-height: 1.1;
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+div#corner-triangle .corner-triangle-text span.corner-triangle-firstline {
+  margin-left: 1px;
+  position: absolute;
+}
+
+div#corner-triangle .corner-triangle-text a {
+  color: aqua;
+}
+
+div#corner-triangle .corner-triangle-text a:hover,
+div#corner-triangle .corner-triangle-text a:link,
+div#corner-triangle .corner-triangle-text a:visited,
+div#corner-triangle .corner-triangle-text a:active,
+div#corner-triangle .corner-triangle-text a:focus {
+  text-decoration: none;
+}
+
+.search {
+  width: 100%;
+  position: relative;
+}
+
+.searchTerm {
+  float: left;
+  width: 100%;
+  border: 1px solid #00b4cc;
+  padding: 1px;
+  height: 20px;
+  border-radius: 2px;
+  outline: none;
+  color: #9dbfaf;
+  font-size: 12px;
+}
+
+.searchTerm:focus {
+  color: #00b4cc;
+}
+
+.searchButton {
+  position: absolute;
+  right: 0px;
+  width: 20px;
+  height: 20px;
+  border: 1px solid #00b4cc;
+  background: #00b4cc;
+  text-align: center;
+  color: #fff;
+  border-radius: 2px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.picbutton {
+  padding: 10px 10px;
+  font-size: 24px;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  color: #fff;
+  background-color: #4caf50;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+}
+
+.picButtonHover:hover {
+  background-color: #3e8e41;
+}
+
+.picButtonActive {
+  background-color: #f8cd74;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+.orderButton {
+  margin: 0;
+  padding: 0px 0px;
+  font-size: 20px;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  color: #fff;
+  background-color: #4caf50;
+  border: none;
+  border-radius: 2px;
+  box-shadow: 0 3px #999;
+  height: 18px;
+  width: 100%;
+}
+
+.orderButton:hover {
+  background-color: #3e8e41;
+}
+
+.orderButton:active {
+  background-color: #f8cd74;
+  box-shadow: 0 0px #666;
+  transform: translateY(3px);
+}
+
+ul.CategoryImages {
+  margin: 0;
+  padding: 0;
+  white-space: nowrap;
+  overflow-x: auto;
+  background-color: #ddd;
+}
+
+ul.CategoryImages li {
+  display: inline;
+  width: 300px;
+  height: 150px;
+}
+#order-container{
+  padding: 0px;
+}
+
+.highlighted {
+  background-color: #ff0000 !important;
+}
+
+.right-align {
+  text-align: right;
+}
+
+.center-align {
+  text-align: center;
+}
+
+.center-align-bold {
+  text-align: center;
+  font-weight: bold;
+}
+
+.item-copied {
+  background-color: #c8ffc8 !important;
+}
+
+.item-cancelled {
+  background-color: #ffc8c8 !important;
+}
+
+.item-barstd {
+  background-color: #e1efc7 !important;
+}
+
+.transport-lowbed {
+  background-color: #c8c8ff !important;
+}
+
+.transport-escort {
+  background-color: #e8ccfc !important;
+}
+
+.transport-normal {
+  background-color: white !important;
+}
+
+.box-inner {
+  padding: 2px;
+}
+
+.img {
+  display: inline-block;
+  margin: 0px;
+  margin-right: 0px;
+  margin-left: 0px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding: 0px;
+}
+
+/*    .slick-pane-top {
+  top: 0 !important;
+}
+*/
+#BBSNoListCont,
+#PONoListCont {
+  margin: 0px;
+  border: solid 1px gray;
+  width: 100%;
+  background: white;
+  font: 12px Helvetica, Arial, sans-serif;
+  margin-right: 0px;
+  margin-left: 0px;
+}
+
+#container_bpc,
+#nsh_lib,
+#project_template,
+#bpc_bom,
+#copyLibrary,
+#container_bpc1
+#load_details {
+  margin: 0px;
+  border: solid 1px gray;
+  width: 100%;
+  background: white;
+  font: 12px Helvetica, Arial, sans-serif;
+  margin-right: 0px;
+  margin-left: 0px;
+}
+
+
+.slick-header > .slick-header-columns > .slick-header-column {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+}
+::ng-deep #order-container > .slickgrid-container{
+  width: 93vw !important;
+}
+
+
+/* ::ng-deep .slickgrid-container{
+  height: 100%;
+  width: 93vw !important;
+}
+::ng-deep .slickgrid-container#mainGrid{
+  max-height: 100%;
+  height: 50px;
+  width: 93vw !important;
+} */
+.h-25 {
+  height: 250px !important;
+}
+
+/*
+      .slick-header > .slick-header-columns > .slick-header-column {
+          -webkit-box-sizing: border-box;
+          -moz-box-sizing: border-box;
+          box-sizing: border-box;
+      }
+  */
+/* Slick.Editors.Text, Slick.Editors.Date */
+input.editor-text {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  margin: 0;
+  background: transparent;
+  outline: 0;
+  padding: 0;
+}
+
+input.editor-select {
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  margin: 0;
+  background: transparent;
+  outline: 0;
+  padding: 0;
+}
+
+.slick-header-columns {
+  position: relative;
+  white-space: pre-wrap !important; /*Chnaged from Nowrap*/
+  cursor: default;
+  overflow: hidden;
+  height: 45px !important; /*Added by zbc*/
+}
+
+.slick-headerrow-columns {
+  position: relative;
+  white-space: pre-wrap !important; /*Chnaged from Nowrap*/
+  cursor: default;
+  overflow: hidden;
+  height: 25px !important; /*Added by zbc*/
+}
+
+.slick-header-column.ui-state-default {
+  height: 100%;
+}
+
+.slick-headerrow-column.ui-state-default {
+  padding: 0;
+}
+::ng-deep .autocomplete{
+  width: 100% !important;
+}
+/* ::ng-deep .slick-viewport {
+  overflow-y: auto;
+} */
+/* ::ng-deep .add_scroll .slick-viewport {
+  overflow: none;
+  height: 700px !important;
+  overflow-y: scroll !important;
+  scroll-behavior: smooth !important;
+} */
+/*
+::ng-deep .add_scroll .slick-pane-top {
+  height: 550px !important;
+
+} */
+.gridPane {
+  width: auto !important;
+}
+input,
+select,
+textarea {
+  /*    max-width: 280px;*/
+  max-width: 100%;
+}
+.ui-tabs .ui-tabs-panel {
+  padding: 0.2em 0.1em;
+}
+
+/* Base for label styling */
+
+/* hover style just for information */
+label:hover:before {
+  border: 2px solid #4778d9 !important;
+  font-weight: 400;
+}
+::ng-deep .ms-drop {
+  z-index: 99999;
+  background: azure;
+  color: black;
+  white-space: nowrap;
+}
+::ng-deep .ms-drop ul {
+  list-style-type: none;
+  white-space: nowrap;
+  overflow-y: scroll;
+  padding: 0px
+}
+
+/* Check box css */
+.form-switch label{
+  position: absolute !important;
+  top: 7px !important;
+  color: white !important;
+  width: 17em !important;
+}
+.form-switch .form-check-input-edit {
+  height: 2em !important;
+  width: 15em !important;
+  margin-left: -2.5em !important;
+}
+
+.form-check-input-edit{
+  background-color: hsl(216, 27%, 78%) !important;
+  border-color: white !important;
+}
+.form-check-input-edit:checked {
+  background-color:hsl(159, 82%, 53%) !important;
+  border-color: white !important;
+}
+
+.header-bpc{
+  font-family: Lato, sans-serif;
+  font-weight: bold;
+  font-size: 14px;
+  /* color: rgb(59, 182, 182); */
+  color: blue;
+  margin-top: 10px;
+}
+.form-control:disabled, .form-control[readonly] {
+  background:none;
+  border: none;
+}
+::ng-deep .accordion-header {
+  display: none !important;
+}
+
+.table-container {
+  max-height: 200px; /* Set your desired fixed height */
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+
+  th {
+    background-color: #f2f2f2;
+  }
+}
+canvas[data-engine="three.js r158"] {
+  display: none !important;
+}
+table:hover{
+  background: none  !important;
+}
+tr:hover{
+  background: none  !important;
+}
+td:hover{
+  background: none  !important;
+}
+::ng-deep .slick-autocomplete {
+  min-width: fit-content !important;
+  max-width: max-content !important;
+  /* top: calc(top - height); */
+  /* top:0px !important; */
+}
+
+
+::ng-deep #slickGridContainer-mainGrid .slickgrid-container{
+  height: 190px !important;
+  /* max-width: 120%; */
+}
+.h-75 {
+  height: 82% !important;
+}
+.h-25 {
+  height: 250px !important;
+}
+::ng-deep #slickGridContainer-grid2 .slickgrid-container{
+  height: 450px !important;
+  /* max-width: 120%; */
+}
+::ng-deep  .slickgrid-container .slick-headerrow .slick-headerrow-columns .slick-headerrow-column {
+  border: 1px solid #ccc !important;
+}
+::ng-deep .slickgrid-container .slick-pane-top {
+  top: 30px !important;
+}
+
+:host ::ng-deep .slick-empty-data-warning {
+  margin-top: 20px;
+}
+
+:host ::ng-deep .gridPane{
+  overflow-y: unset !important;
+  overflow-x: auto;
+}
+
+:host ::ng-deep .slick-viewport{
+  overflow: hidden scroll !important;
+}
+:host ::ng-deep .slickgrid-container .slick-cell.highlighted {
+  background-color: #ff0000 !important;
+}
+:host ::ng-deep .slick-cell.selected {
+  background-color: var(--slick-row-selected-color, #a0d8fa) !important;
+}
+:host ::ng-deep .slick-cell.selected.highlighted {
+  background-color: #ff0000 !important;
+}
+
+.btn {
+  margin: 1px !important;
+}
+::ng-deep .slickgrid-container .grid-canvas .slick-cell.left-align {
+  text-align: left !important;
+}
+
+::ng-deep .modal .modal-xxl {
+  max-width: 1480px !important;
+}
+
+:host ::ng-deep .slick-row.row-error {
+  background-color: #f8d7da !important; /* light red */
+  color: #721c24 !important;
+}
+
+:host ::ng-deep .slick-row.row-success {
+  background-color: #d4edda !important; /* light green */
+  color: #155724 !important;
+}
+
+:host ::ng-deep #slickGridContainer-mainGridCopy{
+  width:1200px;
+  overflow-x:hidden !important;
+  padding: 0 !important;
+
+}
+
+:host ::ng-deep .row-red {
+  background-color: #F08080 !important;
+}
+
+:host ::ng-deep .row-green {
+  background-color: #ADEDAD !important;
+}
+:host ::ng-deep .collapse-toggle-btn {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  z-index: 10;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 2px 6px;
+  cursor: pointer;
+}
+.text-align {
+  text-align: left !important;
+}
+.Green-Steel-label {
+  width: 12rem;
+  font-size: large;
+  font-weight: 500;
+  padding-bottom: 2px;
+}
+
+.Green-steel-perc-label {
+  width: 12rem;
+  font-size: large;
+  font-weight: 500;
+  padding-bottom: 2px;
+}
+
+.Green-Steel {
+  width: 5rem;
+  font-size: x-large;
+  padding-bottom: 1rem;
+  padding-left: 0;
+
+  input {
+    margin-left: 0;
+  }
+}
+.form-check :checked {
+  background-color: #0dfd1f;
+  border-color: #0dfd1f;
+}

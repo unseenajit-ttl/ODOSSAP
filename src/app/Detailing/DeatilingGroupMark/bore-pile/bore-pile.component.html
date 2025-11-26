@@ -1,0 +1,813 @@
+<tabset>
+  <div class="row  d-flex ">
+    <span style="display: flex; align-items: center">
+
+      <i class="bi bi-arrow-left-short" style="font-size: x-large; color: blue" ngbTooltip="Back"
+        (click)="goBack()"></i>
+
+      <a style="color: blue" (click)="goBack()">Back to Mesh Detailing  </a></span>
+    <br />
+  </div>
+  <div class="row ">
+    <ngb-accordion #acc="ngbAccordion" title="Filters" activeIds="panel1">
+      <ngb-panel id="panel1">
+        <ng-template ngbPanelContent>
+          <div class="card-body">
+            <ng-container class="border">
+              <div class="row">
+                <div class="col-md-3">
+                  <label class="form-label">Customer</label>
+                  <input type="text" readonly="true" class="form-control" [value]="MeshData.CustomerName" />
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label ">Project</label> <br>
+                  <input type="text" readonly="true" class="form-control" [value]="MeshData.ProjectName" />
+                </div>
+                <div class="col-md-2">
+                  <label class="form-label">ProductType </label><br>
+                  <input type="text" readonly="true" class="form-control" [value]="MeshData.VCHPRODUCTTYPE">
+                </div>
+                <div class="col-md-2">
+                  <label for="bendingtype" class="form-label ">StructureElement</label><br>
+                  <input type="text" readonly="true" class="form-control" [value]="MeshData.VCHSTRUCTUREELEMENTTYPE">
+                </div>
+                <div class="col-md-1">
+                  <label for="bendingtype" class="form-label ">GroupMarking</label><br>
+                  <input type="text" readonly="true" class="form-control" [value]="MeshData.VCHGROUPMARKINGNAME">
+                </div>
+                <div class="col-md-1">
+                  <label class="form-label">ParameterSet</label> <br>
+                  <input type="text" readonly="true" class="form-control" [value]="MeshData.INTPARAMETESET">
+                </div>
+              </div>
+
+            </ng-container>
+          </div>
+        </ng-template>
+      </ngb-panel>
+    </ngb-accordion>
+
+    <ngb-accordion #acc="ngbAccordion" title="Parameter Set">
+      <ngb-panel id="panel1">
+        <ng-template ngbPanelContent>
+          <div class="card-body border ">
+
+
+
+            <br>
+            <div class="row d-flex">
+              <div class="col-md-2 ">
+                <label class="form-label">Lap Length :</label>
+              </div>
+              <div class="col-md-1">
+                <input type="text" readonly="true" [value]="ParameterValues.intlaplength"
+                  class="form-control form-control-sm" />
+              </div>
+              <div class="col-md-1"></div>
+              <div class="col-md-2">
+                <label class="form-label">End Length :</label>
+              </div>
+              <div class="col-md-1">
+                <input type="text" readonly="true" class="form-control form-control-sm"
+                  [value]="ParameterValues.intendlength" />
+              </div>
+              <div class="col-md-1"></div>
+              <div class="col-md-2 ">
+                <label class="form-label">Product Type L2 : </label>
+              </div>
+              <div class="col-md-1">
+                <input type="text" readonly="true" [value]="ParameterValues.vchProductType"
+                  class="form-control form-control-sm" />
+              </div>
+            </div>
+            <br>
+
+            <div class="row d-flex">
+
+              <div class="col-md-2">
+
+                <label class="form-label">Adjustment Factor :</label>
+
+              </div>
+
+              <div class="col-md-1">
+
+                <input type="text" readonly="true" [value]="ParameterValues.intadjfactor"
+                  class="form-control form-control-sm" />
+
+              </div>
+
+              <div class="col-md-1"></div>
+
+
+
+              <div class="col-md-2">
+
+                <label class="form-label">Cover to Link :</label>
+
+              </div>
+
+              <div class="col-md-1">
+
+                <input type="text" readonly="true" class="form-control form-control-sm"
+                  [value]="ParameterValues.intcovertolink" />
+
+              </div>
+
+              <div class="col-md-1"></div>
+
+            </div>
+          </div>
+        </ng-template>
+      </ngb-panel>
+    </ngb-accordion>
+    <ngb-accordion #acc="ngbAccordion" title="Coupler Type">
+      <ngb-panel id="panel1">
+        <ng-template ngbPanelContent>
+    <div class="d-flex" style="justify-content: space-between; padding: 0 20px;">
+      <div class="card-body">
+        <label>
+          Coupler Type:
+        </label>
+        <ng-select [selectOnTab]="true" class="ng-selectcustomer" [(ngModel)]="CouplerType"
+          (ngModelChange)="OnChangeCouplerType()" [disabled]="NON_Editable">
+          <ng-option *ngFor="let sList of CouplerList" [value]="sList">
+            {{ sList }}
+          </ng-option>
+        </ng-select>
+        <span  class="Coupler-Type">The purpose of the dropdown is simply to provide the required shape codes corresponding to the coupler type.</span>
+      </div>
+   <div>
+      <button type="button" class="btn btn-info" style="border-radius: 20px; float:right" (click)="showreport()">View
+        Report</button>
+      </div>
+  
+    </div>
+  </ng-template>
+  </ngb-panel>
+  </ngb-accordion>
+  </div>
+  <!-- <button class="btn btn-primary  btn-sm" (click)="viewModal_MachineType()">View Machine Type</button> -->
+  <!-- <button class="btn btn-primary  btn-sm" (click)="viewModal_MainBar()">View Main Bar</button>
+
+  <button class="btn btn-primary  btn-sm" (click)="viewModal_ElevationPattern()">View Elevation Pattern </button>
+  <button class="btn btn-primary  btn-sm" (click)="viewModal_additionalSpiral()">View Additional Spiral </button>
+  <button class="btn btn-primary  btn-sm" (click)="viewModal_cageNotes()">View Cage Notes </button>
+  <button class="btn btn-primary  btn-sm" (click)="viewModal_circularRing()">View Circular Ring </button>
+  <button class="btn btn-primary  btn-sm" (click)="viewModal_stiffnerRing()">View Stiffner Ring </button> -->
+
+
+
+
+
+  <div class="card-body table-responsive">
+
+    <div [class.mat-elevation-z8]="true" *ngIf="showImage"
+      style=" position: fixed;
+            background-color: white;z-index: 10000;right: 0; top:10%; width: 32%;max-height: 100%; border-radius: 15px;">
+      <div class="row d-flex" style=" text-align:justify; background-color:#fafafa ; margin: 5px;
+        border-radius: 9px;">
+        <div class="col-md-10">
+          <h4><b>Shape Parameters</b></h4>
+        </div>
+        <div class="col-md-2">
+          <i class="fa-solid fa-circle-xmark fa-2xs"></i>
+          <!-- <i class="fa-solid fa-xmark" style=" font-Weight:bold; font-size: 16px;"></i> -->
+          <button type="button" class="btn-close" aria-label="Close" (click)="showImage=false;"></button>
+        </div>
+      </div>
+      <div class="row d-flex">
+        <div class="col-md-4"> MW length <input class="form-control" maxlength="10" type="text"
+            [(ngModel)]="Insert_BPC_Structuremarking_Temp" /></div>
+        <div class="col-md-4"> CW length <input class="form-control" maxlength="10" type="text"
+            [(ngModel)]="popup_CWLength" /></div>
+        <div class="col-md-4"></div>
+      </div>
+
+
+      <div class="d-flex ">
+
+        <table class="table w-25 table-striped  table-bordered" style="height: fit-content; margin: 20px;">
+          <thead>
+            <tr>
+
+              <th>Parameter Name</th>
+              <th>Parameter Value</th>
+              <!-- <th>Critical Indicator</th>
+            <th>Seauence Number</th> -->
+
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngIf="Mode==='S'">
+              <tr *ngFor="let item of ShapeParamlist ; index as j">
+
+                <td>{{item.chrParamName}}</td>
+                <td class="text-center">
+
+                  <input class="form-control" maxlength="10" type="text" [(ngModel)]="item.ParameterValue" />
+                </td>
+                <!-- <td><input type="checkbox" class="form-check-input" id="Chainage_Start" [(ngModel)]="item.chrCriticalInd" >
+            </td>
+            <td> <input class="form-control" maxlength="10" type="text"
+              [(ngModel)]="item.intParamSeq"
+              /></td> -->
+
+              </tr>
+            </ng-container>
+
+            <ng-container *ngIf="Mode==='E'">
+              <tr *ngFor="let item of ShapeParamlist_edit ; index as j">
+
+                <td>{{item.chrParamName}}</td>
+                <td class="text-center">
+
+                  <input class="form-control" maxlength="10" type="text" [(ngModel)]="item.ParameterValue" />
+                </td>
+
+              </tr>
+            </ng-container>
+          </tbody>
+
+        </table>
+        <div *ngIf="showImage" class="width_set">
+          <img class="img-responsive" [src]="'assets/images/Shapes/'+ Imagename +''" alt="image" style="position: relative ;
+                left: 0px;">
+        </div>
+
+      </div>
+
+      <div class="row d-flex">
+        <div class="col-md-3"> MO1 <input class="form-control" maxlength="10" type="text" [(ngModel)]="popup_MO1" />
+        </div>
+        <div class="col-md-3"> MO2 <input class="form-control" maxlength="10" type="text" [(ngModel)]="popup_MO2" />
+        </div>
+        <div class="col-md-3"> CO1 <input class="form-control" maxlength="10" type="text" [(ngModel)]="popup_CO1" />
+        </div>
+        <div class="col-md-3"> CO2 <input class="form-control" maxlength="10" type="text" [(ngModel)]="popup_CO2" />
+        </div>
+
+      </div>
+      <div class="text-center">
+        <button class="btn btn-primary">Save</button>
+
+      </div>
+      <br>
+    </div>
+    <!-- IMAGE TABLE START -->
+    <div *ngIf="loading" style="z-index: 500">
+
+      <div id="pause" class="d-flex align-items-center justify-content-center">
+
+        <div id="spinner" class="loader"></div>
+
+      </div>
+
+    </div>
+
+
+
+    <div class="row " style="padding: 0;">
+
+      <div class="d-flex table-responsive table-bordered" style="padding: 0; margin:0;overflow-y: auto;">
+        <table class="  table   table-responsive table-bordered" style="margin-bottom: 0; align-self:flex-start;">
+          <thead>
+
+            <tr>
+              <th> </th>
+              <th> Cage Seq No </th>
+              <th> Structure Marking</th>
+              <th> Rev No </th>
+              <th> Pile Dia </th>
+              <th>Fabrication Method </th>
+              <th> Main Bar Pattern </th>
+              <th>No of Main Bar </th>
+              <th> Elevation Pattern </th>
+              <th> Cover to Link </th>
+              <th> Lap Length </th>
+              <th> End Length </th>
+              <th> Links Start </th>
+              <th> Links End </th>
+
+              <th> Add Spiral </th>
+              <th> No of Stiffner Ring / Centralizer </th>
+              <th> No of Square Stiffner </th>
+              <th> No of Circular Rings </th>
+              <th> Cage Length </th>
+              <th> Adjustment Factor </th>
+              <th> Member Qty </th>
+              <th>MachineType</th>
+              <th> Cage Note </th>
+              <th>Actions</th>
+
+
+
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let item of tabledata">
+              <tr *ngIf="!item.isEditable" [style.background-color]="giveRowcolor(item)" (click)="selectRow(item,$event)">
+                <td></td>
+
+                <td contenteditable="false">{{item.tntCageSeqNo}}</td>
+                <td contenteditable="false">{{item.vchStructureMarkingName}}</td>
+                <td contenteditable="false">{{item.tntStructureRevNo}}</td>
+                <td contenteditable="false">{{item.numPileDia}}</td>
+                <td contenteditable="false">{{item.vchFabricationType}}</td>
+                <td contenteditable="false">{{item.vchMainBarPattern}}</td>
+                <td contenteditable="false">{{item.tntNumOfMainBar}}</td>
+                <td contenteditable="false">{{item.vchElevationPattern}}</td>
+                <td contenteditable="false">{{item.intCoverToLink}}</td>
+                <td contenteditable="false">{{item.intLapLength}}</td>
+                <td contenteditable="false">{{item.intEndLength}}</td>
+                <td contenteditable="false">{{item.tntNumOfLinksatStart}}</td>
+                <td contenteditable="false">{{item.tntNumOfLinksatEnd}}</td>
+                <td contenteditable="false">{{item.tntAdditionalSpiral}}</td>
+                <td contenteditable="false">{{item.tntNumberOfStiffnerOrCentralizer}}</td>
+                <td contenteditable="false">{{item.tntNumOfSquareStiffner}}</td>
+                <td contenteditable="false">{{item.tntNumOfCircularRings}}</td>
+                <td contenteditable="false">{{item.numCageLength}}</td>
+                <td contenteditable="false">{{item.intAjustmentFactor}}</td>
+                <td contenteditable="false">{{item.intMemberQty}}</td>
+                <td contenteditable="false">{{item.MachineTypeId}}</td>
+                <td contenteditable="false">{{item.tntCageNoteId}}</td>
+                <td>
+                  <span style="margin:auto; padding:2px">
+                    <i *ngIf="strIsReadOnly==='NO'" class="material-icons" ngbTooltip="Edit"
+                      (click)="item.isEditable=!item.isEditable" style="cursor: pointer;">mode_edit</i>&nbsp;
+
+
+                    <i *ngIf="strIsReadOnly==='NO'" class="bi bi-trash" ngbTooltip="Delete"
+                      style="color:red; font-size:22px" (click)="deletebpcstructuremarking(item)"
+                      style="cursor: pointer;"></i>
+                  </span>
+                </td>
+
+              </tr>
+
+              <tr *ngIf="item.isEditable">
+                <td></td>
+
+                <td contenteditable="false">{{item.tntCageSeqNo}}</td>
+
+                <td>
+
+                  <input class="form-control" maxlength="50" type="text" [(ngModel)]="item.stringWithoutLastThreeChars"
+                    [readOnly]="true">
+
+                  <input class="form-control" maxlength="3" type="text" [(ngModel)]="item.lastThreeChars"
+                    [readOnly]="!item.isEditable">
+
+                </td>
+
+                <td>
+                  <input class="form-control" maxlength="10" type="text" [(ngModel)]="item.tntStructureRevNo"
+                    [readOnly]="!item.isEditable">
+                  <span class="text-danger validator-message" *ngIf="isaddnewRecord &&  (pushElement.marking=='')">*
+                    Structure Marking Required. </span>
+                </td>
+                <td class="w-125">
+                  <input class="form-control" maxlength="10" type="text" [(ngModel)]="item.numPileDia"
+                    [readOnly]="!item.isEditable" style="width: 80px !important;" />
+                  <span class="text-danger validator-message" *ngIf="isaddnewRecord &&  (pushElement.main=='')">*
+                    Main Required. </span>
+                </td>
+                <td>
+                  <ng-select [selectOnTab]="true" class="ng-selectcustomer" appendTo="body"
+                    [(ngModel)]="item.vchFabricationType" style="width:120px;" [disabled]="!item.isEditable">
+
+                    <ng-option *ngFor="let sList of FABMETHODS_list" [value]="sList.vchDescription">
+                      {{sList.vchDescription}}
+                    </ng-option>
+                  </ng-select>
+                  <span class="text-danger validator-message" *ngIf="isaddnewRecord &&  (pushElement.shape=='')">*
+                    Shape Required. </span>
+                </td>
+                <td>
+                  <div class="d-flex">
+                    <ng-select [selectOnTab]="true" class="ng-selectcustomer" appendTo="body"
+                      (change)="viewModal_MainBar(item)" [(ngModel)]="item.vchMainBarPattern" style="width:120px;"
+                      [disabled]="!item.isEditable">
+
+                      <ng-option *ngFor="let sList of MAINBARPATTERN_list" [value]="sList.vchMainBarPatternCode">
+                        {{sList.vchMainBarPatternCode}}
+                      </ng-option>
+                    </ng-select>
+                    <button (click)="viewModal_MainBar(item)" class="btn btn-sm btn-outline-primary mt-0 p-1"
+                      [disabled]="!item.isEditable"> V </button>
+                  </div>
+
+                  <span class="text-danger validator-message" *ngIf="isaddnewRecord &&  (pushElement.shape=='')">*
+                    Shape Required. </span>
+                </td>
+                <td>
+                  <input class="form-control" maxlength="10" type="text" [(ngModel)]="item.tntNumOfMainBar"
+                    [disabled]="!item.isEditable" style="width: 60px !important;" />
+                  <span class="text-danger validator-message" *ngIf="isaddnewRecord &&  (pushElement.cross=='')">*
+                    Cross Required. </span>
+                </td>
+                <td>
+                  <div class="d-flex pt-2">
+                    <ng-select [selectOnTab]="true" class="ng-selectcustomer" appendTo="body"
+                      (change)="viewModal_ElevationPattern(item)" [(ngModel)]="item.vchElevationPattern"
+                      style="width:120px;" [disabled]="!item.isEditable">
+
+                      <ng-option *ngFor="let sList of ELEVATIONPATTERN_list" [value]="sList.vchElevationCode">
+                        {{sList.vchElevationCode}}
+                      </ng-option>
+                    </ng-select>
+                    <button (click)="viewModal_ElevationPattern(item)" class="btn btn-sm btn-outline-primary mt-0 p-1"
+                      [disabled]="!item.isEditable"> V
+                    </button>
+                  </div>
+
+                  <span class="text-danger validator-message" *ngIf="isaddnewRecord &&  (pushElement.shape=='')">*
+                    Shape Required. </span>
+                </td>
+                <td> <input class="form-control" maxlength="10" type="text" [(ngModel)]="item.intCoverToLink"
+                    [disabled]="!item.isEditable" style="width: 60px !important;" />
+                  <span class="text-danger validator-message" *ngIf="isaddnewRecord &&  (pushElement.qty=='')">*
+                    Qty Required. </span>
+                </td>
+                <td> <input class="form-control" maxlength="10" type="text" [(ngModel)]="item.intLapLength"
+                    [disabled]="!item.isEditable" style="width: 60px !important;" />
+                  <span class="text-danger validator-message" *ngIf="isaddnewRecord &&  (pushElement.qty=='')">*
+                    Qty Required. </span>
+                </td>
+                <td> <input class="form-control" maxlength="10" type="text" [(ngModel)]="item.intEndLength"
+                    [disabled]="!item.isEditable" style="width: 60px !important;" />
+                  <span class="text-danger validator-message" *ngIf="isaddnewRecord &&  (pushElement.qty=='')">*
+                    Qty Required. </span>
+                </td>
+                <td> <input class="form-control" maxlength="10" type="text" [(ngModel)]="item.tntNumOfLinksatStart"
+                    [disabled]="!item.isEditable" style="width: 60px !important;" />
+                  <span class="text-danger validator-message" *ngIf="isaddnewRecord &&  (pushElement.qty=='')">*
+                    Qty Required. </span>
+                </td>
+                <td> <input class="form-control" maxlength="10" type="text" [(ngModel)]="item.tntNumOfLinksatEnd"
+                    [disabled]="!item.isEditable" style="width: 60px !important;" />
+                  <span class="text-danger validator-message" *ngIf="isaddnewRecord &&  (pushElement.qty=='')">*
+                    Qty Required. </span>
+                </td>
+                <td>
+                  <div class="d-flex">
+                    <input class="form-control" maxlength="10" type="text" [(ngModel)]="item.tntAdditionalSpiral"
+                      [disabled]="!item.isEditable" style="width: 60px !important;" />
+                    <button (click)="viewModal_additionalSpiral(item)" class="btn btn-sm btn-outline-primary mt-0 p-1"
+                      [disabled]="!item.isEditable"> V
+                    </button>
+                  </div>
+
+                  <span class="text-danger validator-message" *ngIf="isaddnewRecord &&  (pushElement.qty=='')">*
+                    Qty Required. </span>
+                </td>
+                <td>
+                  <div class="d-flex">
+                    <input class="form-control" maxlength="10" type="text"
+                      [(ngModel)]="item.tntNumberOfStiffnerOrCentralizer" [disabled]="!item.isEditable"
+                      style="width: 60px !important;" />
+                    <button (click)="viewModal_stiffnerRing(item)" class="btn btn-sm btn-outline-primary mt-0 p-1"
+                      [disabled]="!item.isEditable"> V </button>
+                  </div>
+
+                  <span class="text-danger validator-message" *ngIf="isaddnewRecord &&  (pushElement.qty=='')">*
+                    Qty Required. </span>
+                </td>
+                <td> <input class="form-control" maxlength="10" type="text" [(ngModel)]="item.tntNumOfSquareStiffner"
+                    [disabled]="!item.isEditable" style="width: 60px !important;" />
+                  <span class="text-danger validator-message" *ngIf="isaddnewRecord &&  (pushElement.qty=='')">*
+                    Qty Required. </span>
+                </td>
+                <td>
+                  <div class="d-flex">
+                    <input class="form-control" maxlength="10" type="text" [(ngModel)]="item.tntNumOfCircularRings"
+                      [disabled]="!item.isEditable" style="width: 60px !important;" />
+                    <button (click)="viewModal_circularRing(item)" class="btn btn-sm btn-outline-primary mt-0 p-1"
+                      [disabled]="!item.isEditable"> V </button>
+                  </div>
+
+                  <span class="text-danger validator-message" *ngIf="isaddnewRecord &&  (pushElement.qty=='')">*
+                    Qty Required. </span>
+                </td>
+                <td> <input class="form-control" maxlength="10" type="text" [(ngModel)]="item.numCageLength"
+                    [disabled]="!item.isEditable" style="width: 60px !important;" />
+                  <span class="text-danger validator-message" *ngIf="isaddnewRecord &&  (pushElement.qty=='')">*
+                    Qty Required. </span>
+                </td>
+                <td> <input class="form-control" maxlength="10" type="text" [(ngModel)]="item.intAjustmentFactor"
+                    [disabled]="!item.isEditable" style="width: 60px !important;" />
+                  <span class="text-danger validator-message" *ngIf="isaddnewRecord &&  (pushElement.qty=='')">*
+                    Qty Required. </span>
+                </td>
+                <td> <input class="form-control" maxlength="10" type="text" [(ngModel)]="item.intMemberQty"
+                    [disabled]="!item.isEditable" style="width: 60px !important;" />
+                  <span class="text-danger validator-message" *ngIf="isaddnewRecord &&  (pushElement.qty=='')">*
+                    Qty Required. </span>
+                </td>
+                <td>
+                  <div class="d-flex">
+                    <ng-select [selectOnTab]="true" class="ng-selectcustomer" appendTo="body" [items]="machineTypeList"
+                      bindLabel="vchDescription" bindValue="tntMachineTypeId" [(ngModel)]="item.MachineTypeId"
+                      style="width:120px;" [disabled]="!item.isEditable" (change)="machineTpeChanged($event,item);">
+                    </ng-select>
+                    <button (click)="viewModal_MachineType(item)" class="btn btn-sm btn-outline-primary mt-0 p-1"
+                      [disabled]="!item.isEditable"> V </button>
+                  </div>
+                </td>
+                <td>
+                  <div class="d-flex">
+                    <ng-select [selectOnTab]="true" class="ng-selectcustomer" appendTo="body"
+                      [(ngModel)]="item.tntCageNoteId" style="width:120px;" [disabled]="!item.isEditable">
+
+                      <ng-option *ngFor="let sList of CageNotes_list" [value]="sList.tntNoteID">
+                        {{sList.tntNoteID}}
+                      </ng-option>
+                    </ng-select>
+                    <button (click)="viewModal_cageNotes(item)" class="btn btn-sm btn-outline-primary mt-0 p-1"
+                      [disabled]="!item.isEditable"> V </button>
+                  </div>
+
+                  <span class="text-danger validator-message" *ngIf="isaddnewRecord &&  (pushElement.shape=='')">*
+                    Shape Required. </span>
+                </td>
+                <td>
+                  <i class="material-icons" ngbTooltip="Update" (click)="updateBpcExtraLayer(item)"
+                    style="cursor: pointer;">save</i>&nbsp;
+                  <i class="material-icons" ngbTooltip="Cancel" (click)="item.isEditable=!item.isEditable;EditCancel()"
+                    style="cursor: pointer;">cancel</i>
+
+              </tr>
+            </ng-container>
+
+
+          </tbody>
+
+          <tfoot *ngIf="strIsReadOnly==='NO'">
+            <tr>
+
+              <td></td>
+              <td></td>
+              <td>
+                <input class="form-control" maxlength="3" type="text"
+                  [(ngModel)]="Insert_BPC_Structuremarking_Temp.vchStructureMarkingName"
+                  (keydown.enter)="onsubmit(Insert_BPC_Structuremarking_Temp)">
+                <span class="text-danger validator-message" *ngIf="isaddnewRecord &&  (pushElement.marking=='')">*
+                  Structure Marking Required. </span>
+              </td>
+
+              <td>
+                <input class="form-control" maxlength="10" type="text"
+                  [(ngModel)]="Insert_BPC_Structuremarking_Temp.tntStructureRevNo" style="width: 50px !important;">
+                <span class="text-danger validator-message" *ngIf="isaddnewRecord &&  (pushElement.marking=='')">*
+                  Structure Marking Required. </span>
+              </td>
+              <td>
+                <input class="form-control" maxlength="10" type="text"
+                  [(ngModel)]="Insert_BPC_Structuremarking_Temp.numPileDia" style="width: 80px !important;" />
+                <span class="text-danger validator-message" *ngIf="isaddnewRecord &&  (pushElement.main=='')">*
+                  Main Required. </span>
+              </td>
+              <td>
+                <ng-select [selectOnTab]="true" class="ng-selectcustomer" appendTo="body"
+                  [(ngModel)]="Insert_BPC_Structuremarking_Temp.vchFabricationType" style="width:120px;">
+
+                  <ng-option *ngFor="let sList of FABMETHODS_list" [value]="sList.vchDescription">
+                    {{sList.vchDescription}}
+                  </ng-option>
+                </ng-select>
+                <span class="text-danger validator-message" *ngIf="isaddnewRecord &&  (pushElement.shape=='')">*
+                  Shape Required. </span>
+              </td>
+              <td>
+                <div class="d-flex">
+                  <ng-select [selectOnTab]="true" class="ng-selectcustomer" appendTo="body"
+                    (change)="viewModal_MainBar(Insert_BPC_Structuremarking_Temp)"
+                    [(ngModel)]="Insert_BPC_Structuremarking_Temp.vchMainBarPattern" style="width:120px;">
+
+                    <ng-option *ngFor="let sList of MAINBARPATTERN_list" [value]="sList.vchMainBarPatternCode">
+                      {{sList.vchMainBarPatternCode}}
+                    </ng-option>
+                  </ng-select>
+                  <span (click)="viewModal_MainBar(Insert_BPC_Structuremarking_Temp)"
+                    class="btn btn-sm btn-outline-primary mt-0 p-1"> V </span>
+                </div>
+
+                <span class="text-danger validator-message" *ngIf="isaddnewRecord &&  (pushElement.shape=='')">*
+                  Shape Required. </span>
+              </td>
+              <td>
+                <input class="form-control" maxlength="10" type="text"
+                  [(ngModel)]="Insert_BPC_Structuremarking_Temp.tntNumOfMainBar" style="width: 60px !important;" />
+                <span class="text-danger validator-message" *ngIf="isaddnewRecord &&  (pushElement.cross=='')">*
+                  Cross Required. </span>
+              </td>
+              <td>
+                <div class="d-flex pt-2">
+                  <ng-select [selectOnTab]="true" class="ng-selectcustomer" appendTo="body"
+                    (change)="viewModal_ElevationPattern(Insert_BPC_Structuremarking_Temp)"
+                    [(ngModel)]="Insert_BPC_Structuremarking_Temp.vchElevationPattern" style="width:120px;">
+
+                    <ng-option *ngFor="let sList of ELEVATIONPATTERN_list" [value]="sList.vchElevationCode">
+                      {{sList.vchElevationCode}}
+                    </ng-option>
+                  </ng-select>
+                  <span (click)="viewModal_ElevationPattern(Insert_BPC_Structuremarking_Temp)"
+                    class="btn btn-sm btn-outline-primary mt-0 p-1"> V
+                  </span>
+                </div>
+
+                <span class="text-danger validator-message" *ngIf="isaddnewRecord &&  (pushElement.shape=='')">*
+                  Shape Required. </span>
+              </td>
+              <td> <input class="form-control" maxlength="10" type="text"
+                  [(ngModel)]="Insert_BPC_Structuremarking_Temp.intCoverToLink" style="width: 60px !important;" />
+                <span class="text-danger validator-message" *ngIf="isaddnewRecord &&  (pushElement.qty=='')">*
+                  Qty Required. </span>
+              </td>
+              <td> <input class="form-control" maxlength="10" type="text"
+                  [(ngModel)]="Insert_BPC_Structuremarking_Temp.intLapLength" style="width: 60px !important;" />
+                <span class="text-danger validator-message" *ngIf="isaddnewRecord &&  (pushElement.qty=='')">*
+                  Qty Required. </span>
+              </td>
+              <td> <input class="form-control" maxlength="10" type="text"
+                  [(ngModel)]="Insert_BPC_Structuremarking_Temp.intEndLength" style="width: 60px !important;" />
+                <span class="text-danger validator-message" *ngIf="isaddnewRecord &&  (pushElement.qty=='')">*
+                  Qty Required. </span>
+              </td>
+              <td> <input class="form-control" maxlength="10" type="text"
+                  [(ngModel)]="Insert_BPC_Structuremarking_Temp.tntNumOfLinksatStart" style="width: 60px !important;" />
+                <span class="text-danger validator-message" *ngIf="isaddnewRecord &&  (pushElement.qty=='')">*
+                  Qty Required. </span>
+              </td>
+              <td> <input class="form-control" maxlength="10" type="text"
+                  [(ngModel)]="Insert_BPC_Structuremarking_Temp.tntNumOfLinksatEnd" style="width: 60px !important;" />
+                <span class="text-danger validator-message" *ngIf="isaddnewRecord &&  (pushElement.qty=='')">*
+                  Qty Required. </span>
+              </td>
+              <td>
+                <div class="d-flex">
+                  <input class="form-control" maxlength="10" type="text"
+                    [(ngModel)]="Insert_BPC_Structuremarking_Temp.tntAdditionalSpiral"
+                    style="width: 60px !important;" />
+                  <span (click)="viewModal_additionalSpiral(Insert_BPC_Structuremarking_Temp)"
+                    class="btn btn-sm btn-outline-primary mt-0 p-1"> V
+                  </span>
+                </div>
+
+                <span class="text-danger validator-message" *ngIf="isaddnewRecord &&  (pushElement.qty=='')">*
+                  Qty Required. </span>
+              </td>
+              <td>
+                <div class="d-flex">
+                  <input class="form-control" maxlength="10" type="text"
+                    [(ngModel)]="Insert_BPC_Structuremarking_Temp.tntNumberOfStiffnerOrCentralizer"
+                    style="width: 60px !important;" />
+                  <span (click)="viewModal_stiffnerRing(Insert_BPC_Structuremarking_Temp)"
+                    class="btn btn-sm btn-outline-primary mt-0 p-1"> V </span>
+                </div>
+
+                <span class="text-danger validator-message" *ngIf="isaddnewRecord &&  (pushElement.qty=='')">*
+                  Qty Required. </span>
+              </td>
+              <td> <input class="form-control" maxlength="10" type="text"
+                  [(ngModel)]="Insert_BPC_Structuremarking_Temp.tntNumOfSquareStiffner"
+                  style="width: 60px !important;" />
+                <span class="text-danger validator-message" *ngIf="isaddnewRecord &&  (pushElement.qty=='')">*
+                  Qty Required. </span>
+              </td>
+              <td>
+                <div class="d-flex">
+                  <input class="form-control" maxlength="10" type="text"
+                    [(ngModel)]="Insert_BPC_Structuremarking_Temp.tntNumOfCircularRings"
+                    style="width: 60px !important;" />
+                  <span (click)="viewModal_circularRing(Insert_BPC_Structuremarking_Temp)"
+                    class="btn btn-sm btn-outline-primary mt-0 p-1"> V </span>
+                </div>
+
+                <span class="text-danger validator-message" *ngIf="isaddnewRecord &&  (pushElement.qty=='')">*
+                  Qty Required. </span>
+              </td>
+              <td> <input class="form-control" maxlength="10" type="text"
+                  [(ngModel)]="Insert_BPC_Structuremarking_Temp.numCageLength" style="width: 60px !important;" />
+                <span class="text-danger validator-message" *ngIf="isaddnewRecord &&  (pushElement.qty=='')">*
+                  Qty Required. </span>
+              </td>
+              <td> <input class="form-control" maxlength="10" type="text"
+                  [(ngModel)]="Insert_BPC_Structuremarking_Temp.intAjustmentFactor" style="width: 60px !important;" />
+                <span class="text-danger validator-message" *ngIf="isaddnewRecord &&  (pushElement.qty=='')">*
+                  Qty Required. </span>
+              </td>
+              <td> <input class="form-control" maxlength="10" type="text"
+                  [(ngModel)]="Insert_BPC_Structuremarking_Temp.intMemberQty" style="width: 60px !important;" />
+                <span class="text-danger validator-message" *ngIf="isaddnewRecord &&  (pushElement.qty=='')">*
+                  Qty Required. </span>
+              </td>
+              <td>
+                <div class="d-flex">
+
+                  <ng-select [selectOnTab]="true" class="ng-selectcustomer" appendTo="body" [items]="machineTypeList"
+                    bindLabel="vchDescription" bindValue="tntMachineTypeId"
+                    [(ngModel)]="Insert_BPC_Structuremarking_Temp.MachineTypeId" style="width:120px;"
+                    (change)="machineTpeChanged($event,Insert_BPC_Structuremarking_Temp);">
+                  </ng-select>
+
+                  <button (click)="viewModal_MachineType(Insert_BPC_Structuremarking_Temp)"
+                    class="btn btn-sm btn-outline-primary mt-0 p-1"> V </button>
+                </div>
+              </td>
+              <td>
+                <div class="d-flex">
+                  <ng-select [selectOnTab]="true" class="ng-selectcustomer" appendTo="body"
+                    [(ngModel)]="Insert_BPC_Structuremarking_Temp.tntCageNoteId" style="width:120px;">
+
+                    <ng-option *ngFor="let sList of CageNotes_list" [value]="sList.tntNoteID">
+                      {{sList.tntNoteID}}
+                    </ng-option>
+                  </ng-select>
+                  <span (click)="viewModal_cageNotes(Insert_BPC_Structuremarking_Temp)"
+                    class="btn btn-sm btn-outline-primary mt-0 p-1"> V </span>
+                </div>
+
+                <span class="text-danger validator-message" *ngIf="isaddnewRecord &&  (pushElement.shape=='')">*
+                  Shape Required. </span>
+              </td>
+              <td></td>
+
+
+            </tr>
+          </tfoot>
+
+        </table>
+
+      </div>
+
+
+
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4">
+
+    </div>
+  <div class="col-md-8 mr-0" style="text-align:right !important ;">
+    <!-- <button class="btn btn-primary  btn-sm" (click)="Report_Click()">View Report</button> -->
+    <button class="btn btn-primary  btn-sm" (click)="NewGM_Click()">Add New Group Mark</button>
+
+  </div>
+</div>
+</tabset>
+
+
+<div>
+  <tabset>
+    <!-- <tab class="tab" heading={{SlabHeading}}
+            [active]="structElement=='Slab' ||  structElement=='SLAB-T'|| structElement=='Wall'||structElement=='SLAB-B'||structElement=='DWALL'"
+            title="Tab 1" style="background:#fff">
+            <app-slab-tab [ParameterSetNo]="ParameterSet"
+                [ParentStructureMarkId]="ParentStructureMarkId"></app-slab-tab>
+        </tab> -->
+
+    <!-- <tab class="tab" heading=Column *ngIf="!(this.MeshData.VCHPRODUCTTYPE=='CORE')"
+            [active]="structElement=='Column'" title="Tab 2" style="background:#fff">
+            <app-column [ParameterSetNo]="ParameterSet" [ParentStructureMarkId]="ParentStructureMarkId">
+            </app-column>
+        </tab> -->
+    <!-- <tab class="tab" heading=Beam *ngIf="!(this.MeshData.VCHPRODUCTTYPE=='CORE')"
+            [active]="structElement=='Beam'" title="Tab 3" style="background:#fff">
+            <app-beam [ParameterSetNo]="ParameterSet" [ParentStructureMarkId]="ParentStructureMarkId">
+            </app-beam>
+        </tab> -->
+    <!-- <tab class="tab" heading="Accessories" [active]="structElement=='Accessories'" title="Tab 4"
+            style="background:#fff">
+             *ngIf="this.MeshData.VCHPRODUCTTYPE=='PRC' || this.MeshData.VCHPRODUCTTYPE=='CORE'"
+            <app-accessories [ParentStructureMarkId]="ParentStructureMarkId"></app-accessories>
+        </tab> -->
+    <tab class="tab" [active]="true" heading="CAB" title="Tab 4" style="background:#fff">
+      <!-- <app-bbs-orderdetails></app-bbs-orderdetails>                             -->
+      <div>
+        <ul id="contextMenuCAB" style="display:none;position:absolute;">
+          <li data="insert" (click)="InsertItem()">Insert</li>
+          <li data="delete" (click)="Delete()">Delete</li>
+          <li data="clear" (click)="ClearRows()">Clear Contents</li>
+          <!-- <li data="" style="background: url('@Url.Content(" ~/Content/images/line.png")') no-repeat center left"></li> -->
+          <li data="copy" (click)="CopyRows()">Copy</li>
+          <li data="paste" (click)="PasteRows()">Paste</li>
+          <!-- <li data="" style="background: url('@Url.Content(" ~/Content/images/line.png")') no-repeat center left"></li> -->
+          <!-- <li data="weight" (click)="SubTotalWeight()">Sub-total Weight</li>
+                    <li data="qty" (click)="SubTotalQty()">Sub-total Qty</li> -->
+          <!-- <li data="" style="background: url('@Url.Content(" ~/Content/images/line.png")') no-repeat center left"></li> -->
+          <!-- <li data="MoreInfo" (click)="OpenMoreInfo()">More Info</li> -->
+        </ul>
+        <angular-slickgrid gridId="grid2" [columnDefinitions]="templateColumns" [gridOptions]="gridOptions"
+          [dataset]="bbsOrderdataset" gridHeight="600" gridWidth="700"
+          (onAngularGridCreated)="angularGridReady($event)">
+        </angular-slickgrid>
+      </div>
+      <div>
+        <canvas #myCanvas width="355" height="246" style="width: 355px; height: 246px"></canvas>
+      </div>
+    </tab>
+
+  </tabset>
+
+</div>

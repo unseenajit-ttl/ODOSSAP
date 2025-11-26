@@ -1,0 +1,184 @@
+ion-icon {
+  color: blue;
+}
+
+.edit-label {
+  font-size: xx-small;
+  text-align: start;
+  width: 100px;
+}
+
+
+.accordion-button.collapsed {
+  background: blue
+}
+
+.accordion-button.collapsed::after {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+}
+
+.accordion-button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  font-size: 0.8rem;
+  color: var(--bs-accordion-btn-color);
+  text-align: left;
+  background-color: var(--bs-accordion-btn-bg);
+  border: 0;
+  border-radius: 0;
+  overflow-anchor: none;
+  transition: var(--bs-accordion-transition);
+}
+
+
+
+.ng-dropdown-panel {
+  width: auto !important;
+  max-width: 550px;
+}
+
+
+.ng-selectcustomer {
+  /* width: 270px; */
+  padding-right: 10px;
+}
+
+.ng-selectprodtype {
+  /* width: 240px; */
+  padding-right: 10px;
+}
+
+.ng-selectwbs {
+  width: 100px;
+}
+
+.col {
+  flex-basis: 0;
+  flex-grow: 1;
+  max-width: 100%;
+  padding: 5px;
+}
+
+
+::ng-deep.accordion .btn {
+  white-space: normal;
+}
+
+
+/* ::ng-deep.ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+  font-size: 11px;
+}
+
+
+
+::ng-deep.ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+  white-space: normal!important;
+} */
+
+/* .ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value {
+  font-size: 11px;
+  margin-bottom: 5px;
+   color: #333;
+  background-color: #ebf5ff;
+  border-radius: 2px;
+  margin-right: 5px;
+} */
+
+
+.activerowcolor {
+
+  color: Black;
+
+  font-weight: bold;
+
+  background-color: #E5F5FF;
+
+}
+
+.labelfont {
+  font-size: 12px;
+}
+#loading {
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  border: 3px solid rgba(255,255,255,.3);
+  border-radius: 50%;
+  border-top-color: #fff;
+  animation: spin 1s ease-in-out infinite;
+  -webkit-animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { -webkit-transform: rotate(360deg); }
+}
+@-webkit-keyframes spin {
+  to { -webkit-transform: rotate(360deg); }
+}
+
+
+thead tr {
+  position: sticky !important;
+  top: 0;
+  background-color: #f2f2f2;
+}
+.StruElement{
+  position: relative;
+  left: 35px;
+  top: 3px;
+}
+
+.table-bordered, .table-bordered td, .table-bordered th {
+  border: 1px solid #000000  !important;
+  padding: 5;
+  /* margin: 5px; */
+}
+.file-label {
+  display: inline-block;
+  max-width: 100%;
+  margin-bottom: 5px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  padding: 0.375rem 0.75rem;
+  margin-bottom: 0;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #495057;
+  text-align: center;
+  white-space: nowrap;
+  background-color: #e9ecef;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  width: 50px;
+
+}
+.file-info {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.file-name {
+  font-size: 14px;
+  color: #555;
+}
+
+.clear-btn {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.clear-btn:hover {
+  background-color: #d32f2f;
+}
+

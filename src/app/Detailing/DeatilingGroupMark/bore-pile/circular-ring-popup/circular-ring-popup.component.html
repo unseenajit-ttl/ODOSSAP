@@ -1,0 +1,50 @@
+<div class="modal-header">
+  <h3 class="modal-title">Circular Ring</h3>
+  <button type="button" class="close" (click)="dismissModal()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <div class="col-md-12">
+      <form [formGroup]="myForm">
+        <table class="table table-hover table-bordered w-100">
+          <thead style="width: fit-content;background-color: #dee2e6;font-size: 11px;">
+            <tr>
+              <td></td>
+              <td>Size</td>
+              <td>Quantity</td>
+            </tr>
+          </thead>
+          <tbody style="width: fit-content">
+            <tr>
+              <td><button class="btn btn-sm btn-danger" (click)="resetForm()">Delete</button></td>
+              <td>
+                <ng-select [items]="SIZETYPES_list"
+                  bindLabel="vchSizeTypes"
+                  bindValue="vchSizeTypes"
+                  formControlName="size">
+                </ng-select>
+                <div *ngIf="myForm.get('size')!.invalid && (myForm.get('size')!.dirty || myForm.get('size')!.touched)">
+                  <div *ngIf="myForm.get('size')!.errors?.required" class="text-danger">Size is required.</div>
+                </div>
+              </td>
+              <td>
+                <input type="number" formControlName="quantity" class="form-control">
+                <div *ngIf="myForm.get('quantity')!.invalid && (myForm.get('quantity')!.dirty || myForm.get('quantity')!.touched)">
+                  <div *ngIf="myForm.get('quantity')!.errors?.required" class="text-danger">Quantity is required.</div>
+                  <div *ngIf="myForm.get('quantity')!.errors?.min" class="text-danger">Quantity must be greater than 0.</div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="modal-footer d-flex justify-content-center">
+  <button class="btn btn-primary" (click)="applyData()">Save</button>
+  <button type="button" class="btn btn-secondary" (click)="dismissModal()">Cancel</button>
+</div>
+

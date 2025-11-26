@@ -1,0 +1,43 @@
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  height: 70vh;          /* adjust as desired (full modal height) */
+  overflow: hidden;      /* prevent double scrollbars */
+}
+
+.table-wrapper-scroll-y.my-custom-scrollbar {
+  flex: 1;               /* fill remaining modal-body height */
+  overflow-y: auto;      /* enable vertical scrolling */
+}
+
+.table-responsive {
+  height: 100%;
+}
+
+.table-responsive thead th {
+  position: sticky;
+  top: 0;
+  background: #fff;      /* ensure sticky header visible */
+  z-index: 2;
+}
+
+
+/* .my-custom-scrollbar {
+    position: relative;
+    height: 300px;
+    overflow: auto;
+} */
+
+.table-wrapper-scroll-y {
+    display: block;
+}
+
+/* .modal-body{
+    overflow:scroll;
+} */
+.table-responsive thead th {
+    position: sticky;
+    top: 0;
+  }
+
+

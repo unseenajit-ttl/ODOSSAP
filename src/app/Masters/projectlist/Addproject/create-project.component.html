@@ -1,0 +1,172 @@
+
+
+<div class="modal-header" >
+  <h4 class="modal-title">Add New</h4>
+  <i class="fa-solid fa-xmark"></i>
+  <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+
+</div>
+<div class="modal-body ">
+  <div class=" container">
+    <form [formGroup]="projectForm">
+      <div class="row">
+        <div class="row">
+          <div class="col">
+            <label class="form-label">Product Code</label> <br>
+            <input type="text" formControlName="productcode" placeholder="Product Code" class="form-control" /> 
+          </div>
+          <div class="col">
+            <label class="form-label"> Product Name </label> <br>
+            <input type="text" placeholder="Product Name" formControlName="projectname" class="form-control" />
+            &nbsp;
+          </div>
+          <div class="col">
+            <label class="form-label"> Product Description </label> <br>
+            <input type="text" placeholder="Product Description" formControlName="projdescription" class="form-control" />
+            &nbsp;
+          </div>
+      
+        </div>
+        <div class="row">
+              <div class="col">
+            <label class="form-label"> Customer</label>
+            <ng-select formControlName="customer"  class="ng-selectcustomer"  >
+              <ng-option *ngFor="let sList of Customerlist" [value]="sList.item_id">
+                  {{sList.item_text}}
+              </ng-option>
+          </ng-select>
+            
+          </div>
+          <div class="col">
+            <label class="form-label"> Address 1</label> <br>
+
+            <input type="text" placeholder="Address 1" formControlName="address1" class="form-control" />
+          
+          </div>
+          <div class="col">
+            <label class="form-label"> Address 2</label> <br>
+            <input type="text" placeholder="Address 2" formControlName="address2" class="form-control" />
+          
+          </div>
+        
+        </div>
+        <div class="row">
+          <div class="col">
+            <label class="form-label">Address 3</label> <br>
+            <input type="text" placeholder="Address 3" formControlName="address3" class="form-control" />
+
+          </div>
+          <div class="col">
+            <label class="form-label"> Sales In Charge 1</label> <br>
+            <ng-select formControlName="saleincharge1"  class="ng-selectcustomer"  >
+              <ng-option *ngFor="let sList of Customerlist" [value]="sList.item_id">
+                  {{sList.item_text}}
+              </ng-option>
+          </ng-select>
+          </div>
+          <div class="col">
+            <label class="form-label"> Sales In Charge 2</label> <br>
+            <ng-select formControlName="saleincharge2"  class="ng-selectcustomer"  >
+              <ng-option *ngFor="let sList of Customerlist" [value]="sList.item_id">
+                  {{sList.item_text}}
+              </ng-option>
+          </ng-select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <label class="form-label"> Sales In Charge 3</label> <br>
+            <ng-select formControlName="saleincharge3"  class="ng-selectcustomer"  >
+              <ng-option *ngFor="let sList of Customerlist" [value]="sList.item_id">
+                  {{sList.item_text}}
+              </ng-option>
+          </ng-select>
+          </div>
+        
+          <div class="col">
+            <label class="form-label">  Project In Charge 1</label> <br>
+            <ng-select formControlName="projectincharge1"  class="ng-selectcustomer"  >
+              <ng-option *ngFor="let sList of Customerlist" [value]="sList.item_id">
+                  {{sList.item_text}}
+              </ng-option>
+          </ng-select>
+          </div>
+          <div class="col">
+            <label class="form-label">   Project In Charge 2</label> <br>
+            <ng-select formControlName="projectincharge2"  class="ng-selectcustomer"  >
+              <ng-option *ngFor="let sList of Customerlist" [value]="sList.item_id">
+                  {{sList.item_text}}
+              </ng-option>
+          </ng-select>
+          </div>
+
+        </div>
+        <div class="row">
+          <div class="col">
+            <label class="form-label">   Project In Charge 3</label> <br>
+            <ng-select formControlName="projectincharge3"  class="ng-selectcustomer"  >
+              <ng-option *ngFor="let sList of Customerlist" [value]="sList.item_id">
+                  {{sList.item_text}}
+              </ng-option>
+          </ng-select>
+          </div>
+
+          <div class="col">
+            <label class="form-label">Planned Delivery Date</label> <br>
+            <do-date-picker [formGroup]="projectForm" controlName="deliverydate"
+            [class]="'form-control'">
+        </do-date-picker>
+          </div>
+          <div class="col">
+            <label class="form-label">Start Date</label> <br>
+            <do-date-picker [formGroup]="projectForm" controlName="startdate"
+            [class]="'form-control'">
+        </do-date-picker>
+          </div>  
+        </div>
+        <div class="row">
+          <div class="col">
+            <label class="form-label">   Expiry Date</label> <br>
+            <do-date-picker [formGroup]="projectForm" controlName="Expirydate"
+            [class]="'form-control'">
+        </do-date-picker>
+          </div>
+
+          <div class="col">
+            <label class="form-label">SAP Project Code</label> <br>
+            <ng-select formControlName="sapprojcode"  class="ng-selectcustomer"  >
+              <ng-option *ngFor="let sList of sapprojectlist" [value]="sList.item_id">
+                  {{sList.item_text}}
+              </ng-option>
+          </ng-select>
+          </div>
+          <div class="col">
+            <label class="form-label">Transport Mode</label> <br>
+            <ng-select formControlName="transportmode"  class="ng-selectcustomer"  >
+              <ng-option *ngFor="let sList of transportmode" [value]="sList.item_id">
+                  {{sList.item_text}}
+              </ng-option>
+          </ng-select>
+          </div>  
+        </div>
+        
+      </div> 
+  </form>
+</div>
+
+</div>
+<div class="modal-footer" >
+        <button type="button" (click)="cancel()" class="btn-primary-outline">
+       Cancel
+        </button>
+        <button
+          type="button"
+          (click)="submitReview()"
+          class="btn btn-primary me-2"
+          [disabled]="disableSubmit"
+        >
+          Submit
+        </button>
+</div>
+        
+     

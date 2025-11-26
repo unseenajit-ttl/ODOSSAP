@@ -1,0 +1,562 @@
+<div class="container-fluid">
+  <div class="card m-1">
+    <h3 class="card-header d-flex flex-column justify-content-center" style="margin: 0;">
+      <span>
+        <img src="../../../assets/imagesuiux/review.png" style="width: 40px;height: 40px;">
+        <b>Multiple Order Amendment</b>
+      </span>
+    </h3>
+    <div class="card-body" style="padding: 0.0rem;!important">
+      <div *ngIf="AmendmentLoading" style="z-index: 500">
+        <div id="pause" class="d-flex align-items-center justify-content-center">
+          <div id="spinner" class="loader"></div>
+        </div>
+      </div>
+      <form [formGroup]="amendmentForm" class="mb-3">
+        <div class="row">
+          <div class="col-md-6">
+
+            <label for="" class="form-label" style="font-weight:bold">Customer</label>
+            <ng-select formControlName="customer" name="Customer" id="Customer" class="w-auto"
+              style="min-height: 37px !important;font-weight: bold;" (selectionChange)="Get_AmendmentProject()"
+              (input)="filterCustomerList($event)">
+              <ng-option *ngFor="let sList of FilteredCustomerList" [value]="sList.Value"
+                style="min-height: 36px !important;font-weight: bold;">
+                {{ sList.Text }} ({{ sList.Value }})
+              </ng-option>
+            </ng-select>
+          </div>
+          <div class="col-md-6">
+
+            <label for="" class="form-label" style="font-weight:bold">Project</label>
+            <ng-select formControlName="project" name="SearchOptionsByDesignationDDL" id="SearchOptionsByDesignationDDL"
+              class="w-auto" style="min-height: 37px !important;font-weight: bold;">
+              <ng-option *ngFor="let sList of ordersAmendmentProjectList" [value]="sList.ProjectCode"
+                style="min-height: 36px !important;font-weight: bold;">
+                {{ sList.ProjectTitle }}
+              </ng-option>
+            </ng-select>
+
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-2">
+            <label for="" class="form-label" style="font-weight:bold">Search By Required Date</label>
+            <select name="Req_PO_Date_Search_Range" id="Req_PO_Date_Search_Range" class="form-select"
+              formControlName="Req_PO_Date_Search_Range" (change)="OnDateSearchBy()">
+              <option value="0" style="font-weight: bold;">Select</option>
+              <option value="1" style="font-weight: bold;">Required Date</option>
+              <option value="2" style="font-weight: bold;">PO Date</option>
+            </select>
+            <span class="errorMessage" *ngIf="showError()">* Search By Required</span>
+          </div>
+          <!-- <div class="col-md-2">
+            <label for="" class="form-label">Required Date</label>
+            <input type="text" class="form-control" name="required_date" id="required_date"
+              formControlName="required_date" ngxDaterangepickerMd (datesUpdated)="dateChanged($event,'required_date')"
+              [showCustomRangeLabel]="true" [alwaysShowCalendars]="true" [linkedCalendars]="false" [ranges]="ranges"
+              [locale]="{applyLabel: 'ok', format: 'DD-MM-YYYY'}" [keepCalendarOpeningWithRange]="true">
+          </div> -->
+          <div class="col-md-2" style="text-align: left !important">
+            <label class="form-label" style="font-weight:bold">From Date:</label>
+            <br />
+            <!-- <input type="text" class="form-control" /> &nbsp; -->
+            <mat-form-field style="display: contents">
+              <!-- <mat-label>Choose a date</mat-label> -->
+              <input matInput [matDatepicker]="picker1" style="
+                height: 37px !important;
+                border: 0 !important;
+              " formControlName="required_date_from" style="font-weight: bold;" />
+              <!-- <mat-hint style="font-size: xx-small"
+                >YYYY-MM-DD</mat-hint
+              > -->
+              <mat-datepicker-toggle matIconSuffix [for]="picker1" style="padding-top: 15px !important">
+              </mat-datepicker-toggle>
+              <mat-datepicker #picker1></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div class="col-md-2" style="text-align: left !important">
+            <label class="form-label" style="font-weight:bold">To Date:</label>
+            <br />
+            <!-- <input type="text" class="form-control" /> &nbsp; -->
+            <mat-form-field style="display: contents">
+              <!-- <mat-label>Choose a date</mat-label> -->
+              <input matInput [matDatepicker]="picker2" style="
+                height: 37px !important;
+                border: 0 !important;
+              " formControlName="required_date_to" style="font-weight: bold;" />
+              <!-- <mat-hint style="font-size: xx-small"
+                >YYYY-MM-DD</mat-hint
+              > -->
+              <mat-datepicker-toggle matIconSuffix [for]="picker2" style="padding-top: 15px !important">
+              </mat-datepicker-toggle>
+              <mat-datepicker #picker2></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div class="col-md-2">
+            <label for="" class="form-label" style="font-weight:bold">Search</label>
+            <select name="SO_SOR_Search_Range" id="SO_SOR_Search_Range" class="form-select"
+              formControlName="SO_SOR_Search_Range" (change)="OnSORChange()">
+              <option value="0" style="font-weight: bold;">Select</option>
+              <option value="1" style="font-weight: bold;">SOR</option>
+              <option value="2" style="font-weight: bold;">SO</option>
+              <option value="3" style="font-weight: bold;">Load No</option>
+            </select>
+          </div>
+          <!-- <div class="col-md-2">
+            <label for="" class="form-label">SO Range</label>
+            <input type="text" class="form-control" name="SOR_No" id="SOR_No" formControlName="SOR_No"
+              ngxDaterangepickerMd (datesUpdated)="dateChanged($event,'SOR_No')" [showCustomRangeLabel]="true"
+              [alwaysShowCalendars]="true" [linkedCalendars]="false" [ranges]="ranges"
+              [locale]="{applyLabel: 'ok', format: 'DD-MM-YYYY'}" [keepCalendarOpeningWithRange]="true">
+          </div> -->
+          <div class="col-md-2" style="text-align: left !important;">
+            <label class="form-label" style="font-weight:bold">From</label>
+            <br />
+            <!-- <input type="text" class="form-control" /> &nbsp; -->
+
+            <input type="text" class="form-control" formControlName="SOR_No_from" style="font-weight: bold;">
+          </div>
+          <div class="col-md-2" style="text-align: left !important;">
+            <label class="form-label" style="font-weight:bold">To</label>
+            <br />
+            <!-- <input type="text" class="form-control" /> &nbsp; -->
+
+            <input type="text" class="form-control" formControlName="SOR_No_to" style="font-weight: bold;">
+          </div>
+
+        </div>
+        <div class="row">
+
+
+
+          <div class="col-md-2">
+            <label for="" class="form-label" style="font-weight:bold">Search By Rev Confirmed</label>
+            <select name="Rev_Req_Confirmed_Date_Search_Range" id="Rev_Req_Confirmed_Date_Search_Range"
+              class="form-select" formControlName="Rev_Req_Confirmed_Date_Search_Range" (change)="RevConfirmedChange()">
+              <option value="0" style="font-weight: bold;">Select</option>
+              <option value="1" style="font-weight: bold;">Revised Required Date</option>
+              <option value="2" style="font-weight: bold;">Confirmed Delivery Date</option>
+            </select>
+          </div>
+          <!-- <div class="col-md-1">
+            <label for="" class="form-label">Date</label>
+            <input type="text" class="form-control" name="Rev_required_Conf_date" id="Rev_required_Conf_date"
+              formControlName="Rev_required_Conf_date" ngxDaterangepickerMd
+              (datesUpdated)="dateChanged($event,'Rev_required_Conf_date')" [showCustomRangeLabel]="true"
+              [alwaysShowCalendars]="true" [linkedCalendars]="false" [ranges]="ranges"
+              [locale]="{applyLabel: 'ok', format: 'DD-MM-YYYY'}" [keepCalendarOpeningWithRange]="true">
+          </div> -->
+          <div class="col-md-2" style="text-align: left !important">
+            <label class="form-label" style="font-weight:bold">From Date:</label>
+            <br />
+            <!-- <input type="text" class="form-control" /> &nbsp; -->
+            <mat-form-field style="display: contents">
+              <!-- <mat-label>Choose a date</mat-label> -->
+              <input matInput [matDatepicker]="picker5" style="
+                height: 37px !important;
+                border: 0 !important;font-weight: bold;
+              " formControlName="Rev_required_Conf_date_from" />
+              <!-- <mat-hint style="font-size: xx-small"
+                >YYYY-MM-DD</mat-hint
+              > -->
+              <mat-datepicker-toggle matIconSuffix [for]="picker5" style="padding-top: 15px !important">
+              </mat-datepicker-toggle>
+              <mat-datepicker #picker5></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div class="col-md-2" style="text-align: left !important">
+            <label class="form-label" style="font-weight:bold">To Date:</label>
+            <br />
+            <!-- <input type="text" class="form-control" /> &nbsp; -->
+            <mat-form-field style="display: contents">
+              <!-- <mat-label>Choose a date</mat-label> -->
+              <input matInput [matDatepicker]="picker6" style="
+                height: 37px !important;
+                border: 0 !important;font-weight: bold;
+              " formControlName="Rev_required_Conf_date_to" />
+              <!-- <mat-hint style="font-size: xx-small"
+                >YYYY-MM-DD</mat-hint
+              > -->
+              <mat-datepicker-toggle matIconSuffix [for]="picker6" style="padding-top: 15px !important">
+              </mat-datepicker-toggle>
+              <mat-datepicker #picker6></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div class="col-md-2">
+            <label for="" class="form-label" style="font-weight:bold">WSB 1</label>
+            <input type="text" class="form-control" name="txtWBS1" id="txtWBS1" formControlName="txtWBS1"
+              style="font-weight: bold;">
+          </div>
+          <div class="col-md-2">
+            <label for="" class="form-label" style="font-weight:bold">WSB 2</label>
+            <input type="text" class="form-control" name="txtWBS2" id="txtWBS2" formControlName="txtWBS2"
+              style="font-weight: bold;">
+          </div>
+          <div class="col-md-2">
+            <label for="" class="form-label" style="font-weight:bold">WSB 3</label>
+            <input type="text" class="form-control" name="txtWBS3" id="txtWBS3" formControlName="txtWBS3"
+              style="font-weight: bold;">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-2">
+            <label for="" class="form-label" style="font-weight:bold">Search by</label>
+            <select name="SearchOptions" id="SearchOptions" class="form-select" formControlName="SearchOptions"
+              (change)="PONumberChange()">
+              <option value="0" style="font-weight: bold;">Select</option>
+              <option value="1" style="font-weight: bold;">PO Number</option>
+              <option value="2" style="font-weight: bold;">SO Number</option>
+              <option value="3" style="font-weight: bold;">SOR Number</option>
+              <option value="4" style="font-weight: bold;">Load Number</option>
+              <option value="5" style="font-weight: bold;">Pile Number</option>
+              <option value="6" style="font-weight: bold;">Panel Number</option>
+              <option value="7" style="font-weight: bold;">BBS Number</option>
+            </select>
+            <span class="errorMessage" *ngIf="showErrorSearchby()">* Search By Required</span>
+          </div>
+
+          <div class="col-md-2">
+            <label for="" class="form-label" style="font-weight:bold">Search</label>
+            <input type="text" class="form-control" id="txtSearch" name="txtSearch" formControlName="txtSearch"
+              style="font-weight: bold;">
+          </div>
+
+
+          <div class="col-md-2">
+            <label for="" class="form-label" style="font-weight:bold">Product</label>
+            <select name="SearchProducts" id="SearchProducts" class="form-select" formControlName="SearchProducts">
+              <option value="0" style="font-weight: bold;">Select</option>
+              <option value="CAB" style="font-weight: bold;">CAB</option>
+              <option value="CAR" style="font-weight: bold;">CAR</option>
+              <option value="MSH" style="font-weight: bold;">MSH</option>
+              <option value="PRC" style="font-weight: bold;">PRC</option>
+              <option value="BPC" style="font-weight: bold;">BPC</option>
+              <option value="MTS" style="font-weight: bold;">MTS</option>
+
+            </select>
+          </div>
+          <div class="col-md-2">
+            <label for="" class="form-label" style="font-weight:bold">Search By</label>
+            <select name="SearchOptionsByDesignation" id="SearchOptionsByDesignation" class="form-select"
+              formControlName="SearchOptionsByDesignation" (change)="get_DesignationData()">
+              <option value="0" style="font-weight: bold;">Select</option>
+              <option value="1" style="font-weight: bold;">Project Coordinator</option>
+              <!-- <option value="2">Segment Manager</option>
+              <option value="3">Account Manager</option> -->
+
+            </select>
+          </div>
+          <div class="col-md-2">
+            <label for="" class="form-label"></label>
+            <select name="SearchOptionsByDesignationDDL" id="SearchOptionsByDesignationDDL" class="form-select"
+              formControlName="ddlDesignation">
+              <option *ngFor="let sList of ordersDesignationDataList" [value]="sList.EmployeeId">
+                {{ sList.EmployeeName }}
+              </option>
+            </select>
+          </div>
+          <div class="col-md-2" style="padding-top: 12px;">
+            <label for="" class="form-label"></label>
+            <button class="btn btn-primary btn-sm" type="button" style="width: 10%" (click)="get_RetriveData()">
+              Retrieve
+            </button>
+            <button class="btn btn-primary btn-sm" type="button" style="width:10%">Watch List</button>
+            <button class="btn btn-primary btn-sm" type="button" style="padding:0 5px;width:120px;" (click)="downloadFile()"
+              *ngIf="ordersForAmendmentList.length!=0">Download Excel</button>
+          </div>
+        </div>
+      </form>
+      <div *ngIf="ProcessOrderLoading" style="z-index: 500">
+        <div id="pause" class="d-flex align-items-center justify-content-center">
+          <div id="spinner" class="loader"></div>
+        </div>
+      </div>
+      <!-- <div class="col-md-12" style="text-align: right;">
+        <button class="btn btn-primary btn-sm" type="button" style="width: 140px !important;margin-bottom: 5px;"
+                (click)="reset()">
+          Reset Column Value
+        </button>
+      </div> -->
+      <div class="table-responsive table-responsive-custom min-height col-md-12" [style.height]="'65vh'"
+        style="overflow: hidden;">
+        <form [formGroup]="amendmentFormTable">
+          <cdk-virtual-scroll-viewport [itemSize]="itemSize" #scrollViewportAmendment (scroll)="syncScroll($event)"
+            [style.height]="'65vh'">
+            <table class="table table-bordered new-table">
+              <thead id="table-head" [style.top]="inverseOfTranslation" class="tableHeading" style="position: sticky;z-index: 999;">
+                <tr cdkDropList cdkDropListOrientation="horizontal" [cdkDropListData]="columns"
+                  [style.top]="inverseOfTranslation" (cdkDropListDropped)="dropDetCol($event)">
+                  <ng-container *ngFor="let col of columns;let headerIndex = index;">
+                    <th #thDETTgVar class="fixed-column-header" id="SORNo" (click)="toggleSortingOrder(col['colName'])"
+                      [style.width]="col.width +'px !important'" [style.top]="inverseOfTranslation"
+                      [style.left]="(headerIndex) < fixedColumn ? getRightWidthTest(thDETTgVar,headerIndex,'pendingDET') : 'inherit'"
+                      [style.display]="'table-cell'" [class.FixedColumn]="(headerIndex) < fixedColumn"
+                      *ngIf="col.isVisible" style="cursor: pointer;" cdkDrag>
+                      <div class="table-head-cell" [style.width]="'100% !important'">
+                        <span style="color: white; font-size: medium;" class="text-overlap"
+                          [style.width]="col.width +'px !important'">
+                          {{col['displayName']}}
+                          <i class="bi bi-arrow-up" *ngIf="!isAscending && currentSortingColumn == col['colName']"></i>
+                          <i class="bi bi-arrow-down" *ngIf="isAscending && currentSortingColumn == col['colName']"></i>
+                        </span>
+                      </div>
+                    </th>
+                  </ng-container>
+                </tr>
+
+              </thead>
+              <thead class="search-head" id="searchBar" style="position: sticky;z-index: 999;">
+                <tr [style.top]="inverseOfTranslationSearch">
+                  <ng-container *ngFor="let entColumnh2 of columns;let j = index;">
+                    <th #thInputVar [style.width]="entColumnh2.width+ 'px !important'" [style.display]="'table-cell'"
+                      [style.top]="inverseOfTranslationSearch" *ngIf="entColumnh2.isVisible"
+                      [style.left]="(j) < fixedColumn ? getRightWidthTest(thInputVar,j,'pendingDET') : 'inherit'"
+                      [class.FixedColumn]="(j) < fixedColumn">
+                      <input class="form-control" formControlName="{{entColumnh2.colName}}"
+                        *ngIf="entColumnh2.colName != 'linkTo'" />
+
+                      <div class="bar" appColumnResize [colName]="'pendingDET'" [cdkDragDisabled]="true" [colIndex]="j"
+                        (widthChangeEvent)="onWidthChange($event)" (resizeStop)="stopResize($event)" cdkDrag></div>
+
+                    </th>
+                  </ng-container>
+
+                  <!-- <th style="text-align: center;width:30px;" *ngIf="
+                        PendingEntTableColumnToggle.controls.LinkTo.value
+                      ">
+                    </th> -->
+                  <!-- <th style="text-align: left;">Docs Attached</th>
+                                  <th style="text-align: left;">Product Details</th> -->
+                </tr>
+              </thead>
+              <tbody id="body">
+                <tr *ngIf="ordersForAmendmentList.length==0" style="text-align: center;">
+                  <td colspan="43" style="text-align: center;">
+                    No Record Found
+                  </td>
+                </tr>
+                <ng-container *cdkVirtualFor="let item of ordersForAmendmentList filter:searchText ; index as i ">
+                  <tr id="body-cell"
+                    [ngClass]="{'selectedRow': item.isSelected, 'OnHold': item.OnHold == 'Y', 'CancelledOrder': item.STATUS== 'X'}"
+                    (click)="selectRow(item, $event)">
+                    <td *ngFor="let colData of columns;let j = index;"
+                      [ngClass]="{'selectedRow': item.isSelected, 'OnHold': item.OnHold == 'Y', 'CancelledOrder': item.STATUS== 'X'}"
+                      [style.left]="(j) < fixedColumn ? getLeftOfTable(j) : 'inherit'" [style.display]="'table-cell'"
+                      [class.FixedColumn]="(j) < fixedColumn" [style.width]="colData.width +'px !important'">
+                      <div [style.width]="colData.width +'px !important'" class="text-overlap table-body-cell">
+                        {{item[colData['field']]}}</div>
+                    </td>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
+          </cdk-virtual-scroll-viewport>
+        </form>
+      </div>
+      <!-- <div class="d-flex mt-2" style=" justify-content: flex-start;flex-wrap:wrap">
+        <ngb-pagination [collectionSize]="ordersForAmendmentList.length" [(page)]="currentPage"
+          [pageSize]="itemsPerPage" (pageChange)="onPageChange(currentPage); " [maxSize]="2" [boundaryLinks]="false">
+          <ng-template ngbPaginationPrevious>Prev</ng-template>
+          <ng-template ngbPaginationNext>Next</ng-template>
+        </ngb-pagination>
+
+        <select class="custom-select mr-2 ml-3" style="width: auto" [(ngModel)]="itemsPerPage"
+          (ngModelChange)="OnPageSizeChange(itemsPerPage);">
+          <option [ngValue]="5">5 </option>
+          <option [ngValue]="10">10 </option>
+          <option [ngValue]="20">20 </option>
+          <option [ngValue]="50">50 </option>
+          <option [ngValue]="100">100 </option>
+        </select>
+        <span style="margin-top: 5px;">Items per page</span>
+
+      </div> -->
+
+    </div>
+    <div class="row">
+      <div class="col-md-5">
+        <h4 style="color: brown; margin: 0;">Press Shift and arrow keys to select/deselect multiple record(s).</h4>
+      </div>
+      <div class="col-md-3" style="font-weight:bold">
+        Total Tonnage: {{TotalTonnage}}
+      </div>
+      <div class="col-md-2" style="display: flex;">
+        <div class="box gray" style="background-color: lightcoral; height: 15px; width: 15px;"></div>
+        &nbsp; On Hold Orders &nbsp;
+      </div>
+      <div class="col-md-2" style="display: flex;">
+        <div class="box gray" style="background-color: gray;; height: 15px; width: 15px;"></div>
+        &nbsp;Cancelled Orders &nbsp;
+      </div>
+
+    </div>
+    <div class="col-md-2">
+      <input type="checkbox" [(ngModel)]="ChangeRequiredDate" [checked]="ChangeRequiredDate" id="changeReqDate"
+        name="changeReqDate" value="changeReqDate" (change)="ReqDateForm.reset()">
+      <label for="changeReqDate" style="font-weight:bold"> Change Required Date</label>
+    </div>
+
+    <form [formGroup]="ReqDateForm">
+      <div class="row" style="border-style: groove;margin-right: 18px;margin-left: 13px;" *ngIf="ChangeRequiredDate">
+        <div class="col-md-1">
+
+        </div>
+        <div class="col-md-4" style="text-align: left !important">
+          <label class="form-label" style="font-weight:bold">Req Date From:</label>
+          <br />
+          <!-- <input type="text" class="form-control" /> &nbsp; -->
+          <mat-form-field style="display: contents">
+            <!-- <mat-label>Choose a date</mat-label> -->
+            <input matInput formControlName="reqDateFrom" [matDatepicker]="picker7" style="
+            height: 37px !important;
+            border: 0 !important;
+          " />
+            <!-- <mat-hint style="font-size: xx-small"
+              >YYYY-MM-DD</mat-hint
+            > -->
+            <mat-datepicker-toggle matIconSuffix [for]="picker7" style="padding-top: 15px !important">
+            </mat-datepicker-toggle>
+            <mat-datepicker #picker7></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="col-md-3" style="text-align: left !important">
+          <label class="form-label" style="font-weight:bold">Revised Required Date:</label>
+          <br />
+          <!-- <input type="text" class="form-control" /> &nbsp; -->
+          <mat-form-field style="display: contents">
+            <!-- <mat-label>Choose a date</mat-label> -->
+            <input matInput formControlName="revisedReqdate" [matDatepicker]="picker8" style="
+            height: 37px !important;
+            border: 0 !important;
+          " />
+            <!-- <mat-hint style="font-size: xx-small"
+              >YYYY-MM-DD</mat-hint
+            > -->
+            <mat-datepicker-toggle matIconSuffix [for]="picker8" style="padding-top: 15px !important">
+            </mat-datepicker-toggle>
+            <mat-datepicker #picker8></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="col-md-3">
+          <label for="" class="form-label" style="font-weight:bold">Reason</label>
+          <select name="SearchOptions" formControlName="reason" id="SearchOptions" class="form-select"
+            style="font-weight:bold">
+            <option style="font-weight:bold" value="">Select</option>
+            <option style="font-weight:bold" value="CUSTOMER - CHANGE DELIVERY DATE (POSTPONE / FORWARD)">
+              CUSTOMER - CHANGE DELIVERY DATE
+              (POSTPONE
+              / FORWARD)
+            </option>
+            <option style="font-weight:bold" value="CUSTOMER - AMENDMENT TO DRAWING (FOR BPC/PCG)">
+              CUSTOMER - AMENDMENT TO DRAWING (FOR BPC/PCG)
+            </option>
+          </select>
+        </div>
+        <div class="col-md-1"></div>
+      </div>
+    </form>
+
+    <div class="col-md-2">
+      <input type="checkbox" [(ngModel)]="ChangeIndicators" [checked]="ChangeIndicators"
+        (change)="ChangeIndicatorsForm.reset()">
+      <label for="changeReqDate" style="font-weight:bold">Change Indicators</label>
+    </div>
+
+    <form [formGroup]="ChangeIndicatorsForm">
+      <div class="row" style="border-style: groove;margin-right: 18px;margin-left: 13px;" *ngIf="ChangeIndicators">
+
+        <div class="col-md-2" style="text-align: left !important">
+          <input type="checkbox" formControlName="OrderOnHold" id="OrderOnHold" name="OrderOnHold">&nbsp;
+          <label for="changeReqDate" style="font-size: small; font-weight: bold;">Order OnHold</label>
+        </div>
+        <div class="col-md-2" style="text-align: left !important">
+          <label class="form-label" style="font-size: small; font-weight:bold">Reason:</label><span
+            *ngIf="ChangeIndicatorsForm.controls.OrderOnHold.value==true" style="color:red; font-weight:bold;">*</span>
+          <select name="SearchOptions" formControlName="ChangeIndicatorReason" id="SearchOptions" class="form-select"
+            style="height: 33px;">
+            <option style="font-weight: bold;" value="0">Select</option>
+            <option style="font-weight: bold;" value="CUSTOMER - ON-HOLD">CUSTOMER - ON-HOLD</option>
+            <option style="font-weight: bold;" value="CUSTOMER - AMENDMENT TO DRAWING (FOR BPC/PCG)">
+              CUSTOMER - AMENDMENT TO DRAWING (FOR BPC/PCG)
+            </option>
+            <option style="font-weight: bold;" value="CUSTOMER - RELEASE ON-HOLD ORDER">CUSTOMER - RELEASE ON-HOLD ORDER
+            </option>
+            <option style="font-weight: bold;" value="CUSTOMER - REJECT ORDER">CUSTOMER - REJECT ORDER</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <input type="checkbox" formControlName="LorryCrane" id="LorryCrane" name="LorryCrane">&nbsp;
+          <label for="LorryCrane" style="font-size: small;font-weight: bold">Lorry Crane</label>
+        </div>
+        <div class="col-md-2">
+          <input type="checkbox" formControlName="DoNotMix" id="DoNotMix" name="DoNotMix">&nbsp;
+          <label for="DoNotMix" style="font-size: small;font-weight: bold">Do Not Mix</label>
+        </div>
+        <div class="col-md-2">
+          <input type="checkbox" formControlName="CallBeforeDelivery" id="CallBeforeDelivery"
+            name="CallBeforeDelivery">&nbsp;
+          <label for="CallBeforeDelivery" style="font-size: small;font-weight: bold">Call Before Delivery</label>
+        </div>
+        <div class="col-md-2">
+          <input type="checkbox" formControlName="SpecialPass" id="SpecialPass" name="SpecialPass">&nbsp;
+          <label for="SpecialPass" style="font-size: small;font-weight: bold">Special Pass</label>
+        </div>
+
+        <div class="col-md-2" style="text-align: left !important">
+          <input type="checkbox" formControlName="BargeBooked" id="BargeBooked" name="BargeBooked">&nbsp;
+          <label for="BargeBooked" style="font-size: small;font-weight: bold">Barge Booked</label>
+        </div>
+        <div class="col-md-2" style="text-align: left !important">
+          <input type="checkbox" formControlName="CraneBookedOnsite" id="CraneBookedOnsite"
+            name="CraneBookedOnsite">&nbsp;
+          <label for="CraneBookedOnsite" style="font-size: small;font-weight: bold">Crane Booked Onsite</label>
+        </div>
+        <div class="col-md-2">
+          <input type="checkbox" formControlName="PoliceEscortService" id="PoliceEscortService"
+            name="PoliceEscortService">&nbsp;
+          <label for="PoliceEscortService" style="font-size: small;font-weight: bold">Police Escort Service</label>
+        </div>
+        <div class="col-md-2">
+          <input type="checkbox" formControlName="PremiumService" id="PremiumService" name="PremiumService">&nbsp;
+          <label for="PremiumService" style="font-size: small;font-weight: bold">Premium Service</label>
+        </div>
+        <div class="col-md-2">
+          <input type="checkbox" formControlName="UrgentOrder" id="UrgentOrder" name="UrgentOrder">&nbsp;
+          <label for="UrgentOrder" style="font-size: small;font-weight: bold">Urgent Order</label>
+        </div>
+        <div class="col-md-2">
+          <input type="checkbox" formControlName="SpeciaConquasOrderlPass" id="ConquasOrder" name="ConquasOrder">&nbsp;
+          <label for="ConquasOrder" style="font-size: small;font-weight: bold">Conquas Order</label>
+        </div>
+
+        <div class="col-md-2" style="text-align: left !important">
+          <input type="checkbox" formControlName="ZeroTolerance" id="ZeroTolerance" name="ZeroTolerance">&nbsp;
+          <label for="ZeroTolerance" style="font-size: small;font-weight: bold">Zero Tolerance</label>
+        </div>
+        <div class="col-md-3" style="text-align: left !important">
+          <input type="checkbox" formControlName="LowBedVehicleAllowed" id="LowBedVehicleAllowed"
+            name="LowBedVehicleAllowed">&nbsp;
+          <label for="LowBedVehicleAllowed" style="font-size: small;font-weight: bold">Low Bed Vehicle Allowed</label>
+        </div>
+        <div class="col-md-3">
+          <input type="checkbox" formControlName="FiftyTonVehicleAllowed" id="FiftyTonVehicleAllowed"
+            name="FiftyTonVehicleAllowed">&nbsp;
+          <label for="FiftyTonVehicleAllowed" style="font-size: small;font-weight: bold">50 Ton Vehicle Allowed</label>
+        </div>
+        <div class="col-md-2">
+          <input type="checkbox" formControlName="UnitMode" id="UnitMode" name="UnitMode">&nbsp;
+          <label for="UnitMode" style="font-size: small;font-weight:bold ;">Unit Mode</label>
+        </div>
+
+      </div>
+    </form>
+
+    <h4 style="color: red; margin: 0;">Note: Changes apply to all orders in the list in SAP Y table and SCM IDb</h4>
+    <div class="col-md-12" style="text-align: center;">
+      <button class="btn btn-primary btn-sm" type="button" style="width: 10%" (click)="Final_save()">Save</button>
+      <button class="btn btn-primary btn-sm" type="button" style="width:10%" (click)="Final_Cancel()">Cancel</button>
+    </div>
+
+  </div>
+</div>

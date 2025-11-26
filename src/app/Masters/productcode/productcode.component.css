@@ -1,0 +1,22 @@
+
+
+
+.modal-dialog{
+    overflow-y: initial !important
+}
+.modal-body{
+    height: 70vh;
+    overflow-y: auto;
+}
+
+.sticky-table-headers {
+    /* Background color */
+    background-color: #9ca3af;
+
+    /* Stick to the left */
+    right: 0;
+    position: sticky;
+
+    /* Displayed on top of other rows when scrolling */
+    z-index: 9999;
+}

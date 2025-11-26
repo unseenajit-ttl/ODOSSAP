@@ -1,0 +1,118 @@
+<div class="modal-header">
+  <h4 class="modal-title">Add New</h4>
+
+  <i class="fa-solid fa-xmark"></i>
+  <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+
+</div>
+<div class="modal-body ">
+
+  <div class="row">
+    <form [formGroup]="groupmarkForm">
+      <div class="container">
+        <div class="row d-flex ">
+      
+          <div class="col">
+            <label class="form-label">Product Type</label> <br>
+
+            <ng-select (change)="ChangeProductType($event)"
+              [(ngModel)]="selectedproducttype" [ngModelOptions]="{standalone: true}" >
+              <ng-option *ngFor="let sList of producttypeList" [value]="sList.ProductTypeID">
+                {{sList.ProductType}}
+              </ng-option>
+            </ng-select>
+            <span  class="text-danger" *ngIf=" isaddnew && groupmarkForm.controls['ProductType'].invalid && groupmarkForm.controls['ProductType'].errors && groupmarkForm.controls['ProductType'].hasError('required')" >* Product Type is Mandatory. </span>      
+           
+
+          </div>
+          <div class="col">
+            <label class="form-label">Structure Element</label> <br>
+
+            <ng-select  (change)="ChangeStruct($event)" [ngModelOptions]="{standalone: true}" [disabled]="isBPC"
+              [(ngModel)]="slectedStructElement">
+
+              <ng-option *ngFor="let sList of structureList" [value]="sList.StructureElementTypeId">
+                {{sList.StructureElementType}}
+              </ng-option>
+            </ng-select>
+            <span  class="text-danger" *ngIf=" isaddnew && groupmarkForm.controls['StructElement'].invalid && groupmarkForm.controls['StructElement'].errors && groupmarkForm.controls['StructElement'].hasError('required')" >* Structure Element is Mandatory. </span>      
+          
+
+          </div>
+
+          <div class="col">
+            <label class="form-label">Group Marking</label> <br>
+            <div class="d-flex ">
+              <input type="text" formControlName="groupmark" placeholder="Group Marking"
+                class="form-control ng-selectcustomer" />                          
+            </div>
+            <span  class="text-danger" *ngIf=" isaddnew && groupmarkForm.controls['groupmark'].invalid && groupmarkForm.controls['groupmark'].errors && groupmarkForm.controls['groupmark'].hasError('required')" >* Group Mark Name is Mandatory. </span>      
+           
+          </div>
+         
+          <div class="col" *ngIf="selectedproducttype==7 || selectedproducttype==10 || selectedproducttype==15 || selectedproducttype==9 || selectedproducttype==14 ">
+            <div *ngIf="slectedStructElement!==5 &&  slectedStructElement!=8">
+              <label class="form-label">Parameter Set </label> <br>            
+
+            <ng-select  [selectOnTab]="true" [(ngModel)]="selectparameter" [ngModelOptions]="{standalone: true}"
+            class="ng-selectwbs" (change)="selectparameter=$event;">
+
+            <ng-option *ngFor="let sList of ParameterSetList" [value]="sList.ParameterSetNumber">
+              {{sList.ParameterSetValue}}
+            </ng-option>
+          </ng-select>
+        </div>
+        <div *ngIf="slectedStructElement===5 || slectedStructElement===8">
+          <label class="form-label">Parameter Set </label> <br>            
+
+          <ng-select  [selectOnTab]="true" [(ngModel)]="selectparameter" [ngModelOptions]="{standalone: true}"
+          class="ng-selectwbs" (change)="selectparameter=$event; Changeparam($event);">
+
+          <ng-option *ngFor="let sList of ParameterSetList" [value]="sList.tntParamSetNumber">
+            {{sList.intParameterSet}}
+          </ng-option>
+        </ng-select>
+      </div>
+          </div>
+
+
+
+        </div>
+
+      <div  *ngIf="slectedStructElement===5" class="row d-flex">
+        <div  class="col-md-3">
+          <label class="form-label">Drain Width </label> <br>
+
+          <ng-select 
+            [(ngModel)]="selectedDrainType" [ngModelOptions]="{standalone: true}" >
+            <ng-option *ngFor="let sList of Drain_WM_width" [value]="sList.sitDrainWidth">
+              {{sList.sitDrainWidth}}
+            </ng-option>
+          </ng-select>
+         
+          <span  class="text-danger" *ngIf=" isaddnew && !selectedDrainType">* Drain Width  is Mandatory. </span>      
+
+        </div>
+      
+      </div>
+        <div class="row d-flex ">
+          <div class="col">
+            <label class="form-label">Remark</label> <br>
+            <textarea class="form-control" placeholder="Remark" formControlName="remark" rows="2"></textarea> &nbsp;
+          </div>
+        </div>
+      </div>
+
+
+    </form>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" (click)="cancel()" class="btn btn-transparent">
+    Cancel
+  </button>
+  <button type="button" (click)="Submit()" class="btn btn-primary me-2" >
+    Create
+
+  </button>
+</div>

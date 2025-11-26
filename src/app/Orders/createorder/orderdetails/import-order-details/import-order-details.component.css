@@ -1,0 +1,21 @@
+.modal-header {
+    background: #a5a7ab8c;
+    font-weight: 500;
+    font-size: x-large;
+}
+
+.subHeading {
+    font-size: large;
+    font-weight: 500;
+    padding-bottom: 20px;
+}
+
+.import{
+    background: #cecfd1;
+}
+.import:hover {
+    color: #212529;
+    text-decoration: none;
+    background: #edeff2 !important;
+    border: 1px solid #cecfd1;
+}

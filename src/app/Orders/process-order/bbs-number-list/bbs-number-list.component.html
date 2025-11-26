@@ -1,0 +1,47 @@
+<div class="container-fluid">
+  <div class="card m-1">
+    <div class="mainHeading">
+      <span>BBS No List</span>
+    </div>
+    <div class="body">
+      <!-- <div  style="z-index: 500;opacity:1"> -->
+        <div *ngIf="ListLoading" id="pause" class="d-flex align-items-center justify-content-center">
+          <div id="spinner" class="loader"></div>
+        <!-- </div> -->
+      </div>
+      <div class="table-responsive table-wrapper-scroll-y my-custom-scrollbar">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>SNo</th>
+              <th>BBS No</th>
+              <th>BBS Description</th>
+              <th>WBS1</th>
+              <th>WBS2</th>
+              <th>WBS3</th>
+              <th>Structure Element</th>
+              <th>Order Series Number</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of UsedBBSList; index as i">
+              <td>{{ i + 1 }}</td>
+              <td>{{ item.BBSNo }}</td>
+              <td>{{ item.BBSDesc }}</td>
+              <td>{{ item.WBS1 }}</td>
+              <td>{{ item.WBS2 }}</td>
+              <td>{{ item.WBS3 }}</td>
+              <td>{{ item.StrucEle }}</td>
+              <td>{{ item.BBSSOR }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="footer">
+      <button type="button" class="btn btn-primary me-2" (click)="activeModal.dismiss('Cross click')">
+        Close
+      </button>
+    </div>
+  </div>
+</div>

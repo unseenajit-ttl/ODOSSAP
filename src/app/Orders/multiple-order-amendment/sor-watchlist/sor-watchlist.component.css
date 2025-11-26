@@ -1,0 +1,15 @@
+.load-header {
+    padding: 15px;
+    font-size: x-large;
+    font-weight: 500;
+    background: #cbd3e1;
+    cursor: grab;
+}
+
+.input-fields{
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+    align-items: center;
+}

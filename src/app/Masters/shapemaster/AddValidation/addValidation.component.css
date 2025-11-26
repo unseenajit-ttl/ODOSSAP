@@ -1,0 +1,17 @@
+
+.modal-body{
+    height: 62vh;
+   
+}
+
+.required-label{
+    color: red;
+}
+.table-wrapper-scroll-y {
+    display: block;
+}
+
+.table-responsive thead th {
+    position: sticky;
+    top: 0;
+  }

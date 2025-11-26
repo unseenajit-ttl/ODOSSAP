@@ -1,0 +1,24 @@
+<div class="container-fluid">
+  <div class="card m-1">
+    <h3 class="card-header d-flex flex-column justify-content-center align-items-center">
+      <b>WBS Posting Report</b>
+    </h3>
+      <div class="card-body" style="margin-top:-11px !important;">
+      <!-- {{pdfpath}}
+      <pdf-viewer [src]="pdfpath"
+              [render-text]="true"
+              [original-size]="true"
+              style="width: 400px; height: 500px"
+  ></pdf-viewer> -->
+
+  <canvas
+  id="canvas"
+  width="490"
+  height="490"
+  style="border: 1px solid black;"
+></canvas>
+<p id="clear" (click)="clear()">clear</p>
+<p id="clear" (click)="drawRectable()">Rectanle</p>
+    </div>
+  </div>
+</div>

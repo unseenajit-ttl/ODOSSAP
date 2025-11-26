@@ -1,0 +1,107 @@
+<div cdkDrag cdkDragRootElement=".your-custom-dialog-class">
+    <div *ngIf="DOLoading" style="z-index: 500">
+        <div id="pause" class="d-flex align-items-center justify-content-center">
+            <div id="spinner" class="loader"></div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="card m-1">
+            <div class="mainHeading" cdkDragHandle>
+                <span>DO Document Download & Material List (交货单下载与材料表)</span>
+            </div>
+
+            <!-- <button (click)="DownloadDeliveredDocs('Signed DO')">PRESS ME</button> -->
+
+            <div *ngIf="DeliveredOrderLoading" style="z-index: 500">
+                <div id="pause" class="d-flex align-items-center justify-content-center">
+                    <div id="spinner" class="loader"></div>
+                </div>
+            </div>
+            <div>
+                <div class="table-responsive table-wrapper-scroll-y my-custom-scrollbar">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Product<br />(产品名称)</th>
+                                <th>Weight<br />(重量)</th>
+                                <th>Pieces<br />(数量) </th>
+                                <th>Square Meter<br />(平方米)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngFor="let item of DOTableList; index as i ">
+                                <tr>
+                                    <td class="subheading" colspan="4">
+                                        <div class="row">
+                                            <div class="col-md-4 Product-DO-Number">
+                                                <span><b>{{item.DONumber}}</b></span>
+                                            </div>
+                                            <div class="col-md-8 buttonDis">
+                                                <button type="button" class="btn btn-primary me-2 downloaddoc"
+                                                    [disabled]="item.Data[0].SignedDO === 0"
+                                                    (click)="DownloadDeliveredDocs(item.DONumber, 'Signed DO')">
+                                                    Signed DO
+                                                </button>
+                                                <button type="button" class="btn btn-primary me-2 downloaddoc"
+                                                    [disabled]="item.Data[0].DODetails === 0"
+                                                    (click)="DownloadDeliveredDocs(item.DONumber, 'DO Detail')">
+                                                    DO Details
+                                                </button>
+                                                <button type="button" class="btn btn-primary me-2 downloaddoc"
+                                                    [disabled]="item.Data[0].MillCert === 0"
+                                                    (click)="DownloadDeliveredDocs(item.DONumber, 'MillCert')">
+                                                    Mill Cert
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr *ngFor="let sList of item.Data">
+                                    <td>{{sList.Product}}</td>
+                                    <td>{{sList.TotalTonnage}}</td>
+                                    <td>{{sList.TotalPCs}}</td>
+                                    <td>{{(sList.TotalM2==0)?"":sList.TotalM2}}</td>
+                                </tr>
+                                <tr class="Total-Weight-row"
+                                    *ngIf="(DOTableList.length > 1) && (i!=DOTableList.length-1)">
+                                    <td>Sub-Total</td>
+                                    <td>{{DOTableList[i].Data[0].subTotalWt}}</td>
+                                    <td>{{DOTableList[i].Data[0].subTotalQty}}</td>
+                                    <td>{{DOTableList[i].Data[0].subTotalm2Qty}}</td>
+                                </tr>
+
+                            </ng-container>
+                            <ng-container>
+                                <tr class="Total-Weight-row">
+                                    <td>Total</td>
+                                    <td>{{TotalWeight}}</td>
+                                    <td>{{TotalQty}}</td>
+                                    <td>{{TotalM2Qty}}</td>
+                                </tr>
+                            </ng-container>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="footer">
+                <button type="button" class="btn btn-primary me-2" (click)="DownloadAll()">
+                    Download All
+                </button>
+                <button type="button" class="btn btn-primary me-2" (click)="activeModal.dismiss('Cross click')">
+                    Close (关闭)
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- <div style="display:none">
+    @using (Html.BeginForm("downloadDocument", "DeliveredOrders", new { ReturnUrl = "" }, FormMethod.Post, new { target
+    = "_blank", role = "form", autocomplete = "off", id = "dd_download_ducument" }))
+    {
+    @Html.AntiForgeryToken()
+    <input type="hidden" id="DocumentIndex" name="DocumentIndex">
+    <input type="hidden" id="FileName" name="FileName">
+    <input type="hidden" id="FileType" name="FileType">
+    }
+</div> -->

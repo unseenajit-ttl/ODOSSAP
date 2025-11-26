@@ -1,0 +1,303 @@
+<div class="container-fluid">
+  <div class="logo2">
+    <div class="card m-1">
+      <h3 class="card-header d-flex flex-column justify-content-center">
+        <span> <img src="../../../assets/imagesuiux/delivered.png" style="width: 40px;height: 40px;">
+    
+        <b> Delivered Orders (已交货的订单)</b>
+      </span>
+      </h3>
+      <div *ngIf="loading" style="z-index: 500">
+        <div id="pause" class="d-flex align-items-center justify-content-center">
+          <div id="spinner" class="loader"></div>
+        </div>
+      </div>
+      <div class="card-body" style="margin-top:-50px !important;">
+        <div class="filter ">
+          <form [formGroup]="deliveredorderForm" (ngSubmit)="onSubmit()">
+            <div class="row mobile-customer-project">
+              <ngb-accordion #acc="ngbAccordion" [activeIds]="['panel1']" class="mobile2" style="padding-top: 14px;">
+                <ngb-panel id="panel1">
+                  <!-- <ng-template ngbPanelTitle>
+                                    <span style="color:#0880ae;"><b>Filters</b></span>
+                                </ng-template> -->
+                  <ng-template ngbPanelContent>
+                    <div class="card-body" style="padding: 0.5%;">
+                      <div class="row">
+                        <div class="col-md-3">
+                          <label class="form-label">Customer</label> <br>
+                          <ng-select formControlName="customer" class="w-auto" (change)="changecustomer($event)">
+                            <ng-option *ngFor="let sList of CustomerList" [value]="sList.CustomerCode">
+                              {{sList.CustomerName}} ({{sList.CustomerCode}})
+                            </ng-option>
+                          </ng-select>
+                        </div>
+
+                        <div class="col-md-3">
+                          <label class="form-label">Project</label> <br>
+                          <ng-select formControlName="project" class="w-auto" [multiple]="true" [closeOnSelect]="false"
+                            (change)="changeproject($event)" style="max-height: 65px;">
+                            <ng-template ng-header-tmp *ngIf="ProjectList.length != 0">
+                              <div style="justify-content: space-between;display: flex;">
+                                <button class="btn btn-link" style="padding:4px;border:0px;margin:0px;"
+                                  (click)="selectAllProject()">Select
+                                  All</button>
+                                <button class="btn btn-link" style="padding:4px;border:0px;margin:0px;"
+                                  (click)="clearAllProject()">Clear
+                                  All</button>
+                              </div>
+                            </ng-template>
+                            <ng-option *ngFor="let sList of ProjectList" [value]="sList.ProjectCode">
+                              {{ sList.ProjectTitle }} ({{ sList.ProjectCode }})
+                            </ng-option>
+                          </ng-select>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-template>
+                </ngb-panel>
+              </ngb-accordion>
+
+            </div>
+          </form>
+          <div class="row logo2 customerandprojecthideonweb">
+            <div _ngcontent-auh-c182="" class="col-md-7"><label _ngcontent-auh-c182="" class="form-label"></label><br _ngcontent-auh-c182=""><br><b _ngcontent-auh-c182="">Select All Project button to Include All Optional Projects (选择全部项目按钮至包括全部可选工程项目)</b>
+            </div>
+            <div class="col-md-4 float-right">
+              <label class="form-label"></label> <br>
+              <div class="input-group flex-nowrap " *ngIf="searchResult" style="padding-right: 30px;">
+                <input class="form-control" type="search" placeholder="Search " value="search" id="example-search-input"
+                  name="search" [(ngModel)]="searchText" 
+                  [ngModelOptions]="{standalone: true}">
+                <span class="input-group-append  ms-n5">
+                  <span class="input-group-text ">
+                    <i class="bi bi-search"></i>
+                  </span>
+                </span>
+              </div>
+            </div>
+            <div class="col-md-1 ">
+              <label class="form-label"></label> <br>
+              <div class="input-group flex-nowrap ">
+                <div class="mr-0 d-flex" style="margin-top: -6px;">
+                  <span class=" btn input-group-text ">
+                    <i class="material-icons" style="font-size:20px;" ngbTooltip="Download Excel"
+                      (click)="ExportDeliveredOrdersToExcel()">download</i>
+                  </span><span class="btn input-group-text" (click)="editColumn = !editColumn" (mouseenter)="HoverSetting=true"
+                    (mouseleave)="HoverSetting=false"><i class="bi bi-gear-fill" style="font-size: medium; z-index: 1"
+                      ngbTooltip="Edit Column"></i></span>
+                  </div>
+              </div>
+
+            </div>
+
+          </div><div class="setting-menu float-right logo2"
+            [class.mat-elevation-z8]="true" *ngIf="editColumn" (mouseenter)="HoverSetting=true" (mouseleave)="HoverSetting=false">
+            <div class="d-flex heading">
+              <div class="d-flex" style="width: 50%; justify-content: space-between">
+                <label class="fixed-xolumn-head">Fixed Columns: </label>
+                <input class="form-control" type="number" max="7" min="1" [(ngModel)]="fixedColumn" style="
+                              width: 40%;
+                              border: 1px solid #dee2e6 !important;
+                              border-radius: 3px;
+                            " (change)="UpdateFixedColumns(fixedColumn)" />
+              </div>
+              <button type="button" class="btn-close" aria-label="Close" (click)="editColumn = false"></button>
+            </div>
+            <hr style="margin: 10px;border-top: 1px solid #101112;" />
+            <div class="d-flex" style="
+                          justify-content: space-between;
+                          align-items: flex-end;
+                          padding-left: 5px;
+                        ">
+              <span>Visible Columns</span>
+            </div>
+            <div class="d-flex">
+              
+              <table class="table table-bordered mobile2" style="height: fit-content" style="min-width: 0">
+                <tbody>
+                  <tr *ngFor="let headerColumn of splitArray(1,deliveredColumns);">
+                    <td>{{headerColumn.displayName}}</td>
+                    <td><input type="checkbox" [(ngModel)]="headerColumn.isVisible" [checked]="headerColumn.isVisible"
+                        (ngModelChange)="SaveColumnsSetting()"></td>
+                  </tr>
+                </tbody>
+              </table>
+              <table class="table table-bordered mobile2" style="height: fit-content" style="min-width: 0">
+                <tbody>
+                  <tr *ngFor="let headerColumn of splitArray(0,deliveredColumns);">
+                    <td>{{headerColumn.displayName}}</td>
+                    <td><input type="checkbox" [(ngModel)]="headerColumn.isVisible" [checked]="headerColumn.isVisible"
+                        (ngModelChange)="SaveColumnsSetting()"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div *ngIf="DeliveredOrderLoading" style="z-index: 500">
+            <div id="pause" class="d-flex align-items-center justify-content-center">
+              <div id="spinner" class="loader"></div>
+            </div>
+          </div>
+          <div>
+            <div class=" table-responsive table-wrapper-scroll-y my-custom-scrollbar order-table"
+              style="max-height: 409px; height: 409px;">
+              <cdk-virtual-scroll-viewport itemSize="50" #scrollViewport  style="height: 53vh;">
+
+              <div class="table">
+                <form [formGroup]="searchForm">
+                  <table class="table new-table">
+                    <thead id="DeliveredOrderHeading" [ngStyle]="{'position':'sticky','top': '0px'}">
+                      <tr cdkDropList cdkDropListOrientation="horizontal" [cdkDropListData]="deliveredColumns"
+                        (cdkDropListDropped)="dropCol($event)">
+                        <th style="width: 20px !important;color: white;  font-size: medium;" [style.left]="'0px'" [class.FixedColumn]="'true'"><span> SNO<br />序号</span>
+                        </th>
+                        <ng-container *ngFor="let headerColumn of deliveredColumns;index as headIndex">
+                          <th #thNomVar [style.cursor]="'pointer'"
+                            [style.left]="(headIndex+1) <= (fixedColumn - 1) ? getRightWidthTest(thNomVar,headIndex) : 'inherit'"
+                            [style.display]="'table-cell'" [class.FixedColumn]="(headIndex+1) <= (fixedColumn - 1)"
+                            (click)="toggleSortingOrder(headerColumn.field,headerColumn.colName)" *ngIf="headerColumn.isVisible"
+                            style="cursor: pointer; background-color: #003ec4 ; border-radius: 0px;" cdkDrag>
+                            <div class="d-flex"  [style.max-width.px]="headerColumn.resizeWidth"  style="
+                              align-items: center;
+                              justify-content: space-between;
+                            ">
+                              <span style="color: white; font-size: medium;"  [style.max-width.px]="headerColumn.resizeWidth"> {{headerColumn.displayName}}<br />{{headerColumn.chineseDisplayName}}</span><i
+                                class="bi bi-arrow-up" *ngIf="
+                                !isAscending && currentSortingColumn == headerColumn.field"></i><i class="bi bi-arrow-down" *ngIf="
+                                isAscending && currentSortingColumn == headerColumn.field"></i>
+                            </div>
+                            <div [style.width.px]="headerColumn.resizeWidth" *ngIf="isMobile > 768"></div>
+                          </th>
+                        </ng-container>
+                        <th width="3%" style="color: white; font-size: medium;border-radius: 0px;">Action<br>行动 </th>
+                      </tr>
+                    </thead>
+                    <thead id="searchBar" *ngIf="toggleFilters"
+                      [ngStyle]="{'position':'sticky','top.px': getMinHeightIncoming('DeliveredOrderHeading')}">
+                
+                      <tr>
+                        <th style="width: 20px !important;" [style.left]="'0px'" [class.FixedColumn]="'true'" style="background-color: white !important;"></th>
+                        <ng-container *ngFor="let searchColumn of deliveredColumns;let j = index;">
+                          <th [style.left]="(j+1) <= (fixedColumn - 1) ? searchColumn.left+'px !important' : 'inherit'"
+                            [style.display]="'table-cell'" [style.width]="searchColumn.width+ 'px'"
+                            [class.FixedColumn]="(j+1) <= (fixedColumn - 1)" style="text-align: center;background-color: white !important;"
+                            *ngIf="searchColumn.isVisible && searchColumn.controlName != 'DeliveryDate' && searchColumn.controlName != 'PODate'"
+                            [style.width.px]="'100'">
+                            <input class="form-control" formControlName="{{searchColumn.controlName}}" />
+                            <div class="bar" appColumnResize [colName]="searchColumn.controlName" [colIndex]="j"
+                              (widthChangeEvent)="onWidthChange($event)" cdkDrag></div>
+                          </th>
+                          <th [style.left]="(j+1) <= (fixedColumn - 1) ? searchColumn.left+'px !important' : 'inherit'"
+                            [style.display]="'table-cell'" [style.width]="searchColumn.width+ 'px'"
+                            [class.FixedColumn]="(j+1) <= (fixedColumn - 1)"
+                            *ngIf="searchColumn.isVisible && (searchColumn.controlName == 'DeliveryDate')" style="text-align: center; background-color: white !important;">
+                            <app-bootstrap-date-range-picker-for-delivered id="DeliveryDateRange" [clearInput]="clearInput" [isDelivery]="true"
+                              [controlName]="searchColumn.controlName" (dateRangeSelection)="onGetDateSelected($event)" appendTo="body">
+                            </app-bootstrap-date-range-picker-for-delivered>
+                          </th>
+                          <th [style.left]="(j+1) <= (fixedColumn - 1) ? searchColumn.left+'px !important' : 'inherit'"
+                          [style.display]="'table-cell'" [style.width]="searchColumn.width+ 'px'"
+                          [class.FixedColumn]="(j+1) <= (fixedColumn - 1)"
+                          *ngIf="searchColumn.isVisible && (searchColumn.controlName == 'PODate')" style="text-align: center; background-color: white !important;">
+                          <app-bootsrtap-date-range-picker-for-search id="PoDateRange" [clearInput]="clearInput" [isDelivery]="false"
+                            [controlName]="searchColumn.controlName" (dateRangeSelection)="onGetDateSelected($event)" appendTo="body">
+                          </app-bootsrtap-date-range-picker-for-search>
+                        </th>
+                        </ng-container>
+                        <th style="background-color: white !important;"><span style="margin:auto; padding:2px">
+                            <i class="fa fa-refresh" ngbTooltip="Reset" style=" color:red;font-size:20px;"
+                              (click)="Reset_Filter()"></i>
+
+                            &nbsp;
+                            <label (click)="Reset_Filter()">Clear</label>
+                          </span></th>
+
+
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      <tr class="no-record" *ngIf="deliveredorderarray.length == 0">
+                        <td colspan="20" style="text-align: center;">
+                          No Record Found
+                        </td>
+                      </tr>
+                      <ng-container *ngFor="let item of deliveredorderarray
+                                             |filter:searchText ; index as i ">
+                        <tr [ngClass]="{'highlight': selectedRowIndex === i}" (click)="selectRow(item,deliveredorderarray,$event)" [class.selected-draft-table]="item.rowSelected"
+                          (click)="changeColor(i);"
+                          [ngStyle]="{'background-color': giveRowcolor(item)}">
+                          <td style="width: 20px !important;" [style.left]="'0px'" [class.FixedColumn]="'true'" [style.background-color]="giveRowcolor(item)">
+                            {{i+1}}
+                          </td>
+                          <ng-container *ngFor="let showDataColumn of deliveredColumns;index as searchIndex">
+                            <td [style.width]="showDataColumn.width+ 'px !important'"
+                              [style.left]="(searchIndex+1) <= (fixedColumn - 1) ? showDataColumn.left+'px !important' : 'inherit'"
+                              [style.display]="'table-cell'"
+                              [style.background-color]="(searchIndex+1) <= (fixedColumn - 1) ? giveRowcolor(item): ''"
+                              [class.FixedColumn]="(searchIndex+1) <= (fixedColumn - 1)"
+                              *ngIf="showDataColumn.isVisible && showDataColumn.colName !='DONo'"> {{
+                              item[showDataColumn.colName] }}</td>
+                            <td [style.width]="showDataColumn.width+ 'px !important'"
+                              [style.left]="(searchIndex+1) <= (fixedColumn - 1) ? showDataColumn.left+'px !important' : 'inherit'"
+                              [style.display]="'table-cell'"
+                              [style.background-color]="(searchIndex+1) <= (fixedColumn - 1) ? giveRowcolor(item): ''"
+                              [class.FixedColumn]="(searchIndex+1) <= (fixedColumn - 1)"
+                              *ngIf="showDataColumn.isVisible && showDataColumn.colName =='DONo'" class="DO-Table-cell"
+                              (click)="open_doc(item)" style="text-decoration: underline;"> {{ item[showDataColumn.colName] }}</td>
+                          </ng-container>
+
+
+                          <td>
+                            <!-- <i class="bi bi-eye" (click)="ViewOrderDetails(item)"
+                                                        ngbTooltip="View"></i>&nbsp; -->
+                            <i class="bi bi-eye" *ngIf="showViewDetails(item)" (click)="ViewOrderDetails(item)" ngbTooltip="View"></i>
+                            <!-- <i class="material-icons" (click)="Copy(item)"
+                                                        style="font-size:medium;" ngbTooltip="Copy">content_copy</i>
+                                                    &nbsp; -->
+
+                          </td>
+
+                        </tr>
+
+
+                      </ng-container>
+                    </tbody>
+
+                  </table>
+                </form>
+              </div>
+            
+            </cdk-virtual-scroll-viewport>
+            </div>
+
+            <div class="row">
+              
+            </div>
+            <div class="row">
+              <div class="col">
+                <span *ngIf="deliveredorderarray.length==0" style=" font-weight: bold;">Total Delivered Orders: 0</span>
+                <span *ngIf="deliveredorderarray.length!=0" style=" font-weight: bold;"> Total Orders : </span>
+                <span style=" font-weight: bold;"> {{totalCount}}</span> <br>
+                <span _ngcontent-nlc-c225="" style=" font-weight: bold;" class="ng-tns-c225-25"> Color
+                  Legend: </span><br>
+                <div class="d-flex justify-content-start">
+                   <div class='box  font-weight-bold' style="background-color: #83f0b6;color: black;">Partial Delivery</div> &nbsp;&nbsp;
+                  <div class='box color font-weight-bold' style="background-color: #00b050;color: black;">Delivery Today</div> &nbsp;
+                </div>
+              </div>
+              <!-- <div class="col-md-3 float-right">
+                            <button class="btn btn-primary btn-sm" type="button" style="width:29%" (click)="Withdraw()"
+                                [disabled]="disablewithdraw" [ngClass]="{'btn-secondary': disablewithdraw===true}">Withdraw</button>
+                            <button class="btn btn-primary btn-sm" type="button" style="width:29%"
+                                [ngClass]="{'btn-secondary': disablesubmit===true}" (click)="Submit()"
+                                [disabled]="disablesubmit">Submit</button>
+                        </div> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

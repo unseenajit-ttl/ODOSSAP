@@ -1,0 +1,37 @@
+.container-fluid {
+  padding: 0;
+}
+.Header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: x-large;
+  padding: 10px 5px;
+  background: #e6e6e6;
+}
+
+.subHeading {
+  font-size: large;
+  padding: 8px;
+  border-bottom: 1px solid #e6e6e6;
+  background: #eeeeee;
+}
+
+.Body {
+  padding: 10px;
+}
+
+.body-input {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 0;
+}
+
+.body-input label {
+  font-weight: 500;
+  font-size: large;
+}
+
+.form-control {
+  width: 50%;
+}

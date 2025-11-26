@@ -1,0 +1,10 @@
+.copy-grid-table{
+  height: 60vh !important;
+  scroll-behavior: smooth;
+  overflow-y: scroll;
+}
+thead{
+  position: sticky;
+  top: 0px;
+  z-index: 99;
+}

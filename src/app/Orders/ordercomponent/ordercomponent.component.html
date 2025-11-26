@@ -1,0 +1,298 @@
+<div class="container-fluid">
+    <div class="card">
+        <h3 class="card-header d-flex flex-column justify-content-center align-items-center">
+            <b> Components</b>
+        </h3>
+        <div class="card-body" style="margin-top:-30px !important;">
+            <div class="filter ">
+                <form [formGroup]="ordercomponentForm" (ngSubmit)="onSubmit()">
+                    <div class="row ">
+                        <ngb-accordion #acc="ngbAccordion">
+                            <ngb-panel>
+                                <ng-template ngbPanelTitle>
+                                    <span style="color:#0880ae;"><b>Filters</b></span>
+                                </ng-template>
+                                <ng-template ngbPanelContent>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="colbutton">
+                                                <label class="form-label">Customer</label> <br>
+                                                <ng-select formControlName="customer" class="w-auto"
+                                                    (change)="changecustomer($event)">
+                                                    <ng-option *ngFor="let sList of customerList"
+                                                        [value]="sList.item_id">
+                                                        {{sList.item_text}}
+                                                    </ng-option>
+                                                </ng-select>
+                                            </div>
+
+                                            <div class="colbutton">
+                                                <label class="form-label">Project</label> <br>
+                                                <ng-select formControlName="project" class="w-auto"
+                                                    (change)="changeproject($event)">
+                                                    <ng-option *ngFor="let sList of projectList"
+                                                        [value]="sList.item_id">
+                                                        {{sList.item_text}}
+                                                    </ng-option>
+                                                </ng-select>
+                                            </div>
+
+
+
+
+                                            <div class="colbutton ml-5" style="padding-top:20px">
+                                                <div class="d-flex">
+                                                    <br>
+                                                    <br>
+                                                    <button class="btn btn-primary btn-sm" type="submit">Search</button>
+
+                                                    <button class="btn btn-primary btn-sm" type="reset"
+                                                        (click)="onReset()">Reset</button>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <!-- <div class="row">
+
+                                            <div class="col">
+                                                <label class="form-label">PO</label> <br>
+
+                                                <input type="text" formControlName="po" class="form-control" />
+                                            </div>
+                                            <div class="col">
+                                                <label class="form-label">PO Date</label> <br>
+                                                <do-date-picker [formGroup]="ordercomponentForm" controlName="podate"
+                                                    [class]="'form-control'">
+                                                </do-date-picker>
+                                            </div>
+                                            <div class="col">
+                                                <label class="form-label">Required Date</label> <br>
+                                                <do-date-picker [formGroup]="ordercomponentForm"
+                                                    controlName="deliverydate" [class]="'form-control'">
+                                                </do-date-picker>
+                                            </div>
+                                            <div class="col">
+                                                <label class="form-label">WBS1 </label> <br>
+                                                <input type="text" formControlName="wbs1" class="form-control" />
+                                            </div>
+                                            <div class="col">
+                                                <label class="form-label">WBS2 </label> <br>
+                                                <input type="text" formControlName="wbs2" class="form-control" />
+                                            </div>
+                                            <div class="col">
+                                                <label class="form-label">WBS3 </label> <br>
+                                                <input type="text" formControlName="wbs3" class="form-control" />
+                                            </div>
+                                            <div class="col-3">
+                                                <label class="form-label">Include All Optional Project</label> <br>
+                                                <div class=" row custom-control custom-switch ml-2">
+                                                    <input type="checkbox" class="custom-control-input"
+                                                        formControlName="isinclude" id="isincludeSwitches"
+                                                        [checked]="false">
+                                                    <label class="custom-control-label" for="isincludeSwitches"></label>
+                                                </div>
+                                            </div>
+
+                                        </div> -->
+
+
+
+                                    </div>
+                                </ng-template>
+                            </ngb-panel>
+                        </ngb-accordion>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-11 d-flex">
+                            <div class="col input-group flex-nowrap">
+                                <label class="form-label">Product Type</label>
+                                <ng-select formControlName="projecttype" [multiple]="true" class="ng-selectprodtype">
+                                    <ng-option *ngFor="let sList of producttypeList" [value]="sList.item_id">
+                                        {{sList.item_text}}
+                                    </ng-option>
+                                </ng-select>
+                            </div>
+
+                            <div class="col input-group flex-nowrap">
+                                <label class="form-label"> Structure Element</label>
+
+                                <ng-select formControlName="structelement" [multiple]="true" class="ng-selectprodtype">
+                                    <ng-option *ngFor="let sList of producttypeList" [value]="sList.item_id">
+                                        {{sList.item_text}}
+                                    </ng-option>
+                                </ng-select>
+                            </div>
+                            <div class="col  input-group flex-nowrap">
+                                <label class="form-label"> Show All Standard Component</label>
+
+                                <div class=" row custom-control custom-switch ml-2">
+                                    <input type="checkbox" class="custom-control-input" formControlName="isallstd"
+                                        id="isincludeSwitches" [checked]="false">
+                                    <label class="custom-control-label" for="isincludeSwitches"></label>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="col-md-1 ">
+
+                            <div class="input-group flex-nowrap ">
+                                <div class="mr-0">
+                                    <span class=" btn input-group-text ">
+                                        <i class="material-icons" style="font-size:20px;" ngbTooltip="Download Excel"
+                                            (click)="download()">download</i>
+                                    </span>
+
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </form>
+
+
+                <div class=" table-responsive table-wrapper-scroll-y my-custom-scrollbar">
+
+                    <table class="table table-striped  table-bordered">
+                        <thead>
+                            <tr>
+                                <th style="width:4px;"><i class="bi bi-search"
+                                        (click)="toggleFilters = !toggleFilters"></i>
+                                </th>
+                                <th> Component Name </th>
+                                <th> Revision </th>
+                                <th> Transport Mode</th>
+                                <th> Total Weight</th>
+                                <th> Total Pieces</th>
+                                <th> Standard</th>
+                                <th> Remarks</th>
+                                <th> Updated By</th>
+                                <th> Updated Date </th>
+                                <th> Header </th>
+                                <th> Copy From </th>
+                                <th> Action </th>
+
+
+
+
+
+
+
+                            </tr>
+                        </thead>
+                        <thead *ngIf="toggleFilters">
+                            <tr>
+                                <th></th>
+                                <th><input class="form-control" type="text" id="searchBlock"
+                                        placeholder="Search here" /></th>
+                                <th><input class="form-control" type="text" id="searchFrom" placeholder="Search here" />
+                                </th>
+                                <th><input class="form-control" type="text" id="searchTo" placeholder="Search here" />
+                                </th>
+                                <th><input class="form-control" type="text" id="searchPart" placeholder="Search here" />
+                                </th>
+                                <th><input class="form-control" type="text" id="searchStructure"
+                                        placeholder="Search here" /></th>
+                                <th><input class="form-control" type="text" id="searchBlock"
+                                        placeholder="Search here" /></th>
+                                <th><input class="form-control" type="text" id="searchFrom" placeholder="Search here" />
+                                </th>
+                                <th><input class="form-control" type="text" id="searchBlock"
+                                        placeholder="Search here" /></th>
+                                <th><input class="form-control" type="text" id="searchFrom" placeholder="Search here" />
+                                </th>
+                                <th><input class="form-control" type="text" id="searchBlock"
+                                        placeholder="Search here" /></th>
+                                <th><input class="form-control" type="text" id="searchBlock"
+                                        placeholder="Search here" /></th>
+
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            <ng-container *ngFor="let item of cancelledorderarray ; index as i ">
+                                <tr>
+                                    <td style="width:2px">
+                                        <input type="checkbox">
+                                    </td>
+
+                                    <td>{{item.componentname}}</td>
+                                    <td>{{item.rev}}</td>
+                                    <td>{{item.tranmode}}</td>
+                                    <td>{{item.totwt}}</td>
+                                    <td>{{item.totpc}}</td>
+                                    <td>{{item.std}}</td>
+                                    <td>{{item.Remark}}</td>
+                                    <td>{{item.updatedby}}</td>
+                                    <td>{{item.updatedate}}</td>
+                                    <td>{{item.header}}</td>
+                                    <td>{{item.copyfrom}}</td>
+                                    <td>
+                                        <i class="material-icons" ngbTooltip="Edit">mode_edit</i>&nbsp;
+                                        <i class="material-icons" ngbTooltip="View">preview</i>
+                                    </td>
+                                </tr>
+
+
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="row d-flex ">
+                    <div class="col-md-8">
+                        <div class="d-flex   mt-2">
+                            <ngb-pagination [collectionSize]="cancelledorderarray.length" [(page)]="page"
+                                [pageSize]="pageSize" (pageChange)="getPageData();" [boundaryLinks]="false"
+                                *ngIf="searchResult">
+                                <ng-template ngbPaginationPrevious>Prev</ng-template>
+                                <ng-template ngbPaginationNext>Next</ng-template>
+                            </ngb-pagination>
+
+                            <select class="custom-select mr-2 ml-3" style="width: auto" [(ngModel)]="pageSize"
+                                (ngModelChange)="getPageData();">
+                                <option [ngValue]="5">5 </option>
+                                <option [ngValue]="10">10 </option>
+                                <option [ngValue]="20">20 </option>
+                            </select>
+                            <span style="margin-top: 5px;">Items per page</span>
+
+                        </div>
+                        
+                    </div>
+                    <div class="col-md-4 d-flex text-right mt-3">
+                        <div class='box green'></div> &nbsp;<span>Confirmed Components </span>
+                        &nbsp; <div class='box gray'></div> &nbsp; <span>Inactive Components</span>
+                    
+                    
+                    </div>
+
+                </div>
+                <div class="container">
+                    <div class="row ">
+                        <div class="col-md-12 text-right mt-n1 ml-5">
+                            <button class="btn btn-primary btn-sm " type="button">Create</button>
+                            <button class="btn btn-primary btn-sm " type="button">New Revison</button>
+                            <button class="btn btn-primary btn-sm " type="button">Confirm</button>
+                            <button class="btn btn-primary btn-sm " type="button">Delete</button>
+                            <button class="btn btn-primary btn-sm " type="button">Import from NDS</button>
+                            <button class="btn btn-primary btn-sm " type="button">Configure</button>
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+            </div>
+        </div>
+    </div>
+</div>

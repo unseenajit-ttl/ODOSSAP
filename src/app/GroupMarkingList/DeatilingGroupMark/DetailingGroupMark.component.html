@@ -1,0 +1,69 @@
+<div class="container-fluid">
+    <div class="card m-1">
+        <!-- <h3 class="card-header d-flex flex-column justify-content-center align-items-center">
+            <b>Detailing </b>
+        </h3> -->
+        <div class="card-body" style="margin-top:-11px !important;">
+
+            <div >
+                <div class="row ">
+                    <ngb-accordion #acc="ngbAccordion" title="Filters">
+                        <ngb-panel id="panel1">
+                            <ng-template ngbPanelContent>
+                                <div class="card-body">
+                                    <ng-container class="border">
+                                        <div class="row">
+                                            <div class="col-sm-3" style="margin-right: auto;">
+                                                <label class="form-label">Customer</label>
+                                                <input type="text" readonly="true" class="form-control"
+                                                    value="ENG SENG LEE & CONSTR. CO PTE LTD" />
+                                            </div>
+                                            <div class="col-sm-2" style="margin: auto;">
+                                                <label class="form-label ">Project</label> <br>
+                                                <input type="text" readonly="true" class="form-control"
+                                                    value="Industrial Developement" />
+                                            </div>
+                                            <div class="col-sm" style="margin: auto;">
+                                                <label class="form-label">ProductType </label><br>
+                                                <input type="text" readonly="true" class="form-control" value="MSH">
+                                            </div>
+                                            <div class="col-sm-2" style="margin: auto;">
+                                                <label for="bendingtype"
+                                                    class="form-label ">StructureElement</label><br>
+                                                <input type="text"   readonly="true" class="form-control" [value]="structElement">
+                                            </div>
+                                            <div class="col-sm" style="margin: auto;">
+                                                <label for="bendingtype" class="form-label ">GroupMarking</label><br>
+                                                <input type="text" readonly="true" class="form-control"
+                                                    value="Test-Column">
+                                            </div>
+                                            <div class="col-sm" style="margin-left: auto;">
+                                                <label class="form-label">ParameterSet</label> <br>
+                                                <ng-select 
+                                                    [(ngModel)]="Queryparameterset" [ngModelOptions]="{standalone: true}">
+                                                    <ng-option *ngFor="let sList of parameterList"
+                                                        [value]="sList.value">
+                                                        {{sList.text}}
+                                                    </ng-option>
+                                                </ng-select>
+                                            </div>
+                                        </div>
+
+                                    </ng-container>
+                                </div>
+                            </ng-template>
+                        </ngb-panel>
+                    </ngb-accordion>
+                </div>
+                <br>
+                <div>
+                 
+                </div>
+            </div>
+
+            <br>
+
+
+        </div>
+    </div>
+</div>

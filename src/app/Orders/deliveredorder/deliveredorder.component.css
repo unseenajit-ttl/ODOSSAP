@@ -1,0 +1,431 @@
+ion-icon {
+  color: blue;
+}
+
+table td,
+table th {
+  font-size: 11px;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+  border: 1px solid #bcb7b7 !important;
+}
+
+table td {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 10px ;
+}
+table th {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+table th span {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+#searchBar th input {
+  padding: 0px;
+}
+/* table th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  overflow: auto;
+  min-width: 30px !important;
+} */
+
+#searchBar th {
+  /* resize: none; */
+  height: 33px;
+  vertical-align: middle !important;
+  /* position: static; */
+}
+
+#searchBar th input {
+  /* height: 25px !important; */
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: button;
+}
+
+#ngb-tooltip-2 {
+  z-index: 10000;
+}
+
+.tooltip {
+  z-index: 1000;
+}
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+/*
+thead th {
+  min-width: 25px !important;
+} */
+
+.accordion-button.collapsed {
+  background: blue;
+}
+
+.accordion-button.collapsed::after {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+}
+
+.accordion-button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  font-size: 0.8rem;
+  color: var(--bs-accordion-btn-color);
+  text-align: left;
+  background-color: var(--bs-accordion-btn-bg);
+  border: 0;
+  border-radius: 0;
+  overflow-anchor: none;
+  transition: var(--bs-accordion-transition);
+}
+
+/* table {
+  width: 100%;
+} */
+
+/* .mat-mdc-table .mdc-data-table__row:nth-child(odd) {
+  background-color: #e6e6e6;
+} */
+
+/* .mat-mdc-table .mdc-data-table__row :nth-child(even){
+  background-color: #ffffff;
+}
+
+
+.mat-mdc-table .mdc-data-table__row :nth-child(odd){
+  background-color: #e6e6e6;
+} */
+
+/* thead th {
+  text-align:left;
+  min-width:150px;
+  max-width:150px;
+}
+tbody td {
+  text-align:left;
+  min-width:150px;
+  max-width:150px;
+}
+table tr {
+  border-width: 2px 2px;
+} */
+
+.ng-selectcustomer {
+  width: 340px;
+}
+
+.ng-selectwbs {
+  width: 100px;
+}
+
+.colbutton {
+  flex-basis: 0;
+  flex-grow: 1;
+  max-width: 100%;
+  padding: 2px;
+  padding-left: -10px;
+}
+
+.custom-switch {
+  padding-left: 3rem;
+  padding-top: 7px;
+}
+
+.custom-control-label {
+  position: relative;
+  padding-left: 5px;
+  margin-bottom: 0;
+  vertical-align: top;
+}
+
+.btn {
+  --bs-btn-hover-border-color: #0a0a0a;
+}
+
+.mat-mdc-form-field-subscript-wrapper {
+  height: 0 !important;
+}
+
+.mdc-text-field--outlined .mdc-notched-outline {
+  z-index: 0;
+  background-color: white;
+}
+
+.my-custom-scrollbar {
+  position: relative;
+  overflow: auto;
+}
+
+/* .table-wrapper-scroll-y {
+  display: block;
+} */
+
+/* .custom-control-input:checked~.custom-control-label::before {
+    color: #fff;
+    border-color: #6AB200;
+    background-color: #6AB200;
+} */
+
+.mat-mdc-form-field-type-mat-date-range-input .mat-mdc-form-field-infix {
+  width: 90px;
+}
+
+/* .custom-control-label:before{
+  background-color:red;
+}
+.custom-checkbox .custom-control-input:checked~.custom-control-label::before{
+  background-color:black;
+} */
+
+.box {
+  float: left;
+  height: 20px;
+  width: auto;
+  margin-bottom: 15px;
+  clear: both;
+}
+
+.gray {
+  background-color: #9f9f9f;
+}
+
+.green {
+  background-color: #6ab200;
+}
+
+.blue {
+  background-color: #e5f5ff;
+}
+
+/* table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+} */
+
+/*
+Generic Styling, for Desktops/Laptops
+*/
+table {
+  min-width: 100%;
+  width: 1500px;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* th {
+  background: #333;
+  color: white;
+  font-weight: bold;
+} */
+
+td,
+th {
+  padding: 6px;
+  border: 1px solid #ccc;
+  text-align: left;
+}
+
+table td {
+  height: 33px;
+  font-size: medium;
+}
+
+/*
+	Max width before this PARTICULAR table gets nasty. This query will take effect for any screen smaller than 760px and also iPads specifically.
+	*/
+table {
+  border-collapse: collapse;
+}
+
+table,
+th,
+td {
+  border: 1px solid black;
+  border-radius: 0px !important;
+}
+
+
+
+tr:hover {
+  /* background-color: #8bcce8 !important; */
+}
+
+.logo3 .desktop3 td {
+  /* max-width: 150px;
+  min-width: 115px; */
+}
+
+.logo4 .mobile4 {
+  display: none !important;
+}
+.logo .mobile {
+  display: none !important;
+}
+
+
+.ButtonsDis {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+.new-table thead {
+  position: sticky !important;
+  z-index: 12;
+  background-color: #003ec4b3 !important;
+}
+
+.new-table tbody {
+  position: sticky !important;
+  z-index: 10;
+}
+.new-table tbody td {
+  position: sticky !important;
+  z-index: 10;
+}
+
+table th {
+  background-color: #003ec4b3 !important;
+}
+
+.FixedColumn {
+  z-index: 20 !important;
+  /* background-color: white !important; */
+}
+
+::ng-deep .mat-date-range-picker-content {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+::ng-deep .md-drppicker {
+  z-index: 1000 !important;
+  display: block !important;
+}
+
+.highlight {
+  background-color: beige !important; /* Highlight color */
+}
+
+.DO-Table-cell:hover {
+  color: red;
+  text-decoration: underline;
+}
+
+.DO-Table-cell {
+  color: green;
+}
+.bar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 5px !important;
+  margin: 3px !important;
+  justify-self: flex-end;
+  border-left: 2px solid transparent;
+  border-right: 2px solid transparent;
+  background-clip: content-box;
+  cursor: col-resize !important;
+  opacity: 1;
+  z-index: 50 !important;
+  cursor: -webkit-col-resize !important;
+}
+.cdkDrag :hover {
+  cursor: col-resize;
+}
+
+.setting-menu {
+  position: absolute;
+  z-index: 9999;
+  background-color: #dee2e6;
+  width: 32%;
+  right: 50px;
+  font-weight: 570;
+  border-radius: 10px 0 0 10px;
+  font-weight: 570;
+}
+
+.setting-menu table td {
+  font-size: small;
+  border: 1px solid #c8cdd3 !important;
+}
+
+.fixed-xolumn-head {
+  margin: auto;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.setting-menu .heading {
+  justify-content: space-between;
+  align-items: flex-end;
+  padding-left: 5px;
+  padding-top: 2px;
+}
+.setting-menu .heading input {
+  width: 40%;
+  border: 1px solid #dee2e6 !important;
+  border-radius: 3px;
+  padding: 6px 12px;
+}
+
+.setting-menu .heading button {
+  margin: auto 0;
+  font-size: 1rem;
+}
+.setting-menu span {
+  font-size: 1rem;
+}
+
+.no-record:hover {
+  background-color: white !important;
+}
+
+.new-table{
+  border-collapse: separate !important;
+}
+
+.selected-draft-table {
+  background-color: beige !important;
+  /* Highlight color */
+}
+
+
+::ng-deep .cdk-virtual-scroll-content-wrapper {
+ 
+  contain: none !important;
+}
+
+.mobile-customer-project{
+  display: none;
+}
+
+@media only screen and (max-width: 900px),
+  (min-device-width: 900px) and (max-device-width: 1024px) {
+  .mobile-customer-project {
+    display: block !important;
+  }
+}
+@media only screen and (max-width: 1024px) {
+  td{
+    min-width: max-content !important;
+    max-width: none !important;
+  }
+}

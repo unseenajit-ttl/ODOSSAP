@@ -1,0 +1,26 @@
+.modal-header {
+  background: #a5a7ab8c;
+  font-weight: 500;
+  font-size: x-large;
+}
+
+.subHeading {
+  font-size: large;
+  font-weight: 500;
+  padding-bottom: 20px;
+}
+
+.file-select {
+  padding: 2px;
+}
+
+.file-select :focus {
+  border: 2px solid black;
+}
+
+.file-select input {
+  padding: 3px;
+  border-radius: 5px;
+  width: -webkit-fill-available;
+  width: -webkit-fill-available;
+}

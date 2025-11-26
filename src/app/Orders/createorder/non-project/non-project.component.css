@@ -1,0 +1,17 @@
+.card-body {
+  padding: 10px;
+}
+
+.green-steel-sub {
+  display: flex;
+  padding: 0px 25px;
+  margin: auto 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.green-steel-dropdown{
+  width: 180px;
+  height: 35px;
+  margin-top: 0.5rem;
+}

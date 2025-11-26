@@ -1,0 +1,63 @@
+.custom-switch{
+  padding-top: 11px;
+
+}
+
+.table-responsive {
+
+  overflow-y: auto;
+  height: 300px;
+
+}
+
+tbody {
+  overflow-y: scroll;
+
+}
+
+th,
+td {
+  border: 1px solid yellowgreen;
+  text-align: left;
+  /* padding: 5px; */
+}
+
+
+.table-responsive thead th {
+  position: sticky;
+  top: 0;
+}
+
+
+
+.panel {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.panel-header {
+  background-color: #f0f0f0;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.panel-header h3 {
+  margin: 0;
+}
+
+.panel-content {
+  padding: 10px;
+}
+
+.arrow-up::after {
+  content: "\25B2";
+  /* Up arrow */
+
+}
+
+.arrow-down::after {
+  content: "\25BC";
+  /* Down arrow */
+
+}

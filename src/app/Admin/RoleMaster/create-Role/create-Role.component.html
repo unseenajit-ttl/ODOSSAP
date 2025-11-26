@@ -1,0 +1,139 @@
+<div id="pause" class="d-flex align-items-center justify-content-center" *ngIf="loading">
+  <div id="spinner" class="loader"></div>
+</div>
+
+
+<div class="modal-header">
+  <h4 class="modal-title" *ngIf="!isnewRole">Add New Employee</h4>
+  <h4 class="modal-title" *ngIf="isnewRole">Add New Role</h4>
+  <i class="fa-solid fa-xmark"></i>
+  <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+
+</div>
+<div class="modal-body ">
+  <div class="row">
+    <form [formGroup]="RoleMasterForm">
+      <div class="container" *ngIf="isnewRole">
+        <div class="row">
+          <div class="col">
+            <label class="form-label"> Role Name</label> <br>
+
+            <input type="text" formControlName="rolename" class="form-control" placeholder="Role" />
+
+          </div>
+          <div class="col">
+            <label class="form-label"> Remark</label> <br>
+            <input type="text" formControlName="remark" class="form-control" placeholder="Remark" />
+
+          </div>
+          <div class="col">
+            <label class="form-label"> </label> <br>
+            <div class=" row custom-control custom-switch">
+              <input type="checkbox" class="custom-control-input" checked="true" id="activeSwitches" [(ngModel)]="activeSwitche" formControlName="status">
+              <label class="custom-control-label" for="activeSwitches">Active</label>
+            </div>
+          </div>
+
+          <!-- <div class="col">
+            <label class="form-label"> </label> <br>
+
+            <div class=" row custom-control custom-switch" style="padding-top: 5px;">
+              <input type="checkbox" class="custom-control-input" id="ReadSwitches" [checked]="false">
+              <label class="custom-control-label" for="ReadSwitches">Read</label>
+            </div>
+          </div>
+          <div class="col">
+            <label class="form-label"> </label> <br>
+            <div class=" row custom-control custom-switch" style="padding-top: 5px;">
+              <input type="checkbox" class="custom-control-input" id="WriteSwitches" [checked]="false">
+              <label class="custom-control-label" for="WriteSwitches">Write</label>
+            </div>
+          </div> -->
+
+        </div><br>
+        <!-- <div class="row">
+          <div class="col">
+            <label class="form-label">Forms</label> <br>
+            <ng-select formControlName="form" class="w-auto" placeholder="Select Form"
+              [multiple]="true">
+              <ng-option *ngFor="let sList of Formlist" [value]="sList.FormId">
+                {{sList.FormName}}
+              </ng-option>
+            </ng-select>
+
+
+          </div>
+          <div class="col"></div>
+        </div> -->
+      </div>
+
+      <div class="container" *ngIf="!isnewRole">
+        <div class="row">
+
+          <div class="col">
+            <label class="form-label"> Employee</label> <br>
+            <ng-select class="ng-selectcustomer"
+              [items]="employeelist" 
+              bindLabel="DisplayName"
+              bindValue="EmployeeID"
+              (change)="ChangeUser($event)" 
+              formControlName="empname"              
+            >
+              <!-- <ng-option *ngFor="let sList of employeelist " [value]="sList.EmployeeID" >
+                {{sList.DisplayName}}
+              </ng-option> -->
+            </ng-select>
+          </div>
+         
+          <div class="col">
+            <label class="form-label"> Role</label> <br>
+            <div class="d-flex">
+              <ng-select class="ng-selectcustomer" (change)="changeRole($event)" formControlName="rolename">
+                <ng-option *ngFor="let sList of rolelist " [value]="sList.RoleId">
+                  {{sList.RoleName}}
+                </ng-option>
+              </ng-select>
+              &nbsp;
+              <i class="material-icons" ngbTooltip="Add New Role" (click)="this.addnewrole()">add_circle</i>
+            </div>
+          </div>
+         
+        </div>
+        <div class="row">
+          <div class="col">
+            <label class="form-label"> Form</label> <br>
+
+              <table class=" table-responsive">
+                <thead class="bg-primary text-white">
+                    <tr>
+                      <th class="text-center">Forms</th>
+                    </tr>
+                </thead>
+              
+                <tbody>
+                <ng-container *ngFor="let row2 of pagesList">
+                  <tr>                                        
+                    <td>{{row2.PageName}}</td> 
+                  </tr>
+                </ng-container>
+                </tbody>
+              </table>
+            
+            
+          </div>
+         
+        </div>
+      </div>
+    </form>
+
+
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" (click)="cancel()" class="btn btn-transparent">
+    Close
+  </button>
+  <button type="button" (click)="submitReview()" class="btn btn-primary me-2" [disabled]="disableSubmit">
+    Submit
+  </button>
+</div>

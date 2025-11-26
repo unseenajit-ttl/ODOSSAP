@@ -1,0 +1,73 @@
+<div id="mydiv2">
+    <div>
+        <div class="container-fluid">
+            <div>
+                <div class="mainHeading">
+                    <span>Create New PO</span>
+                </div>
+
+                <div class="main-body">
+                    <label class="form-label">PO Number (订单编号):</label>
+
+                    <div class="d-flex" style="flex-wrap: nowrap;">
+                        <input type="text" class="form-control" [(ngModel)]="PONumber"
+                            (blur)="PONumber = PONumber.toUpperCase()" maxlength="20" />
+                        <span *ngIf="PONumber == '' || PONumber == null" style="
+                        padding: 4px;
+                        background-color: #ccc6c682;
+                        font-size: x-small;
+                        border-radius: 0 5px 5px 0;
+                      ">100</span>
+                        <span *ngIf="PONumber != '' && PONumber != null" [class.remark-ind-color]="PONumber.length == 100"
+                            style="
+                        padding: 4px;
+                        background-color: #ccc6c682;
+                        font-size: x-small;
+                        border-radius: 0 5px 5px 0;
+                      ">{{ 100 - PONumber.length }}</span>
+                      </div>
+
+                    <!-- </div> -->
+
+                    <label class="form-label">Remarks / Delivery Address (备注/送货地址):</label>
+                        <div class="d-flex" style="flex-wrap: nowrap;">
+                        <input type="text" class="form-control" [(ngModel)]="Remarks"
+                            (blur)="Remarks = Remarks.toUpperCase()" maxlength="100" />
+                        <span *ngIf="Remarks == '' || Remarks == null" style="
+                        padding: 4px;
+                        background-color: #ccc6c682;
+                        font-size: x-small;
+                        border-radius: 0 5px 5px 0;
+                      ">100</span>
+                        <span *ngIf="Remarks != '' && Remarks != null" [class.remark-ind-color]="Remarks.length == 100"
+                            style="
+                        padding: 4px;
+                        background-color: #ccc6c682;
+                        font-size: x-small;
+                        border-radius: 0 5px 5px 0;
+                      ">{{ 100 - Remarks.length }}</span>
+                      </div>
+
+                     
+                        <label class="form-label">Structure Element (建筑构件):</label>
+                        
+                        <ng-select [selectOnTab]="true" class="w-auto" formControlName="VehicleType">
+                          <ng-option value="Beam">Beam</ng-option>
+                          <ng-option value="Column">Column</ng-option>
+                          <ng-option value="Slab">Slab</ng-option>
+                          <ng-option value="SlabT">Slab-T</ng-option>
+                          <ng-option value="SlabB">Slab-B</ng-option>
+                          <ng-option value="Wall">Wall</ng-option>
+                        </ng-select>
+                     
+                </div>
+            </div>
+            <div class="footer">
+                <button class="btn btn-primary me-2">Create</button>
+                <button type="button" class="btn btn-primary me-2" (click)="activeModal.dismiss('Cross click')">
+                    Close (关闭)
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

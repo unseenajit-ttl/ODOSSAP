@@ -1,0 +1,53 @@
+.centerdiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* .imgdiv{      
+ 
+  
+}       */
+.img1 {
+  padding-bottom: -20px !important;
+  width: 217px;
+}
+
+.Invalid-Page {
+  height: 100%;
+  width: 100%;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+/* ::ng-deep .slickgrid-container .slick-headerrow{
+  display: none !important;
+} */
+
+::ng-deep .slickgrid-container .slick-preheader-panel{
+  display: none !important;
+}
+
+::ng-deep .slickgrid-container .slick-pane-top {
+  top: 50px !important;
+}
+
+::ng-deep .slickgrid-container .grid-canvas .slick-cell {
+  line-height: 30px !important;
+  font-size: small !important;
+  font-weight: bold !important;
+  max-height: 35px !important;
+  border: 1px solid #bdbebf !important;
+  text-align: center !important;
+}
+::ng-deep
+  .slickgrid-container
+  .slick-header-columns
+  .slick-header-column.ui-state-default {
+  /* font-size: 17px !important; */
+  font-weight: 100px !important;
+  border: 1px solid #f8f9fa !important;
+  background: #003ec4 !important;
+  color: white !important;
+}

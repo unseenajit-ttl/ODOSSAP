@@ -1,0 +1,63 @@
+export interface ForecastdataModel {
+  pOrderData: [
+    {
+      ProdType: string;
+      ProdTypeDis: string;
+      CustomerCode: string;
+      ProjectCode: string;
+      CustomerName: string;
+      ProjectTitle: string;
+      JobID: number;
+      JobIDDis: number;
+      PONumber: string;
+      PODate: Date;
+      RequiredDate: Date;
+      CouplerType: string;
+      OrderStatus: string;
+      TotalCABWeight: number;
+      TotalSTDWeight: number;
+      TotalWeight: number;
+      TransportLimit: string;
+      TransportMode: string;
+      WBS1: string;
+      WBS2: string;
+      WBS3: string;
+      ProjectStage: string;
+      Remarks: string;
+      SAPSONo: string;
+      SAPPONo: string;
+      SORNo: string;
+      SORNoDis: string;
+      DeliveryAddress: string;
+      SiteEngr_Name: string;
+      SiteEngr_HP: string;
+      Scheduler_Name: string;
+      Scheduler_HP: string;
+      UpdateDate: Date;
+      StructureElementDis: string;
+      OrderSource: string;
+      StructureElement: string;
+      ScheduledProd: string;
+      ProjectIncharge: string;
+      DetailingIncharge: string;
+      BBSNo: string;
+      PostHeaderID: number;
+      OrigReqDate: Date;
+      AttachedNo: number;
+      PlanDelDate: string;
+      ConfirmedDelDate: string;
+      PMDRemarks: string;
+      PMDRemarksHis: string;
+      TECHRemarks: string;
+      TECHRemarksHis: string;
+      UpdateBy: string;
+      DataEntryBy: string;
+      RunNo: string;
+      OrderType: string;
+      ProcessDate: string;
+      ForecastDate: string;
+      LastDeliveryDate: string;
+      DiffDays: number;
+    }
+  ];
+}

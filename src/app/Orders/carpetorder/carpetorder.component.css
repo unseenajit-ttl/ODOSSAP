@@ -1,0 +1,80 @@
+:host ::ng-deep .slick-headerrow {
+    display: none;
+}
+
+:host ::ng-deep .slickgrid-container {
+    width: 98% !important;
+}
+
+.side-menu-vertical {
+    width: 12%;
+}
+
+.boxRight {
+    float: none;
+    overflow: hidden;
+    width: 100%;
+    background: #f0e68c;
+    border: 1px solid #a29415;
+    margin-top: 0px;
+    padding: 0px;
+}
+
+.right-form {
+    display: inline-block;
+    padding: 1px;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
+
+.right-form .field {
+    padding: 0px;
+    margin: 0px;
+    width: 140px
+}
+
+.right-form .field .label1 {
+    display: inline-block;
+    margin-left: 0px;
+    text-align: left;
+    color: black;
+    font: 12px Helvetica, Arial, sans-serif;
+    float: left;
+    vertical-align: bottom;
+}
+
+.right-form .field .input1 {
+    display: inline-block;
+    margin-left: 0px;
+    text-align: right;
+    color: black;
+    font: 12px Helvetica, Arial, sans-serif;
+    float: right;
+    vertical-align: bottom;
+}
+
+
+#contextMenu {
+    background: #e1efc7;
+    border: 1px solid gray;
+    padding: 2px;
+    display: inline-block;
+    min-width: 100px;
+    -moz-box-shadow: 2px 2px 2px silver;
+    -webkit-box-shadow: 2px 2px 2px silver;
+    z-index: 99999;
+}
+
+#contextMenu li {
+    padding: 4px 4px 4px 14px;
+    list-style: none;
+    cursor: pointer;
+    background: url('../../../assets/images/arrow_right_peppermint.png') no-repeat center left;
+
+    /* background: url('@Url.Content("~/Content/images/arrow_right_peppermint.png")') no-repeat center left; */
+}
+
+#contextMenu li:hover {
+    background-color: white;
+}

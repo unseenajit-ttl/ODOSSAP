@@ -1,0 +1,25 @@
+ng-select{
+  width: 200px !important;
+}
+
+.table-hover td {
+  font-size: 11px;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+  border: 1px solid #dee2e6 !important;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.table-hover th {
+  font-size: 11px;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+  border: 1px solid #dee2e6 !important;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

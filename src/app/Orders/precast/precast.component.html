@@ -1,0 +1,219 @@
+<div class="jumbotron bg-white border-secondary pt-1">
+        <form [formGroup]="PrecastDataInsert">
+
+                <h3 class="card-header d-flex flex-column justify-content-center align-items-center">
+                        <b> PRC Data Entry</b>
+                </h3>
+                <a href="javaScript:; " (click)="goBack()" style="color: blue; cursor: pointer;">
+                        <i class="fa fa-arrow-left arrow-left" aria-hidden="true"></i>
+                        Back to order summary (返回订单汇总)
+                </a>
+                <div class="container">
+                        <div class="row">
+                                <div class="col-md-2"></div>
+                                <div class="col-md-10  d-flex justify-content-end">
+                                        <button class="btn btn-primary btn-sm" type="button"
+                                                (click)="downloadReport()">Print
+                                                Report
+                                        </button>
+                                        <button *ngIf="Visible" class="btn btn-primary btn-sm" type="button"
+                                                (click)="downloadExcelTemplate()">Download
+                                                Template
+                                        </button>
+
+                                        <!-- Upload button -->
+                                        <button *ngIf="Visible" class="btn btn-primary btn-sm" type="button"
+                                                (click)="openFileSelector()">Upload Template</button>
+                                        <!-- &nbsp; -->
+                                        
+                                        <!-- File input (hidden) -->
+                                        <input id="file-upload" type="file" hidden #fileInput
+                                                (change)="onFileChange($event)" accept=".xlsx, .xls" />
+
+                                        <!-- Display selected file name and action buttons -->
+                                        <div *ngIf="selectedFileName" class="d-flex align-items-center gap-2">
+                                                <!-- File name -->
+                                                <span class="text-truncate" style="max-width: 200px;">
+                                                        <strong>Selected File:</strong> {{ selectedFileName }}
+                                                </span>
+
+                                                <button class="btn btn-secondary" (click)="clearFile()">Clear</button>
+                                                <button class="btn btn-primary btn-success"
+                                                        (click)="submitThroughExcel()">Submit</button>
+                                        </div>
+
+
+
+                                </div>
+
+
+                        </div>
+                </div>
+                <table class="table new-table table-condensed " style="margin-top: 15px;">
+                        <thead>
+                                <tr>
+                                        <th *ngFor="let item of columnName"   [ngStyle]="{'color': item.includes('*') ? 'red' : 'white'}">
+                                                {{item}}
+                                        </th>
+                                </tr>
+                        </thead>
+
+                        <thead *ngIf="toggleFilters">
+                                <tr>
+                                        <th></th>
+                                        <th>
+                                                <input [(ngModel)]="filterPro.marking" class="form-control" type="text"
+                                                        id="searchBlock" placeholder="Search here" />
+                                        </th>
+                                        <th>
+                                                <input [(ngModel)]="filterPro.block" class="form-control" type="text"
+                                                        id="searchFrom" placeholder="Search here" />
+                                        </th>
+                                        <th>
+                                                <input [(ngModel)]="filterPro.level" class="form-control" type="text"
+                                                        id="searchTo" placeholder="Search here" />
+                                        </th>
+                                        <th>
+                                                <input [(ngModel)]="filterPro.qty" class="form-control" type="text"
+                                                        id="searchPart" placeholder="Search here" />
+                                        </th>
+                                        <th>
+                                                <input [(ngModel)]="filterPro.remark" class="form-control" type="text"
+                                                        id="searchStructure" placeholder="Search here" />
+                                        </th>
+                                        <th>
+                                                <input [(ngModel)]="filterPro.pageNo" class="form-control" type="text"
+                                                        id="searchBlock" placeholder="Search here" />
+                                        </th>
+                                </tr>
+                        </thead>
+
+                        <tbody>
+                                <tr *ngFor="let item of PrecastArray; index as i">
+                                        <ng-container *ngIf="enableEditIndex != i">
+
+                                                <td>{{ i + 1 }}</td>
+                                                <td>{{ item.ComponentMarking }}</td>
+                                                <td>{{ item.Qty }}</td>
+                                                <td>{{ item.Block }}</td>
+                                                <td>{{ item.Level }}</td>                                                
+                                                <td>{{ item.Remark }}</td>
+                                                <td>{{item.PageNo}}</td>
+                                                <td style="width: 150px !important;" *ngIf="Visible">
+                                                        <i class="material-icons" ngbTooltip="Edit"
+                                                                (click)="EditData(item,i)">mode_edit</i>&nbsp;
+                                                        <i class="bi bi-trash text-danger" ngbTooltip="Delete"
+                                                                (click)="delete(item.Precast_ID)"
+                                                                style=" font-size:22px"></i>
+                                                </td>
+
+                                        </ng-container>
+
+                                        <ng-container *ngIf="enableEditIndex == i">
+                                                <td>
+
+                                                </td>
+                                                <td>
+                                                        <input formControlName="marking" class="form-control"
+                                                                type="text" [(ngModel)]="item.ComponentMarking" />
+
+                                                </td>
+                                                <td>
+                                                        <input formControlName="qty" class="form-control" type="text"
+                                                                [(ngModel)]="item.Qty" id="searchBlock" />
+                                                        <div *ngIf="PrecastDataInsert.get('qty')?.touched && PrecastDataInsert.get('qty')?.invalid"
+                                                                class="text-danger">
+
+                                                                <small
+                                                                        *ngIf="PrecastDataInsert.get('qty')?.errors?.['min']">Quantity
+                                                                        must be greater than 0.</small>
+                                                        </div>
+                                                </td>
+                                                <td>
+                                                        <input formControlName="block" class="form-control" type="text"
+                                                                [(ngModel)]="item.Block" />
+                                                </td>
+                                                <td>
+                                                        <input formControlName="level" class="form-control"
+                                                                [(ngModel)]="item.Level" type="text" />
+                                                </td>
+                                             
+                                                <td>
+                                                        <input formControlName="remark" class="form-control"
+                                                                [(ngModel)]="item.Remark" type="text" />
+                                                </td>
+                                                <td>
+                                                        <input formControlName="pageNo" class="form-control"
+                                                                [(ngModel)]="item.PageNo" type="text" />
+                                                </td>
+
+                                                <td style="width: 150px;">
+                                                        <i class="material-icons" (click)="UpdatePREcast(item)"
+                                                                ngbTooltip="Update">save</i> &nbsp;
+                                                        <i class="material-icons" (click)="EditCancle()"
+                                                                ngbTooltip="Cancel">cancel</i>
+
+                                                </td>
+                                        </ng-container>
+                                </tr>
+                        </tbody>
+                        <tfoot *ngIf="Visible">
+
+                                <tr>
+                                        <td>
+
+                                        </td>
+                                        <td>
+                                                <input formControlName="footermarking" (keydown.enter)="insertPREcast();"
+                                                        class="form-control" type="text"
+                                                        [(ngModel)]="newPrecastData.ComponentMarking"
+                                                        placeholder="Insert Marking" />
+                                        </td>
+                                        <td>
+                                                <input formControlName="footerqty" (keydown.enter)="insertPREcast();"
+                                                        class="form-control" type="number" [(ngModel)]="newPrecastData.Qty"
+                                                        placeholder="Insert Qty" />
+                                                <div *ngIf="PrecastDataInsert.get('footerqty')?.touched && PrecastDataInsert.get('footerqty')?.invalid"
+                                                        class="text-danger">
+
+                                                        <small *ngIf="PrecastDataInsert.get('footerqty')?.errors?.['min']">Quantity
+                                                                must be greater than 0.</small>
+                                                </div>
+                                        </td>
+                                        <td>
+                                                <input formControlName="footerblock" (keydown.enter)="insertPREcast();"
+                                                        class="form-control" type="text" [(ngModel)]="newPrecastData.Block"
+                                                        placeholder="Insert Block " />
+                                        </td>
+                                        <td>
+                                                <input formControlName="footerlevel" (keydown.enter)="insertPREcast();"
+                                                        class="form-control" type="text" [(ngModel)]="newPrecastData.Level"
+                                                        placeholder="Insert Level" />
+                                        </td>
+                                  
+                                        <td>
+                                                <input formControlName="footerremark" (keydown.enter)="insertPREcast();"
+                                                        class="form-control" type="text" [(ngModel)]="newPrecastData.Remark"
+                                                        placeholder="Insert Remark" />
+                                        </td>
+                                        <td>
+                                                <input formControlName="footerpageNo" (keydown.enter)="insertPREcast();"
+                                                        class="form-control" type="number" [(ngModel)]="newPrecastData.PageNo"
+                                                        placeholder="Insert PageNo" />
+                                        </td>
+                                        <td>
+                                                <i class="material-icons" (click)="insertPREcast()"
+                                                        ngbTooltip="Save">save</i>
+                                                &nbsp;
+                                                <i class="material-icons" (click)="AddReset()"
+                                            ngbTooltip="Cancel">cancel</i>
+                                        </td>
+
+                                </tr>
+
+                        </tfoot>
+                </table>
+
+        </form>
+
+</div>

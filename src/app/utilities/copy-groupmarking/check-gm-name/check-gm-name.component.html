@@ -1,0 +1,17 @@
+<div class="modal-header">
+    <h4 class="modal-title">Tonnage Information </h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+<p>
+  The Groupmark <span class="text-danger  ">{{GmName}} </span>Already exist ,Do you want to regenrate the Groupmark ?
+</p>
+
+  </div>
+  <div class="modal-footer">
+      <button type="button" class="btn btn-danger" (click)="activeModal.close(true)" >Regenrate</button>
+      <button type="button" class="btn btn-primary" (click)="activeModal.close(false)">Edit Name </button>
+
+  </div>

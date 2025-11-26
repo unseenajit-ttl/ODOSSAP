@@ -1,0 +1,59 @@
+<div class="container-fluid" cdkDrag cdkDragRootElement=".your-custom-dialog-class">
+    <div class="Header" cdkDragHandle>
+        <span>Carpet Products List(毯铁产品列表)</span>
+        <button type="button" class="btn-close" aria-label="Close"
+            (click)="activeModal.dismiss('Cross click')"></button>
+    </div>
+    <div>
+        <div class="table-data">
+            <table>
+                <thead>
+                    <tr>
+                        <td class="table-header">S/N<br />序号</td>
+                        <td class="table-header">Product Code<br />产品代码</td>
+
+                        <!-- For BEAM or COLUMN -->
+                        <!-- <td class="table-header">Diameter<br>直径</td>
+                        <td class="table-header">Spacing<br>间距</td>
+                        <td class="table-header">Carrier Wire Diameter<br>链接筋直径</td> -->
+
+                        <!-- For Others -->
+                        <td class="table-header">Description<br />描述</td>
+                        <td class="table-header">Main Wire Diameter<br />主筋直径</td>
+                        <td class="table-header">Main Wire Spacing<br />主筋间距</td>
+
+                        <td class="table-header">kg/m<sup>2</sup><br />每平方米公斤</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of ProductListCarpet; let i = index"
+                        [ngStyle]="{ 'background-color': item.backgroundColor ? 'rgb(0, 255, 0)' : 'white' }"
+                        (click)="ProductListClick(item)">
+
+                        <td class="table-body">{{ i + 1 }}</td>
+                        <td class="table-body">{{ item.ProductCode }}</td>
+
+                        <!-- Show only if NOT BEAM or COLUMN -->
+                        <td class="table-body">
+                            {{ item.ProdDesc }}
+                        </td>
+
+                        <!-- Twin indicator -->
+                        <td class="table-body">
+                            {{ item.ProdMWDia
+                            }}<span *ngIf="item.ProdTwinInd === 'M'">(Twin)</span>
+                        </td>
+
+                        <td class="table-body">{{ item.ProdMWSpacing }}</td>
+                        <td class="table-body">{{ item.ProdMass.toFixed(3) }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary me-2" (click)="Cancel()">
+            Cancel
+        </button>
+    </div>
+</div>

@@ -1,0 +1,110 @@
+<div cdkDrag cdkDragRootElement=".your-custom-dialog-class">
+  <div class="modal-header" cdkDragHandle>
+    <span id="ui-id-2" class="ui-dialog-title">Search Drawings (查找图纸文档)</span>
+    <button type="button" class="close" (click)="dismissModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <label class="control-label col-md-4" for="fileName"
+        >File Name (文件名)</label
+      >
+      <div class="col-md-8">
+        <input
+          type="text"
+          name="fileName"
+          id="fileName"
+          class="form-control"
+          [(ngModel)]="searchData.fileName"
+          maxlength="200"
+          style="width: 100%; max-width: 100%"
+        />
+      </div>
+    </div>
+    <div class="row mt-2">
+      <label class="control-label col-md-4" for="drawing_no"
+        >Drawing No(图纸编号)</label
+      >
+      <div class="col-md-8">
+        <input
+          type="text"
+          name="drawing_no"
+          id="drawing_no"
+          class="form-control"
+          [(ngModel)]="searchData.drawing_no"
+          maxlength="100"
+          style="width: 100%; max-width: 100%"
+        />
+      </div>
+    </div>
+    <div class="row mt-2">
+      <label class="control-label col-md-4" for="updateBy"
+        >Updated By (修改者)</label
+      >
+      <div class="col-md-8">
+        <input
+          type="text"
+          name="updateBy"
+          id="updateBy"
+          class="form-control"
+          [(ngModel)]="searchData.updateBy"
+          maxlength="200"
+          style="width: 100%; max-width: 100%"
+        />
+      </div>
+    </div>
+    <div class="row mt-2">
+      <label class="control-label col-md-4" for="updatedDateFrom"
+        >Updated Date From (修改日期始)</label
+      >
+      <div class="col-md-8">
+        <div class="input-group">
+          <input readonly class="form-control" placeholder="yyyy-mm-dd" ngbDatepicker #dp="ngbDatepicker"
+            [(ngModel)]="searchData.updatedDateFrom" [dayTemplate]="updatedDateFrom" outsideDays="hidden"
+            [minDate]="{year: 1900, month: 1, day: 1}" [firstDayOfWeek]="7">
+          <button class="btn btn-sm btn-outline-secondary bi bi-x-lg m-0" (click)="searchData.updatedDateFrom = ''"
+            type="button"></button>
+          <button class="btn btn-sm btn-outline-secondary bi bi-calendar3 m-0" (click)="dp.toggle()"
+            type="button"></button>
+        </div>
+        <ng-template #updatedDateFrom let-date="date" let-currentMonth="currentMonth" let-selected="selected"
+          let-disabled="disabled" let-focused="focused">
+          <span class="custom-day" [class.highlighted-date]="shouldHighlightDate(date) || isWeekend(date)"
+            [class.focused]="focused" [class.bg-primary]="selected" [class.text-white]="selected">{{ date.day
+            }}</span>
+        </ng-template>
+      </div>
+    </div>
+    <div class="row mt-2">
+      <label class="control-label col-md-4" for="updatedDateTo"
+        >Updated Date To (修改日期终)</label
+      >
+      <div class="col-md-8">
+        <div class="input-group">
+          <input readonly class="form-control" placeholder="yyyy-mm-dd" ngbDatepicker #dp1="ngbDatepicker"
+            [(ngModel)]="searchData.updatedDateTo" [dayTemplate]="updatedDateTo" outsideDays="hidden"
+            [minDate]="{year: 1900, month: 1, day: 1}" [firstDayOfWeek]="7">
+          <button class="btn btn-sm btn-outline-secondary bi bi-x-lg m-0" (click)="searchData.updatedDateTo = ''"
+            type="button"></button>
+          <button class="btn btn-sm btn-outline-secondary bi bi-calendar3 m-0" (click)="dp1.toggle()"
+            type="button"></button>
+        </div>
+        <ng-template #updatedDateTo let-date="date" let-currentMonth="currentMonth" let-selected="selected"
+          let-disabled="disabled" let-focused="focused">
+          <span class="custom-day" [class.highlighted-date]="shouldHighlightDate(date) || isWeekend(date)"
+            [class.focused]="focused" [class.bg-primary]="selected" [class.text-white]="selected">{{ date.day
+            }}</span>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary" (click)="applyData()">
+      Search (查找)
+    </button>
+    <button type="button" class="btn btn-secondary" (click)="dismissModal()">
+      Close (关闭)
+    </button>
+  </div>
+</div>

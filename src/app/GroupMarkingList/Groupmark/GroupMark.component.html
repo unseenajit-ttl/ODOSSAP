@@ -1,0 +1,141 @@
+<div class="container-fluid">
+    <div class="card m-1">
+        <h3 class="card-header d-flex flex-column justify-content-center align-items-center">
+            <b>Group Mark Listing </b>
+        </h3>
+        <div class="card-body ">
+            <div class="filter ">
+                <form [formGroup]="GroupMarkForm" (ngSubmit)="onSubmit()">
+                    <div class="row ">
+                         <ngb-accordion #acc="ngbAccordion" title ="Filters"> activeIds="ngb-panel-0">
+                            <ngb-panel>
+                                <ng-template ngbPanelTitle>
+                                    <span style="color:#0880ae;"><b>Filters</b></span>
+                                </ng-template>
+                 <ng-template ngbPanelContent>
+                                      <div class="card-body" >
+                                        <div class="row">
+
+                                            <div class="colbutton">
+                                                <label class="form-label">Customer</label> <br>
+                                                <ng-select formControlName="customer" class="ng-selectcustomer">
+                                                    <ng-option *ngFor="let sList of customerList"
+                                                        [value]="sList.item_id">
+                                                        {{sList.item_text}}
+                                                    </ng-option>
+                                                </ng-select>
+                                            </div>
+
+                                            <div class="colbutton">
+                                                <label class="form-label">Project</label> <br>
+                                                <ng-select formControlName="project" class="ng-selectcustomer">
+                                                    <ng-option *ngFor="let sList of projectList"
+                                                        [value]="sList.item_id">
+                                                        {{sList.item_text}}
+                                                    </ng-option>
+                                                </ng-select>
+                                            </div>
+
+                                            <div class="colbutton">
+                                                <label class="form-label"> Product Type</label> <br>
+                                                <ng-select formControlName="projecttype" class="ng-selectcustomer">
+                                                    <ng-option *ngFor="let sList of producttypeList"
+                                                        [value]="sList.item_id">
+                                                        {{sList.item_text}}
+                                                    </ng-option>
+                                                </ng-select>
+                                            </div>
+                                            <div class="colbutton">
+                                                <label class="form-label"> Structure Element </label> <br>
+                                                <ng-select formControlName="StructureElement" class="ng-selectcustomer">
+                                                    <ng-option *ngFor="let sList of structureElementarray"
+                                                        [value]="sList.item_id">
+                                                        {{sList.item_text}}
+                                                    </ng-option>
+                                                </ng-select>
+                                            </div>
+
+                                            <div class="colbutton">
+                                                <div class="d-flex" style="Padding-top:16px;">
+                                                    <br>
+                                                    <button class="btn btn-primary btn-sm" type="submit"
+                                                        (click)="search()">Search</button>
+
+                                                    <button class="btn btn-primary btn-sm" type="reset"
+                                                        (click)="onReset()">Reset</button>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </ng-template>
+                            </ngb-panel>
+                        </ngb-accordion>
+
+                    </div>
+                </form>
+
+                <br>
+                <div class="row">
+                    <div class="col-md-1">
+                        <button class="btn btn-md btn-outline-primary" ngbTooltip="Add New Group Mark"
+                            tooltipClass="my-custom-class" type="button" (click)="this.open()"><i
+                                class="fa fa-plus"></i></button>
+                    </div>
+                    <div class="col-md-5 d-flex">
+
+                    </div>
+                </div>
+
+
+                <div class="row table-responsive" >
+                    <table class="table table-striped  table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="w-125px">Group Marking </th>
+                                <th class="w-125px"> Parameter Set </th>
+                                <th class="w-125px"> Created Date </th>
+                                <th class="w-125px"> Revision </th>
+                                <th class="w-125px"> Action </th>
+                              </tr>
+                        </thead>
+                        <thead>
+                            <tr>
+                                <th><input type="text" id="searchBlock" placeholder="Search here" /></th>
+                                <th></th>
+                                <th><input type="text" id="searchBlock" placeholder="Search here" /></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of groupmarkinglist   ; index as i ">
+                                <!-- <td><input type="checkbox" value="{{item.groupmark}}"
+                                        [(ngModel)]="groupmarkinglist[i].checked"></td> -->
+                                <td>{{item.groupmark}}</td>
+                                <td>{{item.paramset}}</td>
+                                <td>{{item.createdate}}</td>
+                                <td>{{item.rev}}</td>
+                                <td>
+                                    <i class="material-icons" ngbTooltip="Assign WBS">assignment</i>
+                                    <i class="material-icons" [routerLink]="['/groupmark/DetailingGroupMark']"
+                                        ngbTooltip="Edit">mode_edit</i>&nbsp;
+                                    <i class="bi bi-trash" ngbTooltip="Delete" style="color:red; font-size:22px"></i>
+                                    <i class="material-icons" ngbTooltip="Export">import_export</i>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="d-flex justify-content-between p-2 paginationdiv">
+                        <ngb-pagination [collectionSize]="20" [page]="1" [pageSize]="10" [maxSize]="20"
+                            [boundaryLinks]="false" >
+                            <ng-template ngbPaginationPrevious>Prev</ng-template>
+                            <ng-template ngbPaginationNext>Next</ng-template>
+                        </ngb-pagination>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

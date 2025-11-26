@@ -1,0 +1,15 @@
+.select-header {
+    padding: 15px;
+    font-size: x-large;
+    background: #dddfe3;
+}
+
+.select-body{
+    padding: 10px;
+    border-bottom: 1px solid #878787;
+}
+
+.select-footer {
+    padding: 5px;
+    text-align: end;
+}

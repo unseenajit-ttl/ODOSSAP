@@ -1,0 +1,18 @@
+<div cdkDrag cdkDragRootElement=".your-custom-dialog-class">
+  <div class="modal-header" cdkDragHandle>
+    <h4 class="modal-title">Result of Import BBS from Excel (从 Excel 导入钢筋加工表)</h4>
+    <i class="fa-solid fa-xmark"></i>
+    <button type="button" class="btn-close" aria-label="Close" (click)="close()"></button>
+  </div>
+  
+  <div class="modal-body">
+    <div class="row">
+  
+      <div id="output"></div>
+  
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary me-2" (click)="close()">Close</button>
+      </div>
+    </div>
+  </div>
+  </div>

@@ -1,0 +1,107 @@
+<div cdkDrag cdkDragRootElement=".your-custom-dialog-class">
+  <div class="modal-header" cdkDragHandle>
+    <span class="modal-title">List Of Contracts</span>
+    <i class="fa-solid fa-xmark"></i>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="activeModal.dismiss('Cross click')"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <form>
+        <div
+          class="table-responsive table-wrapper-scroll-y my-custom-scrollbar"
+        >
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th style="text-align: left">SNo</th>
+                <th style="text-align: left; white-space: nowrap">Contract No</th>
+                <th style="text-align: left; white-space: nowrap">Contract Start Date</th>
+                <th style="text-align: left; white-space: nowrap">Contract End Date</th>
+                <th style="text-align: left">Status</th>
+                <th style="text-align: left; white-space: nowrap">Account Manager</th>
+                <th style="text-align: left">CAB</th>
+                <th style="text-align: left">MESH</th>
+                <th style="text-align: left">REBAR</th>
+                <th style="text-align: left">BPC</th>
+                <th style="text-align: left">PRECAGE</th>
+                <th style="text-align: left; white-space: nowrap">WIRE ROD</th>
+                <th style="text-align: left; white-space: nowrap">PC STRAND</th>
+                <th style="text-align: left; white-space: nowrap">COLD ROLLED WIRE</th>
+                <th style="text-align: left; white-space: nowrap">PRE CUT WIRE</th>
+                <th style="text-align: left">COUPLER</th>
+                <th style="text-align: left">CARPET</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of AllContractNoList; index as i">
+                <td>{{ i + 1 }}</td>
+
+                <td>{{ item.CONTRACT_NO }}</td>
+                <td>
+                  {{ item.CON_START_DATE }}
+                </td>
+                <td>{{ item.CON_END_DATE }}</td>
+                <td>
+                  {{ item.CON_STATUS }}
+                </td>
+                <td>
+                  {{ item.ACC_MANAGER }}
+                </td>
+                <td>
+                  {{ item.CAB }}
+                </td>
+                <td>
+                  {{ item.MSH }}
+                </td>
+                <td>
+                  {{ item.BAR }}
+                </td>
+                <td>
+                  {{ item.BPC }}
+                </td>
+                <td>
+                  {{ item.PRC }}
+                </td>
+                <td>
+                  {{ item.WRD }}
+                </td>
+                <td>
+                  {{ item.TR }}
+                  <!-- {{ item.TRADE }} -->
+                  <!-- {{ item.PCS }} -->
+                </td>
+                <td>
+                  {{ item.CRW }}
+                </td>
+                <td>
+                  {{ item.PRE }}
+                </td>
+                <td>
+                  {{ item.COU }}
+                </td>
+                <td>
+                  {{ item.CAR }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-primary me-2"
+      style="height: 40px"
+      (click)="activeModal.dismiss('Cross click')"
+    >
+      Close (关闭)
+    </button>
+  </div>
+</div>

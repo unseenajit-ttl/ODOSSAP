@@ -1,0 +1,64 @@
+<div class="modal-header">
+  <h3 class="modal-title">Main Bar Pattern</h3>
+  <button type="button" class="close" (click)="dismissModal()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="">Main Bar::</label>
+        <ng-select [items]="MAINBARPATTERN_list"
+               bindLabel="vchMainBarPatternCode"
+               bindValue="vchMainBarPatternCode"
+               [(ngModel)]="ddlPattern" (change)="changeImageSrc();checkNewTableContentents($event.vchMainBarPatternCode)" dropdownPosition="bottom" appendto="body">
+        </ng-select>
+      </div>
+    </div>
+    <div class="col-md-12 text-center mt-2 mb-2">
+      <img [src]="trMainBarImage">
+    </div>
+    <div class="col-md-12">
+      <table class="table table-hover table-bordered w-100">
+        <thead style="width: fit-content;background-color: #dee2e6;font-size: 11px;">
+          <tr>
+            <td>Size</td>
+            <td>Length</td>
+            <td>Quantity</td>
+            <td>Layer</td>
+          </tr>
+        </thead>
+        <tbody style="width: fit-content">
+          <tr *ngFor="let product of objToSend;index as i;">
+            <td>
+              <ng-select [items]="SIZETYPES_list"
+                bindLabel="vchSizeTypes"
+                bindValue="vchSizeTypes"
+                [(ngModel)]="product.size">
+              </ng-select>
+            </td>
+            <td>
+              <input type="number" [(ngModel)]="product.txtLength" class="form-control" required="true">
+            </td>
+            <td>
+              <input type="number" [(ngModel)]="product.txtQuantity" class="form-control" required="true">
+            </td>
+            <td>
+              <ng-select [items]="layerList"
+                bindLabel="label"
+                bindValue="value"
+                [(ngModel)]="product.hdnLayer">
+              </ng-select>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<div class="modal-footer d-flex justify-content-center">
+  <button type="button" class="btn btn-secondary" (click)="dismissModal()">Cancel</button>
+  <button class="btn btn-primary" (click)="applyData()">Save</button>
+</div>
+

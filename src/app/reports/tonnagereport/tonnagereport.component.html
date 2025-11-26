@@ -1,0 +1,207 @@
+<div id="pause" class="d-flex align-items-center justify-content-center" *ngIf="loading">
+    <div id="spinner" class="loader"></div>
+</div>
+
+
+<div class="container-fluid">
+    <h3 class="card-header d-flex flex-column justify-content-center align-items-center">
+        <b>Tonnage Report</b>
+    </h3>
+    <div class="card m-1">
+
+        <div class="card-body">
+            <div class="card-body mt-3">
+
+                <fieldset>
+
+                    <div class="row">
+                        <form [formGroup]="TonnageReportForm">
+                            <div class="row ">
+
+
+                                <div class="col-md-2">
+                                    <label class="required-label" style="padding-right:5px;">* </label>
+                                    <label class="form-label"><b>Date From</b></label>
+                                    <input type="date" class="form-control" formControlName="FromDate"
+                                        (change)="checkSelectedDate()" [(ngModel)]="From_Date">
+                                </div>
+
+                                <div class="col-md-2">
+                                    <label class="required-label" style="padding-right:5px;">* </label>
+                                    <label class="form-label"><b>Date To</b></label>
+                                    <input type="date" class="form-control" formControlName="ToDate"
+                                        [(ngModel)]="To_Date">
+
+                                </div>
+
+                                <div class="col-md-3">
+                                    <label class="required-label" style="padding-right:5px;">* </label>
+                                    <label class="form-label"><b>User Name</b> </label>
+                                    <!-- <ng-select formControlName="user" [(ngModel)]="UserName" class="w-auto"
+                                        placeholder="Select User" [multiple]="true" (change)="selectChange()">
+                                        <ng-option *ngFor="let sList of UserList" [value]="sList.intUserId">
+                                            {{sList.vchUserName}}
+                                        </ng-option>
+                                    </ng-select> -->
+
+                                    <ng-multiselect-dropdown [placeholder]="''" [settings]="dropdownSettings"
+                                       [data]="UserList" [(ngModel)]="UserName"  [ngModelOptions]="{standalone: true}" (change)="selectChange()">
+                                        <!-- <ng-option *ngFor="let sList of UserList" [value]="sList.intUserId">
+                                            {{sList.vchUserName}}
+                                        </ng-option> -->
+                                    </ng-multiselect-dropdown>
+
+
+                                </div>
+                                <div class="col-md-2">
+                                    <label class="required-label" style="padding-right:5px;">* </label>
+                                    <label class="form-label"><b>Report Type</b> </label>
+                                    <ng-select formControlName="user" [(ngModel)]="Reporttype" class="w-auto"
+                                        placeholder="Report type" [multiple]="false">
+                                        <ng-option *ngFor="let sList of ReportTypeList" [value]="sList.type">
+                                            {{sList.type}}
+                                        </ng-option>
+                                    </ng-select>
+
+                                </div>
+
+                                <div class="col-md-3">
+                                    <label class="form-label"> </label>
+                                    <div class="d-flex">
+                                        <button class="btn btn-primary btn-sm" type="button" (click)="viewReport()">View
+                                            Report
+                                        </button>
+
+                                        <div class="input-group flex-nowrap" style="width: 39px;">
+                                            <span class="input-group-text ">
+                                                <i class="material-icons" style="font-size:20px;"
+                                                    ngbTooltip="Download Excel" (click)="downloadFile()">download</i>
+                                            </span>   
+                                        </div>
+                                      
+                                    </div>
+                                </div>
+                                <!-- <div class="col-md-1">
+                                    <label class="form-label"></label> <br />
+                                    <div class="input-group flex-nowrap">
+
+                                        <span class="input-group-text ">
+                                            <i class="material-icons" style="font-size:20px;"
+                                                ngbTooltip="Download Excel" (click)="downloadFile()">download</i>
+                                        </span>
+
+                                    </div>
+                                </div> -->
+
+
+
+                            </div>
+
+                        </form>
+
+                        <hr>
+
+
+                    </div>
+                </fieldset>
+
+                <ng-container *ngIf="showIframe">
+                    <div class="table-responsive table-wrapper-scroll-y my-custom-scrollbar"
+                        style="padding: 0; margin:0">
+                        <table class="table table-bordered" style="width:200%; padding: 0; margin:0"
+                            id="TrackingDetailslist">
+                            <thead>
+                                <tr>
+
+
+                                    <th style="width:40px">Posted By</th>
+                                    <th style="width:40px">PostedDate</th>
+                                    <th style="width:40px">Released By</th>
+                                    <th style="width:40px">Released Date</th>
+                                    <th style="width:40px">Posted Weight</th>
+                                    <th style="width:40px">Project Id</th>
+                                    <th style="width:120px">Project Name</th>
+                                    <th style="width:120px;">Customer Name</th>
+                                    <th style="width:30px">WBS1</th>
+                                    <th style="width:30px">WBS2</th>
+                                    <th style="width:30px">WBS3</th>
+                                    <th style="width:30px">STRUC.ELEM TYPE</th>
+                                    <th style="width:30px">PROD TYPE</th>
+                                    <th style="width:40px">Project Code</th>
+                                    <th style="width:40px">Contract Number</th>
+                                    <th style="width:40px">BBS No</th>
+                                    <th style="width:40px">ORD REQ NO</th>
+
+
+
+                                </tr>
+                            </thead>
+
+
+                            <tbody>
+
+                                <tr
+                                    *ngFor="let item of TonnageReportList| slice: pageSize | slice: 0:itemsPerPage; index as i">
+                                    <td>{{item.Postedby}}</td>
+                                    <td>{{item.PostedDate}}</td>
+                                    <td>{{item.ReleasedBy}}</td>
+                                    <td>{{item.ReleasedDate}}</td>
+                                    <td>{{item.PostedWeight}}</td>
+                                    <td>{{item.ProjectId}}</td>
+                                    <td>{{item.ProjectName}}</td>
+                                    <td>{{item.CustomerName}}</td>
+                                    <td>{{item.WBS1}}</td>
+                                    <td>{{item.WBS2}}</td>
+                                    <td>{{item.WBS3}}</td>
+
+                                    <td>{{item.StructutrElement}}</td>
+                                    <td>{{item.ProductType}}</td>
+                                    <td>{{item.ProjectCode}}</td>
+                                    <td>{{item.ContractNumber}}</td>
+                                    <td>{{item.BBSNo}}</td>
+                                    <td>{{item.OrderReqNo}}</td>
+
+
+
+                                </tr>
+
+                                <tr *ngIf="TonnageReportList.length==0">
+                                    <td colspan="31">
+                                        No Records Found
+                                    </td>
+
+
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+                    </div>
+
+                    <div class="d-flex mt-2">
+                        <ngb-pagination [collectionSize]="TonnageReportList.length" [(page)]="currentPage"
+                            [pageSize]="itemsPerPage" (pageChange)="onPageChange(currentPage)" [boundaryLinks]="false"
+                            [maxSize]="maxSize" *ngIf="searchResult">
+                            <ng-template ngbPaginationPrevious>Prev</ng-template>
+                            <ng-template ngbPaginationNext>Next</ng-template>
+                        </ngb-pagination>
+
+                        <select class="custom-select mr-2 ml-3" style="width: auto" [(ngModel)]="itemsPerPage"
+                            (ngModelChange)="OnPageSizeChange(itemsPerPage);">
+                            <option [ngValue]="5">5 </option>
+                            <option [ngValue]="10">10 </option>
+                            <option [ngValue]="20">20 </option>
+                            <option [ngValue]="50">50 </option>
+                            <option [ngValue]="100">100 </option>
+                        </select>
+                        <span style="margin-top: 5px;">Items per page</span>
+                    </div>
+
+
+                </ng-container>
+
+
+            </div>
+        </div>
+    </div>
+</div>

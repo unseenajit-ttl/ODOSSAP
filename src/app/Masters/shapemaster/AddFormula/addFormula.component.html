@@ -1,0 +1,114 @@
+<div class="modal-header">
+    <h4 class="modal-title">Add Product Marking Formulae</h4>
+    <i class="fa-solid fa-xmark"></i>
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+
+</div>
+<div class="modal-body ">
+    <div class="row">
+        <div class="col-md-8 mx-auto d-flex w-25">
+            <label class="form-label">Shape Code</label> &nbsp;
+            <ng-select style="width: 150px;">
+                <ng-option *ngFor="let sList of ShapeCodeList" [value]="sList.intShapeID">
+                    {{sList.chrShapeCode}}
+                </ng-option>
+            </ng-select>
+            &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;
+            <button class="btn btn-primary btn-sm" style=" margin-top:-1px; width: 110px; height:30px ; "
+                type="button">Copy Formulae</button>
+
+        </div>
+    </div>
+    <div class=" table-responsive table-wrapper-scroll-y my-custom-scrollbar">
+        <table class="table d-table table-responsive table-striped  table-bordered">
+            <thead>
+                <tr>
+                    <th class="text-center">Formula Name</th>
+                    <th>Formula</th>
+                    <th class="text-center w-25">Actions</th>
+                </tr>
+            </thead>
+
+
+            <tbody>
+
+                <ng-container *ngIf="Formulalist.length > 0">
+                    <ng-container *ngFor="let item of Formulalist   ; index as i; ">
+                        <tr>
+                            <ng-container *ngIf="enableEditIndex != i">
+                                <td class="text-center">{{item.FormulaName}}</td>
+                                <td> <span style="width:300px;word-wrap:break-word;display:block">{{item.Formula}}</span>
+                                </td>
+                                <td> <i class="material-icons" (click)="onEdit(item,i)" [style.pointer-events]="item.Id=== 0 ? 'none' : 'auto'" 
+                                    [style.color]="item.Id=== 0 ? 'gray' : 'black'"
+                                    ngbTooltip="Edit">mode_edit</i>&nbsp;
+                                     <i class="bi bi-trash"  (click)="DeleteValidation(item.Id)" ngbTooltip="Delete"></i>
+    
+                                </td>
+                            </ng-container>
+                            <ng-container *ngIf="enableEditIndex == i">
+                                <td><input class="form-control" [(ngModel)]="item.FormulaName" readonly="true"
+                                        style=" height: auto;" /></td>
+                                <td style="width: 110px !important; word-wrap: break-word;"><input class="form-control"
+                                        [(ngModel)]="item.Formula" style=" height: auto;" /></td>
+                                <td class="text-center">
+                                    <i class="material-icons" (click)="UpdateFormula(item,i)" ngbTooltip="Update">save</i>
+                                    &nbsp;
+                                    <i class="material-icons" (click)="Editcancel()" ngbTooltip="Cancel">cancel</i>
+                                </td>
+                            </ng-container>
+                        </tr>
+    
+                    </ng-container>
+                </ng-container>
+               
+
+               
+
+                <tr *ngIf="Formulalist.length==0">
+                    <td colspan="15">
+                        No Record Available
+                    </td>
+
+
+                </tr>
+
+            </tbody>
+            <tfoot>
+
+                <tr *ngFor="let table of newFormula">
+                    <td><input class="form-control" placeholder="Formula Name" type="text"
+                            [(ngModel)]="table.FormulaName" style=" height: auto;" /></td>
+                    <td style="width: 110px !important; word-wrap: break-word;">
+                        <input class="form-control" placeholder="Formula" type="text" [(ngModel)]="table.Formula"
+                            style=" height: auto;" />
+                    </td>
+
+                    <td class="text-center" style="width:200px;">
+                        <i class="material-icons" (click)="btnSaveClick()" ngbTooltip="Save">save</i> &nbsp;
+                        <i class="material-icons" (click)="AddReset()" ngbTooltip="Reset">cancel</i>
+                    </td>
+
+                </tr>
+
+
+            </tfoot>
+
+
+        </table>
+
+    </div>
+</div>
+<div class="modal-footer">
+    <!-- <button type="button" (click)="cancel()" class="btn btn-secondary">
+   Cancel
+    </button>
+    <button
+      type="button"
+      (click)="submitReview()"
+      class="btn btn-primary me-2"
+      [disabled]="disableSubmit"
+    >
+      Submit
+    </button> -->
+</div>

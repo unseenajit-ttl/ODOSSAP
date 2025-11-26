@@ -1,0 +1,96 @@
+<div class="modal-header">
+  <h4 class="modal-title">Add New</h4>
+  <i class="fa-solid fa-xmark"></i>
+  <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+
+</div>
+<div class="modal-body ">
+
+    <form [formGroup]="createshapegroupForm">  
+        <div class="row">
+          <div class="col">
+            <label class="form-label">Shape Group</label> <br>
+            <input type="text" formControlName="shapegroup" [(ngModel)]="Shapegroupstring" [readOnly]="true"  class="form-control" />        
+            <span  class="text-danger" *ngIf=" isformsubmit && createshapegroupForm.controls['shapegroup'].invalid && createshapegroupForm.controls['shapegroup'].errors && createshapegroupForm.controls['shapegroup'].hasError('required')" >* Shape Group Required. </span>      
+           
+            </div>
+          <div class="col">
+            <label class="form-label">Description</label>
+            <input type="text" class="form-control" formControlName="description" />
+            <span  class="text-danger" *ngIf=" isformsubmit && createshapegroupForm.controls['description'].invalid && createshapegroupForm.controls['description'].errors && createshapegroupForm.controls['description'].hasError('required')" >* Description Required. </span>      
+         
+          </div>
+          <div class="col">
+            <label class="form-label">Dimention Type</label><br>          
+            <ng-select  [selectOnTab]="true"  formControlName="dimention" class="ng-selectcustomer"    (change)=" ChangeDimention($event)">
+              <ng-option *ngFor="let sList of dimentiontypeList" [value]="sList.item_id">
+                {{sList.item_text}}
+              </ng-option>
+            </ng-select>
+            <span  class="text-danger" *ngIf=" isformsubmit && createshapegroupForm.controls['dimention'].invalid && createshapegroupForm.controls['dimention'].errors && createshapegroupForm.controls['dimention'].hasError('required')" >* DimentionType Required. </span>      
+         
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <label class="form-label">Structure Type</label><br>           
+            <ng-select  [selectOnTab]="true"  formControlName="structuretype" class="ng-selectcustomer"  (change)=" Changestruct($event)">
+              <ng-option *ngFor="let sList of structuretypeList" [value]="sList.item_id">
+                {{sList.item_text}}
+              </ng-option>
+            </ng-select>
+            <span  class="text-danger" *ngIf=" isformsubmit && createshapegroupForm.controls['structuretype'].invalid && createshapegroupForm.controls['structuretype'].errors && createshapegroupForm.controls['structuretype'].hasError('required')" >* Structure Type Required. </span>      
+         
+          </div>
+
+          <div class=" col">
+            <label for="bendingtype" class="form-label ">Bending Type</label><br>        
+
+            <ng-select  [selectOnTab]="true"  formControlName="bendingtype" class="ng-selectcustomer"  (change)=" Changebending($event)">
+              <ng-option *ngFor="let sList of bendingtypeList" [value]="sList.item_id">
+                {{sList.item_text}}
+              </ng-option>
+            </ng-select>
+            <span  class="text-danger" *ngIf=" isformsubmit && createshapegroupForm.controls['bendingtype'].invalid && createshapegroupForm.controls['bendingtype'].errors && createshapegroupForm.controls['bendingtype'].hasError('required')" >* Bending Type Required. </span>      
+         
+          </div>
+
+          <div class=" col">
+            <label for="couplertype" class="form-label">Coupler Type</label><br>
+            <ng-select  [selectOnTab]="true"  formControlName="couplertype" class="ng-selectcustomer"  (change)=" Changecoupler($event)">
+              <ng-option *ngFor="let sList of couplertypeList" [value]="sList.item_id">
+                {{sList.item_text}}
+              </ng-option>
+            </ng-select>
+            <span  class="text-danger" *ngIf=" isformsubmit && createshapegroupForm.controls['couplertype'].invalid && createshapegroupForm.controls['couplertype'].errors && createshapegroupForm.controls['couplertype'].hasError('required')" >* Coupler Type Required. </span>      
+         
+          </div>
+        </div>
+        <div class="row">
+          <div class=" col">
+            <label for="status" class="form-label"></label><br>
+            <div class=" row custom-control custom-switch m-1">
+              <input type="checkbox" formControlName="archivedstatus" class="custom-control-input" id="archivedstatus" 
+              [checked]="true">
+              <label class="custom-control-label" for="archivedstatus">Active</label>
+            </div>
+          </div>    
+
+          <div class="col"></div>
+
+          <div class="col"> </div>
+        </div>
+     
+
+    </form>
+
+ 
+</div>
+<div class="modal-footer">
+  <button type="button" (click)="cancel()" class="btn btn-transparent">
+    Cancel
+  </button>
+  <button type="button" (click)="submit()" class="btn btn-primary me-2">
+    Submit
+  </button>
+</div>

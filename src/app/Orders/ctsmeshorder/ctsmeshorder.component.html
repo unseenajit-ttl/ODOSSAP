@@ -1,0 +1,334 @@
+<!-- <div class="Row" style="margin-left: 20px; margin-top: 10px; font-size: medium;">
+   <h4>Beam Stirrup Link Mesh (梁箍铁网)</h4>
+</div> -->
+<!-- <div class="Row" style="margin-left: 20px; margin-top: 10px; font-size: medium">
+    <a  [routerLink]="['/order/createorder']" >
+      <i class="fa fa-arrow-left arrow-left" aria-hidden="true"></i>
+      Back to order summary
+    </a>
+  </div> -->
+<div class="Row" style="margin-left: 20px; margin-top: 10px; font-size: medium">
+  <a href="javaScript:; " (click)="goBack()">
+    <i class="fa fa-arrow-left arrow-left" aria-hidden="true"></i>
+    Back to order summary
+  </a>
+</div>
+<div *ngIf="ctsmeshloading" style="z-index: 500">
+  <div
+    id="pause"
+    class="d-flex align-items-center justify-content-center"
+  >
+    <div id="spinner" class="loader"></div>
+  </div>
+</div>
+<div class="container-fluid" style="min-height: 445px!important">
+  <div class="card m-1">
+    <div class="d-flex">
+      <div class=" table-responsive table-wrapper-scroll-y my-custom-scrollbar">
+
+        <table class="table  table-bordered">
+          <thead>
+            <tr>
+              <th>ID <br>序号</th>
+              <th>Mark <br>编码</th>
+              <th>Product <br> 产品型号</th>
+              <th>Main Length <br>主筋长(mm)</th>
+              <th>Cross Length <br>副筋长(mm) <br> </th>
+              <th>MESH Qty <br>件数</th>
+              <th>Shape <br>图形码</th>
+              <!-- Example for column A -->
+              <th *ngIf="showA">A</th>
+              <!-- Repeat the same for other columns, replacing the column identifier -->
+              <th *ngIf="showB">B</th>
+              <th *ngIf="showC">C</th>
+              <!-- Repeat for other columns up to Z -->
+              <th *ngIf="showD">D</th>
+              <th *ngIf="showE">E</th>
+              <th *ngIf="showF">F</th>
+              <th *ngIf="showG">G</th>
+              <th *ngIf="showH">H</th>
+              <th *ngIf="showI">I</th>
+              <th *ngIf="showJ">J</th>
+              <th *ngIf="showK">K</th>
+              <th *ngIf="showL">L</th>
+              <th *ngIf="showM">M</th>
+              <th *ngIf="showN">N</th>
+              <th *ngIf="showO">O</th>
+              <th *ngIf="showP">P</th>
+              <th *ngIf="showQ">Q</th>
+              <th *ngIf="showR">R</th>
+              <th *ngIf="showS">S</th>
+              <th *ngIf="showT">T</th>
+              <th *ngIf="showU">U</th>
+              <th *ngIf="showV">V</th>
+              <th *ngIf="showW">W</th>
+              <th *ngIf="showX">X</th>
+              <th *ngIf="showY">Y</th>
+              <th *ngIf="showZ">Z</th>
+              <th>MO1 <br>主筋边1(mm)</th>
+              <th>MO2 <br>主筋边2(mm)</th>
+              <th>CO1 <br>副筋边1(mm)</th>
+              <th>CO2 <br>副筋边2(mm)</th>
+              <th>Weight <br>重量(kg)</th>
+              <th>Main Wire BOM <br>主筋子件</th>
+              <th>Cross Wire BOM <br>副筋子件</th>
+              <th>Remarks <br>备注</th>
+              <!-- <th style="min-width: 80px;">Action</th> -->
+            </tr>
+          </thead>
+          <tbody id="body">
+            <ng-container *ngFor="let item of bbsOrderTable; index as i">
+              <tr *ngIf="editIndex!=i" (click)="getRowData(item, i)">
+                <td [class.selected]="i === selectedRowIndex">{{i+1}}</td>
+                <td [class.selected]="i === selectedRowIndex">{{item.MeshMark}}</td>
+                <td [class.selected]="i === selectedRowIndex">{{item.MeshProduct}}</td>
+                <td [class.selected]="i === selectedRowIndex">{{item.MeshMainLen}}</td>
+                <td [class.selected]="i === selectedRowIndex">{{item.MeshCrossLen}}</td>
+                <td [class.selected]="i === selectedRowIndex">{{item.MeshMemberQty}}</td>
+                <td [class.selected]="i === selectedRowIndex">{{item.MeshShapeCode}}</td>
+                <!-- <td *ngIf="checkheader(item.A, 'A');  ">{{item.A}}</td> -->
+                <td *ngIf="checkheader(item.A, 'A') || showA" [class.selected]="i === selectedRowIndex">{{item.A}}</td>
+                <!-- Repeat the same for other columns, replacing the column identifier -->
+                <td *ngIf="checkheader(item.B, 'B') || showD" [class.selected]="i === selectedRowIndex">{{item.B}}</td>
+                <td *ngIf="checkheader(item.C, 'C') || showC" [class.selected]="i === selectedRowIndex">{{item.C}}</td>
+                <!-- Repeat for other columns up to Z -->
+                <td *ngIf="checkheader(item.D, 'D') || showD" [class.selected]="i === selectedRowIndex">{{item.D}}</td>
+                <td *ngIf="checkheader(item.E, 'E') || showE" [class.selected]="i === selectedRowIndex">{{item.E}}</td>
+                <td *ngIf="checkheader(item.F, 'F') || showF" [class.selected]="i === selectedRowIndex">{{item.F}}</td>
+                <td *ngIf="checkheader(item.G, 'G') || showG" [class.selected]="i === selectedRowIndex">{{item.G}}</td>
+                <td *ngIf="checkheader(item.H, 'H') || showH" [class.selected]="i === selectedRowIndex">{{item.H}}</td>
+                <td *ngIf="checkheader(item.I, 'I') || showI" [class.selected]="i === selectedRowIndex">{{item.I}}</td>
+                <td *ngIf="checkheader(item.J, 'J') || showJ" [class.selected]="i === selectedRowIndex">{{item.J}}</td>
+                <td *ngIf="checkheader(item.K, 'K') || showK" [class.selected]="i === selectedRowIndex">{{item.K}}</td>
+                <td *ngIf="checkheader(item.L, 'L') || showL" [class.selected]="i === selectedRowIndex">{{item.L}}</td>
+                <td *ngIf="checkheader(item.M, 'M') || showM" [class.selected]="i === selectedRowIndex">{{item.M}}</td>
+                <td *ngIf="checkheader(item.N, 'N') || showN" [class.selected]="i === selectedRowIndex">{{item.N}}</td>
+                <td *ngIf="checkheader(item.O, 'O') || showO" [class.selected]="i === selectedRowIndex">{{item.O}}</td>
+                <td *ngIf="checkheader(item.P, 'P') || showP" [class.selected]="i === selectedRowIndex">{{item.P}}</td>
+                <td *ngIf="checkheader(item.Q, 'Q') || showQ" [class.selected]="i === selectedRowIndex">{{item.Q}}</td>
+                <td *ngIf="checkheader(item.R, 'R') || showR" [class.selected]="i === selectedRowIndex">{{item.R}}</td>
+                <td *ngIf="checkheader(item.S, 'S') || showS" [class.selected]="i === selectedRowIndex">{{item.S}}</td>
+                <td *ngIf="checkheader(item.T, 'T') || showT" [class.selected]="i === selectedRowIndex">{{item.T}}</td>
+                <td *ngIf="checkheader(item.U, 'U') || showU" [class.selected]="i === selectedRowIndex">{{item.U}}</td>
+                <td *ngIf="checkheader(item.V, 'V') || showV" [class.selected]="i === selectedRowIndex">{{item.V}}</td>
+                <td *ngIf="checkheader(item.W, 'W') || showW" [class.selected]="i === selectedRowIndex">{{item.W}}</td>
+                <td *ngIf="checkheader(item.X, 'X') || showX" [class.selected]="i === selectedRowIndex">{{item.X}}</td>
+                <td *ngIf="checkheader(item.Y, 'Y') || showY" [class.selected]="i === selectedRowIndex">{{item.Y}}</td>
+                <td *ngIf="checkheader(item.Z, 'Z') || showZ" [class.selected]="i === selectedRowIndex">{{item.Z}}</td>
+                <td [class.selected]="i === selectedRowIndex">{{item.MeshMO1}}</td>
+                <td [class.selected]="i === selectedRowIndex">{{item.MeshMO2}}</td>
+                <td [class.selected]="i === selectedRowIndex">{{item.MeshCO1}}</td>
+                <td [class.selected]="i === selectedRowIndex">{{item.MeshCO2}}</td>
+                <td [class.selected]="i === selectedRowIndex">{{item.MeshTotalWT}}</td>
+                <td [class.selected]="i === selectedRowIndex">{{item.MWBOM}}</td>
+                <td [class.selected]="i === selectedRowIndex">{{item.CWBOM}}</td>
+                <td [class.selected]="i === selectedRowIndex">
+                  {{item.Remarks}}
+                </td>
+                <!-- <td style="text-align: center;"><i (click)="editIndex=i" class="bi bi-pencil-square"></i></td> -->
+              </tr>
+
+              <!-- <tr *ngIf="editIndex==i">
+                                
+                                <td></td>
+                                <td><input type="checkbox"></td>
+                                <td><input class="form-control w-auto" type="text" [(ngModel)]="item.ElementMark"
+                                        style="max-width:85px"></td>
+                                <td><input class="form-control w-auto" type="text" [(ngModel)]="item.Mark"></td>
+                                <td><input class="form-control" type="text" [(ngModel)]="item.Type"></td>
+                                <td>
+                                    <ng-select class="w-auto" appendTo="body" [(ngModel)]="item.Size">
+                                        <ng-option> 1</ng-option>
+                                        <ng-option> 3</ng-option>
+                                        <ng-option> 2</ng-option>
+                                    </ng-select>
+                                </td>
+                                <td><input type="checkbox" (ngModelChange)="onQtyChange()"></td>
+                                <td><input class="form-control" type="text" [(ngModel)]="item.Memberqty"
+                                        (ngModelChange)="onQtyChange()"></td>
+                                <td><input class="form-control" type="text" [(ngModel)]="item.Eachqty"
+                                        (ngModelChange)="onQtyChange()"></td>
+                                <td><input class="form-control" type="text" [(ngModel)]="item.Totalqty" readonly>
+                                </td>
+                                <td>
+                                    <ng-select class="w-auto" appendTo="body" [(ngModel)]="item.Shapecode">
+                                        <ng-option> 1</ng-option>
+                                        <ng-option> 3</ng-option>
+                                        <ng-option> 2</ng-option>
+                                    </ng-select>
+                                </td>
+                                <td><input class="form-control" type="text" [(ngModel)]="item.A"
+                                        (ngModelChange)="onLengthChange()"></td>
+                                <td><input class="form-control" type="text" [(ngModel)]="item.B"
+                                        (ngModelChange)="onLengthChange()"></td>
+                                <td><input class="form-control" type="text" [(ngModel)]="item.C"
+                                        (ngModelChange)="onLengthChange()"></td>
+                                <td><input class="form-control" type="text" [(ngModel)]="item.D"
+                                        (ngModelChange)="onLengthChange()"></td>
+                                <td><input class="form-control" type="text" [(ngModel)]="item.E"></td>
+                                <td><input class="form-control" type="text" [(ngModel)]="item.F"></td>
+                                <td><input class="form-control" type="text" [(ngModel)]="item.G"></td>
+                                <td><input class="form-control" type="text" [(ngModel)]="item.PinSize" readonly>
+                                </td>
+                                <td><input class="form-control" type="text" [(ngModel)]="item.Length" readonly>
+                                </td>
+                                <td><input class="form-control" type="text" [(ngModel)]="item.Weight"></td>
+                                <td><input class="form-control" type="text" [(ngModel)]="item.Remarks"
+                                        style="min-width: 120px;"></td>
+                                <td><i (click)="updateData()">A</i></td>
+                            </tr> -->
+            </ng-container>
+          </tbody>
+
+        </table>
+        <!-- <span><i class="bi bi-plus-circle" ngbTooltip="Add Row"></i></span> -->
+      </div>
+      <button id="slideshowButton" (click)="showSideTable = !showSideTable">
+        <span *ngIf="showSideTable"><i class="bi bi-caret-right-fill"></i></span>
+        <span *ngIf="!showSideTable"><i class="bi bi-caret-left-fill"></i></span>
+
+      </button>
+
+      <div *ngIf="showSideTable" style="background-color: #e9ecef;font-size: smaller;min-width: 275px;">
+        <fieldset #firstBox>
+          <div class="container2" [hidden]="showshapecode">
+            <img class="img-responsive" [src]="'../../../assets/images/Shapes/'+ Imagename +''" alt="image"
+              style="position: relative ; left: 0px;">
+          </div>
+          <div class="container2">
+            <img class="img-responsive" [src]="'../../../assets/images/'+ StaticImagename +''" alt="image"
+              style="position: relative ; left: 0px;">
+          </div>
+        </fieldset>
+        <fieldset #firstBox>
+          <div>
+            <div class="d-flex"
+              style="align-items: center;max-height: 25px;padding: 5px;justify-content: space-between;">
+              <label class="form-label">MW Diameter (主筋直径):</label>&nbsp;
+              <label class="form-label">{{ProdMWDia}}</label>
+            </div>
+            <div class="d-flex"
+              style="align-items: center;max-height: 25px;padding: 5px;justify-content: space-between;">
+              <label class="form-label"> MW Spacing (主筋间距):</label>&nbsp;
+              <label class="form-label">{{ProdMWSpacing}}</label>
+            </div>
+            <div class="d-flex"
+              style="align-items: center;max-height: 25px;padding: 5px;justify-content: space-between;">
+              <label class="form-label">CW Diameter (副筋直径):</label>&nbsp;
+              <label class="form-label">{{ProdCWDia}}</label>
+            </div>
+            <div class="d-flex"
+              style="align-items: center;max-height: 25px;padding: 5px;justify-content: space-between;">
+              <label class="form-label">CW Spacing (副筋间距):</label>&nbsp;
+              <label class="form-label">{{ProdCWSpacing}}</label>
+            </div>
+            <div class="d-flex"
+              style="align-items: center;max-height: 25px;padding: 5px;justify-content: space-between;">
+              <label class="form-label">Mass(kg/m<sup>2</sup>) (密度):</label>&nbsp;
+              <label class="form-label">{{Mass}}</label>
+            </div>
+            <div class="d-flex"
+              style="align-items: center;max-height: 25px;padding: 5px;justify-content: space-between;">
+              <label class="form-label">Total WT (总重量):</label>&nbsp;
+              <label class="form-label">{{MeshTotalWT}}</label>
+            </div>
+            <!-- <div class="d-flex"
+                            style="align-items: center;max-height: 25px;padding: 5px;justify-content: space-between;">
+                            <label class="form-label">Total Weight:</label>&nbsp;
+                            <label class="form-label">{{TotalWeight}}</label>
+                        </div> -->
+
+            <!-- <div class="d-flex"
+                            style="align-items: center;max-height: 25px;padding: 5px;justify-content: space-between;">
+                            <label class="form-label">Total Bar Qty:</label>&nbsp;
+                            <label class="form-label">0</label>
+                        </div> -->
+          </div>
+        </fieldset>
+        <fieldset id="secondBox">
+          <!-- <legend style="font-size:medium">Shape Finder</legend> -->
+          <div style="margin-top: 5px;">
+            <!-- <div class="d-flex" style="align-items: center;padding: 2px;justify-content: space-between;">
+                            <label class="form-label">Category: </label>&nbsp;
+                            <ng-select class="w-auto" style="min-width: 160px;">
+                                <ng-option *ngFor="let sList of shapeCodeList" [value]="sList.shapeCategory">
+                                    {{sList.shapeCategory}}</ng-option>
+                            </ng-select>
+                        </div> -->
+            <div class="d-flex" style="align-items: center;padding: 2px; justify-content: center;">
+              <!-- <label class="form-label">Shape List:</label>&nbsp; -->
+              <button class="btn btn-primary btn-sm" type="button" (click)="ShowShapeList()">Show Shape List</button>
+            </div>
+            <div class="d-flex" style="align-items: center;padding: 2px;justify-content: center;">
+              <!-- <label class="form-label">New Shape: </label>&nbsp; -->
+              <button class="btn btn-primary btn-sm" type="button" (click)="ShowProductList()">Show Product
+                List</button>
+            </div>
+            <div class="d-flex" style="align-items: center;padding: 2px;justify-content: center;">
+              <!-- <label class="form-label">Bending Limit: </label>&nbsp; -->
+              <button class="btn btn-primary btn-sm" type="button" (click)="DownloadShapeList()">Download Shape
+                List</button>
+            </div>
+            <div class="d-flex" style="align-items: center;padding: 2px;justify-content: center;">
+              <!-- <label class="form-label">Checking: </label>&nbsp; -->
+              <button class="btn btn-primary btn-sm" type="button" (click)="DownloadProductList()">Download
+                Product-List</button>
+            </div>
+            <!-- <div class="d-flex" style="align-items: center;padding: 2px;justify-content: space-between;">
+                            <label class="form-label">Find: </label>&nbsp;
+                            <button class="btn btn-primary btn-sm" type="button">Discrepancy Rpt.</button>
+                        </div> -->
+          </div>
+        </fieldset>
+
+      </div>
+    </div>
+  </div>
+</div>
+<!-- <div>
+  Notes: All dimensions and length are in "mm" unless otherwise. Maximum number of various bar items is 26.
+</div> -->
+<!-- app.component.html -->
+<!-- <div class="image-row">
+    <ng-container *ngFor="let image of images">
+      <img [src]="'../../../assets/images/Shapes/' + image + '.png'" alt="Image">
+    </ng-container>
+  </div> -->
+<!-- <div class="container">
+    <div class="row">
+      <ng-container *ngFor="let image of images; let i = index">
+        <div class="col-2">
+          <img [src]="'../../../assets/images/Shapes/' + image + '.png'" alt="Image" class="image-with-border">
+        </div>
+        Start a new row after every 5 images
+        <div class="w-100 d-none d-md-block" *ngIf="(i + 1) % 5 === 0"></div>
+      </ng-container>
+    </div>
+  </div>
+   -->
+
+<!-- your-component.component.html -->
+<!-- <div *ngFor="let row of imageRows" class="row">
+    <div *ngFor="let imageUrl of row" class="col">
+      <div class="image-box" style="border: 2px solid #000;">
+        <img [src]="'../../../assets/images/Shapes/' + imageUrl + '.png'" alt="Image">
+      </div>
+    </div>
+  </div> -->
+<!-- <table>
+    <tr *ngFor="let rowIndex of [0, 1, 2, 3, 4]; let i = index" class="image-row">
+      <td *ngFor="let cellIndex of [0, 1, 2, 3, 4]; let j = index" class="image-cell">
+        <ng-container *ngIf="imageRows[i * 5 + cellIndex]">
+          <img [src]="'../../../assets/images/' + imageRows[i * 5 + cellIndex] + '.png'" alt="Image">
+        </ng-container>
+      </td>
+    </tr>
+  </table> -->
+
+<!-- <div class="image-gallery">
+    <div class="image-row">
+      <div class="image-box" *ngFor="let image of images">
+        <img [src]="'../../../assets/images/Shapes/' + image + '.png'" alt="Image">
+      </div>
+    </div>
+  </div> -->

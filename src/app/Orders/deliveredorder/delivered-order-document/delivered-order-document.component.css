@@ -1,0 +1,110 @@
+.container-fluid {
+  padding: 0px;
+}
+.mainHeading {
+  font-size: x-large;
+  font-weight: 500;
+  padding: 10px 0;
+  background: #d8dcdf;
+}
+.footer {
+  padding: 10px;
+  display: flex;
+  justify-content: flex-end;
+  background: inherit;
+}
+
+.subheading {
+  text-align: left;
+  font-size: medium;
+}
+
+.subheading button {
+  font-size: large;
+}
+
+.buttonDis {
+  text-align: center;
+}
+table td,
+table th {
+  font-size: 11px;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+  border: 1px solid #bcb7b7 !important;
+}
+
+table td {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 10px;
+}
+
+.table-responsive {
+  border: 1px solid #dee2e6;
+}
+
+.Total-Weight-row {
+  font-weight: 600;
+}
+
+.mat-mdc-icon-button.mat-mdc-button-base {
+  padding: 0px;
+}
+::ng-deep
+  .mat-mdc-text-field-wrapper.mdc-text-field--outlined
+  .mat-mdc-form-field-infix {
+  padding-top: 0px !important;
+  padding-right: 2px !important;
+}
+
+.btn-primary.downloaddoc {
+  color: black;
+  background-color: #c1f0a1;
+  border-color: #002f43;
+  border-radius: 10px;
+  transition: background-color 0.5s ease-in-out;
+}
+
+button.btn.btn-primary.downloaddoc:hover {
+  color: #fff;
+  background-color: #003ec4;
+  border-color: #0880ae;
+}
+
+::ng-deep .btn-primary.downloaddoc.disabled,
+.btn-primary.downloaddoc:disabled {
+  color: #fff;
+  background-color: #999;
+  border-color: #afb6b9;
+}
+
+.Product-DO-Number {
+  text-align: center;
+  position: relative;
+  padding: 2%;
+}
+
+
+#mydiv {
+  position: absolute;
+
+  cursor: move;
+  border: 1px solid #000;
+  background-color: white;
+  z-index: 100;
+  min-width: 1200px;
+  max-width: 750px;
+ 
+  transition: right 0.1s, top 0.1s;
+}
+
+@media only screen and (max-width: 1024px) {
+  td{
+    min-width: max-content !important;
+    max-width: none !important;
+  }
+}

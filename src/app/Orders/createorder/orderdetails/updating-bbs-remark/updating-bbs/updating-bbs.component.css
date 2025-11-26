@@ -1,0 +1,12 @@
+.modal-header {
+  background: #cccccc;
+  font-size: 25px;
+  font-weight: 500;
+  padding: 15px !important;
+}
+
+.modal-body {
+  font-weight: 500;
+  font-size: large;
+  line-height: 1.5;
+}

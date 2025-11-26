@@ -1,0 +1,60 @@
+<div cdkDrag cdkDragRootElement=".your-custom-dialog-class">
+  <div class="movable-container">
+    <div class="container-fluid">
+      <div class="card m-1">
+        <div class="mainHeading" cdkDragHandle>
+          <span>Update Project Management Remarks to Selected Rows</span>
+        </div>
+        <!-- <div class="body">
+      <label style="width: 50%">Project Management Remaks: </label>
+      <input class="form-control" [(ngModel)]="Remarks" />
+    </div> -->
+        <div class="body">
+          <label style="width: 60%">Project Management Remaks: </label>
+           <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="Remarks"
+            (blur)="Remarks = Remarks.toUpperCase()"
+            maxlength="100"
+            style="font-weight: bold"
+          />
+
+          <span
+            *ngIf="Remarks == '' || Remarks == null"
+            style="
+              padding: 6.5px;
+              background-color: #ccc6c682;
+              font-size: x-small;
+              border-radius: 0 5px 5px 0;
+            "
+            >100</span
+          >
+          <span
+            *ngIf="Remarks != '' && Remarks != null && Remarks.length != 0"
+            [class.remark-ind-color]="Remarks.length == 100"
+            style="
+              padding: 6.5px;
+              background-color: #ccc6c682;
+              font-size: x-small;
+              border-radius: 0 5px 5px 0;
+            "
+            >{{ 100 - Remarks.length }}</span
+          >
+        </div>
+        <div class="footer">
+          <button
+            type="button"
+            class="btn btn-primary me-2"
+            (click)="UpdatePMRemarks()"
+          >
+            Update
+          </button>
+          <button type="button" class="btn btn-primary me-2" (click)="close()">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

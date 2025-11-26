@@ -1,0 +1,37 @@
+// {
+//   "version": "1.0.0.0",
+//   // "apiDomain": "https://ietd-careermgr-apim.azure-api.net/cm/",
+//   // "guestApiDomain": "https://ietd-careermgr-apim.azure-api.net/cm-guest/",
+//   "publicContainerName": "public",
+//   "RegistrationCategoryImagesFolderName": "RegistrationCategoryImages",
+//   //"storageBlobURI": "https://ietdcmstg.blob.core.windows.net/",
+//   "autoSaveTimer": 10000,
+//   "allowedFileTypesForProfilePhoto": ["image/jpg", "image/jpeg"],
+//   "allowedFileSizeForProfilePhoto": 2,
+//   "allowedFileTypeForSupportedDocuments": ["doc", "docx", "pdf", "png", "jpeg", "jpg", "gif"],
+//   "allowedFileTypeForCpdDeclarationSupportedDocuments": ["pdf"],
+//   "allowedFileTypeForCpdAcademicStudyDocuments": ["pdf"],
+//   "allowedFileTypeForCpdEmploymentHistoryDocuments": ["pdf"],
+//   "allowedFileTypeForCpdReportDocuments": ["pdf"],
+//   "allowedFileSizeForSupportedDocuments": 2.5,
+//   "allowedFileTypeForCriteriaDocuments": ["doc", "docx", "pdf", "png", "jpeg", "jpg", "gif"],
+//   "allowedFileSizeForCriteriaDocuments": 2.5,  
+//   "profile": {
+//     //"contactUs": "mailto:membership@theiet.org?Subject=Request%20to%20change%20personal%20details"
+//   },
+//   "oauth": {
+//     //"discoveryUri": "https://ietdssotb2c.b2clogin.com/ietdssotb2c.onmicrosoft.com/v2.0/.well-known/openid-configuration?p=B2C_1A_RPNonMemberSignUpSignInV0.6",
+//    // "issuer": "https://ietdssotb2c.b2clogin.com/12aa4994-1880-4b0d-a0f7-421579382118/v2.0/",
+//     "redirectUri": "",
+//     "silentRefreshRedirectUri": "",
+//     //"clientId": "627c7341-580f-4cb9-8bd0-0a4754677899",
+//    // "scope": "openid https://ietdssotb2c.onmicrosoft.com/ietd-cm-api/cm:user",
+//     "showDebugInformation": true,
+//     "sessionChecksEnabled": false,
+//     "strictDiscoveryDocumentValidation": false,
+//     "silentRefreshShowIFrame": true,
+//     "timeoutFactor": 0.9,
+//    // "allowedUrls": ["https://ietd-careermgr-apim.azure-api.net/cm/", "", "", ""],
+//     //"externalPostLogoutRedirectUri": "https://logon.theiet.org/logout.cfm/?originUrl=https://www.theiet.org/career/professional-development/career-manager/"
+//   }
+// }

@@ -1,0 +1,24 @@
+#mydiv {
+  position: absolute;
+
+  cursor: move;
+  border: 1px solid #000;
+  background-color: white;
+  z-index: 100;
+  min-width: 1200px;
+  max-width: 750px;
+ 
+  transition: right 0.1s, top 0.1s;
+}
+.modal-header {
+  background: #cccccc;
+  font-size: 25px;
+  font-weight: 500;
+  padding: 15px !important;
+}
+
+.modal-body {
+  font-weight: 500;
+  font-size: large;
+  line-height: 1.5;
+}

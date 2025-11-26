@@ -1,0 +1,17 @@
+
+.modal button
+{
+    padding: 5px 5px;
+    font-size: 16px;
+}
+.edit-label{
+    font-size: xx-small;
+    text-align: start;
+    width: 100px;
+}
+
+.wild-search-reset {
+    position: relative;
+    right: 43px
+}
+

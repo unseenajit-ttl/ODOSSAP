@@ -1,0 +1,130 @@
+/* Fullscreen modal look */
+.your-custom-dialog-class {
+  background: none;
+}
+
+/* Card container */
+.movable-container .card {
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Header */
+.mainHeading {
+  background-color: rgba(0, 0, 0, 0.03);
+  color: black;
+  padding: 10px 15px;
+  font-weight: bold;
+  cursor: move;
+}
+.mainHeading .btn-close {
+  color: black;
+  filter: invert(1);
+}
+
+/* Loader overlay */
+.loader-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 500;
+}
+.loader {
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid #007bff;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  100% { transform: rotate(360deg); }
+}
+
+button.rounded-circle {
+  width: 40px;
+  height: 40px;
+  padding: 0;        /* centers the icon */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.table-container {
+  height: 70vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.h-scroll {
+  overflow-x: auto;   /* horizontal scroll */
+  flex: 1;
+}
+
+/* HEADER */
+.header-row {
+  display: flex;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #f8f9fa;
+  min-width: max-content;
+}
+
+/* BODY */
+.viewport {
+  height: 70vh;
+  width: 100%;
+  overflow: auto;
+  display: block;
+}
+
+.header-row,
+.data-row {
+  display: flex;
+  min-width: max-content; /* enables horizontal scroll if too many columns */
+}
+
+.cell {
+  flex: 1 0 0;   /* fixed column width */
+  max-width: 150px;  /* optional: prevent stretch */
+  min-width: 150px;
+  padding: 4px 8px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+   /* allow wrapping */
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: break-word;
+
+  /* limit height to 2 lines */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;    /* show only 2 lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.sticky-col {
+  position: sticky;
+  background: #f7f7f7;
+  z-index: 2;
+}
+::ng-deep .header-cell{
+  background: #003ec4 !important;
+  color: #fff;
+}
+.selected-row {
+  background-color:  beige !important;
+}

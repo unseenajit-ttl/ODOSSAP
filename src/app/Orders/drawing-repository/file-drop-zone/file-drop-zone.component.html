@@ -1,0 +1,79 @@
+<div cdkDrag cdkDragRootElement=".your-custom-dialog-class">
+  <div class="modal-header" cdkDragHandle>
+    <span id="ui-id-2" class="ui-dialog-title">Drawings Upload (图纸文档上传)</span>
+    <button type="button" class="close" (click)="dismissModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div *ngIf="isLoding" style="z-index: 500;opacity:1">
+      <div id="pause" class="d-flex align-items-center justify-content-center">
+        <div id="spinner" class="loader"></div>
+      </div>
+    </div>
+    <div class="row p-3">
+      <div class="col-12 p-0">
+        <input type="radio" id="file_revision" name="uploadType" value="R" [(ngModel)]="uploadType">
+        <label for="file_revision">Create New Revision (创建新版本)</label>&nbsp;&nbsp;&nbsp;
+        <input type="radio" id="file_overwrite" name="uploadType" [(ngModel)]="uploadType" value="O">
+        <label for="file_overwrite">Overwrite Existing Files (覆盖现有文件)</label>
+      </div>
+      <div class="col-12 p-0 mt-2">
+        <label class="file-drop-zone" appDragDropFile [appDragDrop]="dragDropEnabled"
+          (dropped)="handleFileDrop($event)">
+          <div class="file-drop-zone-message">
+            Drop files here or click here to select files for uploading (将文件拖放到此处或点击此处来选择文件进行上传)
+          </div>
+          <div class="file-drop-zone-message">
+            {{uploadedFileName}}
+          </div>
+          <input type="file" [accept]="fileType" [multiple]="multiple" (change)="addFiles(fileInput)" multiple hidden
+            #fileInput />
+        </label>
+      </div>
+      <div class="col-12 p-0 mt-2">
+        <h3>Uploaded Drawings (已上传的图纸文档)</h3>
+        <table style="width: 100% !important;" class="table table-bordered">
+          <thead>
+            <th>Select<br />(选项)</th>
+            <th>SNo.<br />(序号)</th>
+            <th>Document No<br />(文档编号)</th>
+            <th>Revision<br />(版本号)</th>
+            <th>Remarks<br />(备注)</th>
+            <th>File Name<br />(文件名)</th>
+            <th>Updated Date<br />(上传日期)</th>
+            <th>Updated By<br />(上传者)</th>
+          </thead>
+          <tbody>
+            <tr *ngFor="let doc of docList; index as headerIndex">
+              <td>
+                <input
+                  type="radio"
+                  name="isSelected"
+                  [value]="doc"
+                  [(ngModel)]="selectedDoc"
+                />
+              </td>
+              <td>{{headerIndex+1}}</td>
+              <td>{{doc.DrawingNo}}</td>
+              <td>{{doc.Revision}}</td>
+              <td>{{doc.Remarks}}</td>
+              <td>{{doc.FileName}}</td>
+              <td>{{doc.UpdatedDate}}</td>
+              <td>{{doc.UpdatedBy}}</td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="ui-dialog-buttonset">
+      <button class="btn btn-primary" (click)="viewData()">View (浏览文档)</button>
+      <button class="btn btn-success" (click)="downloadDoc()">Download (下载文档)</button>
+      <button class="btn btn-danger" (click)="removeDoc()">Remove (删除文档)</button>
+      <button class="btn btn-secondary" (click)="dismissModal()">Close (关闭)</button>
+    </div>
+  </div>
+</div>

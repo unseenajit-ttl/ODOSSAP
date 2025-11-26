@@ -1,0 +1,69 @@
+<div cdkDrag cdkDragRootElement=".your-custom-dialog-class">
+    <div class="load-header" cdkDragHandle>
+        <span>Urgent SOR Watch List</span>
+        <button type="button" class="close" (click)="activeModal.dismiss('Cross click')">
+            ×
+        </button>
+    </div>
+    <div class="load-body">
+        <div class="modal-body">
+            <div class="form-group">
+                <div class="row input-fields">
+                    <div class="col-md-1">&nbsp;</div>
+                    <label class="col-md-2"> SO Number : </label><input class="col-md-2" type="text"
+                        placeholder="SO Number" id="WatchList_SO_Number" [(ngModel)]="WatchList_SO_Number" />
+                    <label class="col-md-2"> SOR Number : </label><input class="col-md-2" type="text"
+                        placeholder="SOR Number" id="WatchList_SOR_Number" [(ngModel)]="WatchList_SOR_Number" />
+                    <div class="col-md-1">&nbsp;</div>
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-primary button button4" (click)="Watchlist_Search();">
+                            Search </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12" style="height:5px;"> <br /> &nbsp; </div>
+            <!-- <div id="myProgress_watchlist">
+                <div id="myBar_watchlist"></div>
+            </div>
+            <div id="myBarText_watchlist">Extracting data, please wait </div> -->
+
+            <div id="PONoListCont_watchlist" style="height:300px; overflow:auto; border: 1px solid #a0a0a0;">
+                <!-- </> -->
+            </div>
+            <div class="col-md-12" style="height:5px;">&nbsp;</div>
+            <div id="divFields_watchlist" style="visibility:hidden;">
+                <div class="row">
+                    <div class="col-md-4">&nbsp;</div>
+                    <button type="button" id="btnSave" class="btn btn-primary button button4 col-md-1"
+                        (click)="btnSave_click();"> Save </button>
+                    <div class="col-md-1">&nbsp;</div>
+                    <button type="button" id="btnDelete" class="btn btn-primary button button4 col-md-1"
+                       [disabled]="disable_btnDelete" (click)="btnDelete_click();"> Delete </button>
+                    <div class="col-md-1">&nbsp;</div>
+                    <button type="button" id="btnQuery" class="btn btn-primary button button4 col-md-1"
+                        (click)="btnQuery_click();"> Query </button>
+                    <div class="col-md-1">&nbsp;</div>
+                    <button type="button" id="btnHideModal" class="btn btn-primary button button4 col-md-1"> Close
+                    </button>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <fieldset>
+                        <legend style="color:orangered"> &nbsp;&nbsp; Note </legend>
+                        <pre>
+1. You may enter critical SOR in the watch list for close monitoring.
+It will be auto-saved in database when Query/Save button is clicked.
+You may omit prefix ''800...0'' when entering SOR number. To search by SO, enter full SO number.
+2. To remove SOR/SO from the watch list, highlight the row(s) and click Delete button.
+3. You may select multiple rows for deletion by press-and-hold (Ctrl) key (for individual selection)
+or (Shift) key (for selection by range) while clicking row headers for deletion.
+            </pre>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="load-footer">
+    </div> -->
+</div>

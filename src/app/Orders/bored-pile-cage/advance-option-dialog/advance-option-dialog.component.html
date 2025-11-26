@@ -1,0 +1,348 @@
+<div cdkDrag cdkDragRootElement=".your-custom-dialog-class">
+<div class="modal-header" cdkDragHandle>
+  <h3 class="modal-title">Advance Options</h3>
+  <button type="button" class="close" (click)="dismissModal()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body pt-0 pb-0">
+  <div class="row">
+    <div class="col-md-12">
+      <table class="table">
+        <ng-container *ngIf="
+          this.lBPCRec.spiral_link_type == '2 Spacing' ||
+          this.lBPCRec.spiral_link_type == '3 Spacing' ||
+          this.lBPCRec.spiral_link_type == 'Twin 2 Spacing' ||
+          this.lBPCRec.spiral_link_type == 'Twin 3 Spacing' ||
+          this.lBPCRec.spiral_link_type == 'Single-Twin' ||
+          this.lBPCRec.spiral_link_type == 'Twin-Single'">
+          <tr>
+            <td><label for="sl1_length">1st Spiral Link Length:</label></td>
+            <td><input type="text" class="form-control" id="sl1_length" name="sl1_length"
+                [(ngModel)]="sl1_length" /></td>
+            <td><label for="sl1_dia">1st Spiral Link Diameter:</label></td>
+            <td>
+              <select class="form-select" id="sl1_dia" name="sl1_dia" [(ngModel)]="sl1_dia">
+                <option [value]="dia.value" *ngFor="let dia of lSL1DiaOption">
+                  {{ dia.label }}
+                </option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td><label for="sl2_length">2nd Spiral Link Length:</label></td>
+            <td><input type="text" class="form-control" id="sl2_length" name="sl2_length"
+                [(ngModel)]="sl2_length" /></td>
+            <td><label for="sl2_dia">2nd Spiral Link Diameter:</label></td>
+            <td>
+              <select class="form-select" id="sl2_dia" name="sl2_dia" [(ngModel)]="sl2_dia">
+                <option [value]="dia2.value" *ngFor="let dia2 of lSL2DiaOption">
+                  {{ dia2.label }}
+                </option>
+              </select>
+            </td>
+          </tr>
+          <tr
+            *ngIf="this.lBPCRec.spiral_link_type == '3 Spacing' || this.lBPCRec.spiral_link_type == 'Twin 3 Spacing' ">
+            <td><label for="">3rd Spiral Link Length:</label></td>
+            <td><input type="text" class="form-control" id="sl3_length" name="sl3_length"
+                [(ngModel)]="sl3_length" /></td>
+            <td><label for="">3rd Spiral Link Diameter:</label></td>
+            <td><select class="form-select" id="sl3_dia" name="sl3_dia" [(ngModel)]="sl3_dia">
+                <option [value]="dia3.value" *ngFor="let dia3 of lSL3DiaOption">
+                  {{ dia3.label }}
+                </option>
+              </select>
+            </td>
+          </tr>
+        </ng-container>
+        <tr>
+          <td><label for="no_of_sr">No of Stiffener Ring:</label></td>
+          <td><input type="text" class="form-control" id="no_of_sr" name="no_of_sr" [(ngModel)]="no_of_sr" /></td>
+          <td><label for="sr_grade">Stiffener Ring Grade:</label></td>
+          <td>
+            <select class="form-select" id="sr_grade" name="sr_grade" [(ngModel)]="sr_grade">
+              <option [value]="srGrade.value" *ngFor="let srGrade of lSRGradeOption">
+                {{ srGrade.label }}
+              </option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td><label for="sr_dia">Stiffener Ring Diameter:</label></td>
+          <td>
+            <select class="form-select" id="sr_dia" name="sr_dia" [(ngModel)]="sr_dia">
+              <option [value]="srDia.value" *ngFor="let srDia of lSRDiaOption">
+                {{ srDia.label }}
+              </option>
+            </select>
+          </td>
+          <td><label for="sr_dia_add">Additional SR Diameter:</label></td>
+          <td>
+            <select class="form-select" id="sr_dia_add" name="sr_dia_add" [(ngModel)]="sr_dia_add">
+              <option [value]="srDiaAdd.value" *ngFor="let srDiaAdd of lSRDiaAddOption">
+                {{ srDiaAdd.label }}
+              </option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td><label for="sr1_location">1st Stiffener Ring Location:</label></td>
+          <td><input type="text" class="form-control" id="sr1_location" name="sr1_location"
+              [value]="this.lBPCRec.sr1_location" [(ngModel)]="sr1_location" /></td>
+          <td><label for="last_location">Last Stiffener Ring Location:</label></td>
+          <td><input type="text" class="form-control" id="last_location" name="last_location"
+              [(ngModel)]="last_location" /></td>
+        </tr>
+        <tr>
+          <td><label for="rings_start">Rings at Start:</label></td>
+          <td><input type="text" class="form-control" id="rings_start" name="rings_start"
+              [(ngModel)]="rings_start" /></td>
+          <td><label for="rings_end">Rings at End:</label></td>
+          <td><input type="text" class="form-control" id="rings_end" name="rings_end" [(ngModel)]="rings_end" />
+          </td>
+        </tr>
+        <tr>
+          <td><label for="rings_addn_member">No. of Additional Ring Set:</label></td>
+          <td><input type="text" class="form-control" id="rings_addn_member" name="rings_addn_member"
+              [(ngModel)]="rings_addn_member" /></td>
+          <td><label for="rings_addn_no">No. of Additional Rings / Set:</label></td>
+          <td><input type="text" class="form-control" id="rings_addn_no" name="rings_addn_no"
+              [(ngModel)]="rings_addn_no" /></td>
+        </tr>
+        <tr>
+          <td><label for="no_of_cr_top">No. of Circular Rings at Top:</label></td>
+          <td><input type="text" class="form-control" id="no_of_cr_top" name="no_of_cr_top"
+              [(ngModel)]="no_of_cr_top" /></td>
+          <td><label for="cr_spacing_top">Circular Rings Spacing at Top:</label></td>
+          <td><input type="text" class="form-control" id="cr_spacing_top" name="cr_spacing_top"
+              [(ngModel)]="cr_spacing_top" /></td>
+        </tr>
+        <tr>
+          <td><label for="no_of_cr_end">No. of Circular Rings at End:</label></td>
+          <td><input type="text" class="form-control" id="no_of_cr_end" name="no_of_cr_end"
+              [(ngModel)]="no_of_cr_end" /></td>
+          <td><label for="rings_start">Circular Rings Spacing at End:</label></td>
+          <td><input type="text" class="form-control" id="cr_spacing_end" name="cr_spacing_end"
+              [(ngModel)]="cr_spacing_end" /></td>
+        </tr>
+        <tr>
+          <td><label for="cr_posn_top">Circular Rings Start Posn at Top:</label></td>
+          <td><input type="text" class="form-control" id="cr_posn_top" name="cr_posn_top"
+              [(ngModel)]="cr_posn_top" /></td>
+          <td><label for="cr_posn_end ">Circular Rings End Posn at End:</label></td>
+          <td><input type="text" class="form-control" id="cr_posn_end " name="cr_posn_end "
+              [(ngModel)]="cr_posn_end " /></td>
+        </tr>
+        <tr>
+          <td><label for="extra_support_bar_ind">Extra Support Bar Type:</label></td>
+          <td>
+            <select class="form-select" id="extra_support_bar_ind" name="extra_support_bar_ind"
+              [(ngModel)]="extra_support_bar_ind">
+              <option value="None">
+                None
+              </option>
+              <option value="Cross">
+                Cross
+              </option>
+              <option [value]="'Square'">
+                Square
+              </option>
+            </select>
+          </td>
+          <td><label for="extra_support_bar_dia">Extra Support Bar Dia:</label></td>
+          <td><input type="text" class="form-control" id="extra_support_bar_dia" name="extra_support_bar_dia"
+              [(ngModel)]="extra_support_bar_dia" /></td>
+        </tr>
+        <tr>
+          <td><label for="cr_top_remarks">Circular Rings Remarks at Top:</label></td>
+          <td><input type="text" class="form-control" id="cr_top_remarks" name="cr_top_remarks"
+              [(ngModel)]="cr_top_remarks" /></td>
+          <td><label for="cr_end_remarks ">Circular Rings Remarks at End:</label></td>
+          <td><input type="text" class="form-control" id="cr_end_remarks " name="cr_end_remarks "
+              [(ngModel)]="cr_end_remarks " /></td>
+        </tr>
+        <tr>
+          <td *ngIf="this.lBPCRec.pile_type == 'Double-Layer'"><label for="twopcs_stiffener">2Pc Stiffener:</label></td>
+          <td *ngIf="this.lBPCRec.pile_type == 'Double-Layer'"> <select class="form-select" id="twopcs_stiffener" name="twopcs_stiffener"
+              [(ngModel)]="twopcs_stiffener">
+              <option value="true">
+                Yes
+              </option>
+              <option value="false">
+                No
+              </option>
+
+            </select></td>
+          <td><label for="extra_cr_no">No of Extra Circular Rings:</label></td>
+          <td><input type="text" class="form-control" id="extra_cr_no" name="extra_cr_no"
+              [(ngModel)]="extra_cr_no" /></td>
+        </tr>
+        <tr>
+          <td><label for="extra_cr_dia">Extra Circular Rings Dia:</label></td>
+          <td><input type="text" class="form-control" id="extra_cr_dia" name="extra_cr_dia"
+              [(ngModel)]="extra_cr_dia" /></td>
+          <td><label for="extra_cr_loc">Extra Circular Rings Location:</label></td>
+          <td><input type="text" class="form-control" id="extra_cr_loc" name="extra_cr_loc"
+              [(ngModel)]="extra_cr_loc" /></td>
+        </tr>
+        <tr>
+          <td><label for="coupler_top">Coupler at Top:</label></td>
+          <td>
+            <select class="form-select" id="coupler_top" name="coupler_top" [(ngModel)]="coupler_top">
+              <option [value]="lCouplerTop.value" *ngFor="let lCouplerTop of lCouplerTopOption">
+                {{ lCouplerTop.label }}
+              </option>
+            </select>
+          </td>
+          <td><label for="coupler_end">Coupler at End:</label></td>
+          <td>
+            <select class="form-select" id="coupler_end" name="coupler_end" [(ngModel)]="coupler_end">
+              <option [value]="lCouplerEnd.value" *ngFor="let lCouplerEnd of lCouplerEndOption">
+                {{ lCouplerEnd.label }}
+              </option>
+            </select>
+          </td>
+        </tr>
+        <tr *ngIf="this.lBPCRec.main_bar_shape != 'Straight'">
+          <td><label for="crank_height_top">Crank Height at Top:</label></td>
+          <td><input type="text" class="form-control" id="crank_height_top" name="crank_height_top"
+              [(ngModel)]="crank_height_top" /></td>
+          <td><label for="crank_height_end">Crank Height at End:</label></td>
+          <td><input type="text" class="form-control" id="crank_height_end" name="crank_height_end"
+              [(ngModel)]="crank_height_end" /></td>
+        </tr>
+
+        <tr *ngIf="this.lBPCRec.main_bar_type == 'Mixed' && this.lBPCRec.main_bar_shape != 'Straight'">
+          <td><label for="crank2_height_top">2nd Bar Crank Height at Top:</label></td>
+          <td><input class="form-control" type='text' id='crank2_height_top' name='crank2_height_top' [(ngModel)]="crank2_height_top">
+          </td>
+          <td><label for="crank2_height_end">2nd Bar Crank Height at End:</label></td>
+          <td><input class="form-control" type='text' id='crank2_height_end' name='crank2_height_end' [(ngModel)]="crank2_height_end">
+          </td>
+        </tr>
+        <tr
+          *ngIf="showMixedAndDouble">
+          <td><label for="mainbar_length_2layer">2nd Layer Main Bar Length:</label></td>
+          <td><input class="form-control" type='text' id='mainbar_length_2layer' name='mainbar_length_2layer'
+              [(ngModel)]="mainbar_length_2layer"></td>
+          <td><label for="mainbar_location_2layer">2nd Layer Main Bar Location:</label></td>
+          <td><input class="form-control" type='text' id='mainbar_location_2layer' name='mainbar_location_2layer'
+              [(ngModel)]="mainbar_location_2layer"></td>
+        </tr>
+        <!-- 060J80H40SLS20-12Aas -->
+        <tr
+        *ngIf="showMixedSideBySide"
+        >
+          <td><label for="mainbar_location_2layer">2nd Layer Main Bar Position:</label></td>
+          <td>
+            <select class="form-select" id='mainbar_position_2layer' name='mainbar_position_2layer' [(ngModel)]="mainbar_position_2layer">
+              <option value="Top">Top</option>
+              <option value="Bottom">Bottom</option>
+            </select>
+          </td>
+        </tr>
+        <!-- <tr
+          *ngIf="this.lBPCRec.pile_type == 'Double-Layer'">
+          <td><label for="mainbar_length_2layer">2nd Layer Main Bar Length:</label></td>
+          <td><input class="form-control" type='text' id='mainbar_length_2layer' name='mainbar_length_2layer'
+              [(ngModel)]="mainbar_length_2layer"></td>
+          <td><label for="mainbar_location_2layer">2nd Layer Main Bar Location:</label></td>
+          <td><input class="form-control" type='text' id='mainbar_location_2layer' name='mainbar_location_2layer'
+              [(ngModel)]="mainbar_location_2layer"></td>
+        </tr> -->
+        <!-- <tr
+            *ngIf="this.lBPCRec.pile_type == 'Double-Layer'">
+          <td><label for="mainbar_location_2layer">2nd Layer Main Bar Position:</label></td>
+          <td>
+            <select class="form-select" id='mainbar_position_2layer' name='mainbar_position_2layer' [(ngModel)]="mainbar_position_2layer">
+              <option value="Top">Top</option>
+              <option value="Bottom">Bottom</option>
+            </select>
+          </td>
+        </tr> -->
+        <tr
+          *ngIf="showMixed">
+          <td><label for="bundle_same_type">Bundle by Same Type Bars:</label></td>
+          <td>
+            <select class="form-select" id='bundle_same_type' name='bundle_same_type' [(ngModel)]="bundle_same_type">
+              <option value="Y">Y</option>
+              <option value="N">N</option>
+            </select>
+          </td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><label for="cr_link_lapping">CR link lapping:</label></td>
+          <td>
+            <input class="form-control" type='number' id='cr_link_lapping' name='cr_link_lapping' [(ngModel)]="cr_link_lapping">
+          </td>
+          <td><label for="sr_link_lapping">SR link lapping :</label></td>
+          <td>
+            <input class="form-control" type='number' id='sr_link_lapping' name='sr_link_lapping' [(ngModel)]="sr_link_lapping">
+          </td>
+        </tr>
+        <tr *ngIf="showMixedAndDouble">
+          <td><label for="top_link">Top link:</label></td>
+          <td>
+            <input type="text" name="top_link" id="top_link" class="form-control"
+              [(ngModel)]="top_link" />
+          </td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><label for="cr_ring_type">Circular Ring  Type:</label></td>
+          <td>
+            <select class="form-select" id='cr_ring_type' name='cr_ring_type' [(ngModel)]="cr_ring_type">
+              <option value="default">Default Spacing</option>
+              <option value="bundle">Loose Bundle Together</option>
+            </select>
+          </td>
+          <td><label for="cr_bundle_side">Circular Ring Bundle Side :</label></td>
+          <td>
+            <select class="form-select" id='cr_bundle_side' name='cr_bundle_side' [(ngModel)]="cr_bundle_side">
+              <option value="top">Top</option>
+              <option value="end">End</option>
+            </select>
+          </td>
+        </tr>
+
+        <!-- <tr>
+          <td><label for="remarks_text">Remarks:</label></td>
+          <td colspan="3">
+            <textarea
+              class="form-control" name="remarks" id="remarks_text"
+              [(ngModel)]="remarks"
+              maxlength="100"
+              ngbTooltip="Enter your text (max 100 characters)"
+              rows="1"
+              cols="50">
+            </textarea>
+          </td>
+        </tr> -->
+
+        <!-- <tr>
+          <td><label for="">SR Locations</label></td>
+          <td colspan="3">
+
+              <input
+                placeholder="New Location."
+                type="text"
+                class="form-control"
+                [(ngModel)]="templateKeywords"
+              />
+          </td>
+        </tr> -->
+      </table>
+    </div>
+
+  </div>
+
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="dismissModal()">Close</button>
+  <button class="btn btn-primary" (click)="applyData()">Apply</button>
+</div>
+</div>

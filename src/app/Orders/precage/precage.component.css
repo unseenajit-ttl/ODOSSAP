@@ -1,0 +1,150 @@
+fieldset {
+    margin: 5px !important;
+    padding: 0;
+  }
+  
+  .my-custom-scrollbar {
+    max-height: fit-content;
+  }
+  
+  .form-control {
+    width: 160px !important;
+  }
+  
+  #firstBox div div {
+    max-height: 25px !important;
+  }
+  
+  #slideshowButton {
+    padding: 0 !important;
+    border: 1px solid;
+  }
+  
+  .table-bordered thead th,
+  .table-bordered thead td,
+  .table-bordered tbody td {
+    text-align: left;
+  }
+  
+  #body input {
+    max-width: 40px;
+  }
+  
+  #footer {
+    position: sticky;
+    bottom: 0;
+  }
+  
+  #footer input {
+    max-width: 40px;
+  }
+  
+  #secondBox button {
+    min-width: 157px;
+    font-size: x-small;
+    margin-top: 5px;
+    margin: 2px;
+    border: 0;
+    color: black;
+    background-color: #dee2e6de;
+    box-shadow: 0px 1px 4px #ffffff, -1px -3px 2px #ffffff, 0px -1px 0px #ffffff,
+      3px 3px 9px 0px rgb(0 0 0 / 22%);
+    transition: 0.13s ease-in-out;
+    transform: translate3d(0px, -2px, 0px);
+  }
+  
+  
+  #secondBox button:active {
+    box-shadow: none;
+    transform: translate3d(0px, 0px, 0px);
+    /* transition: .13s ease-in-out; */
+  }
+  
+  /* Zebra striping */
+  tr:nth-of-type(even) {
+    background: white !important;
+  }
+  
+  /* Zebra striping */
+  tr:nth-of-type(odd) {
+    background: white !important;
+  }
+
+
+  .container2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Set a fixed width and height for the container if needed */
+    width: 270px;
+    height: 150px;
+  }
+  
+  .container2 img {
+    /* Optional: If you want to limit the size of the image */
+    max-width: 100%;
+    max-height: 100%;
+  }
+  
+/* 
+  .image-gallery {
+    display:flex;
+    flex-wrap: wrap;
+    align-content: space-evenly;
+  } */
+  
+  .image-row {
+    display: flex;
+    justify-content: space-between;
+    flex: 1;
+    border: 1px solid #ccc; /* Add a border to each row */
+    padding: 10px; /* Add padding around each row */
+  }
+  
+  /* .image-box {
+    flex: 1;
+    padding: 10px; /* Add padding around each image box */
+    /* border: 1px solid #ccc; Add a border to each image box */
+  /* } */
+  
+  /* .image-box img {
+    max-width: 100%; /* Ensure images don't exceed their container */
+  /* } */
+   /* */
+   .col-2{
+    max-width: 13%;
+    
+   }
+   .col {
+    text-align: center; /* Center align the content within each column */
+    margin: 0;
+  }
+  
+  .image-box {
+    margin: 0; /* Remove any margin */
+    padding: 0; /* Remove any padding */
+    display: inline-block; /* Display image boxes inline to remove line breaks between them */
+  }
+  
+  img {
+    margin: 0; /* Remove any margin */
+    padding: 0; /* Remove any padding */
+    display: block; /* Remove any default spacing above or below the image */
+    max-width: 150% !important; /* Ensure images don't exceed their container width */
+    height: auto; /* Maintain the aspect ratio of the images */
+  }
+  
+  .image-with-border {
+    border: 2px solid #000; /* You can customize the border style here */
+   padding: 0%;
+
+  }
+  
+  .your-div-class {
+    /* margin-right: -38px; */
+    width: 200% !important; 
+  }
+
+  .selected {
+    background-color:  lightyellow; /* Change the background color to the desired color */
+  }

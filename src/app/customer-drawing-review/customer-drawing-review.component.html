@@ -1,0 +1,451 @@
+<div id="pause" class="d-flex align-items-center justify-content-center" *ngIf="loading">
+  <div id="spinner" class="loader"></div>
+</div>
+<div class="container-fluid">
+  <div class="card m-1">
+    <div class="card-body" style="margin-top: -11px !important">
+      <div class="filter">
+
+        <form [formGroup]="wbsstatusForm">
+          <ngb-accordion #acc="ngbAccordion" title="Filters" activeIds="panel1">
+            <ngb-panel id="panel1" class="pb-5 mb-2 mt-1">
+              <ng-template ngbPanelContent>
+                <div class="row mt-2">
+                  <div class="col-md-2">
+                         <label>Product Type</label> <br>
+                        <ng-select formControlName="producttype" [items]="producttypeList" bindLabel="ProductType"
+                          bindValue="ProductType" class="ng-selectcustomer" (change)="changeHeader()"></ng-select>
+                  </div>
+                  <div class="col-md-2">
+                     <label>Structure Element</label> <br>
+                        <ng-select formControlName="structurelement" [items]="structureList"
+                          bindLabel="StructureElementType" bindValue="StructureElementType" class="ng-selectcustomer"
+                          (change)="changeHeader()"></ng-select>
+
+                  </div>
+                  <div class="col-md-1">
+                      <label for="statusSelect">Status</label>
+                        <ng-select formControlName="status" [items]="statusList" bindLabel="status" bindValue="statusId"
+                          class="ng-selectcustomer" (change)="changeHeader()"></ng-select>
+
+                  </div>
+                  
+                      <div class=" col-md-1 p-2 mt-1" style="margin-left: 7rem;">
+                          <i class="fa fa-refresh" ngbTooltip="Reset"
+                            style="color:#0479d6;font-size:20px;cursor:pointer;margin-left: 8rem;margin-top:1rem"
+                            (click)="onReset()"></i>
+                        </div>
+                        <div class="col-md-3" style="margin-left: 5rem;">
+                                 <label></label> <br>
+                          <div class="input-group flex-nowrap">
+                            <input class="form-control" type="search" placeholder="Search (查找)" id="example-search-input"
+                              name="search" [(ngModel)]="searchText" [ngModelOptions]="{standalone: true}"
+                              (keyup)="searchTable_global()" />
+                            <span class="input-group-append ms-n5">
+                              <span class="input-group-text">
+                                <i class="bi bi-search"></i>
+                              </span>
+                            </span>
+                          </div>
+                          </div>
+                          <div class="col-md-1">
+                                 <label class="form-label"></label> <br />
+                          <div class="input-group flex-nowrap">
+                            <div class="mr-0" style="margin-top: -6px; margin-left: 8rem;">
+                              <span class="btn input-group-text" (click)="editColumn = !editColumn"
+                                (mouseenter)="HoverSetting=true" (mouseleave)="HoverSetting=false">
+                                <i class="material-icons" style="font-size: 20px" ngbTooltip="Setting">settings</i>
+                              </span>
+                            </div>
+                          </div>
+                          </div>
+                 
+
+                </div>
+                <!-- <table class="accord-table" style="border:none"> -->
+                  <!-- <tbody>
+                    <tr class="align-middle"> -->
+                      <!-- <td class="selected-td align-middle" style="border:none">
+                        <label>Product Type</label> <br>
+                        <ng-select formControlName="producttype" [items]="producttypeList" bindLabel="ProductType"
+                          bindValue="ProductType" class="ng-selectcustomer" (change)="changeHeader()"></ng-select>
+                      </td> -->
+
+                      <!-- <td class="selected-td align-middle">
+                        <label>Structure Element</label> <br>
+                        <ng-select formControlName="structurelement" [items]="structureList"
+                          bindLabel="StructureElementType" bindValue="StructureElementType" class="ng-selectcustomer"
+                          (change)="changeHeader()"></ng-select>
+                      </td> -->
+
+                      <!-- <td class="selected-td align-middle">
+                        <label for="statusSelect">Status</label>
+                        <ng-select formControlName="status" [items]="statusList" bindLabel="status" bindValue="statusId"
+                          class="ng-selectcustomer" (change)="changeHeader()"></ng-select>
+                      </td> -->
+
+                      <!-- <td class="align-middle ;mt-4">
+                        <div class="p-2">
+                          <i class="fa fa-refresh" ngbTooltip="Reset"
+                            style="color:#0479d6;font-size:20px;cursor:pointer;margin-left: 8rem;margin-top:1rem"
+                            (click)="onReset()"></i>
+                        </div>
+                      </td> -->
+
+                      <!-- <td style="margin-left: 4rem;">
+                        <div class="col-md-12">
+                          <label></label> <br>
+                          <div class="input-group flex-nowrap">
+                            <input class="form-control" type="search" placeholder="Search" id="example-search-input"
+                              name="search" [(ngModel)]="searchText" [ngModelOptions]="{standalone: true}"
+                              (keyup)="searchTable_global()" />
+                            <span class="input-group-append ms-n5">
+                              <span class="input-group-text">
+                                <i class="bi bi-search"></i>
+                              </span>
+                            </span>
+                          </div>
+                        </div>
+                      </td> -->
+
+
+                      <!-- <td>
+                        <div>
+                          <label class="form-label"></label> <br />
+                          <div class="input-group flex-nowrap">
+                            <div class="mr-0" style="margin-top: -6px; margin-left: 8rem;">
+                              <span class="btn input-group-text" (click)="editColumn = !editColumn"
+                                (mouseenter)="HoverSetting=true" (mouseleave)="HoverSetting=false">
+                                <i class="material-icons" style="font-size: 20px" ngbTooltip="Setting">settings</i>
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </td> -->
+                    <!-- </tr>
+
+
+                  </tbody>
+                </table> -->
+              </ng-template>
+            </ngb-panel>
+          </ngb-accordion>
+        </form>
+
+
+        <div class="row">
+          <div class="col-md-9">
+
+          </div>
+          <br />
+
+        </div>
+        <div class="setting-menu float-right logo2" [class.mat-elevation-z8]="true" *ngIf="editColumn"
+          (mouseenter)="HoverSetting=true" (mouseleave)="HoverSetting=false">
+          <div class="d-flex heading">
+            <div class="d-flex" style="width: 50%; justify-content: space-between">
+              <label class="fixed-xolumn-head">Fixed Columns: </label>
+              <input class="form-control" type="number" max="7" min="0" [(ngModel)]="fixedColumn"
+                (change)="UpdateFixedColumns1(fixedColumn)" />
+            </div>
+            <button type="button" class="btn-close" aria-label="Close" (click)="editColumn = false"></button>
+          </div>
+          <hr style="margin: 10px" />
+          <div class="d-flex" style="
+                          justify-content: space-between;
+                          align-items: flex-end;
+                          padding-left: 5px;
+                        ">
+            <span>Visible Columns</span>
+          </div>
+          <!-- <button class="btn btn-primary btn-sm" type="button" (click)="editColumn=!editColumn" style="height: 28px !important;
+                              width: 28px;
+                              display: flex;
+                              justify-content: space-evenly;">
+                                  <i class="material-icons" style="font-size: small;z-index: 1;"
+                                      ngbTooltip="Edit Column">mode_edit</i>&nbsp;</button> -->
+          <div class="d-flex">
+            <table class="table table-bordered mobile2" style="height: fit-content" style="min-width: 0">
+              <tbody>
+                <tr *ngFor="let headerColumn of splitArray(1,drawingColumns);">
+                  <td>{{headerColumn.displayName}}</td>
+                  <td><input type="checkbox" [(ngModel)]="headerColumn.isVisible" [checked]="headerColumn.isVisible"
+                      (ngModelChange)="SaveColumnsSetting()"></td>
+                </tr>
+              </tbody>
+            </table>
+            <table class="table table-bordered mobile2" style="height: fit-content" style="min-width: 0">
+              <tbody>
+                <tr *ngFor="let headerColumn of splitArray(0,drawingColumns);">
+                  <td>{{headerColumn.displayName}}</td>
+                  <td><input type="checkbox" [(ngModel)]="headerColumn.isVisible" [checked]="headerColumn.isVisible"
+                      (ngModelChange)="SaveColumnsSetting()"></td>
+                </tr>
+              </tbody>
+            </table>
+
+          </div>
+        </div>
+
+        <div class="table-responsive table-wrapper-scroll-y my-custom-scrollbar order-table"
+          style="max-height: 409px; height: 409px;">
+          <cdk-virtual-scroll-viewport itemSize="50" #scrollViewportENT (scroll)="syncScroll($event)"
+            style="height: 53vh;">
+            <form [formGroup]="searchForm">
+              <table class="table  desktop3 new-table">
+                <thead [style.top]="inverseOfENT" id="DraftOrderHeading"
+                  [ngStyle]="{ position: 'sticky', top: '0px', zIndex: 20 }">
+
+                  <tr [style.top]="inverseOfENT" cdkDropList cdkDropListOrientation="horizontal"
+                    [cdkDropListData]="drawingColumns" (cdkDropListDropped)="dropCol($event)">
+                    <th class="search-icon-header col-test-1" style="width: 35px; text-align: left; position: sticky;">
+                      <i class="bi bi-search" style="cursor: pointer;" (click)="toggleFilters = !toggleFilters"></i>
+                    </th>
+                    <ng-container *ngFor="let col of drawingColumns; index as i">
+                      <th #thNomVar *ngIf="col.isVisible" cdkDrag [style.width.px]="col.resizeWidth || col.width"
+                        class="main-header" [style.top]="inverseOfENT" [style.display]="'table-cell'"
+                        [style.left]="(i+1) <= fixedColumn ? getRightWidthTest(thNomVar,i) : 'inherit'"
+                        [class.FixedColumn]="(i + 1) <= fixedColumn"
+                        style="cursor: pointer; background-color: #003ec4b3; border-radius: 0px;" cdkDrag>
+                        <div [style.max-width.px]="col.resizeWidth" role="columnheader">
+                          <div class="d-flex" [style.max-width.px]="col.resizeWidth" style="
+                                                    align-items: left;
+                                                    justify-content: space-between;
+                                                  ">
+                            <span style="color: white; font-size: medium;" [style.max-width.px]="col.resizeWidth">
+                              {{col.displayName}}<br />{{col.chineseDisplayName}}</span><i class="bi bi-arrow-up" *ngIf="
+                                                      !isAscending && currentSortingColumn == col.field"></i><i
+                              class="bi bi-arrow-down" *ngIf="
+                                                      isAscending && currentSortingColumn == col.field"></i>
+                          </div>
+
+
+                        </div>
+                        <div [style.width.px]="col.resizeWidth" *ngIf="isMobile > 768"></div>
+
+                      </th>
+                    </ng-container>
+                  </tr>
+                </thead>
+
+                <thead id="searchBar" *ngIf="toggleFilters" [formGroup]="searchForm" [ngStyle]="{
+                           position: 'sticky',
+                           top: getMinHeightIncoming('DraftOrderHeading') + 'px',
+                             'background-color': 'white',
+                              'z-index': 20
+                          }">
+                  <tr>
+                    <th style="background-color: #003ec4b3;"></th>
+                    <ng-container *ngFor="let searchColumn of drawingColumns; let j = index;">
+                      <th
+                        *ngIf="searchColumn.isVisible && searchColumn.controlName !== 'Required_Date' && searchColumn.controlName !== 'PO_Date'"
+                        class="resize-column" style="text-align: center; background-color: white;"
+                        [style.width]="searchColumn.resizeWidth + 'px'" [class.FixedColumn]="(j + 1) <= fixedColumn"
+                        [style.left]="(j + 1) <= fixedColumn ? searchColumn.left + 'px' : 'auto'">
+                        <input type="text" class="form-control" [placeholder]="searchColumn.placeholder"
+                          [formControlName]="searchColumn.controlName" autocomplete="off" />
+                        <!-- Column Resize Handle -->
+                        <div class="bar" appColumnResize [colName]="searchColumn.controlName" [colIndex]="j"
+                          (widthChangeEvent)="onWidthChange($event)" cdkDrag>
+                        </div>
+                      </th>
+
+                      <th [style.top]="inverseOfENTSearch" class="resize-column"
+                        style="text-align: center; background-color: white !important;"
+                        *ngIf="searchColumn.isVisible && (searchColumn.controlName == 'Required_Date' || searchColumn.controlName == 'PO_Date')">
+                        <app-bootsrtap-date-range-picker-for-search [clearInput]="clearInput"
+                          [controlName]="searchColumn.controlName" [highlightToday]="true"
+                          (dateRangeSelection)="onGetDateSelected($event)">
+                        </app-bootsrtap-date-range-picker-for-search>
+                      </th>
+                    </ng-container>
+                  </tr>
+                </thead>
+
+
+
+
+                <!-- <tbody>
+                    <tr class="no-record" *ngIf="user_list.length == 0">
+                      <td colspan="16" style="text-align: center">
+                        No Record Found
+                      </td>
+                    </tr>
+                    <ng-container *ngFor="
+                      let item of user_list | filter : searchText;
+                      index as i
+                    ">
+
+                      <tr class="draft-table"  [class.selected-draft-table]="item.rowSelected"
+                        [class.shared-draft-table]="item.OrderShared" (click)="changeColor(i)">
+                        <ng-container *ngFor="let showDataColumn of drawingColumns;index as searchIndex;">
+                          <td  [style.width]="showDataColumn.width+ 'px !important'"
+                            [style.left]="(searchIndex+1) <= fixedColumn ? showDataColumn.left+'px !important' : 'inherit'"
+                            [style.display]="'table-cell'" [class.FixedColumn]="(searchIndex+1) <= fixedColumn"
+                            *ngIf="showDataColumn.isVisible"> {{
+                            item[showDataColumn.colName] }}</td>
+                        </ng-container>
+
+                      </tr>
+                    </ng-container>
+                  </tbody> -->
+
+                <tbody>
+                  <tr class="no-record" *ngIf="user_list.length == 0">
+                    <td colspan="16" style="text-align: center">
+                      No Record Found
+                    </td>
+                  </tr>
+                  <ng-container
+                    *ngFor="let tdata of user_list  | filter : searchText | slice:pageSize | slice:0:itemsPerPage;  index as i">
+                    <!-- Main Row -->
+                    <tr class="draft-table" [class.selected-draft-table]="tdata.rowSelected">
+
+                      <td class="expand-cell FixedColumn">
+                        <i *ngIf="!tdata.isExpand" class="bi-chevron-right" (click)="tdata.isExpand = true"
+                          style="color: black;"></i>
+                        <i *ngIf="tdata.isExpand" class="bi-chevron-up" (click)="tdata.isExpand = false"
+                          style="color: black;"></i>
+                      </td>
+                      <!-- Data Columns -->
+                      <ng-container *ngFor="let col of drawingColumns; index as searchIndex">
+                        <td [style.width]="col.resizeWidth+ 'px !important'"
+                          [style.left]="(searchIndex+1) <= fixedColumn ? col.left+'px !important' : 'inherit'"
+                          [ngStyle]="{'left.px': (searchIndex + 1) <= fixedColumn ? col.left : null}"
+                          [class.FixedColumn]="(searchIndex+1) <= fixedColumn" [style.display]="'table-cell'"
+                          *ngIf="col.isVisible && col.colName != 'action' && col.colName != 'tntStatusId'">
+                          {{ tdata[col.colName]}}
+                        </td>
+
+
+                        <!-- <td *ngIf=" col.isVisible && (col.controlName === 'Required_Date'  || col.controlName === 'PO_Date')
+                                 " [style.width.px]="col.width" [ngStyle]="{
+                                  'left.px': (searchIndex + 1) <= fixedColumn ? col.left : null
+                                      }" [class.FixedColumn]="(searchIndex + 1) <= fixedColumn">
+                          {{ tdata[col.colName] | date: 'yyyy/MM/dd' }}
+                        </td> -->
+                        <td *ngIf="col.colName == 'tntStatusId' && col.isVisible">
+                          <span *ngIf="tdata.IsApproved === true" class="text-success">Approved</span>
+                          <span *ngIf="tdata.IsApproved === false" class="text-danger">Rejected</span>
+                          <span *ngIf="tdata.IsApproved == null && tdata.intWBSElementID != 0">Pending</span>
+                          <span *ngIf="tdata.IsApproved == null && tdata.intWBSElementID == 0">Not Submitted</span>
+                        </td>
+
+                        <ng-container *ngIf="col.colName == 'action' && col.isVisible">
+                          <td
+                            *ngIf="tdata.vchSubmitDate != '' && tdata.tntStatusId !== 3 && tdata.tntStatusId !== 12; else blankActionCell">
+                            <!-- Approve Button -->
+                            <i class="bi bi-check" [ngClass]="{'disabled-icon': tdata.IsApproved === true}"
+                              style="color: green; font-size: 22px; cursor: pointer;"
+                              (click)="tdata.IsApproved !== true ? openPopup(true, tdata) : null" ngbTooltip="Approve">
+                            </i>
+
+                            <!-- Reject Button -->
+                            <i class="bi bi-x" [ngClass]="{'disabled-icon': tdata.IsApproved === false}"
+                              style="color: red; font-size: 22px; cursor: pointer;"
+                              (click)="tdata.IsApproved !== false ? openPopup(false, tdata) : null" ngbTooltip="Reject">
+                            </i>
+
+                            <!-- Docs Button -->
+                            <i class="bi bi-paperclip" ngbTooltip="Docs Attached" (click)="openDocument(tdata)"></i>
+                          </td>
+
+                          <!-- ELSE (blank cell) -->
+                          <ng-template #blankActionCell>
+                            <td [style.width.px]="col.width"></td>
+                          </ng-template>
+
+                        </ng-container>
+
+
+                      </ng-container>
+
+
+
+
+
+                    </tr>
+
+                    <!-- Expanded Detail Row -->
+                    <tr *ngIf="tdata.isExpand" class="custom-row">
+                      <td style="border: none;background: none;"></td>
+                      <td style="border: none;background: none;"></td>
+
+                      <td colspan="8">
+                        <div class="expand-content">
+                          <table style="width: 100%;
+                        border-collapse: collapse;
+                        margin-top: 3px;">
+                            <thead>
+                              <tr class="mt-4 .custom-row">
+                                <th>SR</th>
+                                <th>Doc. No.</th>
+                                <th>Revision</th>
+                                <th>File Name</th>
+                                <th>Detailer/Customer Remark</th>
+                                <th>Action</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="let detail of tdata.Drawing_List;index as i">
+                                <td>{{ i+1 }}</td>
+                                <td>{{ detail.DrawingNo }}</td>
+                                <td>{{ detail.Revision }}</td>
+                                <td>{{ detail.FileName }}</td>
+                                <td>{{ detail.Remarks }}</td>
+                                <td><i class="bi bi-eye"
+                                    (click)="ViewDocument(tdata,i);UpdateDrawingStatus(tdata.intWBSElementID,tdata.DrawingStatus)"></i>
+                                  &nbsp; &nbsp;
+                                  <i class="bi bi-download"
+                                    (click)="Download_Selected(tdata,i);UpdateDrawingStatus(tdata.intWBSElementID,tdata.DrawingStatus)"></i>&nbsp;
+                                  &nbsp;
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </td>
+                    </tr>
+                  </ng-container>
+                </tbody>
+
+
+
+
+              </table>
+            </form>
+          </cdk-virtual-scroll-viewport>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="d-flex mt-2">
+              <ngb-pagination [collectionSize]="user_list.length" [(page)]="currentPage" [pageSize]="itemsPerPage"
+                (pageChange)="onPageChange(currentPage)" [boundaryLinks]="false" [maxSize]="maxSize"
+                *ngIf="searchResult">
+                <ng-template ngbPaginationPrevious>Prev</ng-template>
+                <ng-template ngbPaginationNext>Next</ng-template>
+              </ngb-pagination>
+
+              <select class="custom-select mr-2 ml-3" style="width: auto" [(ngModel)]="itemsPerPage"
+                (ngModelChange)="OnPageSizeChange(itemsPerPage);">
+                <option [ngValue]="5">5 </option>
+                <option [ngValue]="10">10 </option>
+                <option [ngValue]="20">20 </option>
+                <option [ngValue]="50">50 </option>
+                <option [ngValue]="100">100 </option>
+              </select>
+              <span style="margin-top: 5px;">Items per page</span>
+            </div>
+          </div>
+          <div class="col-md-6 d-flex justify-content-end">
+            <button class="btn btn-primary btn-sm" (click)="drawingReport()">
+              Report <i class="bi bi-file-earmark-arrow-up" ngbTooltip="Drawing Status Report"></i>
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

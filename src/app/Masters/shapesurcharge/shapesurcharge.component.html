@@ -1,0 +1,241 @@
+
+   
+<div   class="container-fluid">
+    <div class="card m-1">
+        <div class="card-body" style="margin-top:-11px !important;">
+
+            <div class="row">
+                <div class="col-md-8">
+                    <button class="btn btn-md btn-outline-primary" ngbTooltip="Add Shape Surcharge"
+                        tooltipClass="my-custom-class" type="button" (click)="Createshapesurcharge()"><i
+                            class="fa fa-plus"></i></button>
+
+                </div>
+                <div class="col-md-4 float-right">
+
+                    <div class="input-group flex-nowrap ">
+                        <input class="form-control" type="search" placeholder="Search " value="search" style="width: 76px;
+                                            height: 30px;
+                                            margin-top: 2px;" id="example-search-input" name="search"
+                            [(ngModel)]="searchText" (keyup)="filterData2()" [ngModelOptions]="{standalone: true}">
+                        <span class="input-group-append  ms-n5">
+                            <span class="input-group-text ">
+                                <i class="fa fa-refresh" ngbTooltip="Reset search"
+                                    style=" color:#0479d6;font-size:20px;width:10px" *ngIf="searchText != ''"
+                                    (click)="Reset_search()"></i>
+
+                                <i class="bi bi-search" (click)="onPagesizeChangeForCol()"></i>
+
+                            </span>
+
+                        </span>
+
+                        <span class="refresh" style="position: relative;right: 64px;top: 5px;">
+                        </span>
+                        <div class="ml-4 mr-3">
+                            <span class="input-group-text ">
+                                <i class="material-icons" style="font-size:20px;" ngbTooltip="Download Excel"
+                                    (click)="download()">download</i>
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+            <div class=" table-responsive table-wrapper table-bordered" style="min-height: 250px;">
+
+                <table class="table m-auto   d-table table-responsive   table-bordered " [cellPadding]="0"
+                    [cellPadding]="5">
+                    <thead>
+                        <tr>
+                            <th><i class="bi bi-search" (click)="searchForcolumn();
+                                "></i>
+                            </th>
+
+                            <th>Shape Code </th>
+                            <th>BAR Dia </th>
+                            <th>Invoice Length </th>
+                            <th>Surcharge </th>
+                            <th>Dia Condition </th>
+                            <th>User ID </th>
+                            <th>Date </th>
+                            <!-- <th>Status </th> -->
+                            <th class="text-center" style="width:150px;">Actions</th>
+                        </tr>
+                    </thead>
+                    <thead *ngIf="toggleFilters">
+                       
+                    </thead>
+                    <tbody>
+                        <tr *ngIf="toggleFilters">
+                            <th></th>
+                            <th>
+                                <ng-select  [selectOnTab]="true"  [(ngModel)]="searchShapeCode" (change)="filterData()"
+                                    class="ng-selectcustomer" style="width:100px">
+                                    <ng-option *ngFor="let sList of ShapecodeList" [value]="sList.ShapeCode" style="font-family:Verdana">
+                                        {{sList.ShapeCode}}
+                                    </ng-option>
+                                </ng-select>
+                            </th>
+                            <th>
+                                <ng-select  [selectOnTab]="true"  [(ngModel)]="searchBarDia" (change)="filterData()" style="width: 80px;" class="ng-selectcustomer">
+                                    <ng-option *ngFor="let sList of bardialist" [value]="sList.item_id">
+                                        {{sList.item_text}}
+                                    </ng-option>
+                                </ng-select>
+                            </th>
+                            <th><input class="form-control" type="text" id="searchTo" placeholder="Invoice"
+                                    (keyup)="filterData()" [(ngModel)]='searchInvoice' /></th>
+                            <th><input class="form-control" type="text" id="searchPart" placeholder="Surcharge"
+                                    (keyup)="filterData()" [(ngModel)]='searchSurcharge' />
+                            </th>
+                            <th>
+                                    <ng-select  [selectOnTab]="true"   [(ngModel)]="searchDiacondi" (change)="filterData()"
+                                    style=" height: auto; width: 120px;" class="ng-selectcustomer">
+                                    
+                                    <!-- <ng-option hidden value="" disabled selected>
+                                        Select one category
+                                    </ng-option> -->
+                                    <ng-option *ngFor="let sList of diaconditionList" [value]="sList.item_id">
+                                        {{sList.item_text}}
+                                    </ng-option>
+                                </ng-select>
+                                </th>
+                            <th><input class="form-control" type="text" id="searchPart" placeholder="User ID"
+                                    (keyup)="filterData()" [(ngModel)]='searchUserId' />
+                            </th>
+                            <th><input class="form-control" type="text" id="searchStructure" placeholder="Date"
+                                    (keyup)="filterData()" [(ngModel)]='searchDate' /></th>
+                            <th>
+                                <span style="margin:auto; padding:2px">
+                                    <i class="fa fa-refresh" ngbTooltip="Reset" style=" color:red;font-size:20px;position: relative;left: 35px;"
+                                        (click)="Reset_col()"></i>
+
+                                        
+                                </span>
+
+                            </th>
+
+                        </tr>
+                        <tr
+                            *ngFor="let item of shapesurchargeList  | slice: pageSize | slice: 0:itemsPerPage ; index as i ">
+
+                            <ng-container *ngIf="enableEditIndex != i">
+                                <td>
+                                    
+                                </td>
+                                <td>{{item.ShapeCode}} </td>
+                                <td>{{item.Bar_Dia}} </td>
+                                <td>{{item.Invoice_Length}} </td>
+                                <td>{{item.Surcharge}} </td>
+                                <td>{{item.Dia_Condition}} </td>
+                                <td>{{item.User_Id}} </td>
+                                <td>{{item.Updated_Date}} </td>
+
+                                <!-- <td *ngIf="item.status==true" style="color: rgb(105, 218, 82);">Active</td>
+                                <td *ngIf="item.status==false" style="color: red">Inactive</td> -->
+
+                                <td class="text-center" style="width:150px;">
+                                    <i class="material-icons" ngbTooltip="Edit"
+                                        (click)="onEdit(item,i)">mode_edit</i>&nbsp;
+
+                                    <i class="bi bi-trash" ngbTooltip="Delete" (click)="delete(item.ID,i)"></i>
+                                </td>
+                            </ng-container>
+                            <ng-container *ngIf="enableEditIndex == i">
+                                <td></td>
+                                <td>
+                                    {{item.ShapeCode}}
+
+                                </td>
+                                <td>
+                                    <!-- <input class="form-control" [(ngModel)]="item.bardia" style=" height: auto;" /> -->
+                                    <ng-select  [selectOnTab]="true"  [(ngModel)]="item.Bar_Dia" (change)="item.Bar_Dia=$event;changeShapecode(item.Bar_Dia)">
+                                        <ng-option *ngFor="let sList of bardialist" [value]="sList.item_id">
+                                            {{sList.item_text}}
+                                        </ng-option>
+                                    </ng-select>
+                                    <div class="text-danger edit-label" *ngIf=" item.Bar_Dia == undefined">*Bar Dia Required. </div>
+
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control" [(ngModel)]="item.Invoice_Length" (change)="changeInvoiceLen(item.Invoice_Length)"
+                                        style=" height: auto;" />
+                                        
+                                        <div class="text-danger edit-label" style="width: 150px;" *ngIf=" item.Invoice_Length == undefined">*Invoice Length Required. </div>
+
+                                </td>
+                                <td>
+                                    <ng-select  [selectOnTab]="true"  [(ngModel)]="item.Surcharge" (change)="item.Surcharge=$event;changeSurcharge(item.Surcharge)"
+                                        style="height: auto;">
+                                        <ng-option *ngFor="let sList of surchargeList" [value]="sList.Surcharge">
+                                            {{sList.Surcharge}}
+                                        </ng-option>
+                                    </ng-select>
+                                    <div class="text-danger edit-label" *ngIf=" item.Surcharge == undefined">*Surcharge Required. </div>
+
+                                </td>
+                                <td>
+                                    <ng-select  [selectOnTab]="true"  [(ngModel)]="item.Dia_Condition" (change)="item.Dia_Condition=$event;changeDiacondition(item.Dia_Condition)"
+
+                                        style=" height: auto;">
+                                        <ng-option *ngFor="let sList of diaconditionList" [value]="sList.item_id">
+                                            {{sList.item_text}}
+                                        </ng-option>
+                                    </ng-select>
+                                    <div class="text-danger edit-label" style="width: 150px;" *ngIf=" item.Dia_Condition == undefined">*Dia Condition Required. </div>
+
+                                </td>
+                                <td>{{item.User_Id}} </td>
+                                <td>{{item.Updated_Date}} </td>
+                                <!-- <td>
+                                    <ng-select  [selectOnTab]="true"  [(ngModel)]="item.status" (change)="item.status=$event"
+                                        style=" width: 100px; height: auto;">
+                                        <ng-option *ngFor="let sList of statuslist" [value]="sList.item_id">
+                                            {{sList.item_text}}
+                                        </ng-option>
+                                    </ng-select>
+                                </td> -->
+                                <td class="text-center" style="width:200px;">
+                                    <i class="material-icons" (click)="Update(item,i)" ngbTooltip="Update">save</i>
+                                    &nbsp;
+                                    <i class="material-icons" (click)="Editcancel(item,i)" ngbTooltip="Cancel">cancel</i>
+                                </td>
+                            </ng-container>
+                        </tr>
+
+
+
+
+                    </tbody>
+                </table>
+                <div class="d-flex mt-2">
+                    <div class="d-flex mt-2 ">
+                        <ngb-pagination [collectionSize]="TotalNumberofRecord" [pageSize]="itemsPerPage"
+                            [(page)]="currentPage" (pageChange)="onPageChange(currentPage)" [boundaryLinks]="true"
+                            [maxSize]="maxSize">
+                            <ng-template ngbPaginationPrevious>Prev</ng-template>
+                            <ng-template ngbPaginationNext>Next</ng-template>
+                        </ngb-pagination>
+
+                        <div>
+                            <select class="custom-select mr-2 ml-3" style="width: auto" [(ngModel)]="itemsPerPage"
+                                (ngModelChange)="OnPageSizeChange(itemsPerPage);">
+                                <option [ngValue]="5">5 </option>
+                                <option [ngValue]="10">10 </option>
+                                <option [ngValue]="20">20 </option>
+                                <option [ngValue]="50">50 </option>
+                                <option [ngValue]="100">100 </option>
+                            </select>
+                            <span>Items per page</span>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,79 @@
+fieldset {
+  margin: 5px !important;
+  padding: 9px;
+}
+
+table th,
+table td {
+  font-size: 11px;
+}
+
+.my-custom-scrollbar {
+  max-height: fit-content;
+}
+
+.form-control {
+  width: 160px !important;
+}
+
+#firstBox div div {
+  max-height: 25px !important;
+}
+
+#slideshowButton {
+  padding: 0 !important;
+  border: 1px solid #00000047;
+}
+
+.table-bordered thead th,
+.table-bordered thead td,
+.table-bordered tbody td {
+  text-align: left;
+}
+
+#body input {
+  max-width: 40px;
+  padding: 0px;
+}
+
+#footer {
+  position: sticky;
+  bottom: 0;
+}
+
+#footer input {
+  max-width: 40px;
+  padding: 0px;
+}
+#footer tr {
+  background-color: #eeeeee !important;
+}
+
+#secondBox button {
+  min-width: 157px;
+  font-size: x-small;
+  margin: 2px;
+  border: 0;
+  color: white;
+  background-color: #003ec4e8;
+  box-shadow: 0px 1px 4px #ffffff, -1px -3px 2px #ffffff, 0px -1px 0px #ffffff,
+    3px 3px 9px 0px rgb(0 0 0 / 22%);
+  transition: 0.13s ease-in-out;
+  transform: translate3d(0px, -2px, 0px);
+}
+
+#secondBox button:active {
+  box-shadow: none;
+  transform: translate3d(0px, 0px, 0px);
+  /* transition: .13s ease-in-out; */
+}
+
+/* Zebra striping */
+tr:nth-of-type(even) {
+  background: white !important;
+}
+
+/* Zebra striping */
+tr:nth-of-type(odd) {
+  background: white !important;
+}

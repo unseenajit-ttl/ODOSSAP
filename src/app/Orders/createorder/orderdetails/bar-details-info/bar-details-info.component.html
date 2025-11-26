@@ -1,0 +1,57 @@
+<div class="container-fluid" cdkDrag cdkDragRootElement=".your-custom-dialog-class">
+    <div class="Header" cdkDragHandle>
+        <span>Bar Details Information</span>
+        <button type="button" class="btn-close" aria-label="Close"
+            (click)="activeModal.dismiss('Cross click')"></button>
+    </div>
+    <div>
+        <div class="subHeading">
+            <span>Keyboard Shortcut for BBS Editing</span>
+        </div>
+        <div class="table-responsive table-wrapper-scroll-y my-custom-scrollbar">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>S/No</th>
+                        <th>Keyboard Shortcut</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Tab</td>
+                        <td>Next editable field</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Shift+Tab</td>
+                        <td>Previous editable field</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Enter</td>
+                        <td>
+                            Next editable field, but stop at shape code if shape code is blank
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>Down arrow</td>
+                        <td>Next line (Down) editable field</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>Up arrow</td>
+                        <td>Previous line (Up) editable field</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary me-2" (click)="Cancel()">Cancel</button>
+    </div>
+
+
+</div>

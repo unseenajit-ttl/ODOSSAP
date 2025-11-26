@@ -1,0 +1,22 @@
+.mainHeading {
+  font-size: x-large;
+  font-weight: 500;
+  padding: 10px 0;
+  background: #d8dcdf;
+}
+.body div {
+  display: flex;
+  padding: 10px;
+  font-size: large;
+  align-items: center;
+  justify-content: center;
+}
+.footer {
+  padding: 10px;
+  display: flex;
+  justify-content: flex-end;
+  background: inherit;
+}
+.container-fluid {
+  padding: 0px;
+}

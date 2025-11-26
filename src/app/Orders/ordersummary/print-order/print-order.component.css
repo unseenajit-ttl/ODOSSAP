@@ -1,0 +1,13 @@
+.container-fluid {
+  padding: 0;
+}
+
+#mainheading {
+  background: #dfdfdf;
+}
+
+.printbutton {
+  width: 50%;
+  border: 1px solid #003ec4;
+  color: #003ec4;
+}

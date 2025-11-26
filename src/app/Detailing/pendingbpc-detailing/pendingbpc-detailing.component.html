@@ -1,0 +1,282 @@
+<div class="container-fluid">
+    <div class="card m-1">
+      <h3 class="card-header d-flex flex-column justify-content-center" style="margin: 0 0 0px !important;">
+        <span> <img src="../../../assets/imagesuiux/review.png" style="width: 30px;height: 30px;">
+          <b> Pending BPC</b>
+        </span>
+      </h3>
+
+          <!-- SETTINGS BUTTON START -->
+      <div class="d-flex" style="justify-content: flex-end;height: 40px;">
+        <!-- <div id="buttons" style="text-align: end;height: 38px;box-sizing: border-box;padding: 11px;">
+          <input type="checkbox" [(ngModel)]="ForeCast" (ngModelChange)="ChangeForeCast()">&nbsp;
+          <label>Forecast</label>
+        </div> -->
+        <button id="PendingENTMenuSettings" *ngIf="CurrentTab == 'CREATING'" class="btn settings-menu" (click)="
+              scrollToTop();
+              togglePendingENTSettingMenu = !togglePendingENTSettingMenu
+            " [matTooltip]="'Setting'" matTooltipPosition="above" (mouseenter)="HoverSetting=true"
+          (mouseleave)="HoverSetting=false">
+          <i class="bi bi-gear-fill" style="display: flex;"></i>
+        </button>
+      
+       
+        <!-- <button class="btn collapse-menu" (click)="CopyData()" [matTooltip]="'Copy'" matTooltipPosition="above"  [matTooltipDisabled]="true" >
+
+          <i class="bi bi-clipboard" style="display: flex;"></i>
+        </button> -->
+      </div>
+      <!-- SETTINGS MENU START -->
+      <div id="Pending-ENT-Settings-Menu" class="settingsMenu" [class.mat-elevation-z8]="true"
+        *ngIf="togglePendingENTSettingMenu" (mouseenter)="HoverSetting=true" (mouseleave)="HoverSetting=false">
+        <div style="
+            display: flex;
+            justify-content: space-between;
+            font-size: 20px;
+            font-weight: 500;
+          ">
+          <span>Custom Menus</span>
+          <span><i class="bi bi-x-circle" (click)="togglePendingENTSettingMenu = false;"></i></span>
+        </div>
+        <div>
+          <table class="table">
+            <tr>
+              <button class="border-less-btn" (click)="Update('Management')">Update PM Remarks to Selected Rows</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="Update('Technical')">Update Tech Remarks to Selected
+                Rows</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="Update('Project')">Change Project In-charge</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="Update('Detailling')">Change Detailing In-Charge</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="openPopup('pendingEnt')">Frozen Columns</button>
+            </tr>
+          </table>
+        </div>
+        <div>
+          <table class="table">
+            <tr>
+              <button class="border-less-btn" (click)="reset()">Clear Filters</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="toggleFilter = !toggleFilter">Toggle Filter Row</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="exportToExcel('CREATING')">Export to Excel</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="ChangeSelectionModel()">Change Selection Model</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="HideRows(PendingBpc, selectedRow, 'PendingBpc')">Hide Selected
+                Rows</button>
+            </tr>
+            <tr [style.background-color]="RowsHidden ? '': '#ededed'">
+              <button class="border-less-btn" (click)="UnHideRows()">Unhide</button>
+            </tr>
+          </table>
+        </div>
+        <div style="font-size: 20px; font-weight: 500">
+          <span>Columns</span>
+        </div>
+        <div class="d-flex">
+          <table class="table">
+            <tr *ngFor="let headerColumn of splitArray(1,pendingBpcCols);">
+              <input type="checkbox" [(ngModel)]="headerColumn.isVisible" (ngModelChange)="columnHidden('PendingBpc')"
+                [checked]="headerColumn.isVisible">&nbsp;
+              <span>{{headerColumn.displayName}}</span>
+            </tr>
+          </table>
+          <table class="table">
+            <tr *ngFor="let headerColumn of splitArray(0,pendingBpcCols);">
+              <input type="checkbox" [(ngModel)]="headerColumn.isVisible" (ngModelChange)="columnHidden('PendingBpc')"
+                [checked]="headerColumn.isVisible">&nbsp;
+              <span>{{headerColumn.displayName}}</span>
+            </tr>
+          </table>
+
+        </div>
+      </div>
+
+             <!-- Loader -->
+             <div *ngIf="ProcessOrderLoading" style="z-index: 500;opacity:1">
+             <div id="pause" class="d-flex align-items-center justify-content-center">
+               <div id="spinner" class="loader"></div>
+             </div>
+           </div>
+        <table class="table">
+            <div id="tab">
+                <div class="row MobileView">
+                    <div class="col-md-12">
+                        <div heading="Pending BPC" style="background: #fff">
+                            <div class="row">
+                              <div #tableContainer
+                                class="table-responsive table-responsive-custom  min-height col-md-12">
+                                <cdk-virtual-scroll-viewport id="view-port" [itemSize]="itemSize" #scrollViewportBPC (scroll)="syncScroll($event)"
+                                  [style.height]="'65vh'">
+            
+                                  <form [formGroup]="PendingBpcTableSearch">
+                                    <table class="table table-bordered new-table">
+                                      <thead [style.top]="inverseOfBPC" id="PendingBPCHeading" class="tableHeading"
+                                        [ngStyle]="{'display':'sticky','top': '0px'}">
+                                        <tr id="heading-cell" [style.top]="inverseOfBPC" cdkDropList cdkDropListOrientation="horizontal"
+                                          [cdkDropListData]="pendingBpcCols" (cdkDropListDropped)="dropBPCCol($event)"
+                                          style="font-size: large;">
+          
+                                          <th [style.top]="inverseOfBPC" [class.FixedColumn]="pendingBpcFixedColumn != 0"
+                                            [style.width]="'50px !important'" (click)="toggleSortingOrderForBPC('sno','sno')">
+                                            S/No.</th>
+                                          <ng-container *ngFor="let bpcColumnh1 of pendingBpcCols;index as headIndex;">
+                                            <th [style.top]="inverseOfBPC" #thNomVar
+                                              (click)="toggleSortingOrderForBPC(bpcColumnh1.field,bpcColumnh1.colName)"
+                                              [style.left]="(headIndex+1) < pendingBpcFixedColumn ? getRightWidthTest(thNomVar,headIndex,'PendingBpc') : 'inherit'"
+                                              [style.display]="'table-cell'" [style.width]="bpcColumnh1.width+ 'px !important'"
+                                              [class.FixedColumn]="(headIndex+1) < pendingBpcFixedColumn"
+                                              *ngIf="bpcColumnh1.isVisible && bpcColumnh1.colName != 'linkTo'"
+                                              style="cursor: pointer;" cdkDrag [matTooltip]="bpcColumnh1.displayName"
+                                              matTooltipPosition="above" [matTooltipDisabled]="true">
+                                              <div [style.width]="bpcColumnh1.width+ 'px !important'" role="columnheader"
+                                                *ngIf="showOrderNo">
+                                                <div [style.width]="bpcColumnh1.width+ 'px !important'" class="d-flex"
+                                                  style="align-items: center;">
+                                                  <span [style.width]="bpcColumnh1.width+ 'px !important'">
+                                                    {{bpcColumnh1.displayName}}</span><i class="bi bi-arrow-up"
+                                                    *ngIf="!isAscending&&currentSortingColumn==bpcColumnh1.field"></i><i
+                                                    class="bi bi-arrow-down"
+                                                    *ngIf="isAscending&&currentSortingColumn==bpcColumnh1.field"></i>
+                                                </div>
+                                              </div>
+                                              <div [style.width.px]="bpcColumnh1.resizeWidth"></div>
+                                            </th>
+                                            <th [style.top]="inverseOfBPC" style="text-align: center;"
+                                              [style.width]="bpcColumnh1.width"
+                                              *ngIf="bpcColumnh1.isVisible && bpcColumnh1.colName == 'linkTo'"
+                                              style="cursor: pointer;" cdkDrag>{{bpcColumnh1.displayName}}</th>
+                                          </ng-container>
+                                         
+                                        </tr>
+                                      </thead>
+                                      <thead [style.top]="inverseOfBpcSearch" class="search-head" *ngIf="toggleFilter"
+                                        [ngStyle]="{'display':'sticky','top.px': getMinHeightIncoming('PendingBPCHeading'),'position':'sticky'}">
+                                        <tr [style.top]="inverseOfBpcSearch">
+                                          <th [style.top]="inverseOfBpcSearch" [class.FixedColumn]="pendingBpcFixedColumn != 0"
+                                            [style.width]="'50px !important'">
+    
+                                            <span style="margin: auto; padding: 2px">
+                                              <i class="fa fa-refresh" ngbTooltip="Reset" style="color: red; font-size: 20px"
+                                              (click)="reset()"></i>
+                                            </span>
+                                          </th>
+                                          <ng-container *ngFor="let bpcColumnh2 of pendingBpcCols;let j = index;">
+                                            <th [style.top]="inverseOfBpcSearch" #thInputVar
+                                              [style.width]="bpcColumnh2.width+ 'px !important'"
+                                              [style.display]="'table-cell'" [class.FixedColumn]="(j+1) < pendingBpcFixedColumn"
+                                              *ngIf="bpcColumnh2.isVisible">
+                                              <input class="form-control" formControlName="{{bpcColumnh2.controlName}}"
+                                                *ngIf="bpcColumnh2.colName != 'linkTo'" />
+                                              <div class="bar" appColumnResize [colName]="'PendingBpc'" [colIndex]="j"
+                                                (widthChangeEvent)="onWidthChange($event)" cdkDrag></div>
+                                            </th>
+                                          </ng-container>
+                                          <!-- <th style="text-align: center;width:30px;" *ngIf="
+                                            PendingEntTableColumnToggle.controls.LinkTo.value
+                                          ">
+                                        </th> -->
+                                          <!-- <th style="text-align: left;">Docs Attached</th>
+                                                      <th style="text-align: left;">Product Details</th> -->
+                                        </tr>
+                                      </thead>
+                                    
+                                      <tbody (click)="setCopyFlag(true, $event)">
+                                        <ng-container *cdkVirtualFor="
+                                                              let item of PendingBpc | filter : searchText;
+                                                              index as i">
+                                          <tr id="ProcessTableRows" (click)="selectRow(item,PendingBpc, $event); scrollToTop()"
+                                            [style.background-color]="item.isSelected ? 'beige' : setRowColor(item)">
+                                            <td [class.FixedColumn]="pendingBpcFixedColumn != 0" [style.width.px]="item.width"
+                                              [style.background-color]="(CheckCellSelection_id(item)) ? 'beige' : setRowColor(item)">
+                                              {{ item.sno }}</td>
+                                            <ng-container *ngFor="let column of pendingBpcCols;index as footerIndex;">
+                                              <td #tdDataVar *ngIf="column.isVisible"
+                                                (click)="selectCell(column,pendingBpcCols, item, PendingBpc, $event)"
+                                                [style.background-color]="(CheckCellSelection(item, column)) ? 'beige' : setRowColor(item)"
+                                                [style.left]="(footerIndex+1) < pendingBpcFixedColumn ? getLeftOfTable('pendingBpc',footerIndex) : 'inherit'"
+                                                [style.display]="'table-cell'" [style.width]="column.width+ 'px !important'"
+                                                [class.FixedColumn]="(footerIndex+1) < pendingBpcFixedColumn">
+                                                <div class="text-overlap" [ngStyle]="isMobile > 768 ? { width: column.width + 'px' } : { width: 'auto' }"
+                                                  *ngIf="column.colName=='PODate' || column.colName=='OrigReqDate' || column.colName=='RequiredDate' || column.colName=='ForecastDate' || column.colName=='LastDeliveryDate'; else elseBlock2">
+                                                  {{ getFormattedDate(item[column.colName]) }}
+                                                </div>
+                                                <ng-template #elseBlock2>
+                                                  <div class="text-overlap" [ngStyle]="isMobile > 768 ? { width: column.width + 'px' } : { width: 'auto' }">
+                                                    <div
+                                                      [ngClass]="{'NumberColor':(item.AttachedNo!=0 && item.AttachedNo!= '' && item.AttachedNo!=undefined)}"
+                                                      *ngIf="column.colName == 'AttachedNo'; else elseBlock3"
+                                                      (click)="OpenAttachments(item,$event)">
+                                                      {{ (item.AttachedNo==0) ? '' : item.AttachedNo }}
+                                                    </div>
+                                                  </div>
+                                                  <ng-template #elseBlock3>
+                                                    <div class="text-overlap" [ngStyle]="isMobile > 768 ? { width: column.width + 'px' } : { width: 'auto' }"
+                                                      *ngIf="column.colName == 'CustomerName'; else elseBlock4">
+                                                      {{ item.CustomerName }} ({{ item.CustomerCode }})
+                                                    </div>
+                                                    <ng-template #elseBlock4>
+                                                      <div class="text-overlap" [ngStyle]="isMobile > 768 ? { width: column.width + 'px' } : { width: 'auto' }"
+                                                        *ngIf="column.colName == 'ProjectTitle'; else elseBlock5">
+                                                        {{ item.ProjectTitle }} ({{ item.ProjectCode }})
+                                                      </div>
+                                                      <ng-template #elseBlock5>
+                                                        <div *ngIf="column.colName == 'linkTo'; else elseBlock6">
+                                                          <span>
+                                                            <!-- ROUTE BUTTON -->
+                                                            <i class="bi bi-pencil-square"   (click)="RouteToProductDetails(item)"
+                                                              matTooltip="Product Details"></i>
+                                                          </span>
+                                                        </div>
+                                                        <ng-template #elseBlock6>
+                                                          <div class="text-overlap" [ngStyle]="isMobile > 768 ? { width: column.width + 'px' } : { width: 'auto' }">
+                                                            {{ item[column.colName] }}
+                                                          </div>
+                                                        </ng-template>
+                                                      </ng-template>
+                                                    </ng-template>
+                                                  </ng-template>
+                                                </ng-template>
+                                              </td>
+                                            </ng-container>
+                                          </tr>
+                                        </ng-container>
+                                      </tbody>
+                                    </table>
+                                  </form>
+                                </cdk-virtual-scroll-viewport>
+                              </div>
+                            </div>
+                          
+                          </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </table>
+
+    </div>
+
+    <div class="popup-overlay" *ngIf="this.showPopup">
+      <div class="popup-content" (click)="$event.stopPropagation()">
+        <h2>Frozen Column</h2>
+        <input class="form-control" [(ngModel)]="pendingBpcFixedColumn" type="number" name="pendingEntFixedColumn"
+          placeholder="Enter value">
+       
+        <button class="btn btn-secondary btn-sm" (click)="closePopup()">Close</button>
+      </div>
+    </div>
+</div>

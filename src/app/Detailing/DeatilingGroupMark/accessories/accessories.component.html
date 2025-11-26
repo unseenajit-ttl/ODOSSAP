@@ -1,0 +1,157 @@
+<div class="card-body table-responsive">
+  <!-- IMAGE TABLE START -->
+  <div *ngIf="loading" style="z-index: 500">
+
+    <div id="pause" class="d-flex align-items-center justify-content-center">
+
+        <div id="spinner" class="loader"></div>
+
+    </div>
+
+</div>
+
+
+<div class="row " style="padding: 0;">
+    <div class="d-flex table-responsive table-bordered" style="padding: 0; margin:0">
+        <table class="table  table-responsive table-bordered">
+            <thead>
+                <tr>
+                    <th>Acc Marking</th>
+                    <th>Product Code</th>
+                    <th>Qty</th>
+                    <th>SAP Material</th>
+                    <th>Length</th>
+                    <th>Unit weight</th>
+                    <th>UOM</th>
+                    <th>Invoice</th>
+                    <th *ngIf="strIsReadOnly==='NO'">Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <ng-container *ngFor="let item of accessories_list; index as i" >
+                <tr [style.background]="item.isExpand?'#8bcce8':'inherit'" *ngIf="enableEditIndex !== i" (dbclick)="onEdit(item,i)">
+                    <td>{{item.AccProductMarkingName}}</td>
+                    <td>{{item.ProductCodeName}}</td>
+                    <td>{{item.OrderQty}}</td>
+                    <td>{{item.SAPMaterialCode}}</td>
+                    <td>{{item.Length}}</td>
+                    <td>{{item.UnitWeight}}</td>
+                    <td>{{item.UOM}}</td>
+                    <td>{{item.InvoiceWeight}}</td>
+                        <td *ngIf="strIsReadOnly==='NO'">
+                            <i class="material-icons" ngbTooltip="Edit"(click)="onEdit(item,i)"
+                                >mode_edit</i>
+                            <i class="bi bi-trash" ngbTooltip="Delete" style="color:red; font-size:22px" (click)="deleteACS(item)"></i>
+                        </td>
+                </tr>
+                <tr *ngIf="enableEditIndex === i">
+                    <td>
+                        <input class="form-control" [(ngModel)]="item.AccProductMarkingName"
+                         style="text-align: center;">
+                         <span class="text-danger validator-message"
+                         *ngIf="isupdateRecord &&  (item.AccProductMarkingName=='')">*
+                         Acc Name Required. </span>
+                    </td>
+                    <td>
+                        <ng-select  [selectOnTab]="true"  class="ng-selectcustomer" appendTo="body"
+                        [(ngModel)]="item.CABProductMarkID" 
+                        (keyup)="Load_AcsproductCodeDropdown($event.target)" (change)="GetSapmaterialDataEdit(item)" 
+                        style="width:120px;">                       
+                        <ng-option *ngFor="let sList of Slabproductcode_dropdown"
+                            [value]="sList.ProductCodeId ">
+                            {{sList.ProductCodeName}}
+                        </ng-option>
+                    </ng-select>
+
+                    <span class="text-danger validator-message"
+                    *ngIf="isupdateRecord &&  (item.CABProductMarkID=='')">*
+                    Product Code Required. </span>
+                    </td>
+                    <td><input class="form-control" [(ngModel)]="item.OrderQty"  (keyup)="CalculateInvoiceEdit(item)" style="text-align: center;">
+                        <span class="text-danger validator-message"
+                        *ngIf="isupdateRecord &&  (item.OrderQty=='')">*
+                        Qty Required. </span>
+                    </td>
+                    <td>{{item.SAPMaterialCode}}</td>
+                    <td>
+                        <input class="form-control" [(ngModel)]="item.Length" (keyup)="CalculateInvoiceEdit(item)"
+                          style="text-align: center;">
+                        <span class="text-danger validator-message"
+                        *ngIf="isupdateRecord &&  (item.Length==='')">*
+                        Length Required. </span>
+                    </td>
+                    <td>{{item.UnitWeight}}</td>
+                    <td>{{item.UOM}}</td>
+                    <td>{{item.InvoiceWeight}}</td>
+                        
+                            <td class="text-center" style="width:200px;">
+                                <i class="material-icons" (click)="Update(item,i)" ngbTooltip="Update">save</i>
+                                &nbsp;
+                                <i class="material-icons" (click)="Editcancel(item,i)" ngbTooltip="Cancel">cancel</i>
+                            </td>
+                        
+                </tr>
+                
+            </ng-container>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td>
+                        <input #strucuremarkingInput class="form-control" [(ngModel)]="new_accessories_list.acc_marking"
+                            (keydown.enter)="onEnter()" style="text-align: center;">
+                            <span class="text-danger validator-message"
+                            *ngIf="isaddnewRecord &&  (new_accessories_list.acc_marking=='')">*
+                            Acc Name Required. </span>
+                        </td>
+                    <td>
+                        <ng-select  [selectOnTab]="true"  class="ng-selectcustomer" appendTo="body"
+                            [(ngModel)]="new_accessories_list.product_code" 
+                            (keyup)="Load_AcsproductCodeDropdown($event.target)" (change)="GetSapmaterialData()"                             
+                            style="width:120px;">
+                           
+                            <ng-option *ngFor="let sList of Slabproductcode_dropdown"
+                                [value]="sList.ProductCodeId ">
+                                {{sList.ProductCodeName}}
+                            </ng-option>
+                        </ng-select>
+                        <span class="text-danger validator-message"
+                        *ngIf="isaddnewRecord &&  (new_accessories_list.product_code=='')">*
+                        Product Code Required. </span>
+                        </td>
+                        <td><input class="form-control" [(ngModel)]="new_accessories_list.qty" (keydown.enter)="onEnter()" (keyup)="calculateInvoice()" style="text-align: center;">
+                            <span class="text-danger validator-message"
+                        *ngIf="isaddnewRecord &&  (new_accessories_list.qty=='')">*
+                        Qty Required. </span>
+                        </td>
+                        <td><input class="form-control" [(ngModel)]="new_accessories_list.SapMaterialCode" (keydown.enter)="onEnter()" readonly style="text-align: center;">
+                           
+                        </td>
+                    <td><input class="form-control" [(ngModel)]="new_accessories_list.length" (keyup)="calculateInvoice()"
+                            (keydown.enter)="onEnter()" style="text-align: center;">
+                            <span class="text-danger validator-message"
+                            *ngIf="isaddnewRecord &&  (new_accessories_list.length=='')">*
+                            Length Required. </span>
+                        </td>
+                    <td><input class="form-control" [(ngModel)]="new_accessories_list.unit_weight" readonly="true"></td>
+                    <td><input class="form-control" readonly="true" [(ngModel)]="new_accessories_list.uom" ></td>
+                    <td><input class="form-control" readonly="true"  [(ngModel)]="new_accessories_list.invoice"  ></td>
+                    <td></td>
+                </tr>
+            </tfoot>
+
+        </table>
+    </div>
+    <div class="d-flex justify-content-between p-2 paginationdiv">
+        <select class="custom-select mr-2 ml-3" style="width: auto" [(ngModel)]="itemsPerPage"
+                            (ngModelChange)="OnPageSizeChange(itemsPerPage);">
+                            <option [ngValue]="5">5 </option>
+                            <option [ngValue]="10">10 </option>
+                            <option [ngValue]="20">20 </option>
+                            <option [ngValue]="50">50 </option>
+                            <option [ngValue]="100">100 </option>
+                        </select>
+                        <span>Items per page</span>
+    </div>
+    </div>
+</div>

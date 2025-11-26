@@ -1,0 +1,43 @@
+
+.ui-dialog-title {
+    float: left;
+    margin: .1em 0;
+    white-space: nowrap;
+    width: 90%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .modal-header {
+    border: 1px solid #aaa;
+    background: #ccc;
+    color: #222;
+    font-weight: bold;
+  }
+  label {
+    display: inline-block;
+    max-width: 100%;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  .modal-content{
+    width: 70vw;
+    height: 70vh;
+  }
+  h3{
+    font-weight: 600;
+  }
+
+
+  button {
+    background-color: transparent;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    /* background-color: #0056b3; */
+  }
+  

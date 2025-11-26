@@ -1,0 +1,67 @@
+<div id="pause" class="d-flex align-items-center justify-content-center" *ngIf="loading">
+    <div id="spinner" class="loader"></div>
+</div>
+<div class="modal-header">
+    <h4 class="modal-title">Update Role</h4>
+    <i class="fa-solid fa-xmark"></i>
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+
+</div>
+<div class="modal-body ">
+    <div class="row">
+        <!-- <form [formGroup]="RoleMasterForm"> -->
+            
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-md-3">
+                        <label class="form-label"> Role</label> <br>
+                       
+                            <ng-select class="ng-selectcustomer" (change)="changeRole($event)" [(ngModel)]="introleid">
+                                <ng-option *ngFor="let sList of rolelist " [value]="sList.RoleId">
+                                    {{sList.RoleName}}
+                                </ng-option>
+                            </ng-select>
+                          
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label"> Form</label> <br>
+
+                        <table class=" table-responsive">
+                            <thead class="bg-primary text-white">
+                                <tr>
+                                    <th class="text-center">Forms</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <ng-container *ngFor="let row2 of pagesList">
+                                    <tr>
+                                        <td>{{row2.PageName}}</td>
+                                    </tr>
+                                </ng-container>
+                            </tbody>
+                        </table>
+
+
+                    </div>
+
+                    <div class="col-md-5 d-flex justify-content-end align-items-start flex-column bd-highlight mb-3"></div>
+
+                </div>
+
+            </div>
+        <!-- </form> -->
+
+
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" (click)="cancel()" class="btn btn-transparent">
+        Close
+    </button>
+    <button type="button" (click)="updaterole()" class="btn btn-primary me-2" [disabled]="disableSubmit">
+        Submit
+    </button>
+</div>

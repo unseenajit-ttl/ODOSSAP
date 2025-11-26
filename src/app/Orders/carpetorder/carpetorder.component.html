@@ -1,0 +1,137 @@
+<div class="mainDiv">
+    <div class="title-bar">
+        <div class="Row" style="margin-left: 20px; margin-top: 10px; font-size: medium">
+            <a href="javaScript:; " (click)="goBack()">
+                <i class="fa fa-arrow-left arrow-left" aria-hidden="true"></i>
+                Back to order summary
+            </a>
+        </div>
+        <div class="heading">Carpet (毯铁)</div>
+    </div>
+    <div class="main">
+        <div class="side-menu-horizontal"></div>
+        <div class="default d-flex">
+            <div class="slickgrid-table table" id="slickgrid-table">
+                <ul id="contextMenu" style="display:none;position:absolute">
+                    <li data="insert">Insert</li>
+                    <li data="delete">Delete</li>
+                    <li data="clear">Clear Contents</li>
+                    <li data="" style="background: url('assets/images/line.png') no-repeat center left"></li>
+
+                    <!-- <li data="" style="background: url('@Url.Content(" ~/Content/images/line.png")') no-repeat center
+                        left"></li> -->
+                    <li data="copy">Copy</li>
+                    <li data="paste">Paste</li>
+                    <li data="" style="background: url('assets/images/line.png') no-repeat center left"></li>
+
+                    <!-- <li data="" style="background: url('@Url.Content(" ~/Content/images/line.png")') no-repeat center
+                        left"></li> -->
+                    <li data="weight" (click)="ClickContextMenu('weight')">Sub-total Weight</li>
+                    <li data="qty"  (click)="ClickContextMenu('qty')">Sub-total Qty</li>
+                </ul>
+                <angular-slickgrid gridId="grid2" [columnDefinitions]="templateColumns" [gridOptions]="gridOptions"
+                    [dataset]="bbsOrderdataset" (onAngularGridCreated)="angularGridReady($event)">
+                </angular-slickgrid>
+                <img class="side-menu-btn" src="assets/images/small-up-down.png" height="20" width="20"
+                    style="position: absolute; right: 11%;; top: 37%" *ngIf="sideMenuVisible == 1"
+                    (click)="sideMenuChange(2)" />
+                <img class="side-menu-btn" src="assets//images/small-left-right.png" height="20" width="20"
+                    style="position: absolute; right: 37%; top: 0px; z-index: 999" *ngIf="sideMenuVisible == 2"
+                    (click)="sideMenuChange(1)" />
+            </div>
+            <div class="side-menu-vertical" [ngStyle]="{ display: sideMenuVisible == 1 ? 'block' : 'none' }">
+                <div class="boxRight" id="boxRight">
+                    <div class="box-inner">
+                        <div class="container2" [hidden]="hideShapecode">
+                            <img id="rightShapeImage" class="img-responsive" [src]="GetShapeImage()" alt="image"
+                                style="width: 150px; height: 200px;">
+
+                        </div>
+                        <!-- <img id="rightShapeImage" src="" style="width: 150px; height: 200px" /> -->
+                    </div>
+
+                    <div class="box2" style="border-style: solid; border-width: 1px; border-color: gray">
+                        <div class="right-form">
+                            <div class="field">
+                                <div class="label1" id="rt_lblMWDia">
+                                    MW Diameter<br />(主筋直径):
+                                </div>
+                                <div class="input1" id="rt_MWDia">{{ rt_MWDia }}</div>
+                            </div>
+                        </div>
+                        <div class="right-form">
+                            <div class="field">
+                                <div class="label1">MW Spacing<br />(主筋间距):</div>
+                                <div class="input1">{{ rt_MWSpacing }}</div>
+                            </div>
+                        </div>
+
+                        <div class="right-form">
+                            <div class="field">
+                                <div class="label1">CW Diameter<br />(副筋直径):</div>
+                                <div class="input1">{{ rt_CWDia }}</div>
+                            </div>
+                        </div>
+
+                        <div class="right-form">
+                            <div class="field">
+                                <div class="label1">CW Spacing<br />(副筋间距):</div>
+                                <div class="input1">{{ rt_CWSpacing }}</div>
+                            </div>
+                        </div>
+
+                        <div class="right-form">
+                            <div class="field">
+                                <div class="label1">Mass (kg/m<sup>2</sup>)<br />(密度):</div>
+                                <div class="input1">{{ rt_mass }}</div>
+                            </div>
+                        </div>
+
+                        <div class="right-form">
+                            <div class="field">
+                                <div class="label1">Total WT<br />(总重量):</div>
+                                <div class="input1">{{ total_weight }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box3">
+                        <div class="right-finder">
+                            <div class="field">
+                                <div class="input1">
+                                    <input type="button" value="Show Shape List" id="show_shape_list"
+                                        name="show_shape_list"
+                                        style="height: 20px; width: 100%; margin: 0px; padding: 0px"
+                                        (click)="showShapeList()" />
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="input1">
+                                    <input type="button" value="Show Product List" id="show_product_list"
+                                        name="show_product_list"
+                                        style="height: 20px; width: 100%; margin: 0px; padding: 0px"
+                                        (click)="showProductList()" />
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="input1">
+                                    <input type="button" value="Download Shape List" id="download_shape_list"
+                                        name="download_shape_list"
+                                        style="height: 20px; width: 100%; margin: 0px; padding: 0px"
+                                        (click)="downloadShapeList()" />
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="input1">
+                                    <input type="button" value="Download Product List" id="download_product_list"
+                                        name="download_product_list"
+                                        style="height: 20px; width: 100%; margin: 0px; padding: 0px"
+                                        (click)="downloadProductList()" />'
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

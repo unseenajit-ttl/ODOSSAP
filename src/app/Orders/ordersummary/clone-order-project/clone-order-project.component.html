@@ -1,0 +1,100 @@
+<div cdkDrag cdkDragRootElement=".your-custom-dialog-class">
+
+        <div *ngIf="CloneLoading" style="z-index: 500">
+            <div id="pause" class="d-flex align-items-center justify-content-center">
+                <div id="spinner" class="loader"></div>
+            </div>
+        </div>
+        <div id="Heading" class="d-flex" style="background: #dfdfdf; justify-content: space-between" cdkDragHandle>
+            <span>
+                <h3><b>Clone Order (克隆订单)</b></h3>
+            </span>
+            <div id="closebutton">
+                <i class="fa-solid fa-xmark"></i>
+                <button type="button" class="btn-close" aria-label="Close"
+                    (click)="activeModal.dismiss('Cross click')"></button>
+            </div>
+        </div>
+
+        <div id="body" style="padding: 12px; border-bottom: 1px solid #dfdfdf">
+            <div id="description">
+                <p>
+                    The function will clone new orders from current order. After clone,
+                    you can find them from Drafted Order of destination project. Please
+                    select destination Project, Block, Storey Range and Part of orders you
+                    would like the system to clone. 此程序将从现有订单拷克隆新的订单.
+                    新订单克隆后, 您可从所选工程项目的保存订单选项(Drafted
+                    Orders)找到它们. 请输入您要克隆订单的工程项目,大牌,楼层范围及分部.
+                </p>
+            </div>
+            <div id="inputDropdown">
+                <div class="d-flex" style="margin-bottom: 2px; justify-content: space-between">
+                    <label>Destination Project (工程项目)</label>&nbsp;
+                    <ng-select class="w-auto" [(ngModel)]="newprojectCode" (ngModelChange)="GetWBS1()"
+                        style="width: 390px !important">
+                        <ng-option *ngFor="let sList of projectList" [value]="sList.ProjectCode">
+                            {{ sList.ProjectTitle }} ({{ sList.ProjectCode }})
+                        </ng-option>
+                    </ng-select>
+                </div>
+                <div class="d-flex" style="margin-bottom: 2px; justify-content: space-between">
+                    <label>WBS1 (座号/大牌):</label>&nbsp;
+                    <ng-select class="w-auto" [(ngModel)]="wbs1" (ngModelChange)="GetWBS2()"
+                        style="width: 390px !important">
+                        <ng-option *ngFor="let sList of wbs1list" [value]="sList">
+                            {{ sList }}
+                        </ng-option>
+                    </ng-select>
+                </div>
+                <div class="d-flex" style="margin-bottom: 2px; justify-content: space-between">
+                    <label>WBS2 From (楼层从):</label>&nbsp;
+                    <ng-select class="w-auto" [(ngModel)]="wbs2from" style="width: 390px !important"
+                        (ngModelChange)="GetWBS3()">
+                        <ng-option *ngFor="let sList of wbs2list" [value]="sList">
+                            {{ sList }}
+                        </ng-option>
+                    </ng-select>
+                </div>
+                <div class="d-flex" style="margin-bottom: 2px; justify-content: space-between">
+                    <label>To (到):</label>&nbsp;
+                    <ng-select class="w-auto" [(ngModel)]="wbs2" style="width: 390px !important"
+                        (ngModelChange)="GetWBS3()">
+                        <ng-option *ngFor="let sList of wbs2list" [value]="sList">
+                            {{ sList }}
+                        </ng-option>
+                    </ng-select>
+                </div>
+                <form [formGroup]="WBSDisplay">
+                    <div class="d-flex" style="margin-bottom: 2px; justify-content: space-between">
+                        <label>WBS3 (分部) (Select All ):
+                            <input type="checkbox" [(ngModel)]="SelectAllWbs3"
+                                (ngModelChange)="SelectAll()" /></label>&nbsp;
+                        <ng-select class="w-auto" formControlName="wbs3" [(ngModel)]="wbs3" [multiple]="true"
+                            style="width: 390px !important">
+                            <ng-option *ngFor="let sList of wbs3list" [value]="sList">
+                                {{ sList }}
+                            </ng-option>
+                        </ng-select>
+                    </div>
+                </form>
+                <div class="d-flex" style="margin-bottom: 2px; justify-content: space-between">
+                    <label>STRUCTURE ELEMENT (建筑构件):</label>&nbsp;
+                    <ng-select class="w-auto" [(ngModel)]="StructureElement[0]" (ngModelChange)="GetWBS3()" style="width: 390px !important">
+                        <ng-option *ngFor="let sList of StructureElementList" [value]="sList">
+                            {{ sList }}
+                        </ng-option>
+                    </ng-select>
+                </div>
+            </div>
+            <div if="footer">
+                <div class="d-flex" style="justify-content: flex-end">
+                    <button class="btn btn-primary btn-sm" type="button" (click)="SubmitCloneForPRoject()">
+                        Clone (克隆)
+                    </button>
+                    <button class="btn btn-primary btn-sm" type="button" (click)="cancel()">
+                        Cancel (取消)
+                    </button>
+                </div>
+            </div>
+        </div>
+</div>

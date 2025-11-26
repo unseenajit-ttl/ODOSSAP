@@ -1,0 +1,36 @@
+<div class="container-fluid">
+    <div class="Header">
+        <span>Create Shape (创建图形)</span>
+        <button type="button" class="btn-close" aria-label="Close"
+            (click)="activeModal.dismiss('Cross click')"></button>
+    </div>
+
+    <div class="Body">
+        <div class="body-input">
+            <label>Shape Code (图形码)</label>
+            <input class="form-control" type="text" placeholder="950-999" />
+        </div>
+        <div class="body-input">
+            <label>No of Segments (节数)</label>
+            <input class="form-control" type="text" placeholder="No of Segments" />
+        </div>
+        <div class="body-input">
+            <label>Parameters (参数)</label>
+            <input class="form-control" type="text" placeholder="A,B,C,D" />
+        </div>
+        <div class="body-input">
+            <label>Length Formula (长度计算公式)</label>
+            <input class="form-control" type="text" placeholder="A+B+C+D" />
+        </div>
+        <div class="body-input">
+            <label>Shape Image File (图像文件上载)</label>
+            <div><button>Choose File</button>
+                <label *ngIf="!fileSelected">No File Chosen</label>
+            </div>
+        </div>
+        <div></div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary me-2" (click)="Cancel()">Cancel</button>
+    </div>
+</div>

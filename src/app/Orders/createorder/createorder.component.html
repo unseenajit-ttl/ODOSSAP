@@ -1,0 +1,123 @@
+<div class="container-fluid">
+    <div class="card m-1">
+        <h3 class="card-header d-flex flex-column justify-content-center">
+            <span> <img src="../../../assets/imagesuiux/review.png" style="width: 40px;height: 40px;">
+            <b> Create New Orders (创建新订单)</b>
+            </span>
+        </h3>
+        <div class="card-body" style="margin-top:-11px !important;">
+            <div class="filter ">
+                <form [formGroup]="createOrderForm" (ngSubmit)="onSubmit()">
+                    <div class="row logo">
+                        <ngb-accordion #acc="ngbAccordion" [activeIds]="['panel1']" style="margin-bottom: 5px;"
+                            class="Mobile">
+                            <ngb-panel id="panel1">
+                                <!-- <ng-template ngbPanelTitle>
+                                    <span style="color:#0880ae;"><b>Filters</b></span>
+                                </ng-template> -->
+
+                                <ng-template ngbPanelContent>
+
+                                    <div class="card-body" style="padding: 0.5%;">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <label class="form-label">Customer</label> <br>
+                                                <ng-select formControlName="customer" class="w-auto"
+                                                    (change)="changecustomer($event)">
+                                                    <ng-option *ngFor="let sList of customerList"
+                                                        [value]="sList.CustomerCode">
+                                                        {{sList.CustomerName}} ({{sList.CustomerCode}})
+                                                    </ng-option>
+                                                </ng-select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label">Project</label> <br>
+                                                <ng-select formControlName="project" [(ngModel)]="ProjectCode"
+                                                    class="w-auto" (change)="changeproject($event)"
+                                                    style="max-height: 65px;z-index:5">
+                                                    <!-- <ng-template ng-header-tmp *ngIf="projectList.length != 0">
+                                                        <div style="justify-content: space-between;display: flex;">
+                                                            <button class="btn btn-link"
+                                                                style="padding:4px;border:0px;margin:0px;"
+                                                                (click)="selectAll()">Select
+                                                                All</button>
+                                                            <button class="btn btn-link"
+                                                                style="padding:4px;border:0px;margin:0px;"
+                                                                (click)="clearAll()">Clear
+                                                                All</button>
+                                                        </div>
+                                                    </ng-template> -->
+                                                    <ng-option *ngFor="let sList of projectList"
+                                                        [value]="sList.ProjectCode">
+                                                        {{sList.ProjectTitle}} ({{sList.ProjectCode}})
+                                                    </ng-option>
+                                                </ng-select>
+                                            </div>
+
+                                            <div class="col-md-1" style="margin-top:35px">
+                                                <span style="margin-top:35px">
+                                                    <i class="fa fa-refresh" ngbTooltip="Reset"
+                                                        style=" color:#0479d6;font-size:20px;" (click)="onReset()"></i>
+                                                </span>
+                                            </div>
+                                            <div class="col-md-4 float-right">
+                                                <label class="form-label"></label> <br>
+                                                <div class="input-group flex-nowrap " *ngIf="searchResult"
+                                                    style="padding-right: 30px;">
+                                                    <input class="form-control" type="search" placeholder="Search "
+                                                        value="search" id="example-search-input" name="search"
+                                                        [(ngModel)]="searchText" (ngModelChange)="searchData()"
+                                                        [ngModelOptions]="{standalone: true}">
+                                                    <span class="input-group-append  ms-n5">
+                                                        <span class="input-group-text ">
+                                                            <i class="bi bi-search"></i>
+                                                        </span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <!-- <div class="col-md-1 ">
+                                                <label class="form-label"></label> <br>
+                                                <div class="input-group flex-nowrap ">
+                                                    <div class="mr-0" style="margin-top: -6px;">
+                                                        <span class=" btn input-group-text ">
+                                                            <i class="material-icons" style="font-size:20px;"
+                                                                ngbTooltip="Download Excel"
+                                                                (click)="downloadFile()">download</i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div> -->
+
+                                        </div>
+
+                                    </div>
+                                </ng-template>
+
+                            </ngb-panel>
+                        </ngb-accordion>
+
+                        <!-- <h1>{{projectSelect}}</h1> -->
+
+                        <div *ngIf="ShowOrderingPage()">
+                            <tabset>
+                                <!-- {{selectedType}} -->
+                                <tab id="Project-tab" heading="Project" [active]="projectSelect" [disabled]="check_NonProjectOrders()" (click)="show_AlertMessage()"
+                                    style="background:#fff;">
+                                    <app-project [ProjectCode]="ProjectCode"
+                                        [CustomerCode]="createOrderForm.controls['customer'].value"></app-project>
+                                </tab>
+                                <tab id="NonProject-tab" heading="Non Project" [active]="!projectSelect" [disabled]="check_ProjectOrders()"
+                                    style="background:#fff">
+                                    <app-non-project [ProjectCode]="ProjectCode"
+                                        [CustomerCode]="createOrderForm.controls['customer'].value"></app-non-project>
+                                </tab>
+                            </tabset>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- <button (click)="OpenTest()">test</button> -->

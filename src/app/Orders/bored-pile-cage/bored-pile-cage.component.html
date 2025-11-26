@@ -1,0 +1,299 @@
+<!-- 12 dropdowns need to change for auto-complete -->
+<div *ngIf="isLoading" style="z-index: 500">
+  <div id="pause" class="d-flex align-items-center justify-content-center">
+    <div id="spinner" class="loader"></div>
+  </div>
+</div>
+<div class="container-fluid">
+  <div class="logo4">
+    <div class="card m-1">
+      <h3 class="card-header mb-1 pb-0">
+        <div class="row">
+          <a (click)="backToSummary()" style="color: blue;cursor: pointer;" class="col-md-4">
+            <i class="fa fa-arrow-left arrow-left" aria-hidden="true"></i>
+            Back to order summary (返回订单汇总)
+          </a>
+          <b class="col-md-8">Bored Pile Cage Details (钻孔桩铁笼)</b>
+        </div>
+      </h3>
+      <div class="card-body mt-0 pt-0">
+        <input type="hidden" id="JobIDBK" value="" />
+        <input type="hidden" id="OrderNo" value="" />
+        <input type="hidden" id="order_status" value="Created" />
+        <input type="hidden" id="po_number_save" value="" />
+        <input type="hidden" id="proj_wbs1" value="" />
+        <input type="hidden" id="proj_wbs2" value="" />
+        <input type="hidden" id="proj_wbs3" value="" />
+        <input type="hidden" id="pile_category" value="BPC" />
+        <input type="hidden" name="po_number" id="po_number" value="">
+        <div class="row mt-0">
+          <div class="col-12 p-0">
+            <form  style="background-color: #dee2e6">
+              <div class="row">
+                <div class="col-md-3 d-flex">
+                  <label for="concrete_cover">Concrete Cover (混凝土保护层):</label>&nbsp;
+                  <select class="form-control w-50" name="concrete_cover" [(ngModel)]="concreteCover"
+                    id="concrete_cover" (change)="CoverChanged($event);" [disabled]="disableConcreteCover">
+                    <option value="30">30</option>
+                    <option value="35">35</option>
+                    <option value="40">40</option>
+                    <option value="45">45</option>
+                    <option value="50">50</option>
+                    <option value="55">55</option>
+                    <option value="60">60</option>
+                    <option value="65">65</option>
+                    <option value="70">70</option>
+                    <option value="75">75</option>
+                    <option value="80">80</option>
+                    <option value="85">85</option>
+                    <option value="90">90</option>
+                    <option value="95">95</option>
+                    <option value="100">100</option>
+                  </select>
+                </div>
+                <div class="col-md-3 d-flex">
+                  <label for="total_weight">Total Cages/Weight (总件数/总重量):</label>&nbsp;
+                  <input name="misc_cages" [(ngModel)]="miscCages" id="misc_cages"
+                    class="toggle toggle-light d-none">
+                  <input name="change_cage" [(ngModel)]="changeCage" id="change_cage"
+                    class="toggle toggle-light d-none">
+                  <input class="form-control w-50" type="text" name="total_weight" [(ngModel)]="totalWeight"
+                    id="total_weight" style="background: #eeeeee" readonly>
+                </div>
+                <div class="col-md-3 d-flex">
+                  <label for="underload_ct">No of Underload (欠载车数):</label>&nbsp;
+                  <input class="form-control w-50" type="text" name="underload_ct" [(ngModel)]="underloadCt"
+                    id="underload_ct" style="background: #eeeeee" [value]="'0'" readonly>
+                </div>
+                <div class="col-md-3 d-flex">
+                  <div class="Green-steel-perc-label"><label class="form-label bold">Low Carbon: {{GreenSteelCarbonValue}}%</label></div>
+                  <div class="Green-Steel-label">
+                    <label class="form-label bold">Low Carbon Indicator: </label>
+                  </div>
+                  <div class=" Green-Steel form-check form-switch">
+                    <input _ngcontent-vlm-c257="" type="checkbox" role="switch" id="flexSwitchCheckDefaults"
+                      class="form-check-input ng-valid ng-dirty ng-touched" ng-reflect-model="false" [(ngModel)]="gGreenSteelSelection"
+                      [ngModelOptions]="{ standalone: true }" (change)="UpdateGreenSteelFlag()" [disabled]="true">
+                    <label _ngcontent-vlm-c257="" for="flexSwitchCheckDefaults" class="form-check-label"></label>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div   class="col-md-12 mt-2" style="border: solid 1px gray;overflow: hidden;" id="order-container" [style.height.px]="200">
+            <angular-slickgrid gridId="mainGrid" [columnDefinitions]="gridColumns"  [gridOptions]="options"
+              [dataset]="BBSdata"
+              (onAngularGridCreated)="angularGridReadyContainerBpc($event)">
+            </angular-slickgrid>
+          </div>
+          <!-- <div class="col-md-12 mt-2" style="border: solid 1px gray;overflow: hidden;" id="order-second-grid-container" [style.height.px]="200">
+            <angular-slickgrid gridId="mainGridCopy" [columnDefinitions]="gridColumns"  [gridOptions]="options"
+              [dataset]="BBSdataCopy"
+              (onAngularGridCreated)="angularGridReadyCopyBpc($event)">
+            </angular-slickgrid>
+          </div> -->
+          <div class="col-12">
+            <div style="background-color: #fff;float: right;text-align: right; width:100%;">
+              <button id="order_save" class="btn btn-primary h-50" type="button" (click)="orderSave();" >Save
+                (保存)</button>
+              <button id="order_print" class="btn btn-secondary h-50"  type="button" (click)="orderPrint();">Print
+                Report (料单报告)</button>
+              <button id="order_attach" class="btn btn-secondary h-50" type="button"
+              (click)="SaveDrawing()" >Save Drawings (图纸)</button>
+              <button id="order_load" class="btn btn-secondary h-50" type="button"
+                (click)="viewLoad();">View Load (查看装载)</button>
+              <button id="PileData" class="btn btn-primary h-50" type="button"
+                (click)="importPileData()" >Import Pile Data</button>
+                <button id="SaveBPC" class="btn btn-primary h-50" type="button"
+                (click)="saveBothCanvasImages(true)" >Save Image BPC</button>
+              <button id="PileData" class="btn btn-secondary h-50" type="button"
+                (click)="SendParameters();">Go to Pile Entry</button>
+            </div>
+          </div>
+          <div class="col-12 p-0" style="overflow-x: auto;max-height: 300px;">
+            <table border="1" width="100%">
+              <tr>
+                <td width="301">
+                  <div>
+                    <canvas class="mt-2" width="300" height="250" #canvasPlanView></canvas>
+                    <i *ngIf="isBPCEditable" class="bi bi-eye" style="position: absolute; bottom: 5px; left: 5px; width: 20px; height: 20px;"
+                    data-bs-toggle="modal" (click)="viewModal_MainBarNum()"></i>
+                  </div>
+
+                </td>
+                <td width="701">
+                  <div><canvas class="mt-2" width="700" height="220" #canvasElevView></canvas></div>
+                  <div>
+                    <div *ngIf="selectedGridRow">
+                      <span *ngIf="!isEditing" (click)="enableDisableEdit(true)" style="cursor: pointer;">
+                        {{ elevateRemarks || 'Click to add Remark' }}
+                      </span>
+
+                      <!-- <input
+                        *ngIf="isEditing"
+                        [(ngModel)]="elevateRemarks"
+                        maxlength="100"
+                        (blur)="enableDisableEdit(false)"
+                        #inputRef
+                      /> -->
+                      <textarea
+                        id="inlineInput"
+                        class="form-control"
+                        *ngIf="isEditing"
+                        [(ngModel)]="elevateRemarks"
+                        maxlength="100"
+                        (blur)="enableDisableEdit(false)"
+                        ngbTooltip="Enter your text (max 300 characters)"
+                        rows="2"
+                        cols="30"
+                        style="resize: none;width: 50% !important;"
+                      ></textarea>
+                    </div>
+                  </div>
+                  <div style="position: relative;"><i  class="bi bi-eye ng-star-inserted" style="position: absolute; bottom: 3px; right: 80px; width: 20px; height: 20px;" (click)="editElevationForSelected()" *ngIf="selectedGridRow && isBPCEditable"></i></div>
+                </td>
+                <td [width]="lastStaticTableWidth">
+                  <div class="p-0" style="overflow: auto;position: relative;width:{{lastStaticTableWidth}}px;">
+                    <table class="tabel table-striped" height="210">
+                      <thead>
+                        <tr>
+                          <th ngbTooltip="Serial Number (序列号)">ID <br> 序号</th>
+                          <th ngbTooltip="Bar Mark (铁代号)">Mark <br> 铁代号</th>
+                          <th
+                            ngbTooltip="Bar Type (R-Round Bar, T-Grade 500 Deformed Bar, H-Euro Standard, X-Grade 600) (铁型号 R-圆钢, T-500号螺纹钢, H-欧洲标准, X-600号螺纹钢)">
+                            Type <br> 型号</th>
+                          <th ngbTooltip="Bar Diameter (直径)">Size <br> 直径</th>
+                          <th ngbTooltip="Total Bars Qty (总数量)">Qty <br> 总数</th>
+                          <th ngbTooltip="Shape Code (图形代码)">Shape Code <br> 图形码</th>
+                          <th ngbTooltip="Bending Parameter A (参数 A)">A</th>
+                          <th ngbTooltip="Bending Parameter B (参数 B)">B</th>
+                          <th ngbTooltip="Bending Parameter C (参数 C)">C</th>
+                          <th ngbTooltip="Bending Parameter D (参数 D)">D</th>
+                          <th ngbTooltip="Bending Parameter E (参数 E)">E</th>
+                          <th ngbTooltip="Bar Length (铁长度)">Length <br> 长度</th>
+                          <th ngbTooltip="Total Bars Weight (总重量)">Weight <br> 重量(kg)</th>
+                          <!-- <th ngbTooltip="Remarks (评论)">Remarks <br> 评论</th> -->
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let dataRebar of rebarData">
+                          <td>{{dataRebar.BarID}}</td>
+                          <td>{{dataRebar.BarMark}}</td>
+                          <td>{{dataRebar.BarType}}</td>
+                          <td>{{dataRebar.BarSize}}</td>
+                          <td>{{dataRebar.BarTotalQty}}</td>
+                          <td>{{dataRebar.BarShapeCode}}</td>
+                          <td>{{dataRebar.A}}</td>
+                          <td>{{dataRebar.B}}</td>
+                          <td>{{dataRebar.C}}</td>
+                          <td>{{dataRebar.D}}</td>
+                          <td>{{dataRebar.E}}</td>
+                          <td>{{dataRebar.BarLength}}</td>
+                          <td>{{dataRebar.BarWeight}}</td>
+                          <!-- <td>{{dataRebar.Remarks}}</td> -->
+                        </tr>
+                      </tbody>
+                    </table>
+                    <div id="corner-triangle" (click)="isBomActive = !isBomActive;bpc_bom_switch();">
+                      <div class="corner-triangle-text text-capitalize">
+                        <a>
+                          <span class="corner-triangle-firstline" id="bpc_bom_label">Bar&nbsp;Details</span>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td width="71" style="font-family:arial;font-size:10px;color:black;">
+                  Cages per load (Trailer)
+                  <div id="cage_load" style="width:70px;">
+                      <table border="1" width="100%" style="font-family:arial;font-size:10px;color:black;">
+                          <tr style="background-color:#cccccc"><td align="center">Dia</td><td align="center">Qty</td></tr>
+                          <tr><td align="center">500</td><td align="center">25</td></tr>
+                          <tr><td align="center">600</td><td align="center">20</td></tr>
+                          <tr><td align="center">700</td><td align="center">12</td></tr>
+                          <tr><td align="center">800</td><td align="center">10</td></tr>
+                          <tr><td align="center">900</td><td align="center">7</td></tr>
+                          <tr><td align="center">1000</td><td align="center">6</td></tr>
+                          <tr><td align="center">1100</td><td align="center">5</td></tr>
+                          <tr><td align="center">1200</td><td align="center">4</td></tr>
+                          <tr><td align="center">1300 - 1800</td><td align="center">3</td></tr>
+                          <tr><td align="center">>=1900</td><td align="center">1</td></tr>
+                      </table>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </div>
+
+
+
+          <div class="col-12 m-0 p-0">
+            <ngb-accordion #acc="ngbAccordion" [activeIds]="['panel1']" style="margin-bottom: 5px">
+              <ngb-panel id="panel1">
+                <ng-template ngbPanelContent>
+                  <div class="card-body  m-1 p-2" style="background-color: #dee2e6">
+                    <div class="row">
+                      <div class="col-md-2">
+                        <span class="header-bpc">Bored Pile Cage Library</span>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-check form-switch">
+                          <input class="form-check-input form-check-input-edit" type="checkbox" role="switch" id="flexSwitchCheckDefault"
+                            [(ngModel)]="isBPCEditable" (ngModelChange)="checkIsEditable($event)" />
+                          <label class="form-check-label" for="flexSwitchCheckDefault">Edit Library (编辑笼库)</label>
+                        </div>
+                      </div>
+                      <!-- <div class="col-md-1"></div> -->
+                      <!-- <div class="col-md-2">
+                        <input class="form-control" type="number" placeholder="Pile Diameter" name="search_pile_dia"
+                          [(ngModel)]="search_pile_dia" (ngModelChange)="searchData('PILEDIA',search_pile_dia)" />
+                      </div>
+                      <div class="col-md-2">
+                        <input class="form-control" type="number" placeholder="Main Bar Diameter"
+                          name="search_main_bar_dia" [(ngModel)]="search_main_bar_dia"
+                          (ngModelChange)="searchData('BARDIA',search_main_bar_dia)" />
+                      </div>
+                      <div class="col-md-2">
+                        <input class="form-control" placeholder="Main Bar Qty" name="search_main_bar_qty" type="number"
+                          [(ngModel)]="search_main_bar_qty"
+                          (ngModelChange)="searchData('BARQTY',search_main_bar_qty)" />
+                      </div>
+                      <div class="col-md-1"></div> -->
+                    </div>
+                  </div>
+                </ng-template>
+              </ngb-panel>
+            </ngb-accordion>
+          </div>
+          <!-- newly added Pile Data Table -->
+            <div *ngIf="this.showNewTable==true" class="col-12 mt-2 mb-2 p-0" style="border: solid 1px gray;overflow: hidden;" id="order-second-grid-container" [style.height.px]="200" [style.width.px]="1200">
+
+
+            <angular-slickgrid   gridId="mainGridCopy" [columnDefinitions]="pileDatagridColumn"  [gridOptions]="pileDataOptions"
+              (onAngularGridCreated)="angularGridReadyCopyBpc($event)">
+            </angular-slickgrid>
+          </div>
+
+
+          <div class="col-12 mt-2" style="border: solid 1px gray;padding: 0px;overflow: hidden;" id="demo-container" [style.height.px]="465">
+            <angular-slickgrid gridId="grid2" [columnDefinitions]="templateColumns" [gridOptions]="gridOptions"
+              [dataset]="dataset"
+              (onAngularGridCreated)="angularGridReady($event)"></angular-slickgrid>
+          </div>
+          <div class="col-12">
+            <div style="background-color: #fff;float: right;text-align: right; width:100%;">
+              <button id="order_save" class="btn btn-primary" type="button" (click)="libSave();" >Save (保存)</button>
+              <button id="order_print_lib" class="btn btn-secondary" type="button" (click)="libPrint();">Print BPC
+                Report (铁笼报告)</button>
+              <button id="order_clone" class="btn btn-secondary" type="button" (click)="libCopy();" >Copy From
+                (拷贝)</button>
+              <button id="order_config" class="btn btn-secondary" type="button" (click)="libConfig();">Configure
+                (设置)</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

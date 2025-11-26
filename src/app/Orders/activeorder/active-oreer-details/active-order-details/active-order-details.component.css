@@ -1,0 +1,32 @@
+.container-fluid {
+    padding: 0px;
+}
+
+.mainHeading {
+    font-size: x-large;
+    font-weight: 500;
+    padding: 10px 0;
+    background: #d8dcdf;
+}
+
+.mainBody {
+    padding: 15px 15px 0 15px;
+    overflow-y: auto; 
+    
+}
+
+.footer {
+    padding: 10px;
+    display: flex;
+    justify-content: flex-end;
+    background: inherit;
+}
+
+:host table, td, th{
+  border: 1px solid lightslategray !important;
+}
+
+.movable-container{
+    max-height: 50vh; /* Adjust as needed */
+    overflow-y: auto;
+}

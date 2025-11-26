@@ -1,0 +1,59 @@
+<div class="modal-header">
+
+  <h4 class="modal-title">WBS SOR Status</h4>
+
+ 
+  <i class="fa-solid fa-xmark"></i>
+  <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+
+</div>
+<div class="modal-body ">
+
+  <div class="row">
+    <form [formGroup]="releasewbsForm">
+      <div class="container">
+       
+          <table class="table  table-bordered w-80 m-auto table-responsive d-table table-striped">
+            <thead>
+                <th >SOR </th>
+                <th >WBS1 </th>
+                <th >WBS2 </th>
+                <th >WBS3 </th>
+                <th > BBS# </th>
+                <th > BBS Description </th>
+                <th > Group ID </th>
+
+            </thead>
+            <tbody>
+                <ng-container *ngFor="let row2 of wbssorlist;  index as isgroupmark;">
+                    <tr  >
+
+                        <td>{{row2.SNO}}</td>
+                        <td>{{row2.WBS1}}</td>
+                        <td>{{row2.WBS2}}</td>
+                        <td>{{row2.WBS3}}</td>
+                        <td>{{row2.BBS}}</td>
+                        <td>{{row2.BBSDesc}}</td>
+                        <td>{{row2.groupid}}</td>              
+                      
+
+
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
+           </div>
+     
+
+
+    </form>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" (click)="cancel()" class="btn btn-transparent">
+    Cancel
+  </button>
+  <button type="button" (click)="submitReview()" class="btn btn-primary me-2" [disabled]="disableSubmit">
+    Ok
+  </button>
+</div>

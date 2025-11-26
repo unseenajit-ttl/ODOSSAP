@@ -1,0 +1,79 @@
+.ui-dialog-title {
+  float: left;
+  margin: 0 0 16px;
+  white-space: nowrap;
+  width: 90%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.modal-header {
+  border: 1px solid #aaa;
+  background: #ccc;
+  color: #222;
+  font-weight: bold;
+}
+label {
+  display: inline-block;
+  max-width: 100%;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+.modal-content{
+  width: 70vw;
+  /* height: 70vh; */
+}
+h3{
+  font-weight: 600;
+}
+ .new-table thead {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: #003ec4;
+}
+  .new-table tbody {
+    position: sticky !important;
+    z-index: 10;
+  }
+  .new-table tbody td {
+    position: sticky !important;
+    z-index: 10;
+    border-radius: 0px !important;
+  }
+ 
+  table th {
+    color: white;
+    background-color: #003ec4 !important;
+  }
+  tr:hover{
+    background-color:#8BCCE8;
+
+  }
+
+::ng-deep .modal .modal-xxl {
+  max-width: 60vw !important;
+}
+.my-table caption {
+    caption-side: bottom;  
+    text-align: right;     
+    padding-top: 7px;  
+    /* color: red;     */
+    
+}
+.modal-footer {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-end !important; 
+}
+.modal-footer .btn {
+  min-width: 120px;
+}
+h4{
+  color: #222;
+  font-weight: bold;
+}
+::ng-deep .pagination .page-link {
+  padding: 2px 6px;    
+  font-size: 0.8rem;   
+  line-height: 1.2;    
+}

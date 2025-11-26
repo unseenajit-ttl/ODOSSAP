@@ -1,0 +1,17 @@
+export interface AddMeshShapeParam {
+    intShapeDetailId?:string,
+    intShapeID:number,
+    chrParamName:string,
+    intParamSeq?:string,
+    vchMWShape:string,
+    vchCWShape:string,
+    chrWireType:string,
+    chrAngleType:string,
+    intAngleDir?:number,
+    intBendSeq1?:number,
+    intBendSeq2?:number,
+    chrCriticalInd:string,
+    intMinLen:number,
+    intMaxLen:number,
+    intConstValue:number,
+}

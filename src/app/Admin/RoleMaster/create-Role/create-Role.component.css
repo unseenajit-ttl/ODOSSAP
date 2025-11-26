@@ -1,0 +1,35 @@
+.box {
+    display: flex;
+    flex-grow:10px
+  }
+  .ng-selectcustomer {    
+    width: 200px;
+  }
+
+  
+.table-responsive {
+  height: 200px; /* Adjust height as needed */
+  overflow-y: auto;
+  width: 212px;
+  
+}
+
+table {
+  width: 212px;
+  /* border-collapse: collapse; */
+}
+
+th, td {
+  border: 1px solid yellowgreen;
+  width: 212px;
+  text-align: left;
+  padding: 5px;
+}
+
+th {
+  background-color: #bde99d;
+}
+.custom-switch{
+  padding-top: 11px;
+    padding-left: 3rem;
+}

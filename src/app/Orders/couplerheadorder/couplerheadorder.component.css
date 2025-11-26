@@ -1,0 +1,28 @@
+.heading {
+    font-size: large;
+    font-weight: 500;
+  }
+  .subheading {
+    font-size: medium;
+    font-weight: 500;
+  }
+  
+  .tablebuttons {
+    width: 170px;
+    height: 28px;
+    margin: 0 auto;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+  }
+
+  .col {
+    flex-basis: 0;
+    flex-grow: 0;
+    max-width: 100%;
+    padding: 0 5px;
+  }
+
+  .empty-field {
+    background-color: wheat; /* or any other color you prefer */
+  }

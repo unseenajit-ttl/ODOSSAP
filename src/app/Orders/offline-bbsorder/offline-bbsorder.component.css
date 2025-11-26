@@ -1,0 +1,28 @@
+.offline-header{  
+  text-wrap: nowrap !important;
+display: flex;
+justify-content: space-between;
+background: #d6dae1;
+}
+.header-button{
+    text-wrap: nowrap !important;
+    display: flex;
+    justify-content: flex-end;
+}
+.container-fluid{
+    padding: 0;
+}
+
+.offline-body{
+    border: 1px solid black;
+}
+.footer-button{
+    text-wrap: nowrap !important;
+    display: flex;
+}
+
+.offline-footer{
+    text-wrap: nowrap !important;
+    display: flex;
+    justify-content: space-between;
+}

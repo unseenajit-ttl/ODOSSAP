@@ -1,0 +1,37 @@
+<div class="modal-header">
+  <span class="modal-title">Cancel CAB Order Items</span>
+  <button type="button" class="close" (click)="dismissModal()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <span style="font-weight: 550">Please select order you want to cancel</span>
+  <div style="margin-top: 20px">
+    <div class="col-md-12" *ngIf="BBSSOR != ''">
+      <input type="checkbox" id="cBBSSOR" name="cBBSSOR" [(ngModel)]="cBBSSOR" value="1" />&nbsp;
+      <label for="cBBSSOR"> {{ BBSSOR }} - CAB Item</label>
+    </div>
+
+    <input type="checkbox" id="cBBSSOR" name="cBBSSOR" value="1" style="display:none;" />
+
+    <div class="col-md-12" *ngIf="CouplerSOR != ''">
+      <input type="checkbox" id="cCouplerSOR" name="cCouplerSOR" [(ngModel)]="cCouplerSOR" value="1" />&nbsp;
+      <label for="cCouplerSOR"> {{ CouplerSOR }} - Coupler Item</label>
+    </div>
+
+    <input type="checkbox" id="cCouplerSOR" name="cCouplerSOR" value="1" style="display:none;" />
+
+    <div class="col-md-12" *ngIf="STDBarSO != ''">
+      <input type="checkbox" id="cSTDBarSO" name="cSTDBarSO" [(ngModel)]="cSTDBarSO" value="1" />&nbsp;
+      <label for="cSTDBarSO"> {{ STDBarSO }} - Standard Bar Item</label>
+    </div>
+
+    <input type="checkbox" id="cSTDBarSO" name="cSTDBarSO" value="1" style="display:none;" />
+  </div>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-primary" (click)="applyData()">Confirm</button>
+  <button type="button" class="btn btn-secondary" (click)="dismissModal()">
+    Close
+  </button>
+</div>

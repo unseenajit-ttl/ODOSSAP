@@ -1,0 +1,134 @@
+<div class="container-fluid">
+    <div class="card">
+        <h3 class="card-header d-flex flex-column justify-content-center align-items-center">
+            <b>Group Mark Listing </b>
+        </h3>
+        <div *ngIf="loading" style="z-index: 500">
+            <div id="pause" class="d-flex align-items-center justify-content-center">
+                <div id="spinner" class="loader"></div>
+            </div>
+        </div>
+
+        <div class="card-body ">
+                <div class="row" style="margin-top: -38px;">
+                    <div class="col-md-8">
+                        <button class="btn btn-md btn-outline-primary" ngbTooltip="Add New Group Mark"
+                            tooltipClass="my-custom-class" type="button" (click)="this.open()">
+                            <i class="fa fa-plus"></i>
+                        </button>
+
+
+                    </div>
+                    <div class="col-md-4 float-right">
+
+
+                    </div>
+
+                </div>
+
+                <div class="row table-fixed table-bordered" style="padding: 0; margin:0">
+                    <table class="table  w-90 table-bordered" style="padding: 0; margin:0">
+                        <thead>
+                            <tr>
+                                <th style="width: 3% !important;">
+
+                                    <i class="bi bi-search" style="margin-top:3px; font-size: 15px;"
+                                        (click)="toggleFilters = !toggleFilters"></i>
+
+
+                                </th>
+                                <th style="width: 22% !important;">Group Marking </th>
+                                <th style="width: 10% !important;"> Revision </th>
+                                <th style="width: 10% !important;"> Parameter Set </th>
+                                <th style="width: 10% !important;"> Product Type </th>
+                                <th style="width: 10% !important;"> Structure Element</th>
+                                <th style="width: 10% !important;"> Created Date</th>
+                                <th style="width: 5% !important;"> Action </th>
+                            </tr>
+                        </thead>
+                        <thead *ngIf="toggleFilters">
+                            <tr>
+                                <th></th>
+                                <th><input type="text"  placeholder="Group Marking" [(ngModel)]="searchGroupMarking"  (keyup)="searchDetailingData()"/></th>
+                                <th><input type="text"  placeholder="Revision" [(ngModel)]="searchRevision" (keyup)="searchDetailingData()"/></th>
+                                <th><input type="text"  placeholder="Parameter Set "[(ngModel)]="searchParameterSet" (keyup)="searchDetailingData()" /></th>
+                                <th><input type="text"  placeholder="Product Type "[(ngModel)]="searchProductType" (keyup)="searchDetailingData()" /></th>
+                                <th><input type="text"  placeholder="Structure Element " [(ngModel)]="searchStructureElement"(keyup)="searchDetailingData()" /></th>
+                                <th><input type="text"  placeholder="Created Date" [(ngModel)]="searchCreatedDate" (keyup)="searchDetailingData()"/></th>
+                                <th><span style="margin:auto; padding:2px">
+                                        <i class="fa fa-refresh text-center" ngbTooltip="Reset" style=" color:red;font-size:20px;"
+                                          (click)="resetDetailingsearchValue()"></i>
+                                    </span>&nbsp;&nbsp;
+                                    <span>
+                                      <i class="fa fa-repeat" ngbTooltip="Reload"
+                                          style=" color:blue;font-size:20px;" (click)="ngOnInit()"></i>
+                                    </span>
+                                </th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr  (click)="selectRow(item,$event,i)"  [ngStyle]="{'background-color':giveRowcolor(item)}"  *ngFor="let item of groupmarkinglist | slice: pageSize | slice: 0:itemsPerPage ; index as i ">
+
+                                <td></td>
+                                <td>{{item.VCHGROUPMARKINGNAME}}</td>
+                                <td> {{item.TNTGROUPREVNO}} </td>
+                                <td>{{item.INTPARAMETESET}}</td>
+                                <td>{{item.VCHPRODUCTTYPE}}</td>
+                                <td>{{item.VCHSTRUCTUREELEMENTTYPE}}</td>
+                                <td>{{item.DATCREATEDDATE}}</td>
+                                <td>
+                                    <i class="material-icons" ngbTooltip="Edit"  (click)="closeSideMenu();SendParameters(item)"
+                                    >mode_edit</i>&nbsp;
+                                    <i class="bi bi-trash" ngbTooltip="Delete"   [style.color]="item.POSTED === 1 ? 'gray' : 'red'"  (click)="deleteGroupMark(item.INTGROUPMARKID,item.VCHGROUPMARKINGNAME)" [style.pointer-events]="item.POSTED === 1 ? 'none' : 'auto'"></i>
+                                </td>
+                            </tr>
+
+
+                                <tr *ngIf="groupmarkinglist.length==0 && !loading">
+                                    <td colspan="8">
+                                        No Records Found
+                                    </td>
+
+
+                                </tr>
+
+                        </tbody>
+
+                    </table>
+
+                    <div  class="d-flex justify-content-between mt-2">
+                        <div class="d-flex mt-2" >
+                        <div>
+                            <ngb-pagination [collectionSize]="groupmarkinglist.length" [(page)]="currentPage"
+                                [pageSize]="itemsPerPage" (pageChange)="onPageChange(currentPage)" [maxSize]="5"
+                                [boundaryLinks]="true">
+                                <ng-template ngbPaginationPrevious>Prev</ng-template>
+                                <ng-template ngbPaginationNext>Next</ng-template>
+                            </ngb-pagination>
+                        </div>
+                        <div>
+                            <select class="custom-select mr-2 ml-3" style="width: auto" [(ngModel)]="itemsPerPage"
+                                (ngModelChange)="OnPageSizeChange(itemsPerPage)">
+                                <option [ngValue]=5>5 </option>
+                                <option [ngValue]=10>10 </option>
+                                <option [ngValue]=20>20 </option>
+                                <option [ngValue]=50>50 </option>
+                                <option [ngValue]=100>100 </option>
+                            </select>
+                            <span>Items per page</span>
+                        </div>
+                    </div>
+                        <div>
+                            <!-- <button class="btn btn-primary btn-sm" type="button" style="width:100%" (click)="deleteAllselected()"
+                            >Delete </button> -->
+                        </div>
+                        <div *ngIf="loading" style="justify-content: center;display: flex;position: relative;left: 161px;
+                    ">
+                            <div class="loader"></div>
+                    </div>
+                </div>
+            </div>
+
+    </div>
+</div>

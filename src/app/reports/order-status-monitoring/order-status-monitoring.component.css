@@ -1,0 +1,26 @@
+.required-label {
+    color: red;
+  }
+
+  /* Custom tab styles */
+.custom-tabs .nav-link {
+    background-color: #0050ff;   /* Blue background for tabs */
+    color: white;                /* White text */
+    font-weight: bold;
+    border-radius: 8px 8px 0 0; /* Rounded top corners */
+    margin-right: 5px;           /* Space between tabs */
+    padding: 10px 20px;          /* Adjust tab height/width */
+    transition: background-color 0.3s;
+    white-space: nowrap; 
+    min-width: 200px; 
+  }
+
+  .custom-tabs .nav-link.active {
+    background-color: #003ec4;   /* Highlight active tab */
+    color: #fff;
+  }
+  
+  .custom-tabs .nav-link:hover {
+    background-color: #0040d0;   /* Hover effect */
+    color: #fff;
+  }

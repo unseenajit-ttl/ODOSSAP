@@ -1,0 +1,20 @@
+export interface  ReleaseGroupMarkDto
+    {
+        DATCREATEDDATE :string,
+         INTGROUPMARKID :number,
+         INTPARAMETESET  :number,
+         INTPROJECTID  :number,
+         INTSEDETAILINGID  :number,
+         INTSTRUCTUREELEMENTTYPEID :number, 
+         ISCABDE  :number,
+         ISMODULAR  :number,
+         POSTED :number,
+         SIDEFORCODE :string ,
+         SITPRODUCTTYPEID :number,
+         TNTGROUPREVNO :number,
+         TNTPARAMSETNUMBER :number,
+         VCHGROUPMARKINGNAME :string,
+         VCHPRODUCTTYPE :string ,
+         VCHSTATUS :string ,
+         VCHSTRUCTUREELEMENTTYPE :string,
+    }

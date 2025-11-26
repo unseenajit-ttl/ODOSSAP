@@ -1,0 +1,21 @@
+export interface SaveBBSOrderDetails {
+    CustomerCode: string,
+    ProjectCode: string,
+    JobID: number,
+    BBSID: number,
+    BBSNo: string,
+    BBSDesc: string,
+    BBSCopiedFrom: string,
+    BBSStrucElem: string,
+    BBSOrderCABWT: number,
+    BBSOrderSTDWT: number,
+    BBSCancelledWT: number,
+    BBSTotalWT: number,
+    BBSSOR: string,
+    BBSNoNDS: string,
+    BBSSAPSO: string,
+    BBSSORCoupler: string,
+    BBSNoNDSCoupler: string,
+    UpdateDate: Date,
+    UpdateBy: string
+  }

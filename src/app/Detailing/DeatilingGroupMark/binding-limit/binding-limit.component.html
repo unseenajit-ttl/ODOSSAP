@@ -1,0 +1,59 @@
+<div class="modal-header">
+    <h4 class="modal-title">Bar Bending Former and Limitation (钢筋弯模与局限)</h4>
+    <i class="fa-solid fa-xmark"></i>
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+
+</div>
+
+
+<div class="modal-body ">
+
+    <div class="row">
+        <form>
+            <div class="container">
+                <div class=" table-responsive table-wrapper-scroll-y my-custom-scrollbar">
+
+                    <table class="table  table-bordered">
+                        <thead>
+                            <tr>
+                                <th style="text-align: center;"> Former Type<br/>(弯模类型) </th>
+                                <th style="text-align: center;"> Bar Diameter<br/>(钢筋直径) </th>
+                                <th style="text-align: center;"> Former Size<br/>(弯模大小)</th>
+                                <th style="text-align: center;"> Minimum Length <br/>(最小长度)</th>
+                                <th style="text-align: center;"> Hook Minimum Length<br/>(铁钩最小长度)</th>
+                                <th style="text-align: center;"> Hook Minimum Height<br/>(铁钩最小高度)</th>
+                                
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            <tr *ngFor="let item of bendinglimitTable; index as i">
+                               
+                                <td>
+                                    {{item.type}}</td>
+                                <td>
+                                    {{item.dia}}</td>
+                                <td>{{item.pin}}
+                                </td>
+                                <td>
+                                    {{item.bend_len_min}}</td>
+                                <td>
+                                    {{item.hook_len_min}}</td>
+                                <td>
+                                    {{item.hook_height_min}}</td>
+
+                            </tr>
+                        </tbody>
+
+                    </table>
+
+                </div>
+                <div class="d-flex" style="justify-content: center;">
+                <img src="../../../../assets/images/min_hook.png">
+                <img src="../../../../assets/images/min_length.png">
+            </div>
+            </div>
+        </form>
+    </div>
+</div>

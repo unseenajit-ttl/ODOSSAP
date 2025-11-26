@@ -1,0 +1,220 @@
+
+
+
+<div class="container-fluid">
+  
+    <div class="card m-1">
+        <!-- <h3 class="card-header d-flex flex-column justify-content-center align-items-center">
+                    <b> Project-Contract list</b>
+                </h3> -->
+        <div class="card-body " style="margin-top:-11px !important;">
+            <ngb-accordion #acc="ngbAccordion" title="Filters">>
+                <ngb-panel>
+                    <!-- <ng-template ngbPanelTitle style="height:5px !important;">
+                        <span style="color:#0880ae;"><b>Filters</b></span>
+                    </ng-template> -->
+                    <ng-template ngbPanelContent>
+
+                        <form [formGroup]="projectmasterform">
+
+                            <div class="row ">                                
+                                <div class="col-md-2">
+                                    <label class="form-label">Contract </label> <br>
+                                    <ng-select  [selectOnTab]="true"  formControlName="contract" (change)="ChangeContract($event)"
+                                        [(ngModel)]="contractName">
+                                        <ng-option *ngFor="let sList of Contractlist" [value]="sList.ContractCode">
+                                            {{sList.ContractCode}}
+                                        </ng-option>
+                                    </ng-select>
+                                </div>
+                                <div class="col-md-4" >
+                                    <label class="form-label">Expire Duration</label> <br>
+
+                                    <mat-form-field appearance="outline">
+                                        <!-- <mat-label>Enter a date range</mat-label> -->
+                                        <mat-date-range-input [rangePicker]="picker"  style="width: 200px !important">
+                                            <input matStartDate matInput   formControlName="startdate"
+                                                placeholder="Start date" #dateRangeStart
+                                                (dateChange)="dateRangeChange(dateRangeStart, dateRangeEnd);">
+                                            <input matEndDate matInput formControlName="enddate" placeholder="End date"
+                                                #dateRangeEnd
+                                                (dateChange)="dateRangeChange(dateRangeStart, dateRangeEnd);">
+                                        </mat-date-range-input>
+                                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                        <mat-date-range-picker #picker></mat-date-range-picker>
+                                      
+                                    </mat-form-field>
+
+                                   
+                                </div>
+
+                                <div class="col-md-2" style="margin-top:35px">
+                                    <span style="margin-top:45px;margin-left: -33px;">
+                                        <i class="fa fa-refresh" ngbTooltip="Reset"
+                                            style=" color:#0479d6;font-size:20px;" (click)="onReset()"></i>
+
+                                    </span>
+                                    <div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 float-right">
+                                    <br>
+                                    <div class="input-group flex-nowrap ">
+                                        <input class="form-control" type="search" placeholder="Search " value="search"
+                                            id="example-search-input" name="search" [(ngModel)]="searchText" (keyup)="wildcardSearch()"
+                                            [ngModelOptions]="{standalone: true}">
+                                        <span class="input-group-append  ms-n5">
+                                            <span class="input-group-text ">
+                                                <i class="bi bi-search"></i>
+                                            </span>
+                                        </span>
+                
+                                        <div class="ml-4 mr-3">
+                                            <span class="input-group-text ">
+                                                <i class="material-icons" style="font-size:20px;" ngbTooltip="Download Excel"
+                                                    (click)="downloadFile()">download</i>
+                                            </span>
+                
+                
+                                        </div>
+                                    </div>
+                
+                                </div>
+
+                            </div>
+                         
+
+
+                        </form>
+
+
+                    </ng-template>
+                </ngb-panel>
+            </ngb-accordion>
+         
+
+            <div *ngIf="loading" style="justify-content: center;display: flex;">
+                <div class="loader"></div>
+            </div>
+
+            <div class=" table-responsive table-wrapper-scroll-y my-custom-scrollbar">
+                <table class="table m-auto   d-table table-responsive   table-bordered " [cellPadding]="0"
+                    [cellPadding]="5">
+                    <thead style="top:0;position:sticky">
+                        <tr>
+
+                            <th>
+                                <i class="bi bi-search" (click)="toggleFilters = !toggleFilters"></i>
+                            </th>
+                            <th>Contract validity</th>
+                            <th>Contract Number</th>                           
+                            <th>Customer code</th>
+                            <th>Customer name</th>
+                            <th>Project Code</th>
+                            <th>Project Name</th>
+                            <th>Project Co-ordinator</th>
+                            <th>Contract validity from</th>
+                            <th>Contract validity To</th>                         
+                            <th>Pysical Project Code</th>
+                            
+                        </tr>
+
+                    </thead>
+                    <thead *ngIf="toggleFilters" style="top:51px;position:sticky">
+                        <tr>
+                            <th></th>
+                           
+                                <th style="background-color: #0479d6">
+                                    <ng-select  [selectOnTab]="true"  [(ngModel)]="searchStatus" (ngModelChange)="searchContractListData()"
+                                        placeholder="Status" style=" width: 100px; height: auto;">
+                                        <ng-option *ngFor="let sList of statuslist" [value]="sList.item_text">
+                                            {{sList.item_text}}
+                                        </ng-option>
+                                    </ng-select>
+                                </th>
+                                <th><input class="form-control" [(ngModel)]="searchContract" type="text" id="searchBlock"
+                                    placeholder="Contract " (ngModelChange)="searchContractListData()" /></th>
+                            
+                            <th><input class="form-control" [(ngModel)]="searchCode" type="text" id="searchTo"
+                                    placeholder="Code" (keyup)="searchContractListData()" /></th>
+                            <th><input class="form-control" [(ngModel)]="searchName" type="text" id="searchPart"
+                                    placeholder="Name" (keyup)="searchContractListData()" /> </th>
+                                    <th><input class="form-control" [(ngModel)]="searchProjectCode" type="text"
+                                        id="searchStructure" placeholder="Project Code"
+                                        (keyup)="searchContractListData()" /></th>
+                                <th><input class="form-control" [(ngModel)]="searchProjectName" type="text" id="searchBlock"
+                                        placeholder="Project Name" (keyup)="searchContractListData()" />
+                                </th>
+                                <th><input class="form-control" [(ngModel)]="searchCoordinate" type="text" id="searchFrom"
+                                        placeholder="Co-ordinator" (keyup)="searchContractListData()" />
+                                </th>
+                            <th><input class="form-control" [(ngModel)]="searchFromDate" type="text"
+                                    id="searchStructure" placeholder="From Date" (keyup)="searchContractListData()" />
+                            </th>
+                            <th><input class="form-control" [(ngModel)]="searchToDate" type="text" id="searchPart"
+                                    placeholder="To Date" (keyup)="searchContractListData()" /> </th>
+                           
+                            <th><input class="form-control" [(ngModel)]="searchPhysical" type="text" id="searchTo"
+                                    placeholder="Physical" (keyup)="searchContractListData()" /></th>
+                           
+
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr
+                            *ngFor="let item of contractListData  | slice: pageSize | slice: 0:itemsPerPage ; index as i ">
+
+                            <ng-container *ngIf="enableEditIndex != i">
+                                <td>
+                                </td>
+                                <td *ngIf="item.Status=='Active'" style="color: rgb(105, 218, 82);">Active</td>
+                                <td *ngIf="item.Status=='Inactive'" style="color: red">Inactive</td>
+
+
+                                <td>{{item.vchContractCode}}</td>
+
+                               
+                                <td>{{item.intCustomerCode}}</td>
+                                <td>{{item.vchCustomername}}</td>
+                                <td>{{item.vchprojectcode}} </td>
+                                <td>{{item.proj_desc1}}</td>
+                                <td>{{item.PROJ_COORD_NAME}} </td>
+                                <td>{{item.START_DATE}}</td>
+                                <td>{{item.END_DATE}} </td>
+                             
+                                <td>{{item.Physical}}</td>
+                               
+                            </ng-container>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+            
+            <div *ngIf="!loading" class="d-flex mt-2 ">
+                <div>
+                    <ngb-pagination [collectionSize]="contractListData.length" [(page)]="currentPage"
+                        [pageSize]="itemsPerPage" (pageChange)="onPageChange(currentPage)" [maxSize]="5"
+                        [boundaryLinks]="true">
+                        <ng-template ngbPaginationPrevious>Prev</ng-template>
+                        <ng-template ngbPaginationNext>Next</ng-template>
+                    </ngb-pagination>
+                </div>
+                <div>
+                    <select class="custom-select mr-2 ml-3" style="width: auto" [(ngModel)]="itemsPerPage"
+                        (ngModelChange)="OnPageSizeChange(itemsPerPage)">
+                        <option [ngValue]=5>5 </option>
+                        <option [ngValue]=10>10 </option>
+                        <option [ngValue]=20>20 </option>
+                        <option [ngValue]=50>50 </option>
+                        <option [ngValue]=100>100 </option>
+                    </select>
+                    <span>Items per page</span>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>

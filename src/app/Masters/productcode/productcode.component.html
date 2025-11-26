@@ -1,0 +1,881 @@
+<div class="container-fluid">
+  <div class="card m-1">
+    <!-- <h3 class="card-header d-flex flex-column justify-content-center align-items-center">
+      <b>Product Code Master</b>
+    </h3> -->
+    <div class="card-body" style="margin-top:-12px !important;">
+
+      <form [formGroup]="productcodeForm" (ngSubmit)="onSubmit()">
+        <ngb-accordion>
+
+          <ngb-panel style="border:none">
+            <ng-template ngbPanelContent>
+              <div class="card-body">
+                <div class="row">
+
+                  <div class="col-md-2">
+                    <label for="bendingtype" class="form-label">Product Type</label> <br>
+                    <ng-select  [selectOnTab]="true"  formControlName="producttype" [multiple]="true" [(ngModel)]="selectproductType"
+                      class="ng-selectcustomer" (change)=" selectproductType= $event;filterData();">
+                      <ng-option *ngFor="let sList of ProductCodeTypeList" [value]="sList.ProductTypeID">
+                        {{sList.ProductType}}
+                      </ng-option>
+                    </ng-select>
+
+                  </div>
+
+                  <div class="col-md-2">
+                    <label for="bendingtype" class="form-label">Product Code</label> <br>
+                    <ng-select  [selectOnTab]="true"  formControlName="productcode" [multiple]="true" [(ngModel)]="productCode"
+                      class="ng-selectcustomer" (change)="filterData()">
+                      <ng-option *ngFor="let sList of productcodelist" [value]="sList.ProductCode">
+                        {{sList.ProductCode}}
+                      </ng-option>
+                    </ng-select>
+
+                  </div>
+                  <div class="col-md-2">
+                    <label for="bendingtype" class="form-label">Structure Element</label> <br>
+                    <ng-select  [selectOnTab]="true"  formControlName="structureelement" [multiple]="true" [(ngModel)]="structureElement"
+                      class="ng-selectcustomer" (change)="filterData()">
+                      <ng-option *ngFor="let sList of structureList" [value]="sList.StructureElementTypeId">
+                        {{sList.StructureElementType}}
+                      </ng-option>
+                    </ng-select>
+
+                  </div>
+                  <div class="col-md-1 " *ngIf="selectproductType[0]==7 && selectproductType.length==1">
+                    <label class="form-label">RowMaterial?</label> <br>
+                    <div class=" row custom-control custom-switch" style="padding-left: 52px;">
+                      <input type="checkbox" formControlName="IsRowMaterial" class="custom-control-input"
+                        id="IsRowMaterialSwitches" [checked]="isRowMaterial"
+                        (change)=" isRowMaterial=!isRowMaterial; ChangeRowMaterial();">
+                      <label class="custom-control-label" for="IsRowMaterialSwitches"></label>
+                    </div>
+                  </div>
+                  <div class="col-md-1" style="margin-top:35px">
+                    <span style="margin-top:35px">
+                      <i class="fa fa-refresh" ngbTooltip="Reset" style=" color:#0479d6;font-size:20px;"
+                        (click)="onReset()"></i>
+                    </span>
+                  </div>
+                  <div class="col-md-4 float-right">
+                    <label class="form-label"></label> <br>
+                    <div class="input-group flex-nowrap ">
+                      <input class="form-control" type="search" placeholder="Search " value="search" id="example-search-input"  (ngModelChange)="wildcardSearch()"
+                        name="search" [(ngModel)]="searchText" [ngModelOptions]="{standalone: true}">  
+          
+                      <span class="input-group-append  ms-n5">
+                        <span class="input-group-text ">
+                          <i class="bi bi-search" (click)="wildcardSearch()"></i>
+                        </span>
+                      </span>
+          
+                      <div class="ml-2 mr-2">
+                        <span class="input-group-text ">
+                          <i class="material-icons" style="font-size:20px;" (click)="downloadFile()"
+                            ngbTooltip="Download Excel">download</i>
+                        </span>
+          
+          
+                      </div>
+                    </div>
+          
+                  </div>
+                </div>
+
+
+              </div>
+            </ng-template>
+          </ngb-panel>
+
+        </ngb-accordion>
+      </form>
+      
+      <div class="row">
+        <div class="col-md-8">
+          <button class="btn btn-md btn-outline-primary" ngbTooltip="Add Product Code" tooltipClass="my-custom-class"
+            type="button" (click)="open()"><i class="fa fa-plus"></i></button>
+
+        </div>
+        <div class="col-md-4 float-right">
+
+       
+        </div>
+
+      </div>
+  <div *ngIf="!loading">
+        <!-- //Core Cage -->
+        <div class=" table-responsive table-wrapper-scroll-y my-custom-scrollbar table-bordered"
+        *ngIf="selectproductType[0]==15 && selectproductType.length<=1">
+
+        <table class="table m-auto   d-table table-responsive   table-bordered " [cellPadding]="0"
+          [cellPadding]="5">
+          <thead>
+            <tr>
+              <th><i class="bi bi-search" (click)="toggleFilters = !toggleFilters"></i>
+              </th>
+
+
+
+              <th>Product Code</th>
+              <th>Description</th>
+              <th>Product Type</th>
+              <th>Structure Element</th>
+              <th>Weight/Sqm</th>
+              <th class="text-center sticky-table-column">Status</th>
+              <th class="text-center sticky-table-column" style="width:150px;">Actions</th>
+            </tr>
+          </thead>
+          <thead *ngIf="toggleFilters">
+            <tr>
+              <th></th>
+              <th><input class="form-control" [(ngModel)]="searchcorecageprodcode" type="text" id="searchBlock"
+                  placeholder="ProductCode" (keyup)="searchCorecageData()" /> </th>
+              <th><input class="form-control" [(ngModel)]="searchcorecagedesc" type="text" id="searchFrom"
+                  placeholder="Description" (keyup)="searchCorecageData()" /> </th>
+              <th><input class="form-control" [(ngModel)]="searchcorecageprotype" type="text" id="searchTo"
+                  placeholder="Product Type" (keyup)="searchCorecageData()" /></th>
+              <th><input class="form-control" [(ngModel)]="searchcorecagestructtype" type="text" id="searchPart"
+                  placeholder="Structure" (keyup)="searchCorecageData()" /> </th>
+              <th><input class="form-control" [(ngModel)]="searchcorecagewt" type="text" id="searchStructure"
+                  placeholder="Weight/sqm" (keyup)="searchCorecageData()" /></th>
+
+              <td style="background-color: #0479d6">
+                <ng-select  [selectOnTab]="true"  [(ngModel)]="searchcorecagestatus" (ngModelChange)="searchCorecageData()"
+                  placeholder="Status" style=" width: 100px; height: auto;">
+                  <ng-option *ngFor="let sList of statuslist" [value]="sList.item_id">
+                    {{sList.item_text}}
+                  </ng-option>
+                </ng-select>
+              </td>
+
+              <th><span style="margin:auto; padding:2px">
+                  <i class="fa fa-refresh text-center" ngbTooltip="Reset" style=" color:red;font-size:20px;"
+                    (click)="resetCorecagesearchValue()"></i>
+                </span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let item of CoreCageProductListData  | slice: pageSizeCAR | slice: 0:itemsPerPageCAR; index as i ">
+              <ng-container>
+                <td>
+                </td>
+                <td>{{item.ProductCode}} </td>
+                <td>{{item.ProductDescription}} </td>
+                <td>{{item.ProductType}} </td>
+                <td>{{item.StructureElementType}} </td>
+                <td>{{item.WeightArea}} </td>
+
+                <td *ngIf="item.StatusId==1" style="color: rgb(105, 218, 82);">Active</td>
+                <td *ngIf="item.StatusId==2" style="color: red">Inactive</td>
+                <td class="text-center" style="width:150px;">
+                  <i class="material-icons" ngbTooltip="Edit"
+                    (click)="onEdit(item.ProductCodeId ,item.ProductTypeId,i)">mode_edit</i>&nbsp;
+                  <i class="bi bi-trash" ngbTooltip="Delete" (click)="corecagedelete(i,item)"></i>
+                </td>
+              </ng-container>
+
+            </tr>
+
+
+
+
+          </tbody>
+        </table>
+
+      </div>
+      <div class="d-flex mt-2 " *ngIf="selectproductType[0]==15 && selectproductType.length<=1">
+        <div>
+          <ngb-pagination [collectionSize]="CoreCageProductListData.length" [pageSize]="itemsPerPageCAR"
+            [(page)]="currentPageCAR" (pageChange)="onPageChangeCoreCage(currentPageCAR)" [boundaryLinks]="true"
+            [maxSize]="maxSize">
+            <ng-template ngbPaginationPrevious>Prev</ng-template>
+            <ng-template ngbPaginationNext>Next</ng-template>
+          </ngb-pagination>
+
+
+        </div>
+        <div>
+          <select class="custom-select mr-2 ml-3" style="width: auto" [(ngModel)]="pageSize">
+            <option [ngValue]=5>5 </option>
+            <option [ngValue]=10>10 </option>
+            <option [ngValue]=20>20 </option>
+            <option [ngValue]=50>50 </option>
+            <option [ngValue]=100>100 </option>
+          </select>
+          <span>Items per page</span>
+        </div>
+
+      </div>
+      <!-- //CAP -->
+
+      <div class=" table-responsive table-wrapper-scroll-y my-custom-scrollbar table-bordered"
+        *ngIf="selectproductType[0]==4 && selectproductType.length==1">
+
+        <table class="table m-auto   d-table table-responsive   table-bordered " [cellPadding]="0"
+          [cellPadding]="5">
+          <thead>
+            <tr>
+              <th><i class="bi bi-search" (click)="toggleFilters = !toggleFilters"></i>
+              </th>
+              <th>Product Code</th>
+              <th>Product Description</th>
+              <th>Grade Type</th>
+              <th>Diameter</th>
+              <th>FGSA Material</th>
+              <th>RMSA Material</th>
+              <th>Coupler</th>
+              <th>Coupler Type</th>
+              <th>Status</th>
+
+              <th class="text-center">Action</th>
+            </tr>
+          </thead>
+          <thead *ngIf="toggleFilters">
+            <tr>
+              <th></th>
+              <th><input class="form-control" [(ngModel)]="searchproductcode" type="text" id="searchStructure"
+                  placeholder="Product Code" (keyup)="searchCABData()" /></th>
+              <th><input class="form-control" [(ngModel)]="searchproductdesc" type="text" id="searchStructure"
+                  placeholder="Product Description" (keyup)="searchCABData()" /></th>
+              <th><input class="form-control" [(ngModel)]="searchgreadetype" type="text" id="searchBlock"
+                  placeholder="Grade" (keyup)="searchCABData()" /></th>
+              <th><input class="form-control" [(ngModel)]="searchdiameter" type="text" id="searchFrom"
+                  placeholder="Diameter" (keyup)="searchCABData()" /> </th>
+              <th><input class="form-control" [(ngModel)]="searchfgsa" type="text" id="searchTo" placeholder="FG SA "
+                  (keyup)="searchCABData()" /></th>
+              <th><input class="form-control" [(ngModel)]="searchrmsa" type="text" id="searchPart" placeholder="RM SA"
+                  (keyup)="searchCABData()" /></th>
+              <th><input class="form-control" [(ngModel)]="searchcoupler" type="text" id="searchPart"
+                  placeholder="Coupler" (keyup)="searchCABData()" /></th>
+              <th><input class="form-control" [(ngModel)]="searchcouplertype" type="text" id="searchStructure"
+                  placeholder="Coupler Type" (keyup)="searchCABData()" /></th>
+
+              <!-- <th><input class="form-control" [(ngModel)]="searchcabstatus" type="text" id="searchStructure"
+                  placeholder="Status" (keyup)="searchCABData()" />
+                </th> -->
+              <td style="background-color: #0479d6">
+                <ng-select  [selectOnTab]="true"  [(ngModel)]="searchcabstatus" (ngModelChange)="searchCABData()" placeholder="Status"
+                  style=" width: 100px;  height: auto;">
+                  <ng-option *ngFor="let sList of statuslist" [value]="sList.item_id">
+                    {{sList.item_text}}
+                  </ng-option>
+                </ng-select>
+              </td>
+
+              <th><span style="margin:auto; padding:2px">
+                  <i class="fa fa-refresh text-center" ngbTooltip="Reset" style=" color:red;font-size:20px;"
+                    (click)="resetCABsearchValue()"></i>
+                </span></th>
+            </tr>
+
+          </thead>
+          <tbody>
+
+            <tr
+              *ngFor="let item of CabProductListData  | slice: pageSizeCAB | slice: 0:itemsPerPageCAB   ; index as i ">
+
+              <ng-container>
+                <td> </td>
+                <td>{{item.ProductCode}} </td>
+                <td>{{item.Description}} </td>
+
+                <td>{{item.GradeType}} </td>
+                <td>{{item.Diameter}} </td>
+                <td>{{item.FG_SAPMaterialCode}} </td>
+                <td>{{item.RM_SAPMaterialCode}} </td>
+
+                <td *ngIf="item.CouplerIndicator==true" style="color: rgb(105, 218, 82);">{{item.CouplerIndicator}}
+                </td>
+                <td *ngIf="item.CouplerIndicator==false" style="color: red">{{item.CouplerIndicator}} </td>
+
+                <td>{{item.CouplerType}} </td>
+
+                <td *ngIf="item.StatusId==1 " style="color: rgb(105, 218, 82);">Active</td>
+                <td *ngIf="item.StatusId==2" style="color: red">Inactive</td>
+
+
+
+
+
+                <td class="text-center" style="width:150px;">
+                  <i class="material-icons" ngbTooltip="Edit"
+                    (click)="onEdit(item.CABProductCodeID,item.ProductType,i)">mode_edit</i>&nbsp;
+
+                  <i class="bi bi-trash" ngbTooltip="Delete" (click)="Cabdelete(i,item)"></i>
+                </td>
+              </ng-container>
+
+            </tr>
+
+
+
+
+          </tbody>
+        </table>
+
+      </div>
+      <div class="d-flex mt-2 " *ngIf="selectproductType[0]==4 && selectproductType.length==1">
+        <div>
+          <ngb-pagination [collectionSize]="CabProductListData.length" [pageSize]="itemsPerPageCAB"
+            [(page)]="currentPageCAB" (pageChange)="onPageChangeCAB(currentPageCAB)" [boundaryLinks]="true"
+            [maxSize]="maxSize">
+            <ng-template ngbPaginationPrevious>Prev</ng-template>
+            <ng-template ngbPaginationNext>Next</ng-template>
+          </ngb-pagination>
+        </div>
+        <div>
+          <select class="custom-select mr-2 ml-3" style="width: auto" [(ngModel)]="itemsPerPageCAB"
+            (ngModelChange)="OnPageSizeChangeCAB(itemsPerPageCAB)">
+            <option [ngValue]=5>5 </option>
+            <option [ngValue]=10>10 </option>
+            <option [ngValue]=20>20 </option>
+            <option [ngValue]=50>50 </option>
+            <option [ngValue]=100>100 </option>
+          </select>
+          <span>Items per page</span>
+        </div>
+
+      </div>
+      <!-- MESh -->
+      <div class=" table-responsive table-wrapper-scroll-y my-custom-scrollbar table-bordered"
+        *ngIf="selectproductType[0]==7 && selectproductType.length==1 && isRowMaterial==false">
+
+        <table class="table m-auto   d-table table-responsive   table-bordered " [cellPadding]="0"
+          [cellPadding]="5">
+          <thead>
+            <tr>
+              <th>
+                <i class="bi bi-search" (click)="toggleFilters = !toggleFilters"></i>
+              </th>
+
+              <th>Product Code</th>
+              <th>Description</th>
+              <th>Main Wire Product</th>
+              <th>Cross Wire Product</th>
+              <th>Main Wire Space</th>
+              <th>Cross Wire Space</th>
+              <th>Structure Type</th>
+              <th>Weight /Sqm</th>
+              <th>Twin Ind</th>
+              <th>Status</th>
+              <th class="text-center">Action</th>
+            </tr>
+          </thead>
+          <thead *ngIf="toggleFilters">
+            <tr>
+              <th></th>
+              <th><input class="form-control" [(ngModel)]="searchMESHprodcode" type="text" id="searchBlock"
+                  placeholder="Product Code" (keyup)="searchMeshData()" /></th>
+              <th><input class="form-control" [(ngModel)]="searchMESHDesc" type="text" id="searchFrom"
+                  placeholder="Description" (keyup)="searchMeshData()" /></th>
+              <th><input class="form-control" [(ngModel)]="searchMESHmwprod" type="text" id="searchTo" placeholder="MW"
+                  (keyup)="searchMeshData()" /></th>
+              <th><input class="form-control" [(ngModel)]="searchMESHcwprod" type="text" id="searchPart"
+                  placeholder="CW" (keyup)="searchMeshData()" /> </th>
+              <th><input class="form-control" [(ngModel)]="searchMESHmwspace" type="text" id="searchStructure"
+                  placeholder="MW space"  (keyup)="searchMeshData()" /></th>
+              <th><input class="form-control" [(ngModel)]="searchMESHcwspace" type="text" id="searchPart"
+                  placeholder="CW space" (keyup)="searchMeshData()" /> </th>
+              <th><input class="form-control" [(ngModel)]="searchMESHstructtype" type="text" id="searchStructure"
+                  placeholder="Structure" (keyup)="searchMeshData()" /></th>
+              <th><input class="form-control" [(ngModel)]="searchMESHwt" type="text" id="searchStructure"
+                  placeholder="Wt.sqm" (keyup)="searchMeshData()" /> </th>
+              <th><input class="form-control" [(ngModel)]="searchMESHtwinind" type="text" id="searchStructure"
+                  placeholder="Twin Ind" (keyup)="searchMeshData()" /></th>
+              <td style="background-color: #0479d6">
+                <ng-select  [selectOnTab]="true"  [(ngModel)]="searchMESHstatus" (ngModelChange)="searchMeshData()" placeholder="Status"
+                  style=" width: 100px; height: auto;">
+                  <ng-option *ngFor="let sList of statuslist" [value]="sList.item_id">
+                    {{sList.item_text}}
+                  </ng-option>
+                </ng-select>
+              </td>
+              <th><span style="margin:auto; padding:2px">
+                  <i class="fa fa-refresh text-center" ngbTooltip="Reset" style=" color:red;font-size:20px;"
+                    (click)="resetMESHsearchValue()"></i>
+                </span></th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <tr
+              *ngFor="let item of prodlist | slice: pageSizeMESH | slice: 0:itemsPerPageMESH    ; index as i ">
+
+
+
+
+              <ng-container *ngIf="enableEditIndex != i">
+                <td></td>
+                <td>{{item.ProductCode}} </td>
+                <td>{{item.ProductDescription}} </td>
+                <td>{{item.MainWire_Productcode}} </td>
+                <td>{{item.CrossWire_Productcode}} </td>
+                <td>{{item.MWSpace}} </td>
+                <td>{{item.CWSpace}} </td>
+                <td>{{item.StructureElementType}}</td>
+                <td>{{item.WeightRun}} </td>
+                <td>{{item.TwinIndicator}} </td>
+                <td *ngIf="item.StatusId== 1" style="color: rgb(105, 218, 82);">Active</td>
+                <td *ngIf="item.StatusId==2" style="color: red">Inactive</td>
+                <td class="text-center" style="width:150px;">
+                  <i class="material-icons" ngbTooltip="Edit"
+                    (click)="onEdit(item.ProductCodeId,7,i)">mode_edit</i>&nbsp;
+                  <i class="bi bi-trash" ngbTooltip="Delete" (click)="meshdelete(i, item)"></i>
+                </td>
+              </ng-container>
+              <ng-container *ngIf="enableEditIndex == i">
+                <td></td>
+                <td> <input class="form-control" [(ngModel)]="item.ProductCode" style=" height: auto;" />
+                </td>
+                <td> <input class="form-control" [(ngModel)]="item.ProductDescription" style=" height: auto;" /> </td>
+                <td>
+                  <ng-select  [selectOnTab]="true"  [(ngModel)]="item.MainWire_Productcode" (change)="item.MainWire_Productcode=$event" style="height: auto;">
+                    <ng-option *ngFor="let sList of mwprod" [value]="sList.item_id">
+                      {{sList.item_text}}
+                    </ng-option>
+                  </ng-select>
+                </td>
+                <td>
+                  <ng-select  [selectOnTab]="true"  [(ngModel)]="item.CrossWire_Productcode" (change)="item.CrossWire_Productcode=$event">
+                    <ng-option *ngFor="let sList of mwprod" [value]="sList.item_id">
+                      {{sList.item_text}}
+                    </ng-option>
+                  </ng-select>
+                </td>
+                <td>
+                  <input class="form-control" [(ngModel)]="item.MWSpace" style=" height: auto;" />
+                </td>
+                <td>
+                  <input class="form-control" [(ngModel)]="item.CWSpace" style=" height: auto;" />
+                </td>
+                <td>
+                  <ng-select  [selectOnTab]="true"  [(ngModel)]="item.StructureElementType" (change)="item.StructureElementType=$event">
+                    <ng-option *ngFor="let sList of structureList" [value]="sList.item_id">
+                      {{sList.item_text}}
+                    </ng-option>
+                  </ng-select>
+                </td>
+                <td>
+                  <input class="form-control" [(ngModel)]="item.WeightRun" style=" height: auto;" />
+                </td>
+                <td>
+                  <ng-select  [selectOnTab]="true"  [(ngModel)]="item.TwinIndicator" (change)="item.TwinIndicator=$event"
+                    style=" width: 100px;     background-color: #0479d6; height: auto;">
+                    <ng-option *ngFor="let sList of twinindlist" [value]="sList.item_id">
+                      {{sList.item_text}}
+                    </ng-option>
+                  </ng-select>
+                </td>
+
+                <td style="background-color: #0479d6">
+                  <ng-select  [selectOnTab]="true"  [(ngModel)]="item.StatusId" (change)="item.StatusId=$event"
+                    style=" width: 100px;  height: auto;">
+                    <ng-option *ngFor="let sList of statuslist" [value]="sList.item_id">
+                      {{sList.item_text}}
+                    </ng-option>
+                  </ng-select>
+                </td>
+                <td class="text-center" style="width:200px;">
+                  <i class="material-icons" (click)="Update(item,i)" ngbTooltip="Update">save</i>
+                  &nbsp;
+                  <i class="material-icons" (click)="Editcancel()" ngbTooltip="Cancel">cancel</i>
+                </td>
+              </ng-container>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+      <div class="d-flex mt-2 " *ngIf="selectproductType[0]==7 && selectproductType.length==1 && isRowMaterial==false">
+        <div>
+          <ngb-pagination [collectionSize]="prodlist.length" [pageSize]="itemsPerPageMESH" [(page)]="currentPageMESH"
+            (pageChange)="onPageChangeMESH(currentPageMESH)" [boundaryLinks]="true" [maxSize]="maxSize">
+            <ng-template ngbPaginationPrevious>Prev</ng-template>
+            <ng-template ngbPaginationNext>Next</ng-template>
+          </ngb-pagination>
+        </div>
+        <div>
+          <select class="custom-select mr-2 ml-3" style="width: auto" [(ngModel)]="itemsPerPageMESH"
+            (ngModelChange)="OnPageSizeChangeMESH(itemsPerPageMESH)">
+            <option [ngValue]=5>5 </option>
+            <option [ngValue]=10>10 </option>
+            <option [ngValue]=20>20 </option>
+            <option [ngValue]=50>50 </option>
+            <option [ngValue]=100>100 </option>
+          </select>
+          <span>Items per page</span>
+        </div>
+
+      </div>
+      <!-- MESH ends -->
+
+      <!-- Accessories  -->
+      <div class=" table-responsive table-wrapper-scroll-y my-custom-scrollbar table-bordered"
+        *ngIf="selectproductType[0]==11 && selectproductType.length<=1">
+
+        <table class="table m-auto   d-table table-responsive   table-bordered " [cellPadding]="0"
+          [cellPadding]="5">
+          <thead>
+            <tr>
+              <th><i class="bi bi-search" (click)="toggleFilters = !toggleFilters"></i>
+              </th>
+              <th>Product Code</th>
+              <th>Description</th>
+              <th>Grade Type</th>
+              <th>Diameter</th>
+              <th>SAP Material</th>
+              <!-- <th>RMSA Material</th> -->
+              <th>Status</th>
+              <th>CreatedBy</th>
+              <th>Updated by</th>
+              <th class="text-center">Action</th>
+            </tr>
+          </thead>
+          <thead *ngIf="toggleFilters">
+            <tr>
+              <th></th>
+              <th><input class="form-control" [(ngModel)]="searchACCproductcode" type="text" id="searchBlock"
+                  placeholder="Product Code" (keyup)="searchACCData()" /></th>
+              <th><input class="form-control" [(ngModel)]="searchACCdescription" type="text" id="searchFrom"
+                  placeholder="Description" (keyup)="searchACCData()" /> </th>
+              <th><input class="form-control" [(ngModel)]="searchACCgradetype" type="text" id="searchTo"
+                  placeholder="Grade Type" (keyup)="searchACCData()" /></th>
+              <th><input class="form-control" [(ngModel)]="searchACCdiameter" type="text" id="searchPart"
+                  placeholder="Diameter" (keyup)="searchACCData()" /></th>
+              <th><input class="form-control" [(ngModel)]="searchACCfgsa" type="text" id="searchPart"
+                  placeholder="SAP Material" (keyup)="searchACCData()" /></th>
+              <td style="background-color: #0479d6">
+                <ng-select  [selectOnTab]="true"  [(ngModel)]="searchACCstatus" (ngModelChange)="searchACCData()" placeholder="Status"
+                  style=" width: 100px; height: auto;">
+                  <ng-option *ngFor="let sList of statuslist" [value]="sList.item_id">
+                    {{sList.item_text}}
+                  </ng-option>
+                </ng-select>
+              </td>
+              <th><input class="form-control" [(ngModel)]="searchACCcreatedby" type="text" id="searchStructure"
+                  placeholder="Created by" (keyup)="searchACCData()" /></th>
+              <th><input class="form-control" [(ngModel)]="searchACCupdatedby" type="text" id="searchStructure"
+                  placeholder="Updated by" (keyup)="searchACCData()" /></th>
+              <th><span style="margin:auto; padding:2px">
+                  <i class="fa fa-refresh text-center" ngbTooltip="Reset" style=" color:red;font-size:20px;"
+                    (click)="resetAccsearchValue()"></i>
+                </span></th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <tr
+              *ngFor="let item of AcsProductListData  | slice: pageSizeCAB | slice: 0:itemsPerPageCAB   ; index as i ">
+
+              <ng-container>
+                <td> </td>
+                <td>{{item.ProductCode}} </td>
+                <td>{{item.Description}} </td>
+                <td>{{item.GradeType}} </td>
+                <td>{{item.Diameter}} </td>
+                <td>{{item.FG_SAPMaterialCode}} </td>
+                <!-- <td>{{item.RM_SAPMaterialCode}} </td> -->
+
+                <td *ngIf="item.StatusId==1 " style="color: rgb(105, 218, 82);">Active</td>
+                <td *ngIf="item.StatusId==2" style="color: red">Inactive</td>
+                <td>{{item.CreatedUId}} </td>
+                <td>{{item.UpdatedUId}} </td>
+
+                <td class="text-center" style="width:150px;">
+                  <i class="material-icons" ngbTooltip="Edit"
+                    (click)="onEdit(item.AccessoriesProductCodeID,item.ProductType,i)">mode_edit</i>&nbsp;
+
+                  <i class="bi bi-trash" ngbTooltip="Delete" (click)="ACSdelete(i,item)"></i>
+                </td>
+              </ng-container>
+
+            </tr>
+
+
+
+
+          </tbody>
+        </table>
+
+      </div>
+      <div class="d-flex mt-2 " *ngIf="selectproductType[0]==11 && selectproductType.length<=1">
+        <div>
+          <ngb-pagination [collectionSize]="AcsProductListData.length" [pageSize]="itemsPerPageCAB"
+            [(page)]="currentPageCAB" (pageChange)="onPageChangeCAB(currentPageCAB)" [boundaryLinks]="true"
+            [maxSize]="maxSize">
+            <ng-template ngbPaginationPrevious>Prev</ng-template>
+            <ng-template ngbPaginationNext>Next</ng-template>
+          </ngb-pagination>
+        </div>
+        <div>
+          <select class="custom-select mr-2 ml-3" style="width: auto" [(ngModel)]="itemsPerPageCAB"
+            (ngModelChange)="OnPageSizeChangeCAB(itemsPerPageCAB)">
+            <option [ngValue]=5>5 </option>
+            <option [ngValue]=10>10 </option>
+            <option [ngValue]=20>20 </option>
+            <option [ngValue]=50>50 </option>
+            <option [ngValue]=100>100 </option>
+          </select>
+          <span>Items per page</span>
+        </div>
+
+      </div>
+      <!--  end accessories  -->
+
+      <!-- Start- Row Material  -->
+      <div class=" table-responsive table-wrapper-scroll-y my-custom-scrollbar table-bordered"
+        *ngIf="selectproductType[0]==7 && selectproductType.length<=1 && isRowMaterial==true">
+
+        <table class="table m-auto   d-table table-responsive   table-bordered " [cellPadding]="0"
+          [cellPadding]="5">
+          <thead>
+            <tr>
+              <th><i class="bi bi-search" (click)="toggleFilters = !toggleFilters"></i>
+              </th>
+              <th>Product Code</th>
+              <th>Description</th>
+              <th>MaterialType</th>
+              <th>Diameter</th>
+              <th>Material Abbr</th>
+              <th>Grade</th>
+              <th>WeightRun</th>
+              <th>Status</th>
+
+              <th class="text-center">Action</th>
+            </tr>
+          </thead>
+          <thead *ngIf="toggleFilters">
+            <tr>
+              <th></th>
+              <th><input class="form-control" [(ngModel)]="searchRowprodcode" type="text" id="searchBlock"
+                  placeholder="Product code" (keyup)="searchROWData()" /></th>
+              <th><input class="form-control" type="text" [(ngModel)]="searchRowdescription" id="searchRowprodcode"
+                  placeholder="Description" (keyup)="searchROWData()" /> </th>
+              <th><input class="form-control" [(ngModel)]="searchRowmaterialtype" type="text" id="searchTo"
+                  placeholder="Material Type " (keyup)="searchROWData()" /></th>
+              <th><input class="form-control" [(ngModel)]="searchRowdiameter" type="text" id="searchPart"
+                  placeholder="Diameter" (keyup)="searchROWData()" /></th>
+              <th><input class="form-control" [(ngModel)]="searchRowmaterialabbr" type="text" id="searchPart"
+                  placeholder="Material Abbr" (keyup)="searchROWData()" /></th>
+              <th><input class="form-control" [(ngModel)]="searchRowgrade" type="text" id="searchStructure"
+                  placeholder="Grade" (keyup)="searchROWData()" /></th>
+              <th><input class="form-control" [(ngModel)]="searchRowweightrun" type="text" id="searchStructure"
+                  placeholder="Weight Run" (keyup)="searchROWData()" /></th>
+              <td style="background-color: #0479d6">
+                <ng-select  [selectOnTab]="true"  [(ngModel)]="searchRowstatus" (ngModelChange)="searchROWData()" placeholder="Status"
+                  style=" width: 100px; height: auto;">
+                  <ng-option *ngFor="let sList of statuslist" [value]="sList.item_id">
+                    {{sList.item_text}}
+                  </ng-option>
+                </ng-select>
+              </td>
+              <th><span style="margin:auto; padding:2px">
+                  <i class="fa fa-refresh text-center" ngbTooltip="Reset" style=" color:red;font-size:20px;"
+                    (click)="resetRowsearchValue()"></i>
+                </span></th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <tr
+              *ngFor="let item of RowProdcodeList  | slice: pageSizeROW | slice: 0:itemsPerPageROW   ; index as i ">
+
+              <ng-container>
+                <td> </td>
+                <td>{{item.ProductCode}} </td>
+                <td>{{item.ProductDescription}} </td>
+                <td>{{item.MaterialType}} </td>
+                <td>{{item.Diameter}} </td>
+                <td>{{item.MaterialAbbr}} </td>
+                <td>{{item.Grade}} </td>
+                <td>{{item.WeightRun}}</td>
+
+                <!-- <td *ngIf="item.RawMaterial==1 " style="color: rgb(105, 218, 82);">Yes</td>
+                  <td *ngIf="item.RawMaterial==0" style="color: red">No</td> -->
+                <td *ngIf="item.StatusId==1 " style="color: rgb(105, 218, 82);">Active</td>
+                <td *ngIf="item.StatusId==2" style="color: red">Inactive</td>
+
+
+                <td class="text-center" style="width:150px;">
+                  <i class="material-icons" ngbTooltip="Edit"
+                    (click)="onEdit(item.ProductCodeId,item.ProductTypeId,item.RawMaterial)">mode_edit</i>&nbsp;
+                  <i class="bi bi-trash" ngbTooltip="Delete" (click)="ROWdelete(i,item)"></i>
+                </td>
+              </ng-container>
+
+            </tr>
+
+
+
+
+          </tbody>
+        </table>
+
+      </div>
+      <div class="d-flex mt-2 " *ngIf="selectproductType[0]==7 && selectproductType.length<=1 && isRowMaterial==true">
+        <div>
+          <ngb-pagination [collectionSize]="RowProdcodeList.length" [pageSize]="itemsPerPageROW"
+            [(page)]="currentPageROW" (pageChange)="onPageChangeROW(currentPageROW)" [boundaryLinks]="true"
+            [maxSize]="maxSize">
+            <ng-template ngbPaginationPrevious>Prev</ng-template>
+            <ng-template ngbPaginationNext>Next</ng-template>
+          </ngb-pagination>
+        </div>
+        <div>
+          <select class="custom-select mr-2 ml-3" style="width: auto" [(ngModel)]="itemsPerPageROW"
+            (ngModelChange)="OnPageSizeChangeROW(itemsPerPageROW)">
+            <option [ngValue]=5>5 </option>
+            <option [ngValue]=10>10 </option>
+            <option [ngValue]=20>20 </option>
+            <option [ngValue]=50>50 </option>
+            <option [ngValue]=100>100 </option>
+          </select>
+          <span>Items per page</span>
+        </div>
+
+      </div>
+      <!--  END--  Row Material  -->
+
+
+
+      <!-- Load table on page load -->
+      <div class=" table-responsive table-wrapper-scroll-y my-custom-scrollbar table-bordered"
+        *ngIf="this.selectproductType.length>1 || this.selectproductType.length==0 ">
+        <table class="table m-auto  d-table table-responsive  table-bordered " [cellPadding]="0"
+          [cellPadding]="5">
+          <thead>
+            <tr>
+              <th>
+                <i class="bi bi-search" (click)="toggleFilters = !toggleFilters"></i>
+              </th>
+              <th>Product Code</th>
+
+              <th>Description</th>
+
+              <th>Product Type</th>
+
+              <th>Structure Element</th>
+
+              <th>Status</th>
+
+              <th class="text-center w-25">Action</th>
+
+            </tr>
+
+          </thead>
+
+          <thead *ngIf="toggleFilters">
+
+            <tr>
+
+              <th></th>
+
+              <th><input class="form-control" type="text" id="searchBlock" placeholder="Product Code"
+                  [(ngModel)]="searchAllprodcode" (keyup)="searchData()" /></th>
+
+              <th><input class="form-control" type="text" id="searchFrom" placeholder="Description"
+                  [(ngModel)]="searchAllDesc" (keyup)="searchData()" /></th>
+
+              <th><input class="form-control" type="text" id="searchTo" placeholder="Product Type"
+                  [(ngModel)]="searchAllprotype" (keyup)="searchData()" /></th>
+
+              <th><input class="form-control" type="text" id="searchStructure" placeholder="Structure"
+                  [(ngModel)]="searchAllstructtype" (keyup)="searchData()" /></th>
+
+              <td style="background-color: #0479d6">
+                <ng-select  [selectOnTab]="true"  [(ngModel)]="searchAllstatus" (ngModelChange)="searchData()" placeholder="Status"
+                  style=" width: 100px;  height: auto;">
+                  <ng-option *ngFor="let sList of statuslist" [value]="sList.item_id">
+                    {{sList.item_text}}
+                  </ng-option>
+                </ng-select>
+              </td>
+
+
+              <th><span style="margin:auto; padding:2px">
+                  <i class="fa fa-refresh text-center" ngbTooltip="Reset" style=" color:red;font-size:20px;"
+                    (click)="resetCommonsearchValue()"></i>
+                </span></th>
+
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+            <tr
+              *ngFor="let item of Allproductlist | slice: pageSizeCommon | slice: 0:itemsPerPageCommon  ; index as i ">
+
+              <ng-container>
+
+                <td>
+
+                </td>
+                <td>{{item.ProductCode}} </td>
+
+                <td>{{item.Description}} </td>
+
+                <td>{{item.ProductType}} </td>
+
+                <td>{{item.StructureElementType}} </td>
+                <td *ngIf="item.statusId==1" style="color: rgb(105, 218, 82);">Active</td>
+
+                <td *ngIf="item.statusId==2" style="color: red">Inactive</td>
+
+                <td class="text-center" style="width:150px;">
+
+                  <i class="material-icons" ngbTooltip="Edit"
+                    (click)="onEditAllProd(item.ProductCodeID,item.ProductTypeId,i)">mode_edit</i>&nbsp;
+                  <i class="bi bi-trash" ngbTooltip="Delete"
+                    (click)="commondelete(item.ProductCodeID,item.ProductTypeId)"></i>
+
+                </td>
+
+              </ng-container>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="d-flex mt-2 " *ngIf="selectproductType.length>1 || selectproductType.length==0 ">
+
+        <div>
+
+          <ngb-pagination [collectionSize]="Allproductlist.length" [pageSize]="itemsPerPageCommon"
+            [(page)]="currentPageCommon" (pageChange)="onPageChangeCommon(currentPageCommon)" [boundaryLinks]="true"
+            [maxSize]="maxSize">
+
+            <ng-template ngbPaginationPrevious>Prev</ng-template>
+
+            <ng-template ngbPaginationNext>Next</ng-template>
+
+          </ngb-pagination>
+
+        </div>
+
+        <div>
+
+          <select class="custom-select mr-2 ml-3" style="width: auto" [(ngModel)]="itemsPerPageCommon"
+            (ngModelChange)="OnPageSizeChangeCommon(itemsPerPageCommon)">
+            <option [ngValue]=5>5 </option>
+            <option [ngValue]=10>10 </option>
+            <option [ngValue]=20>20 </option>
+            <option [ngValue]=50>50 </option>
+            <option [ngValue]=100>100 </option>
+            
+
+          </select>
+
+          <span>Items per page</span>
+
+        </div>
+
+      </div>
+  </div>
+      <div *ngIf="loading" style="justify-content: center;display: flex;">
+        <div class="loader"></div>
+    </div>
+    </div>
+  </div>

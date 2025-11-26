@@ -1,0 +1,55 @@
+.box {
+    display: flex;
+    flex-grow:10px
+  }
+  .ng-selectcustomer {    
+    width: 200px;
+  }
+
+  .colbutton {
+    flex-basis: 0;
+    flex-grow: 1;
+    max-width: 100%;
+    padding: 5px;
+    padding-left: 10px;
+    }
+
+    .icon-large2{
+      font-size: 1.8rem; /* Adjust the size */
+      color: #007bff; /* Set initial color */
+      cursor: pointer; /* Make it clickable */
+      transition: transform 0.2s ease, color 0.2s ease; /* Add smooth animations */
+    }
+    .icon-large {
+      font-size: 1.8rem; /* Adjust the size */
+      color: #007bff; /* Set initial color */
+      cursor: pointer; /* Make it clickable */
+      transition: transform 0.2s ease, color 0.2s ease; /* Add smooth animations */
+    }
+    
+    .icon-large:hover {
+      color: #0056b3; /* Change color on hover */
+      transform: scale(1.1); /* Slightly increase size on hover */
+    }
+    
+    .icon-large:active {
+      transform: scale(1); /* Subtle shrink effect on click */
+    }
+    .ui-dialog-title {
+  float: left;
+  margin: .1em 0;
+  white-space: nowrap;
+  width: 90%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.modal-header {
+  border: 1px solid #aaa;
+  background: #ccc;
+  color: #222;
+  font-weight: bold;
+}
+h4{
+  color: #222;
+  font-weight: bold;
+}

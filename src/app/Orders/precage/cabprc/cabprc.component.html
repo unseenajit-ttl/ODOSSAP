@@ -1,0 +1,194 @@
+<!-- <div class="Row" style="margin-left: 20px; margin-top: 10px; font-size: medium;">
+   <h4>Beam Stirrup Link Mesh (梁箍铁网)</h4>
+</div> -->
+<div class="container-fluid" style="min-height: 445px!important">
+    <div class="card m-1">
+        <div class="d-flex">
+            <div class=" table-responsive table-wrapper-scroll-y my-custom-scrollbar">
+
+                <table class="table  table-bordered">
+                    <thead>
+                        <tr>
+                            <th>ID<br>序号</th>
+                            <th>Element Mark<br>结构名</th>
+                             <th>Mark<br>铁代号</th>
+                             <th>Type<br>型号</th>
+                             <th>Size<br>直径</th>
+                             <th>SB<br>标铁</th>
+                             <th>Member Qty<br>构件数</th>
+                             <th>Each Qty<br>单件数</th>
+                             <th>Total Qty<br>总数</th>
+                             <th>Shape Code<br>图形码</th>
+                             <th>A</th>
+                             <th>B</th>
+                             <th>C</th>
+                             <th>D</th>
+                             <th>E</th>
+                             <th>F</th>
+                             <th>G</th>
+                             <th>Length<br>长度</th>
+                             <th>Weight<br>重量(kg)</th>
+                             <th>Pin Size<br>弯模</th>
+                             <th>Remarks<br>备注</th>
+                            
+                             
+                            <!-- <th style="min-width: 80px;">Action</th> -->
+                        </tr>
+                    </thead>
+                    <tbody id="body">
+                        <ng-container *ngFor="let item of bbsOrderTable; index as i">
+                            <tr *ngIf="editIndex!=i" (click)="getRowData(item, i)" [ngClass]="{'selected-row': selectedRowIndex === i}">
+                                <td [ngClass]="{'selected-row': selectedRowIndex === i}">{{i+1}}</td>
+                                
+                                <td [ngClass]="{'selected-row': selectedRowIndex === i}">{{item.ElementMark}}</td>
+                                <td [ngClass]="{'selected-row': selectedRowIndex === i}" style="white-space: nowrap;">{{item.BarMark}}</td>
+                                <td [ngClass]="{'selected-row': selectedRowIndex === i}">{{item.BarType}}</td>
+                                <td [ngClass]="{'selected-row': selectedRowIndex === i}">{{item.BarSize}}</td>
+                                <td [ngClass]="{'selected-row': selectedRowIndex === i}">{{item.BarSTD}}</td>
+                                <td [ngClass]="{'selected-row': selectedRowIndex === i}">{{item.BarMemberQty}}</td>
+                                <td [ngClass]="{'selected-row': selectedRowIndex === i}">{{item.BarEachQty}}</td>
+                                <td [ngClass]="{'selected-row': selectedRowIndex === i}">{{item.BarTotalQty}}</td>
+                                <td [ngClass]="{'selected-row': selectedRowIndex === i}">{{item.BarShapeCode}}</td>
+                                <td [ngClass]="{'selected-row': selectedRowIndex === i}">{{item.A}}</td>
+                                <td [ngClass]="{'selected-row': selectedRowIndex === i}">{{item.B}}</td>
+                                <td [ngClass]="{'selected-row': selectedRowIndex === i}">{{item.C}}</td>
+                                <td [ngClass]="{'selected-row': selectedRowIndex === i}">{{item.D}}</td>
+                                <td [ngClass]="{'selected-row': selectedRowIndex === i}">{{item.E}}</td>
+                                <td [ngClass]="{'selected-row': selectedRowIndex === i}">{{item.F}}</td>
+                                <td [ngClass]="{'selected-row': selectedRowIndex === i}">{{item.G}}</td>
+                                <td [ngClass]="{'selected-row': selectedRowIndex === i}">{{item.BarLength}}</td>
+                                <td [ngClass]="{'selected-row': selectedRowIndex === i}">{{item.BarWeight}}</td>
+                                <td [ngClass]="{'selected-row': selectedRowIndex === i}">{{item.PinSize}}</td>
+                                <td [ngClass]="{'selected-row': selectedRowIndex === i}">{{item.Remarks}}</td>
+                                
+                                
+                                                                <!-- <td style="text-align: center;"><i (click)="editIndex=i" class="bi bi-pencil-square"></i></td> -->
+                            </tr>
+
+                            <!-- <tr *ngIf="editIndex==i">
+                                
+                                <td></td>
+                                <td><input type="checkbox"></td>
+                                <td><input class="form-control w-auto" type="text" [(ngModel)]="item.ElementMark"
+                                        style="max-width:85px"></td>
+                                <td><input class="form-control w-auto" type="text" [(ngModel)]="item.Mark"></td>
+                                <td><input class="form-control" type="text" [(ngModel)]="item.Type"></td>
+                                <td>
+                                    <ng-select class="w-auto" appendTo="body" [(ngModel)]="item.Size">
+                                        <ng-option> 1</ng-option>
+                                        <ng-option> 3</ng-option>
+                                        <ng-option> 2</ng-option>
+                                    </ng-select>
+                                </td>
+                                <td><input type="checkbox" (ngModelChange)="onQtyChange()"></td>
+                                <td><input class="form-control" type="text" [(ngModel)]="item.Memberqty"
+                                        (ngModelChange)="onQtyChange()"></td>
+                                <td><input class="form-control" type="text" [(ngModel)]="item.Eachqty"
+                                        (ngModelChange)="onQtyChange()"></td>
+                                <td><input class="form-control" type="text" [(ngModel)]="item.Totalqty" readonly>
+                                </td>
+                                <td>
+                                    <ng-select class="w-auto" appendTo="body" [(ngModel)]="item.Shapecode">
+                                        <ng-option> 1</ng-option>
+                                        <ng-option> 3</ng-option>
+                                        <ng-option> 2</ng-option>
+                                    </ng-select>
+                                </td>
+                                <td><input class="form-control" type="text" [(ngModel)]="item.A"
+                                        (ngModelChange)="onLengthChange()"></td>
+                                <td><input class="form-control" type="text" [(ngModel)]="item.B"
+                                        (ngModelChange)="onLengthChange()"></td>
+                                <td><input class="form-control" type="text" [(ngModel)]="item.C"
+                                        (ngModelChange)="onLengthChange()"></td>
+                                <td><input class="form-control" type="text" [(ngModel)]="item.D"
+                                        (ngModelChange)="onLengthChange()"></td>
+                                <td><input class="form-control" type="text" [(ngModel)]="item.E"></td>
+                                <td><input class="form-control" type="text" [(ngModel)]="item.F"></td>
+                                <td><input class="form-control" type="text" [(ngModel)]="item.G"></td>
+                                <td><input class="form-control" type="text" [(ngModel)]="item.PinSize" readonly>
+                                </td>
+                                <td><input class="form-control" type="text" [(ngModel)]="item.Length" readonly>
+                                </td>
+                                <td><input class="form-control" type="text" [(ngModel)]="item.Weight"></td>
+                                <td><input class="form-control" type="text" [(ngModel)]="item.Remarks"
+                                        style="min-width: 120px;"></td>
+                                <td><i (click)="updateData()">A</i></td>
+                            </tr> -->
+                        </ng-container>
+                    </tbody>
+                   
+                </table>
+                <!-- <span><i class="bi bi-plus-circle" ngbTooltip="Add Row"></i></span> -->
+            </div>
+            <button id="slideshowButton" (click)="showSideTable = !showSideTable">
+                <span *ngIf="showSideTable"><i class="bi bi-caret-right-fill"></i></span>
+                <span *ngIf="!showSideTable"><i class="bi bi-caret-left-fill"></i></span>
+
+            </button>
+
+            <div *ngIf="showSideTable" style="background-color: #e9ecef;font-size: smaller;min-width: 275px;">
+                <fieldset #firstBox>
+                    <div class="container2" [hidden]="showshapecode">
+                        <img class="img-responsive" [src]="'../../../assets/images/Shapes/'+ Imagename +''" alt="image"  style="position: relative ; left: 0px;">
+                     </div>
+                     <!-- <div class="container2">
+                        <img class="img-responsive" [src]="'../../../assets/images/'+ StaticImagename +''" alt="image" style="position: relative ; left: 0px;">
+                     </div> -->
+                </fieldset>
+
+       
+            </div>
+        </div>
+    </div>
+</div>
+<!-- <div>
+    Notes: All dimensions and length are in "mm" unless otherwise. Maximum number of various bar items is 26.
+</div> -->
+<!-- app.component.html -->
+<!-- <div class="image-row">
+    <ng-container *ngFor="let image of images">
+      <img [src]="'../../../assets/images/Shapes/' + image + '.png'" alt="Image">
+    </ng-container>
+  </div> -->
+  <!-- <div class="container">
+    <div class="row">
+      <ng-container *ngFor="let image of images; let i = index">
+        <div class="col-2">
+          <img [src]="'../../../assets/images/Shapes/' + image + '.png'" alt="Image" class="image-with-border">
+        </div>
+        Start a new row after every 5 images
+        <div class="w-100 d-none d-md-block" *ngIf="(i + 1) % 5 === 0"></div>
+      </ng-container>
+    </div>
+  </div>
+   -->
+  
+  <!-- your-component.component.html -->
+  <!-- <div *ngFor="let row of imageRows" class="row">
+    <div *ngFor="let imageUrl of row" class="col">
+      <div class="image-box" style="border: 2px solid #000;">
+        <img [src]="'../../../assets/images/Shapes/' + imageUrl + '.png'" alt="Image">
+      </div>
+    </div>
+  </div> -->
+  <!-- <table>
+    <tr *ngFor="let rowIndex of [0, 1, 2, 3, 4]; let i = index" class="image-row">
+      <td *ngFor="let cellIndex of [0, 1, 2, 3, 4]; let j = index" class="image-cell">
+        <ng-container *ngIf="imageRows[i * 5 + cellIndex]">
+          <img [src]="'../../../assets/images/' + imageRows[i * 5 + cellIndex] + '.png'" alt="Image">
+        </ng-container>
+      </td>
+    </tr>
+  </table> -->
+  
+  <!-- <div class="image-gallery">
+    <div class="image-row">
+      <div class="image-box" *ngFor="let image of images">
+        <img [src]="'../../../assets/images/Shapes/' + image + '.png'" alt="Image">
+      </div>
+    </div>
+  </div> -->
+  
+  
+  
+  

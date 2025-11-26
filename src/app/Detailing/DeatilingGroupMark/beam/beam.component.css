@@ -1,0 +1,105 @@
+.custom-switchbeam{
+    padding-left: 5rem;
+}
+.width_set{
+padding-left: 10px;
+margin-top: 20px;
+}
+
+/*******************************
+* MODAL AS RIGHT SIDEBAR
+* "right" in modal parent div, after class="modal".
+*******************************/
+
+.modal.right .modal-dialog {
+    position: fixed;
+    margin: auto;
+    width: 320px;
+    height: 100%;
+    -webkit-transform: translate3d(0%, 0, 0);
+    -ms-transform: translate3d(0%, 0, 0);
+    -o-transform: translate3d(0%, 0, 0);
+    transform: translate3d(0%, 0, 0);
+  }
+  
+  .modal.right .modal-content {
+    height: 100%;
+    overflow-y: auto;
+  } 
+  
+  .modal.right .modal-body {
+    padding: 15px 15px 80px;
+  } 
+  
+  /*Right*/
+  .modal.right.fade .modal-dialog {
+    right: -320px;
+    -webkit-transition: opacity 0.3s linear, right 0.3s ease-out;
+    -moz-transition: opacity 0.3s linear, right 0.3s ease-out;
+    -o-transition: opacity 0.3s linear, right 0.3s ease-out;
+    transition: opacity 0.3s linear, right 0.3s ease-out;
+  }
+  
+  .modal.right.fade.in .modal-dialog {
+    right: 0;
+  }
+  
+  /* ----- MODAL STYLE ----- */
+  .modal-content {
+    border-radius: 0;
+    border: none;
+  }
+  
+  .modal-header {
+    border-bottom-color: #eeeeee;
+    background-color: #fafafa;
+  }
+  
+  
+  body {
+    background-color: #78909c;
+  }
+  
+  .demo {
+    padding-top: 60px;
+    padding-bottom: 110px;
+  }
+  
+  .btn-demo {
+    margin: 15px;
+    padding: 10px 15px;
+    border-radius: 0;
+    font-size: 16px;
+    background-color: #ffffff;
+  }
+  
+  .btn-demo:focus {
+    outline: 0;
+  }
+  
+  .demo-footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    padding: 15px;
+    background-color: #212121;
+    text-align: center;
+  }
+  
+  .demo-footer > a {
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16px;
+    color: #fff;
+  }
+  .Set_width
+  {
+    width: 120px  !important;
+  }
+  .Set_headerWidth{
+    width: 50px  !important;
+  }
+
+  tbody tr:hover {
+    background: #8bcce8 !important;
+  }

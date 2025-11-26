@@ -1,0 +1,27 @@
+<div cdkDrag cdkDragRootElement=".your-custom-dialog-class">
+  <div class="movable-container">
+    <div class="container-fluid">
+      <div class="card m-1">
+        <div class="mainHeading" cdkDragHandle>
+          <span>Update Technical Remarks to Selected Rows</span>
+        </div>
+        <div class="body">
+          <div>
+            <label style="width: 50%">Technical Remarks: </label>
+            <input class="form-control" [(ngModel)]="TechRemarks" />
+          </div>
+          <div *ngIf="SelectedRows.length>1">
+            <label style="width: 50%">Existing Remarks: </label>
+            <input class="form-control" [(ngModel)]="ExsistingRemarks" readonly />
+          </div>
+        </div>
+        <div class="footer">
+          <button type="button" class="btn btn-primary me-2" (click)="UpdateTechRemarks()">Update</button>
+          <button type=" button" class="btn btn-primary me-2" (click)="close(); ">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

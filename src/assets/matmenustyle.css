@@ -1,0 +1,26 @@
+/* @import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+
+body { 
+  font-family: Roboto, Arial, Helvetica, sans-serif, sans-serif;
+  margin: 0;
+  -webkit-perspective: 500px;
+  perspective: 500px
+  
+}
+
+.basic-container {
+  padding: 30px;
+  color: white;
+}
+
+.version-info {
+  font-size: 8pt;
+  float: right;
+}
+.cdk-overlay-container{
+    top:66.5px;
+}
+.cdk-overlay-connected-position-bounding-box{
+    top:0 !important;
+    
+} */

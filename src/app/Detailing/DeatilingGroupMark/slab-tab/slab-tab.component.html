@@ -1,0 +1,698 @@
+<div class="card-body table-responsive">
+
+
+    <!-- IMAGE TABLE START -->
+    <div *ngIf="loading" style="z-index: 500">
+
+        <div id="pause" class="d-flex align-items-center justify-content-center">
+
+            <div id="spinner" class="loader"></div>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="row " style="padding: 0;">
+
+        <div class="d-flex table-responsive table-bordered" style="padding: 0; margin:0">
+            <table ng2-table-resize class="  table   table-responsive table-bordered" style="margin-bottom: 0; align-self:flex-start;">
+                <thead>
+
+                    <tr>
+                        <th class="w-125px"> </th>
+                        <th class="w-125px"> Marking </th>
+                        <th class="w-125px"> Product</th>
+                        <th class="w-125px"> Main </th>
+                        <th class="w-125px"> Cross</th>
+                        <th class="w-125px">Qty </th>
+                        <th class="w-125px"> Shape </th>
+                        <th class="w-125px"> MO1 </th>
+                        <th class="w-125px"> MO2 </th>
+                        <th class="w-125px"> CO1 </th>
+                        <th class="w-125px"> CO2 </th>
+                        <th class="w-125px"> Split Up Ind </th>
+                        <th class="w-125px"> Pin Size </th>
+                        <th class="w-125px"> Produce Ind </th>
+                        <th style="width:80px;" *ngIf="strIsReadOnly==='NO'">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container
+                        *ngFor="let item of slabStructureMarklist | slice: pageSize | slice: 0:itemsPerPage ;index as i ">
+                        <ng-container *ngIf="enableSlabEditIndex != i"  >
+                        <tr  [style.background]="item.isExpand?'#8bcce8':'inherit'" (click)="selectRow(item,$event)" (dblclick)="onEdit_Struct(i)" [style.background-color]="giveRowcolor(item)">
+                            <td (click)="item.isExpand=!item.isExpand ">
+                                <i *ngIf="!item.isExpand" class="bi-chevron-right" ngbTooltip="Product Marking" ></i>
+                                <i *ngIf="item.isExpand" class="bi-chevron-up" ngbTooltip="Product Marking"></i>
+                            </td>
+                            <td (click)="item.isExpand=!item.isExpand;" [contentEditable]="true" style="width: 170px;"  (keydown.enter)="$event.preventDefault();updateStructureMarking($event,item)">{{item.StructureMarkingName}}</td>
+                            <td (click)="item.isExpand=!item.isExpand;">{{item.ProductCode.ProductCodeName}}</td>
+                            <td (click)="item.isExpand=!item.isExpand;">{{item.MainWireLength}}</td>
+                            <td (click)="item.isExpand=!item.isExpand;">{{item.CrossWireLength}}</td>
+                            <td (click)="item.isExpand=!item.isExpand;" style="width: 100px;">{{item.MemberQty}}</td>
+                            <td (click)="item.isExpand=!item.isExpand;" style="width: 100px;">{{item.SlabProduct[0].shapecode.ShapeCodeName}}</td>
+                            <td (click)="item.isExpand=!item.isExpand;"> {{item.SlabProduct[0].MO1}}</td>
+                            <td (click)="item.isExpand=!item.isExpand;"> {{item.SlabProduct[0].MO2}}</td>
+                            <td (click)="item.isExpand=!item.isExpand;"> {{item.SlabProduct[0].CO1}}</td>
+                            <td (click)="item.isExpand=!item.isExpand;"> {{item.SlabProduct[0].CO2}}</td>
+
+
+
+
+
+
+
+                            <td>
+
+                                <div class=" row custom-control custom-switch" style="margin:auto; padding-left: 4rem;">
+
+                                    <input type="checkbox" [(ngModel)]="item.ProductSplitUp"   class="custom-control-input" [disabled]="true"
+                                        id="Split_Up_Ind_inp_5">
+
+                                    <label class="custom-control-label" for="Split_Up_Ind_inp_5"></label>
+
+                                </div>
+
+                            </td>
+                            <td>{{item.PinSize}}</td>
+
+                            <td>
+                                <div class=" row custom-control custom-switch" style="margin:auto; padding-left: 4rem;">
+                                    <input type="checkbox" [(ngModel)]="item.ProduceIndicator" class="custom-control-input"  [disabled]="true"
+                                        id="prod_in_inp_5">
+                                    <label class="custom-control-label" for="prod_in_inp_5"></label>
+                                </div>
+                            </td>
+
+
+
+
+                            <td style="width: 140px;" *ngIf="strIsReadOnly==='NO'">
+
+                                <i class="material-icons" (click)="onEdit_Struct(i)" ngbTooltip="Edit">mode_edit</i>
+                                <i class="bi bi-trash" ngbTooltip="Delete" style="color:red; font-size:22px"
+                                    (click)="deleteSlabStructure(item.StructureMarkId)"></i>
+
+                            </td>
+
+
+
+
+                        </tr>
+
+
+
+                        <tr *ngIf="item.SlabProduct.length>0 && item.isExpand ===true" >
+                            <td colspan="15">
+                                <div class="row d-flex">
+                                    <div class="col-md-1">
+                                    </div>
+                                    <div class="col-md-10">
+                                        <table class="table table-sm w-100 sub-table">
+
+                                            <thead>
+                                                <th class="w-125px"> B/I </th>
+                                                <th class="w-125px"> Main </th>
+                                                <th class="w-125px"> Cross </th>
+                                                <th class="w-125px"> Qty </th>
+                                                <th class="w-125px"> P/I</th>
+                                                <th class="w-125px"> B/C</th>
+                                                <th class="w-125px"> Shape Parameters</th>
+                                                <th class="w-125px"> MO1 </th>
+                                                <th class="w-125px"> MO2 </th>
+                                                <th class="w-125px"> CO1 </th>
+                                                <th class="w-125px"> CO2 </th>
+                                                <th class="w-125px"> Shape Code </th>
+
+                                                <th style="width: 100px">Action</th>
+                                            </thead>
+                                            <tbody>
+                                                <ng-container *ngFor="let row2 of item.SlabProduct ; index as j ">
+                                                    <tr  tooltipClass="my-tooltip-class" [ngStyle]="{'background-color':giveErrorcolor(row2)}"
+                                                    (mouseenter)=" ProductMarkingGrid_rowLoading (row2, item); isTooltipHidden = !isTooltipHidden"
+                                                    (mouseleave)="isTooltipHidden = !isTooltipHidden">
+                                                        <td>
+                                                            <div
+                                                                *ngIf="!(enableEditIndexCol == j && enableEditIndexmain == i) ">
+                                                                {{row2.BOMIndicator}}</div>
+                                                            <div
+                                                                *ngIf="enableEditIndexCol == j && enableEditIndexmain == i ">
+                                                                <input class="form-control"
+                                                                    [(ngModel)]="row2.BOMIndicator" [value]="1"
+                                                                    style=" height: auto;" />
+                                                                <span class="text-danger validator-message"
+                                                                    *ngIf="isupdateRecord &&  (row2.BOMIndicator=='')">*
+                                                                    Structure Marking Required. </span>
+
+                                                            </div>
+
+                                                        </td>
+                                                        <td>
+                                                            <div
+                                                                *ngIf="!(enableEditIndexCol == j && enableEditIndexmain == i)">
+                                                                {{row2.ProductionMWLength}}</div>
+                                                            <div
+                                                                *ngIf="enableEditIndexCol == j && enableEditIndexmain == i ">
+                                                                <input class="form-control"
+                                                                    [(ngModel)]="row2.MWLength" [value]="1" (keyup)="popup_MWLength=row2.MWLength"
+                                                                    style=" height: auto;" />
+                                                                <span class="text-danger validator-message"
+                                                                    *ngIf="isupdateRecord &&  (row2.MWLength=='')">*
+                                                                    Main Required. </span>
+
+                                                            </div>
+
+                                                        </td>
+                                                        <td>
+
+                                                            <div
+                                                                *ngIf="!(enableEditIndexCol == j && enableEditIndexmain == i) ">
+                                                                {{row2.ProductionCWLength}}</div>
+                                                            <div
+                                                                *ngIf="enableEditIndexCol == j && enableEditIndexmain == i ">
+                                                                <input class="form-control"
+                                                                    [(ngModel)]="row2.CWLength" [value]="1" (keyup)="popup_CWLength=row2.CWLength"
+                                                                    style=" height: auto;" />
+                                                                <span class="text-danger validator-message"
+                                                                    *ngIf="isupdateRecord &&  (row2.CWLength=='')">*
+                                                                    Cross Required. </span>
+
+                                                            </div>
+
+                                                        </td>
+                                                        <td>
+                                                            <div
+                                                                *ngIf="!(enableEditIndexCol == j && enableEditIndexmain == i) ">
+                                                                {{row2.MemberQty}}</div>
+                                                            <div
+                                                                *ngIf="enableEditIndexCol == j && enableEditIndexmain == i ">
+                                                                <input class="form-control" [(ngModel)]="row2.MemberQty"
+                                                                    [value]="1" style=" height: auto;" />
+                                                                <span class="text-danger validator-message"
+                                                                    *ngIf="isupdateRecord &&  (row2.MemberQty=='')">*
+                                                                    Member Qty Required. </span>
+
+                                                            </div>
+
+                                                        </td>
+                                                        <td>
+                                                            <div>{{row2.ProduceIndicator}}</div>
+                                                        </td>
+                                                        <td>
+                                                            <div>{{row2.BendingCheckInd}}</div>
+                                                        </td>
+                                                        <td>
+                                                            <div>{{row2.ParamValues}}</div>
+                                                        </td>
+                                                        <td>
+
+                                                            <div
+                                                                *ngIf="!(enableEditIndexCol == j && enableEditIndexmain == i) ">
+                                                                {{row2.ProductionMO1}}</div>
+                                                            <div
+                                                                *ngIf="enableEditIndexCol == j && enableEditIndexmain == i ">
+                                                                <input class="form-control"
+                                                                    [(ngModel)]="row2.MO1" type="number" (keyup)="popup_MO1=row2.MO1"
+                                                                    style=" height: auto;" />
+                                                                <span class="text-danger validator-message"
+                                                                    *ngIf="isupdateRecord &&  (row2.MO1=='')">*
+                                                                    MO1 Required. </span>
+
+                                                            </div>
+
+                                                        </td>
+                                                        <td>
+
+                                                            <div
+                                                                *ngIf="!(enableEditIndexCol == j && enableEditIndexmain == i) ">
+                                                                {{row2.ProductionMO2}}</div>
+                                                            <div
+                                                                *ngIf="enableEditIndexCol == j && enableEditIndexmain == i ">
+                                                                <input class="form-control"
+                                                                    [(ngModel)]="row2.MO2" type="number" (keyup)="popup_MO2=row2.MO2"
+                                                                    style=" height: auto;" />
+                                                                <span class="text-danger validator-message"
+                                                                    *ngIf="isupdateRecord &&  (row2.MO2=='')">*
+                                                                    MO2 Required. </span>
+
+                                                            </div>
+
+                                                        </td>
+                                                        <td>
+
+                                                            <div
+                                                                *ngIf="!(enableEditIndexCol == j && enableEditIndexmain == i) ">
+                                                                {{row2.ProductionCO1}}</div>
+                                                            <div
+                                                                *ngIf="enableEditIndexCol == j && enableEditIndexmain == i ">
+                                                                <input class="form-control" type="number" (keyup)="popup_CO1=row2.CO1"
+                                                                    [(ngModel)]="row2.CO1"
+                                                                    style=" height: auto;" />
+                                                                <span class="text-danger validator-message"
+                                                                    *ngIf="isupdateRecord &&  (row2.CO1=='')">*
+                                                                    CO1 Required. </span>
+
+                                                            </div>
+
+                                                        </td>
+                                                        <td>
+
+                                                            <div
+                                                                *ngIf="!(enableEditIndexCol == j && enableEditIndexmain == i) ">
+                                                                {{row2.ProductionCO2}}</div>
+                                                            <div
+                                                                *ngIf="enableEditIndexCol == j && enableEditIndexmain == i ">
+                                                                <input class="form-control" type="number" (keyup)="popup_CO2=row2.CO2"
+                                                                    [(ngModel)]="row2.CO2"
+                                                                    style=" height: auto;" />
+                                                                <span class="text-danger validator-message"
+                                                                    *ngIf="isupdateRecord &&  (row2.CO2=='')">*
+                                                                    CO2 Required. </span>
+
+                                                            </div>
+
+                                                        </td>
+                                                        <td>
+                                                            <div
+                                                                *ngIf="!(enableEditIndexCol == j && enableEditIndexmain == i) ">
+                                                                {{row2.shapecode.ShapeCodeName}}
+                                                            </div>
+                                                            <div
+                                                                *ngIf="(enableEditIndexCol == j && enableEditIndexmain == i) ">
+                                                                <ng-select [selectOnTab]="true"    [items]="Slabshapecode_dropdown"
+                                                                bindLabel="ShapeCodeName"
+                                                                bindValue="ShapeID"
+                                                                 [searchFn]="startsWithSearchFn"
+                                                                    class="ng-selectcustomer" appendTo="body"
+                                                                    [(ngModel)]="row2.shapecode.ShapeID"
+                                                                    (change)="ChangeShapeCode(row2,row2.shapecode.ShapeID,Slabshapecode_dropdown,'E')"
+                                                                    style="width:120px;">
+                                                                    <!-- <ng-option
+                                                                        *ngFor="let sList of Slabshapecode_dropdown"
+                                                                        [value]="sList.ShapeID">
+                                                                        {{sList.ShapeCodeName}}
+                                                                    </ng-option> -->
+                                                                </ng-select>
+                                                                <span class="text-danger validator-message"
+                                                                    *ngIf="isupdateRecord &&  (row2.shapecode.ShapeID=='')">*
+                                                                    Shape Required. </span>
+                                                            </div>
+                                                        </td>
+
+
+                                                        <td style="width: 140px;" >
+                                                            <div
+                                                                *ngIf="!(enableEditIndexCol == j && enableEditIndexmain == i) ">
+                                                                <i *ngIf="strIsReadOnly==='NO'" class="material-icons" ngbTooltip="Edit"
+                                                                    (click)="onEdit(i,j,row2,item)">mode_edit</i>&nbsp;
+                                                                <i class="material-icons" (click)="SendParameters(row2)"
+                                                                    ngbTooltip="View BOM">view_timeline</i>
+                                                                <i *ngIf="strIsReadOnly==='NO'" class="material-icons" (click)="onCopy(row2,item)"
+                                                                    ngbTooltip="Copy">content_copy</i>
+                                                                <i *ngIf="strIsReadOnly==='NO'" class="bi bi-trash" ngbTooltip="Delete"
+                                                                    style="color:red; font-size:22px"
+                                                                    (click)="deleteSlabProduct(item.SlabProduct,row2.ProductMarkId,item.StructureMarkId)"></i>
+
+                                                            </div>
+                                                            <div
+                                                                *ngIf="(enableEditIndexCol == j && enableEditIndexmain == i) ">
+                                                                <i class="material-icons" ngbTooltip="Update"
+                                                                    (click)="onSave(row2,item)">save</i>
+                                                                &nbsp;
+                                                                <i class="material-icons" (click)="Editcancel(row2)"
+                                                                    ngbTooltip="Cancel">cancel</i>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr *ngIf="isTooltipHidden">
+
+                                                        <td colspan="18"><span style="color: red;">
+                                                                {{row2.ProductValidatorDescription}}</span></td>
+                                                    </tr>
+                                                 
+
+                                                </ng-container>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-md-1">
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+                    </ng-container>
+                    <ng-container *ngIf="enableSlabEditIndex == i">
+
+                        <tr>
+
+                            <td></td>
+                            <td> 
+                                <input class="form-control" maxlength="20" type="text" style="width: 170px;" [(ngModel)]="item.StructureMarkingName"
+                                    [ngModelOptions]="{standalone: true}">
+                                <span class="text-danger validator-message"
+                                    *ngIf="isaddnewRecord &&  (pushElement.marking=='')">*
+                                    Structure Marking Required. </span>
+                            </td>
+
+                            <td>
+                                <ng-select
+                                [items]="Slabproductcode_dropdown"
+                                bindLabel="ProductCodeName"
+                                bindValue="ProductCodeId"
+                                [selectOnTab]="true" class="ng-selectcustomer" appendTo="body"
+                                [(ngModel)]="item.ProductCode.ProductCodeId" (change)="changeProductCode(item.ProductCode.ProductCodeId)"
+                                style="width:120px;" [searchFn]="startsWithSearchFn1">
+
+                                <!-- <ng-option *ngFor="let sList of Slabproductcode_dropdown"
+                                    [value]="sList.ProductCodeId ">
+                                    {{sList.ProductCodeName}}
+                                </ng-option> -->
+                            </ng-select>
+                                <span class="text-danger validator-message"
+                                    *ngIf="isaddnewRecord &&  (pushElement.Product=='')">*
+                                    Product Code Required. </span>
+                            </td>
+                            <td> <input class="form-control" maxlength="20" type="text" [(ngModel)]="item.MainWireLength"
+                                    (focusout)="MainWire_lostfocus(pushElement.main)" [ngModelOptions]="{standalone: true}"
+                                    />
+                                <span class="text-danger validator-message"
+                                    *ngIf="isaddnewRecord &&  (pushElement.main=='')">*
+                                    Main Required. </span>
+                            </td>
+                            <td> <input class="form-control" maxlength="20" type="text" [(ngModel)]="item.CrossWireLength"
+                                    (focusout)="CrossWire_lostfocus(pushElement.cross)"
+                                    [ngModelOptions]="{standalone: true}"  />
+                                <span class="text-danger validator-message"
+                                    *ngIf="isaddnewRecord &&  (pushElement.cross=='')">*
+                                    Cross Required. </span>
+                            </td>
+                            <td> <input class="form-control" maxlength="20" type="text" [(ngModel)]="item.MemberQty"
+                                    [ngModelOptions]="{standalone: true}" />
+                                <span class="text-danger validator-message"
+                                    *ngIf="isaddnewRecord &&  (pushElement.qty=='')">*
+                                    Qty Required. </span>
+                            </td>
+                            <td>
+                                {{item.SlabProduct[0].shapecode.ShapeCodeName}}
+                            </td>
+                            <td> {{item.SlabProduct[0].MO1}}</td>
+                            <td> {{item.SlabProduct[0].MO2}}</td>
+                            <td> {{item.SlabProduct[0].CO1}}</td>
+                            <td> {{item.SlabProduct[0].CO2}}</td>
+                            <td>
+
+                                <div class=" row custom-control custom-switch" style="margin:auto; padding-left: 4rem;">
+
+                                    <input type="checkbox" [(ngModel)]="item.ProductSplitUp"   class="custom-control-input"
+                                        id="Split_Up_Ind_inp_4">
+
+                                    <label class="custom-control-label" for="Split_Up_Ind_inp_4"></label>
+
+                                </div>
+
+                            </td>
+                            <td> <input #input2 class="form-control" maxlength="20" type="text" [(ngModel)]="item.PinSize"
+                                    style="text-align:center" [ngModelOptions]="{standalone: true}"
+                                    />
+                                <span class="text-danger validator-message"
+                                    *ngIf="isaddnewRecord &&  (item.PinSize=='')">*
+                                    Pin Size Required. </span>
+                            </td>
+                            <td>
+                                <div class=" row custom-control custom-switch" style="margin:auto; padding-left: 4rem;">
+                                    <input type="checkbox" [(ngModel)]="item.ProduceIndicator" class="custom-control-input"
+                                        id="prod_in_inp_2">
+                                    <label class="custom-control-label" for="prod_in_inp_2"></label>
+                                </div>
+                            </td>
+                            <td>
+                                <i class="material-icons" (click)="UpdateStrumarking(item,i)" ngbTooltip="Save">save</i>
+                                &nbsp;
+                                <i class="fa fa-refresh text-center" ngbTooltip="Reset"
+                                    style=" color:red;font-size:20px;" (click)="Reset_structuremarking()"></i>
+
+                            </td>
+                        </tr>
+                    </ng-container>
+
+                    </ng-container>
+
+
+                </tbody>
+
+                <tfoot>
+                    <tr>
+
+                        <td></td>
+                        <td> <input id="strucuremarkingInput" class="form-control" maxlength="20" type="text" [(ngModel)]="pushElement.marking"
+                                (change)="structureMarkChange($event)" [ngModelOptions]="{standalone: true}"
+                                (keydown.enter)="onSubmit()">
+                            <span class="text-danger validator-message"
+                                *ngIf="isaddnewRecord &&  (pushElement.marking=='')">*
+                                Structure Marking Required. </span>
+                        </td>
+
+                        <td>
+                            <ng-select
+                            [items]="Slabproductcode_dropdown"
+                            bindLabel="ProductCodeName"
+                            bindValue="ProductCodeId"
+                            [selectOnTab]="true" class="ng-selectcustomer" appendTo="body"
+                            [(ngModel)]="pushElement.Product" (change)="changeProductCode(pushElement.Product)"
+                            style="width:120px;" [searchFn]="startsWithSearchFn1">
+
+                            <!-- <ng-option *ngFor="let sList of Slabproductcode_dropdown"
+                                [value]="sList.ProductCodeId ">
+                                {{sList.ProductCodeName}}
+                            </ng-option> -->
+                        </ng-select>
+                            <span class="text-danger validator-message"
+                                *ngIf="isaddnewRecord &&  (pushElement.Product=='')">*
+                                Product Code Required. </span>
+                        </td>
+                        <td> <input class="form-control" maxlength="20" type="text" [(ngModel)]="pushElement.main"
+                                (focusout)="MainWire_lostfocus(pushElement.main)" [ngModelOptions]="{standalone: true}"
+                                (keydown.enter)="onSubmit()" />
+                            <span class="text-danger validator-message"
+                                *ngIf="isaddnewRecord &&  (pushElement.main=='')">*
+                                Main Required. </span>
+                        </td>
+                        <td> <input class="form-control" maxlength="20" type="text" [(ngModel)]="pushElement.cross"
+                                (focusout)="CrossWire_lostfocus(pushElement.cross)"
+                                [ngModelOptions]="{standalone: true}" (keydown.enter)="onSubmit()" />
+                            <span class="text-danger validator-message"
+                                *ngIf="isaddnewRecord &&  (pushElement.cross=='')">*
+                                Cross Required. </span>
+                        </td>
+                        <td> <input class="form-control" maxlength="20" type="text" [(ngModel)]="pushElement.qty"
+                                [ngModelOptions]="{standalone: true}" (keydown.enter)="onSubmit()" />
+                            <span class="text-danger validator-message"
+                                *ngIf="isaddnewRecord &&  (pushElement.qty=='')">*
+                                Qty Required. </span>
+                        </td>
+                        <td>
+                            <ng-select [selectOnTab]="true"    [items]="Slabshapecode_dropdown"
+                            bindLabel="ShapeCodeName"
+                            bindValue="ShapeID" class="ng-selectcustomer" appendTo="body"  [searchFn]="startsWithSearchFn"
+                                [(ngModel)]="pushElement.shape"
+                                (change)="ChangeShapeCode(pushElement,pushElement.shape,Slabshapecode_dropdown,'S')" style="width:120px;">
+
+                                <!-- <ng-option *ngFor="let sList of Slabshapecode_dropdown" [value]="sList.ShapeID">
+                                    {{sList.ShapeCodeName}}
+                                </ng-option> -->
+                            </ng-select>
+                            <span class="text-danger validator-message"
+                                *ngIf="isaddnewRecord &&  (pushElement.shape=='')">*
+                                Shape Required. </span>
+                        </td>
+                        <td *ngIf="ShowMOCO==false"></td>
+                        <td   *ngIf="ShowMOCO==false"  ></td>
+
+                        <td  *ngIf="ShowMOCO==false" ></td>
+
+                        <td  *ngIf="ShowMOCO==false" ></td>
+
+                        <td  *ngIf="ShowMOCO===true" ><input class="form-control" maxlength="20" type="text"   [(ngModel)]="popup_MO1"
+                            [ngModelOptions]="{standalone: true}" (keydown.enter)="onSubmit()" />
+                        <span class="text-danger validator-message"
+                            *ngIf="isaddnewRecord &&  (pushElement.qty=='')">*
+                            Qty Required. </span></td>
+                        <td *ngIf="ShowMOCO===true" ><input class="form-control" maxlength="20" type="text" [(ngModel)]="popup_MO2"
+                            [ngModelOptions]="{standalone: true}" (keydown.enter)="onSubmit()" />
+                        <span class="text-danger validator-message"
+                            *ngIf="isaddnewRecord &&  (pushElement.qty=='')">*
+                            Qty Required. </span></td>
+                        <td *ngIf="ShowMOCO===true" ><input class="form-control" maxlength="20" type="text" [(ngModel)]="popup_CO1"
+                            [ngModelOptions]="{standalone: true}" (keydown.enter)="onSubmit()" />
+                        <span class="text-danger validator-message"
+                            *ngIf="isaddnewRecord &&  (pushElement.qty=='')">*
+                            Qty Required. </span></td>
+                        <td *ngIf="ShowMOCO===true" ><input class="form-control" maxlength="20" type="text" [(ngModel)]="popup_CO2"
+                            [ngModelOptions]="{standalone: true}" (keydown.enter)="onSubmit()" />
+                        <span class="text-danger validator-message"
+                            *ngIf="isaddnewRecord &&  (pushElement.qty=='')">*
+                            Qty Required. </span></td>
+                        <td>
+
+                            <div class=" row custom-control custom-switch" style="margin:auto; padding-left: 4rem;">
+
+                                <input type="checkbox" [(ngModel)]="pushElement.split_up" class="custom-control-input"
+                                    id="Split_Up_Ind_inp_3">
+
+                                <label class="custom-control-label" for="Split_Up_Ind_inp_3"></label>
+
+                            </div>
+
+                        </td>
+                        <td> <input #input2 class="form-control" maxlength="20" type="text" [(ngModel)]="pushElement.pinsize"
+                                style="text-align:center" [ngModelOptions]="{standalone: true}"
+                                (keydown.enter)="onSubmit()" />
+                            <span class="text-danger validator-message"
+                                *ngIf="isaddnewRecord &&  (pushElement.pinsize=='')">*
+                                Pin Size Required. </span>
+                        </td>
+                        <td>
+                            <div class=" row custom-control custom-switch" style="margin:auto; padding-left: 4rem;">
+                                <input type="checkbox" [(ngModel)]="pushElement.prodind" class="custom-control-input"
+                                    id="prod_in_inp">
+                                <label class="custom-control-label" for="prod_in_inp"></label>
+                            </div>
+                        </td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+
+            </table>
+            <!-- BUTTON -->
+            <button class="btn btn-primary" class="bi-chevron-right" ngbTooltip="Image"
+                (click)="showImage = !showImage; LoadShapeParam();" style="  padding: 0;
+                    border: 0;
+                    color: white;
+                    background-color: #0479D6;
+                    margin-left: 1px;
+                    "></button>
+        </div>
+        <!-- IMAGE -->
+        <div [class.mat-elevation-z8]="true" *ngIf="showImage" id="imageBox" class="movable-container" [style.right.px]="right"
+            [style.top.px]="top" (mousedown)="onMouseDown($event)" (document:mousemove)="onMouseMove($event)"
+            (document:mouseup)="onMouseUp($event)"
+            style=" position: fixed;
+                        background-color: white;z-index: 10000;right: 0; top:10%; width: 32%;max-height: 100%; border-radius: 15px;">
+            <div class="row d-flex" style=" text-align:justify; background-color:#fafafa ; margin: 5px;
+                    border-radius: 9px;">
+                <div class="col-md-10">
+                    <h4><b>Shape Parameters</b></h4>
+                </div>
+                <div class="col-md-2">
+                    <i class="fa-solid fa-circle-xmark fa-2xs"></i>
+                    <!-- <i class="fa-solid fa-xmark" style=" font-Weight:bold; font-size: 16px;"></i> -->
+                    <button type="button" class="btn-close" aria-label="Close" (click)="showImage=false;"></button>
+                </div>
+            </div>
+            <div class="row d-flex">
+                <div class="col-md-4"> MW length <input class="form-control" maxlength="20" type="text"
+                        [(ngModel)]="popup_MWLength" [ngModelOptions]="{standalone: true}" /></div>
+                <div class="col-md-4"> CW length <input class="form-control" maxlength="20" type="text"
+                        [(ngModel)]="popup_CWLength" [ngModelOptions]="{standalone: true}" /></div>
+                <div class="col-md-4"></div>
+            </div>
+        
+        
+            <div class="d-flex ">
+        
+                <table class="table w-25 table-striped  table-bordered" style="height: fit-content; margin: 20px;">
+                    <thead>
+                        <tr>
+        
+                            <th>Parameter Name</th>
+                            <th>Parameter Value</th>
+        
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of ShapeParamlist ;index as j">
+                            <td>{{item.ParameterName}}</td>
+                            <td class="text-center">
+        
+                                <input [id]="j==0?'Shapeparam':j" class="form-control" maxlength="20" type="text"
+                                    [readonly]="!item.EditFlag" id="test-{{item.ParameterName}}"
+                                    [(ngModel)]="item.ParameterValue" [ngModelOptions]="{standalone: true}"
+                                    (keydown.Tab)="shapeParameterGrid_KeyDown(ShapeParamlist,item,j)" />
+        
+                            </td>
+                        </tr>
+                    </tbody>
+        
+                </table>
+                <div *ngIf="showImage" class="width_set">
+                    <img class="img-responsive" [src]="'assets/images/Shapes/'+ Imagename +''" alt="image" style="position: relative ;
+                            left: 0px;">
+                </div>
+        
+            </div>
+        
+            <div class="row d-flex">
+                <div class="col-md-3"> MO1 <input #MO1text class="form-control" maxlength="20" type="text"
+                        [(ngModel)]="popup_MO1" [ngModelOptions]="{standalone: true}" /></div>
+                <div class="col-md-3"> MO2 <input class="form-control" maxlength="20" type="text" [(ngModel)]="popup_MO2"
+                        [ngModelOptions]="{standalone: true}" /></div>
+                <div class="col-md-3"> CO1 <input class="form-control" maxlength="20" type="text" [(ngModel)]="popup_CO1"
+                        [ngModelOptions]="{standalone: true}" /></div>
+                <div class="col-md-3"> CO2 <input class="form-control" maxlength="20" type="text" [(ngModel)]="popup_CO2"
+                        [ngModelOptions]="{standalone: true}" /></div>
+        
+            </div>
+            <div class="text-center">
+                <button class="btn btn-primary" (click)="saveButton_Click()">Save</button>
+        
+            </div>
+            <br>
+        </div>
+        <div class="row ml-0 mr-0">
+            <div class="col-md-8">
+                <div class="d-flex mt-2">
+                    <div>
+                        <ngb-pagination [collectionSize]="slabStructureMarklist.length" [(page)]="currentPage"
+                            [pageSize]="itemsPerPage" (pageChange)="onPageChange(currentPage)" [maxSize]="5"
+                            [boundaryLinks]="true">
+                            <ng-template ngbPaginationPrevious>Prev</ng-template>
+                            <ng-template ngbPaginationNext>Next</ng-template>
+                        </ngb-pagination>
+                    </div>
+                    <div>
+                        <select class="custom-select mr-2 ml-3" style="width: auto" [(ngModel)]="itemsPerPage"
+                            (ngModelChange)="OnPageSizeChange(itemsPerPage)">
+                            <option [ngValue]=5>5 </option>
+                            <option [ngValue]=10>10 </option>
+                            <option [ngValue]=20>20 </option>
+                            <option [ngValue]=50>50 </option>
+                            <option [ngValue]=100>100 </option>
+                        </select>
+                        <span>Items per page</span>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-4 mr-0" style="text-align:right !important ;">
+                <button class="btn btn-primary  btn-sm" (click)="Report_Click()">View Report</button>
+                <button class="btn btn-primary  btn-sm" (click)="NewGM_Click()">Add New Group Mark</button>
+
+            </div>
+
+
+
+
+        </div>
+
+    </div>
+</div>
+<!-- <div id="imageBox" class="movable-container"
+[style.right.px]="right" [style.top.px]="top" (mousedown)="onMouseDown($event)"
+(document:mousemove)="onMouseMove($event)" (document:mouseup)="onMouseUp($event)">
+<div>
+    <canvas #myCanvas width="355" height="246" style="width: 355px; height: 246px"></canvas>
+</div>
+</div> -->

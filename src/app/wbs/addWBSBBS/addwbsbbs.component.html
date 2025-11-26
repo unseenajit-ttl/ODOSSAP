@@ -1,0 +1,80 @@
+<div class="modal-header">
+  <h4 class="modal-title">Add WBS With BBS</h4>
+
+  <i class="fa-solid fa-xmark"></i>
+  <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+
+</div>
+<div class="modal-body ">
+
+  <div class="row">
+    <form [formGroup]="WbsBbsForm">
+      <div class="container">
+        <div class="row  ">
+          <div class="col">
+            <label class="form-label">WBS1</label> <br>
+
+            <ng-select formControlName="groupmark" placeholder="Select WBS">
+              <ng-option *ngFor="let sList of wbs1List" [value]="sList.item_id">
+                {{sList.item_text}}
+              </ng-option>
+            </ng-select>
+          </div>
+
+          <div class="col">
+            <label class="form-label">WBS2</label> <br>
+            <ng-select formControlName="groupmark" placeholder="Select WBS">
+              <ng-option *ngFor="let sList of wbs2List" [value]="sList.item_id">
+                {{sList.item_text}}
+              </ng-option>
+            </ng-select>
+
+
+          </div>
+          <div class="col">
+            <label class="form-label">WBS3</label> <br>
+            <ng-select formControlName="groupmark" placeholder="Select WBS">
+              <ng-option *ngFor="let sList of wbs3List" [value]="sList.item_id">
+                {{sList.item_text}}
+              </ng-option>
+            </ng-select>
+          </div>
+
+
+        </div>
+        <div class="row">
+          <div class="col">
+            <label class="form-label">BBS#</label> <br>
+            <input type="text" formControlName="remark" class="form-control"  />
+         
+          </div>
+        
+        
+        <div class="col">
+          <label class="form-label">BBS Description</label> <br>
+          <ng-select formControlName="groupmark" placeholder="Select WBS">
+            <ng-option *ngFor="let sList of BBSDesc3List" [value]="sList.item_id">
+              {{sList.item_text}}
+            </ng-option>
+          </ng-select>
+        </div>
+        <div class="col">
+          <label class="form-label">   </label> <br>
+          <input type="text" formControlName="remark" class="form-control" /> &nbsp;
+
+        </div>
+      </div>
+    </div>
+
+
+    </form>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" (click)="cancel()" class="btn btn-transparent">
+    Cancel
+  </button>
+  <button type="button" (click)="submitReview()" class="btn btn-primary me-2" [disabled]="disableSubmit">
+    Submit
+  </button>
+</div>

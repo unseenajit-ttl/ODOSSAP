@@ -1,0 +1,10 @@
+h1 {
+  font-size: 35px;
+}
+
+button:hover {
+  box-shadow: -4px 4px 11px 1px #888888;
+}
+button:active {
+  box-shadow: none;
+}

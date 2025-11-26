@@ -1,0 +1,1012 @@
+<div class="container-fluid" style="padding: 0">
+  <div class="card m-1">
+    <div class="card-body" style="margin-top: -11px !important">
+      <div *ngIf="OrderSummaryLoading" style="z-index: 500">
+        <div id="pause" class="d-flex align-items-center justify-content-center">
+          <div id="spinner" class="loader"></div>
+        </div>
+      </div>
+      <div class="filter">
+        <form>
+          <div class="row d-flex" style="justify-content: space-between; padding: 7px 0">
+            <!-- <span style="display: flex; align-items: center">
+              <i class="bi bi-arrow-left-short" style="font-size: x-large; color: blue" ngbTooltip="Back"
+                (click)="goBack()"></i>
+              <a style="color: blue">Back to Product Selection</a></span> -->
+            <!-- <br /> -->
+            <span style="font-size: medium; width: auto"><b>ORDER DETAILS (订单详细信息)</b></span>
+            <span style="width: auto">SERIES NO. (序列号): <b>{{ getOrderNumber() }}</b> STATUS(状态):
+              <b>{{ getOrderStatus() }}</b></span>
+
+            <!-- <button class="btn" CLICK>OPEN</button> -->
+          </div>
+        </form>
+
+        <div style="z-index: 500">
+          <!-- <div id="pause" class="d-flex align-items-center justify-content-center">
+                        <div id="spinner" class="loader"></div>
+                    </div> -->
+        </div>
+        <div>
+          <div class="table-responsive table-wrapper-scroll-y my-custom-scrollbar"
+            [ngClass]="{ 'Collapse-Common-data-view': commonDataCollapse }">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th style="text-align: left">S/No.</th>
+                  <th style="text-align: left; width: 134px">
+                    Separate Delivery
+                  </th>
+                  <th style="text-align: left">WBS</th>
+                  <th style="text-align: left">Structure Element</th>
+                  <th style="text-align: left">Product</th>
+                  <th style="text-align: left">Order Tonnage (Tonn)</th>
+                  <th style="text-align: left">Order Qty (Pcs)</th>
+                  <th *ngIf="IsPrecast" > IsPrecast? </th>
+                  <th *ngIf="IsPrecast" > Precast Qty(Pcs) </th>
+                  <th style="text-align: left">Actions</th>
+                  <!-- <th style="text-align: left;">Docs Attached</th>
+                                    <th style="text-align: left;">Product Details</th> -->
+                </tr>
+              </thead>
+              <!-- <thead *ngIf="toggleFilters">
+                                <tr>
+                                    <th></th>
+                                    <th><input class="form-control" type="text" id="searchBlock" [(ngModel)]="Sno"
+                                             placeholder="Search here" /></th>
+                                    <th><input class="form-control" type="text" id="searchFrom"
+                                            placeholder="Search here" [(ngModel)]="WBS1"
+                                             />
+                                    </th>
+                                    <th><input class="form-control" type="text" id="searchTo" placeholder="Search here"
+                                            [(ngModel)]="WBS2"  />
+                                    </th>
+                                    <th><input class="form-control" type="text" id="searchPart"
+                                            placeholder="Search here" [(ngModel)]="WBS3"
+                                             />
+                                    </th>
+                                    <th><input class="form-control" type="text" id="searchStructure"
+                                            placeholder="Search here" [(ngModel)]="StructureEle"
+                                             /></th>
+                                    <th><input class="form-control" type="text" id="searchBlock"
+                                            placeholder="Search here" [(ngModel)]="ProductType"
+                                             /></th>
+                                    <th><input class="form-control" type="text" id="searchFrom"
+                                            placeholder="Search here" [(ngModel)]="PONo"
+                                             />
+                                    </th>
+
+
+                                    <th style="max-width:160px;">
+                                        <mat-form-field appearance="outline"
+                                            style="background-color:white;height: 32px;width: 100% !important;border-radius: 5px;">
+                                            <mat-date-range-input [rangePicker]="picker" placeholder="Search here"
+                                                [formGroup]="UpdatedateRange" (change)="dateChange($event.target)">
+                                                <input matStartDate matInput placeholder="Start date" #dateRangeStart
+                                                    formControlName="start"
+                                                    (dateChange)="updatedateRangeChange(dateRangeStart, dateRangeEnd);">
+                                                <input matEndDate matInput placeholder="End date" #dateRangeEnd
+                                                    formControlName="end"
+                                                    (dateChange)="updatedateRangeChange(dateRangeStart, dateRangeEnd);">
+                                            </mat-date-range-input>
+                                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                            <mat-date-range-picker #picker></mat-date-range-picker>
+                                        </mat-form-field>
+
+                                    </th>
+                                    <th style="max-width:160px;">
+                                        <mat-form-field appearance="outline"
+                                            style="background-color:white;height: 32px;width: 100% !important;border-radius: 5px;">
+                                            <mat-date-range-input [rangePicker]="picker1" placeholder="Search here" [formGroup]="ReqdateRange"
+                                                (change)="dateChange($event.target)">
+                                                <input matStartDate matInput placeholder="Start date" #dateRangeStart formControlName="start1"
+                                                    (dateChange)="reqdateRangeChange(dateRangeStart, dateRangeEnd);">
+                                                <input matEndDate matInput placeholder="End date" #dateRangeEnd formControlName="end1"
+                                                    (dateChange)="reqdateRangeChange(dateRangeStart, dateRangeEnd);">
+                                            </mat-date-range-input>
+                                            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                            <mat-date-range-picker #picker1 ></mat-date-range-picker>
+                                        </mat-form-field>
+
+                                    </th>
+                                    <th><input class="form-control" type="text" id="searchBlock"
+                                            placeholder="Search here" [(ngModel)]="Tonnage"
+                                             /></th>
+                                    <th>
+
+                                    </th>
+                                    <th><span style="margin:auto; padding:2px">
+                                            <i class="fa fa-refresh" ngbTooltip="Reset"
+                                                style=" color:red;font-size:20px;" (click)="Reset_Filter()"></i>
+
+
+                                        </span></th>
+
+
+                                </tr>
+                            </thead> -->
+
+              <tbody>
+                <ng-container *ngFor="let item of OrderSummaryTableData; index as i">
+                  <tr>
+                    <td style="text-align: left">{{ item.SNo }}</td>
+                    <td>
+                      <div *ngIf="OrderSummaryTableData.length > 1" class="row custom-control custom-switch"
+                        style="margin: auto; padding-left: 3rem">
+                        <input type="checkbox" [(ngModel)]="item.SeperateDelivery" [checked]="item.SeperateDelivery"
+                          (ngModelChange)="
+                            item.showDetails = false;
+                            setSeparateDeliveryData(item.SeperateDelivery)
+                          " class="custom-control-input" id="{{ item.SNo }}" />
+                        <label class="custom-control-label" for="{{ item.SNo }}"></label>
+                      </div>
+                    </td>
+                    <td style="text-align: left">{{ item.WBS }}</td>
+                    <td style="text-align: left">
+                      {{ item.StructureElement }}
+                    </td>
+                    <td style="text-align: left">
+                      <!-- style="color: {{
+                        item.OrderQty != '0' ? '#0479d6' : 'black'
+                      }};"  -->
+                      <a [style.color]="'#0479d6'" style="font-size: 14px;" (click)="openOrderDetailsProduct(item)">{{ item.Product }}</a>
+                    </td>
+                    <td style="text-align: left">
+                      {{ item.OrderTonnage | number : "1.3-3" }}
+                    </td>
+                    <td style="text-align: left">{{ item.OrderQty }}</td>
+                    <td *ngIf="IsPrecast"> <input *ngIf=" item.Product=='CUT-TO-SIZE-MESH'" type="checkbox" [(ngModel)]="isPrecastFlag" (change)="changePO(item)" (click)="isPrecastFlag && $event.preventDefault()" /> </td>
+                    <td *ngIf="IsPrecast"> {{  item.Product=='CUT-TO-SIZE-MESH'? item.precastQty :0 }} </td>
+                    <td style="text-align: left">
+                      <span class="badge" (click)="openDocument(item)" *ngIf="(item?.NoofAttachedDoc ?? 0) > 0">{{
+                        item.NoofAttachedDoc
+                        }}</span>
+
+                      <i class="bi bi-paperclip" style="font-size: 3vh;" ngbTooltip="Docs Attached" (click)="openDocument(item)"></i>&nbsp;
+                      <!-- <i class="bi bi-pencil-square" (click)="setSelectedOrederNumber(item.OrderNumber, item)"
+                        [routerLink]="[getProductDetailsRoute(item.Product)]" ngbTooltip="Product Details"></i>&nbsp; -->
+                        <!-- <i class="bi bi-pencil-square" *ngIf="showProdDeatsils(item) || isPrecastFlag" (click)="
+                          setSelectedOrederNumber(item.OrderNumber, item)
+                        " ngbTooltip="Product Details"></i>&nbsp; -->
+
+                        <a>               
+                          
+                          <img
+  class="product-details-icon"
+  style="display:inline-block;"
+  (click)="setSelectedOrederNumber(item.OrderNumber, item, true)"
+  *ngIf="showProdDetailsEdit(item) || isPrecastFlag"
+  [src]="item.Product == 'CUT-TO-SIZE-MESH'
+          ? '../../../assets/images/edit_Precast.png'
+          : '../../../assets/images/product_edit.png'"
+    [ngbTooltip]="item.Product == 'CUT-TO-SIZE-MESH'?'Enter Precast data': 'Product Details'"      
+/>
+
+                          <img class="product-details-icon" style="display:inline-block;" (click)="setSelectedOrederNumber(item.OrderNumber, item,false)" *ngIf="showProdDetailsView(item)" src="../../../assets/images/product_view.png"
+                            ngbTooltip="Product Details">
+                        </a>&nbsp;
+                      <!-- <i class="bi bi-pencil-square" *ngIf="showProdDeatsils(item)" (click)="
+                          setSelectedOrederNumber(item.OrderNumber, item)
+                        " ngbTooltip="Product Details"></i>&nbsp; -->
+
+                      <!-- (click)="openProductDetails()" -->
+                      <i class="bi bi-trash3" style="color: red;font-size: 3vh;" *ngIf="checkTableItems()" (click)="
+                          deleteOrder(
+                            item.OrderNumber,
+                            item.StructureElement,
+                            item.Product
+                          )
+                        " ngbTooltip="Delete Product"></i>
+                    </td>
+                  </tr>
+                  <tr *ngIf="item.SeperateDelivery">
+                    <td colspan="9">
+                      <div class="row mr-0 ml-0">
+                        <div class="col-md-3" style="text-align: left !important">
+                          <label class="form-label">PO # (订单号码):</label>
+                          <br />
+                          <!-- <input
+                            type="text"
+                            class="form-control"
+                            [(ngModel)]="item.PONumber"
+                          /> -->
+                          <input type="text" class="form-control" [ngClass]="{
+                              duplicatePO:
+                                PONOisPresent === true || PODuplicateList(item)
+                            }" style="font-weight: 650; font-size: larger" (keyup)="
+                              validatePoNumber(item.PONumber);
+                              CheckPOforCAB(item, item.PONumber)
+                            " [(ngModel)]="item.PONumber" (blur)="item.PONumber = ConvertToUpper(item.PONumber);SaveBBS(item)" maxlength="20" />
+                          &nbsp;
+                        </div>
+                        <div class="col-md-2" style="text-align: left !important">
+                          <label class="form-label" style="font-weight: bold;">Required Date (交货日期):</label>
+                          <br />
+                          <!-- <input type="text" class="form-control" /> &nbsp; -->
+                          <mat-form-field style="display: contents">
+                            <!-- <mat-label>Choose a date</mat-label> -->
+                            <input matInput [min]="getMinDate()" [max]="getFutureDate()" [(ngModel)]="item.RequiredDate"
+                              (ngModelChange)="
+                                checkReqDate(item.Product, item.RequiredDate)
+                              " [matDatepicker]="picker" style="
+                                height: 37px !important;
+                                border: 0 !important;
+                              " />
+                            <!-- <mat-hint style="font-size: xx-small"
+                              >YYYY-MM-DD</mat-hint
+                            > -->
+                            <mat-datepicker-toggle matIconSuffix [for]="picker" style="padding-top: 15px !important">
+                            </mat-datepicker-toggle>
+                            <mat-datepicker [dateClass]="dateClass" #picker></mat-datepicker>
+                          </mat-form-field>
+                        </div>
+                        <div class="col-md-3" style="text-align: left !important">
+                          <label class="form-label" style="text-align: left !important;font-weight: bold">Transport (运输): {{item.Transport}}</label>
+                          <br />
+                          <ng-select [(ngModel)]="item.Transport" [selectOnTab]="true" class="ng-selectcustomer"
+                            appendTo="body">
+                            <ng-option *ngFor="let sList of TransportList" [value]="sList.code">
+                              {{ sList.name }}
+                            </ng-option>
+                          </ng-select>
+                          &nbsp;
+                        </div>
+
+                        <div class="col-md-4" style="text-align: left !important;font-weight: bold;">
+                          <label class="form-label">Special Remarks (特别备注):
+                          </label>
+                          <br />
+                          <div class="d-flex">
+                            <!-- <input
+                              type="text"
+                              class="form-control"
+                              [(ngModel)]="item.SpecialRemarks"
+                              maxlength="100"
+                              style="border-radius: 5px 0 0 5px"
+                            /> -->
+                            <textarea [(ngModel)]="item.SpecialRemarks" type="text" maxlength="100" class="form-control" style="height: 28px"
+                              [readonly]="!isEditble" (blur)="item.SpecialRemarks = ConvertToUpper(item.SpecialRemarks);"></textarea>
+                            <span *ngIf="
+                                item.SpecialRemarks == '' ||
+                                item.SpecialRemarks == null
+                              " style="
+                                padding: 4px;
+                                background-color: #ccc6c682;
+                                font-size: x-small;
+                                border-radius: 0 5px 5px 0;
+                              ">100</span>
+                            <span *ngIf="
+                                item.SpecialRemarks != '' &&
+                                item.SpecialRemarks != null
+                              " style="
+                                padding: 4px;
+                                background-color: #ccc6c682;
+                                font-size: x-small;
+                                border-radius: 0 5px 5px 0;
+                              ">{{ 100 - item.SpecialRemarks.length }}
+                            </span>
+                          </div>
+                        </div>
+
+                        <div class="col-md-2" style="text-align: left !important" *ngIf="item.Product == 'CAB'">
+                          <label class="form-label" style="font-weight: bold;">BBS Numnber:</label> <br />
+                          <input id="bbsInput" type="text" class="form-control" [ngClass]="{
+                              'Empty-BBSDesc': checkDuplicateBBSNumber(item)
+                            }" [(ngModel)]="item.BBSNumnber" (blur)="item.BBSNumnber = ConvertToUpper(item.BBSNumnber);SaveBBS(item)" (keydown.enter)="SaveBBS(item)"
+                            [readonly]="!isEditble" maxlength="12" />
+                          &nbsp;
+                        </div>
+                        <div class="col-md-5" style="text-align: left !important" *ngIf="item.Product == 'CAB'">
+                          <label class="form-label" style="font-weight: bold;">BBS Description:</label>
+                          <br />
+                          <textarea id="bbsDescInput" [(ngModel)]="item.BBSDescription" pattern="/[^a-zA-Z0-9]/g" [ngClass]="{
+                              'Empty-BBSDesc':
+                                item.BBSNumnber && !item.BBSDescription
+                            }" (blur)="item.BBSDescription = ConvertToUpper(item.BBSDescription);SaveBBS(item)" (keydown.enter)="SaveBBS(item)" type="text" class="form-control"
+                            style="height: 28px" appAlphaNumericOnly [readonly]="!isEditble" maxlength="40"></textarea>
+                          &nbsp;
+                        </div>
+                        <div class="col-md-5" style="text-align: left !important">
+                          <label class="form-label" style="font-weight: bold;">Additional Remark:</label>
+                          <br />
+                          <input type="text" class="form-control" [(ngModel)]="item.AdditionalRemark"  (blur)="item.AdditionalRemark = ConvertToUpper(item.AdditionalRemark);"/>
+                          &nbsp;
+                        </div>
+                      </div>
+                      <div class="row mr-0 ml-0">
+                        <!-- kunal -->
+                        <div class="col-md-3" style="text-align: left !important">
+                          <label class="form-label" style="font-weight: bold;">Site Contact (联系人):</label>
+                          <br />
+                          <input type="text" class="form-control"  [(ngModel)]="item.SiteContact" [readonly]="!isEditble" (blur)="item.SiteContact = ConvertToUpper(item.SiteContact);"/>
+                          &nbsp;
+                        </div>
+                        <div class="col-md-3" style="text-align: left !important">
+                          <label class="form-label" style="font-weight: bold;">Site Contact Handphone (手机号码):</label>
+                          <br />
+                          <input type="text" class="form-control" (keyup)="
+                              item.Handphone = ConvertToUpper(item.Handphone)
+                            " [(ngModel)]="item.Handphone" [readonly]="!isEditble" />
+                          &nbsp;
+                        </div>
+                        <div class="col-md-3" style="text-align: left !important">
+                          <label class="form-label" style="font-weight: bold;">Goods Receiver (收货人):</label>
+                          <br />
+                          <input type="text" class="form-control"  [(ngModel)]="item.GoodsReceiver" [readonly]="!isEditble" (blur)="item.GoodsReceiver = ConvertToUpper(item.GoodsReceiver);"/>
+                          &nbsp;
+                        </div>
+                        <div class="col-md-3" style="text-align: left !important">
+                          <label class="form-label" style="font-weight: bold;">Goods Receiver Handphone (手机号码):</label>
+                          <br />
+                          <input type="text" class="form-control"  [(ngModel)]="item.GoodsReceiverHandphone" [readonly]="!isEditble" (blur)="item.GoodsReceiverHandphone = ConvertToUpper(item.GoodsReceiverHandphone);" />
+                          &nbsp;
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="9" *ngIf="item.showDetails && item.Product == 'CAB'">
+                      <div class="cab-details table-responsive table-wrapper-scroll-y my-custom-scrollbar">
+                        <div class="coupler-type" *ngIf="CabOrderDetails_Coupler">Coupler Type: {{CabOrderDetails_Coupler}} </div>
+                        <table class="table table-bordered" style="width: 80%">
+                          <thead>
+                            <tr>
+                              <th style="text-align: left">SNo</th>
+                              <th style="text-align: left">
+                                Structure Element
+                              </th>
+                              <th style="text-align: left">BBS No</th>
+                              <th style="text-align: left">BBS Description</th>
+                              <th style="text-align: left">CAB Weight (KG)</th>
+                              <th style="text-align: left">SB Weight (KG)</th>
+                              <th style="text-align: left">
+                                Total Weight (KG)
+                              </th>
+                            </tr>
+                          </thead>
+
+                          <tbody>
+                            <tr *ngFor="let item of CabOrderDetails; index as i">
+                              <td style="text-align: left">{{ i + 1 }}</td>
+                              <td style="text-align: left">
+                                {{ item.BBSStrucElem }}
+                              </td>
+                              <td style="text-align: left">
+                                {{ item.BBSNo }}
+                              </td>
+                              <td style="text-align: left">
+                                {{ item.BBSDesc }}
+                              </td>
+                              <td style="text-align: left">
+                                {{ item.BBSOrderCABWT }}
+                              </td>
+                              <td style="text-align: left">
+                                {{ item.BBSOrderSTDWT }}
+                              </td>
+                              <td style="text-align: left">
+                                {{ item.BBSTotalWT }}
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </td>
+                    <td colspan="9" *ngIf="
+                        item.showDetails &&
+                        (item.Product == 'COIL' ||
+                          item.Product == 'COUPLER' ||
+                          item.Product == 'STANDARD-BAR')
+                      ">
+                      <div class="table-responsive table-wrapper-scroll-y my-custom-scrollbar"
+                        style="display: flex; justify-content: center">
+                        <table class="table table-bordered" style="width: 80%">
+                          <thead>
+                            <tr>
+                              <th style="text-align: left">SSID</th>
+                              <th style="text-align: left">Product Code</th>
+                              <th style="text-align: left">
+                                Product Description
+                              </th>
+                              <th style="text-align: left">Diameter</th>
+                              <th style="text-align: left">Grade</th>
+                              <th style="text-align: left">Unit Weight (KG)</th>
+                              <th style="text-align: left">Order Pieces</th>
+                              <th style="text-align: left">
+                                Total Weight (KG)
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let item of OrderDetails; index as i">
+                              <td style="text-align: left">{{ item.SSID }}</td>
+                              <td style="text-align: left">
+                                {{ item.ProdCode }}
+                              </td>
+                              <td style="text-align: left">
+                                {{ item.ProdDesc }}
+                              </td>
+                              <td style="text-align: left">
+                                {{ item.Diameter }}
+                              </td>
+                              <td style="text-align: left">{{ item.Grade }}</td>
+                              <td style="text-align: left">
+                                {{ item.UnitWT }}
+                              </td>
+                              <td style="text-align: left">
+                                {{ item.order_pcs }}
+                              </td>
+                              <td style="text-align: left">
+                                {{ item.order_wt }}
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </td>
+                    <td colspan="9" *ngIf="
+                        item.showDetails && item.Product == 'STANDARD-MESH'
+                      ">
+                      <div class="table-responsive table-wrapper-scroll-y my-custom-scrollbar"
+                        style="display: flex; justify-content: center">
+                        <table class="table table-bordered" style="width: 80%">
+                          <thead>
+                            <tr>
+                              <th style="text-align: left">SNo</th>
+                              <th style="text-align: left">Product Code</th>
+                              <th style="text-align: left">Main Length (mm)</th>
+                              <th style="text-align: left">
+                                Cross Length (mm)
+                              </th>
+                              <th style="text-align: left">MW Dia</th>
+                              <th style="text-align: left">MW Spacing</th>
+                              <th style="text-align: left">MO1/MO2</th>
+                              <th style="text-align: left">CW Dia</th>
+                              <th style="text-align: left">CW Spacing</th>
+                              <th style="text-align: left">CO1/CO2</th>
+                              <th style="text-align: left">Unit Weight (KG)</th>
+                              <th style="text-align: left">Order Pieces</th>
+                              <th style="text-align: left">
+                                Total Weight (KG)
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let item of OrderDetails; index as i">
+                              <td style="text-align: left">{{ i + 1 }}</td>
+                              <td style="text-align: left">
+                                {{ item.sheet_name }}
+                              </td>
+                              <td style="text-align: left">
+                                {{ item.mw_length }}
+                              </td>
+                              <td style="text-align: left">
+                                {{ item.cw_length }}
+                              </td>
+                              <td style="text-align: left">
+                                {{ item.mw_size }}
+                              </td>
+                              <td style="text-align: left">
+                                {{ item.mw_spacing }}
+                              </td>
+                              <td style="text-align: left">
+                                {{ item.mo1 }}/{{ item.mo2 }}
+                              </td>
+                              <td style="text-align: left">
+                                {{ item.cw_size }}
+                              </td>
+                              <td style="text-align: left">
+                                {{ item.cw_spacing }}
+                              </td>
+                              <td style="text-align: left">
+                                {{ item.co1 }}/{{ item.co2 }}
+                              </td>
+                              <td style="text-align: left">
+                                {{ item.unit_weight }}
+                              </td>
+                              <td style="text-align: left">
+                                {{ item.order_pcs }}
+                              </td>
+                              <td style="text-align: left">
+                                {{ item.order_wt }}
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </td>
+                  </tr>
+                </ng-container>
+                <tr style="font-weight: 600">
+                  <td colspan="5" style="text-align: start">TOTAL</td>
+                  <td style="text-align: left">
+                    <!-- Total Weight:  -->
+                    {{
+                    gettotalWeight(OrderSummaryTableData) | number : "1.3-3"
+                    }}
+                  </td>
+                  <td style="text-align: left">
+                    <!-- Total Qty:  -->
+                    {{ gettotalQty(OrderSummaryTableData) }}
+                  </td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="collapse-Button">
+            <button class="btn" (click)="commonDataCollapse = !commonDataCollapse">
+              <i class="collapse-icon" *ngIf="!commonDataCollapse" class="bi bi-caret-down-fill"></i>
+              <i class="collapse-icon" *ngIf="commonDataCollapse" class="bi bi-caret-up-fill"></i>
+            </button>
+          </div>
+          <!-- <div class="row">
+            <h4>TOTAL</h4>
+          </div> -->
+          <section class="collapsible" [@collapse]="commonDataCollapse" style="margin: 0">
+            <div style="border-style: ridge; padding: 17px">
+              <div class="row">
+                <div class="col-md-3">
+                  <label class="form-label" style="font-weight: bold;">PO # (订单号码):</label> <br />
+                  <!-- <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="PONO"
+                (ngModelChange)="setPONO(PONO)"
+                /> -->
+                  <!-- style="border-bottom:{{borderBottom}}" -->
+                  <input type="text" class="form-control" [readonly]="!isEditble"
+                    [ngClass]="{ duplicatePO: PONOisPresent === true }" style="font-weight: 650; font-size: larger;font-weight:bold"
+                    [(ngModel)]="PONO" (ngModelChange)="validatePoNumber(PONO)"
+                    (blur)="PONO = ConvertToUpper(PONO); setPONO(PONO)" list="pononumber" maxlength="20" />
+                  <span class="errorMessage" *ngIf="showError(PONO) && submitOrder">* PO # Required</span>
+                  <datalist id="pononumber">
+                    <option *ngFor="let item of PONumberList" [value]="item"></option>
+                  </datalist>
+                  &nbsp;
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label" style="font-weight: bold;">PO Date (订货日期):</label> <br />
+                  <!-- <input type="text" class="form-control" [(ngModel)]="PODate" /> -->
+                  <mat-form-field style="display: contents">
+                    <!-- <mat-label>Choose a date</mat-label> -->
+                    <input matInput [(ngModel)]="PODate" [matDatepicker]="picker1"
+                      style="height: 37px !important; border: 0 !important;font-weight:bold" [disabled]="!isEditble" />
+                    <mat-hint style="font-size: xx-small">YYYY-MM-DD</mat-hint>
+                    <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
+                    <mat-datepicker [dateClass]="dateClass" #picker1></mat-datepicker>
+                  </mat-form-field>
+                  <!-- <mat-error *ngIf="dateControl.hasError('pastDate')">Please select a future date.</mat-error> -->
+
+                  &nbsp;
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label" style="font-weight: bold;">Required Date (交货日期):</label>
+                  <br />
+                  <!-- <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="RequiredDate"
+              /> -->
+
+                  <mat-form-field style="display: contents">
+                    <!-- <mat-label>Choose a date</mat-label> -->
+                    <input matInput [min]="getMinDate()" [max]="getFutureDate()" [(ngModel)]="RequiredDate"
+                      (ngModelChange)="
+                        setReqDate(RequiredDate); checkReqDates()
+                      " [matDatepicker]="picker2" style="height: 37px !important; border: 0 !important;font-weight:bold"
+                      [disabled]="!isEditble" />
+                    <mat-hint style="font-size: xx-small">YYYY-MM-DD</mat-hint>&nbsp;
+                    <mat-hint class="errorMessage" *ngIf="showError(RequiredDate) && submitOrder">* Req Date Required
+                    </mat-hint>
+                    <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
+                    <mat-datepicker [dateClass]="dateClass" #picker2></mat-datepicker>
+                  </mat-form-field>
+
+                  <!-- <mat-form-field>
+                <mat-label>Choose a date</mat-label>
+                <input matInput [matDatepicker]="picker" />
+                <mat-datepicker-toggle
+                  matIconSuffix
+                  [for]="picker"
+                ></mat-datepicker-toggle>
+                <mat-datepicker
+                  #picker
+                  startView="year"
+                  [startAt]="startDate"
+                ></mat-datepicker>
+              </mat-form-field> -->
+
+                  &nbsp;
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label" style="font-weight: bold;">Transport (运输):</label> <br />
+                  <ng-select [disabled]="!isEditble" [selectOnTab]="true" [(ngModel)]="Transport"
+                    (ngModelChange)="setTransport(Transport)" class="ng-selectcustomer" style="font-weight: bold;">
+                    <ng-option *ngFor="let sList of TransportList" [value]="sList.code" style="font-weight: bold;">
+                      {{ sList.name }}
+                    </ng-option>
+                  </ng-select>
+                  <span class="errorMessage" *ngIf="showError(Transport) && submitOrder">* Transport Required</span>
+                  &nbsp;
+                </div>
+              </div>
+              <div class="row" *ngIf="showCommonBBS()">
+                <div class="col-md-4" style="padding-bottom: 15px">
+                  <label class="form-label" style="font-weight: bold;">BBS No:</label> <br />
+                  <div class="d-flex">
+                    <input id="bbsInput" type="text" class="form-control" [ngClass]="{
+                        'Empty-BBSDesc': checkDuplicateBBSNumber(
+                          this.OrderSummaryTableData[0]
+                        )
+                      }"  [(ngModel)]="this.OrderSummaryTableData[0].BBSNumnber"
+                      (blur)="this.OrderSummaryTableData[0].BBSNumnber = ConvertToUpper(this.OrderSummaryTableData[0].BBSNumnber);SaveBBS(this.OrderSummaryTableData[0])"
+                      (keydown.enter)="SaveBBS(this.OrderSummaryTableData[0])" [readonly]="!isEditble" maxlength="12" style="font-weight: bold;"/>
+                    <!-- <span *ngIf="SiteContact == '' || SiteContact == null" style="
+                    padding: 4px;
+                    background-color: #ccc6c682;
+                    font-size: x-small;
+                    border-radius: 0 5px 5px 0;
+                  ">100</span>
+                  <span *ngIf="SiteContact != '' && SiteContact != null" style="
+                    padding: 4px;
+                    background-color: #ccc6c682;
+                    font-size: x-small;
+                    border-radius: 0 5px 5px 0;
+                  ">{{ 100 - SiteContact.length }}</span> -->
+                  </div>
+                </div>
+                <div class="col-md-8" style="padding-bottom: 15px">
+                  <label class="form-label" style="font-weight: bold;">BBS Desc:</label> <br />
+                  <div class="d-flex">
+                    <textarea id="bbsDescInput" [(ngModel)]="this.OrderSummaryTableData[0].BBSDescription" [disabled]="!isEditble"
+                      [ngClass]="{
+                        'Empty-BBSDesc':
+                          (this.OrderSummaryTableData[0].BBSNumnber &&
+                          !this.OrderSummaryTableData[0].BBSDescription)
+                      }"  (blur)="this.OrderSummaryTableData[0].BBSDescription = ConvertToUpper(this.OrderSummaryTableData[0].BBSDescription);SaveBBS(this.OrderSummaryTableData[0])"
+                      (keydown.enter)="SaveBBS(this.OrderSummaryTableData[0])" type="text" class="form-control"
+                      style="height: 28px;font-weight:bold" pattern="[a-zA-Z0-9]*" maxlength="40"></textarea>
+                    <!-- <span *ngIf="SiteContact == '' || SiteContact == null" style="
+                    padding: 4px;
+                    background-color: #ccc6c682;
+                    font-size: x-small;
+                    border-radius: 0 5px 5px 0;
+                  ">100</span>
+                  <span *ngIf="SiteContact != '' && SiteContact != null" style="
+                    padding: 4px;
+                    background-color: #ccc6c682;
+                    font-size: x-small;
+                    border-radius: 0 5px 5px 0;
+                  ">{{ 100 - SiteContact.length }}</span> -->
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4" style="padding-bottom: 15px">
+                  <label class="form-label" style="font-weight: bold;">Site Contact (联系人):</label>
+                  <br />
+                  <div class="d-flex">
+                    <input type="text" class="form-control" list="site-contact" (blur)="SiteContact = ConvertToUpper(SiteContact);"
+                      [(ngModel)]="SiteContact" (ngModelChange)="
+                        setSiteContactM(SiteContact); setRemarks()
+                      " maxlength="100" style="border-radius: 5px 0 0 5px;font-weight:bold" [readonly]="!isEditble" />
+                    <span *ngIf="SiteContact == '' || SiteContact == null" style="
+                        padding: 4px;
+                        background-color: #ccc6c682;
+                        font-size: x-small;
+                        border-radius: 0 5px 5px 0;
+                      ">100</span>
+                    <span *ngIf="SiteContact != '' && SiteContact != null" style="
+                        padding: 4px;
+                        background-color: #ccc6c682;
+                        font-size: x-small;
+                        border-radius: 0 5px 5px 0;
+                      ">{{ 100 - SiteContact.length }}</span>
+
+                    <!-- <datalist id="site-contact">
+                      <option *ngFor="let item of siteContactList" [value]="item.name"></option>
+                    </datalist> -->
+                  </div>
+                </div>
+
+                <div class="col-md-4" style="padding-bottom: 15px">
+                  <label class="form-label" style="font-weight: bold;">Handphone (手机号码):</label> <br />
+                  <div class="d-flex">
+                    <input type="text" class="form-control" [(ngModel)]="SiteHandphone" (ngModelChange)="
+                        setHandphoneM(SiteHandphone); setRemarks()
+                      " maxlength="50" style="border-radius: 5px 0 0 5px;font-weight:bold" [readonly]="!isEditble" (blur)="SiteHandphone = ConvertToUpper(SiteHandphone);" />
+                    <span *ngIf="SiteHandphone == '' || SiteHandphone == null" style="
+                        padding: 4px;
+                        background-color: #ccc6c682;
+                        font-size: x-small;
+                        border-radius: 0 5px 5px 0;
+                      ">50</span>
+                    <span *ngIf="SiteHandphone != '' && SiteHandphone != null" style="
+                        padding: 4px;
+                        background-color: #ccc6c682;
+                        font-size: x-small;
+                        border-radius: 0 5px 5px 0;
+                      ">{{ 50 - SiteHandphone.length }}</span>
+                  </div>
+                </div>
+
+                <div class="col-md-4" style="padding-bottom: 15px">
+                  <label class="form-label" style="font-weight: bold;">Email (电邮地址):</label> <br />
+                  <div class="d-flex">
+                    <input type="text" class="form-control" [(ngModel)]="SiteEmail" maxlength="200"
+                    (blur)="SiteEmail = UpdateEmail(SiteEmail)"
+                      style="border-radius: 5px 0 0 5px;font-weight:bold" [readonly]="!isEditble" />
+                    <span *ngIf="SiteEmail == '' || SiteEmail == null" style="
+                        padding: 4px;
+                        background-color: #ccc6c682;
+                        font-size: x-small;
+                        border-radius: 0 5px 5px 0;
+                      ">200</span>
+                    <span *ngIf="SiteEmail != '' && SiteEmail != null" style="
+                        padding: 4px;
+                        background-color: #ccc6c682;
+                        font-size: x-small;
+                        border-radius: 0 5px 5px 0;
+                      ">{{ 200 - SiteEmail.length }}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4" style="padding-bottom: 15px">
+                  <label class="form-label" style="font-weight: bold;">Goods Receiver (收货人):</label>
+                  <br />
+                  <div class="d-flex">
+                    <input type="text" class="form-control" list="goods-receiver" (blur)="GoodsReceiver = ConvertToUpper(GoodsReceiver);"
+                      [(ngModel)]="GoodsReceiver" (ngModelChange)="
+                        setGoodsReceiverM(GoodsReceiver); setRemarks()
+                      " maxlength="100" style="border-radius: 5px 0 0 5px;font-weight:bold" [readonly]="!isEditble" />
+
+                    <span *ngIf="GoodsReceiver == '' || GoodsReceiver == null" style="
+                        padding: 4px;
+                        background-color: #ccc6c682;
+                        font-size: x-small;
+                        border-radius: 0 5px 5px 0;
+                      ">100</span>
+                    <span *ngIf="GoodsReceiver != '' && GoodsReceiver != null" style="
+                        padding: 4px;
+                        background-color: #ccc6c682;
+                        font-size: x-small;
+                        border-radius: 0 5px 5px 0;
+                      ">{{ 100 - GoodsReceiver.length }}</span>
+
+                    <!-- <datalist id="goods-receiver">
+                      <option *ngFor="let item of goodsReceiverList" [value]="item.name"></option>
+                    </datalist> -->
+                  </div>
+                </div>
+
+                <div class="col-md-4" style="padding-bottom: 15px">
+                  <label class="form-label" style="font-weight: bold;">Handphone (手机号码):</label> <br />
+                  <div class="d-flex">
+                    <input type="text" class="form-control" [(ngModel)]="ReceiverHandphone" (ngModelChange)="
+                        setGoodsReceiverHandphoneM(ReceiverHandphone);
+                        setRemarks()
+                      " maxlength="50" style="border-radius: 5px 0 0 5px;font-weight:bold" [readonly]="!isEditble" />
+                    <span *ngIf="
+                        ReceiverHandphone == '' || ReceiverHandphone == null
+                      " style="
+                        padding: 4px;
+                        background-color: #ccc6c682;
+                        font-size: x-small;
+                        border-radius: 0 5px 5px 0;
+                      ">50</span>
+                    <span *ngIf="
+                        ReceiverHandphone != '' && ReceiverHandphone != null
+                      " style="
+                        padding: 4px;
+                        background-color: #ccc6c682;
+                        font-size: x-small;
+                        border-radius: 0 5px 5px 0;
+                      ">{{ 50 - ReceiverHandphone.length }}</span>
+                  </div>
+                </div>
+                <div class="col-md-4" style="padding-bottom: 15px">
+                  <label class="form-label" style="font-weight: bold;">Email (电邮地址):</label> <br />
+                  <div class="d-flex">
+                    <input type="text" class="form-control" [(ngModel)]="ReceiverEmail" maxlength="200"
+                    (blur)="ReceiverEmail = UpdateEmail(ReceiverEmail)"
+                      style="border-radius: 5px 0 0 5px;font-weight:bold" [readonly]="!isEditble" />
+                    <span *ngIf="ReceiverEmail == '' || ReceiverEmail == null" style="
+                        padding: 4px;
+                        background-color: #ccc6c682;
+                        font-size: x-small;
+                        border-radius: 0 5px 5px 0;
+                      ">200</span>
+                    <span *ngIf="ReceiverEmail != '' && ReceiverEmail != null" style="
+                        padding: 4px;
+                        background-color: #ccc6c682;
+                        font-size: x-small;
+                        border-radius: 0 5px 5px 0;
+                      ">{{ 200 - ReceiverEmail.length }}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <label class="form-label" style="font-weight: bold;">Address:</label> <br />
+                  <input type="text" class="form-control" [(ngModel)]="PMAddress" maxlength="200" 
+                      style="border-radius: 5px 0 0 5px;font-weight:bold" [readonly]="true" />
+
+                  <!-- <ng-select [disabled]="!isEditble" [selectOnTab]="true" [(ngModel)]="PMAddress"
+                    (ngModelChange)="setPMAdress(PMAddress)" class="ng-selectcustomer" style="font-weight: bold;">
+                    <ng-option *ngFor="let sList of this.GateData" [value]="sList.address" style="font-weight: bold;">
+                      {{ sList.address }}
+                    </ng-option>
+                  </ng-select> -->
+                  
+                  <!-- <span class="errorMessage" *ngIf="showError(PMAddress) && submitOrder">* Address Required</span> -->
+                  &nbsp;
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label" style="font-weight: bold;">Gate Number:</label> <br />
+                  <ng-select [disabled]="!isEditble" [selectOnTab]="true" [(ngModel)]="PMGate"
+                    class="ng-selectcustomer" style="font-weight: bold;">
+                    <ng-option *ngFor="let sList of GateNumberList" [value]="sList" style="font-weight: bold;">
+                      {{ sList }}
+                    </ng-option>
+                  </ng-select>
+                  <!-- <span class="errorMessage" *ngIf="showError(PMGate) && submitOrder">* Gate Number Required</span> -->
+                  &nbsp;
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12" style="padding-bottom: 15px">
+                  <label class="form-label" style="font-weight: bold;">Special Remarks / Delivery Address Optional (特别备注 /
+                    送货地址 可空白)
+                  </label>
+                  <br />
+                  <div class="d-flex">
+                    <input type="text" class="form-control"  [(ngModel)]="DeliveryAddress" (ngModelChange)="
+                        setSpecialRemarksM(DeliveryAddress); setRemarks()
+                      " maxlength="100" style="border-radius: 5px 0 0 5px;font-weight:bold" [readonly]="!isEditble" (blur)="DeliveryAddress = ConvertToUpper(DeliveryAddress);" />
+                    <span *ngIf="DeliveryAddress == '' || DeliveryAddress == null" style="
+                        padding: 4px;
+                        background-color: #ccc6c682;
+                        font-size: x-small;
+                        border-radius: 0 5px 5px 0;
+                      ">100</span>
+                    <span *ngIf="DeliveryAddress != '' && DeliveryAddress != null" style="
+                        padding: 4px;
+                        background-color: #ccc6c682;
+                        font-size: x-small;
+                        border-radius: 0 5px 5px 0;
+                      ">{{ 100 - DeliveryAddress.length }}
+                    </span>
+                  </div>
+                </div>
+
+                <!-- <div class="col-md-6" style="display: none; padding-bottom: 15px">
+                  <label class="form-label" style="font-weight: bold;">BBS Description (BBS说明): </label>
+                  <br />
+                  <div class="d-flex">
+                    <input id="bbsDescInput" type="text" class="form-control"  (blur)="BBSDescription = ConvertToUpper(BBSDescription);"
+                      [(ngModel)]="BBSDescription" (ngModelChange)="setRemarks()" maxlength="60"
+                      style="border-radius: 5px 0 0 5px" appAlphaNumericOnly [readonly]="!isEditble" />
+                    <span *ngIf="BBSDescription == '' || BBSDescription == null" style="
+                        padding: 4px;
+                        background-color: #ccc6c682;
+                        font-size: x-small;
+                        border-radius: 0 5px 5px 0;
+                      ">60</span>
+                    <span *ngIf="BBSDescription != '' && BBSDescription != null" style="
+                        padding: 4px;
+                        background-color: #ccc6c682;
+                        font-size: x-small;
+                        border-radius: 0 5px 5px 0;
+                      ">{{ 60 - BBSDescription.length }}</span>
+                  </div>
+                </div> -->
+              </div>
+              <div class="row">
+                <div class="col-md-12" style="padding-bottom: 15px">
+                  <label class="form-label" style="font-weight: bold;">Additional Remarks: </label>
+                  <br />
+                  <div class="d-flex" style="flex-wrap: nowrap">
+                    <input type="text" class="form-control" [(ngModel)]="AdditionalRemarks"  (ngModelChange)="
+                        setAdditionalRemarksM(AdditionalRemarks); setRemarks()
+                      " maxlength="100" style="border-radius: 5px 0 0 5px;font-weight:bold
+                      " [readonly]="!isEditble" (blur)="AdditionalRemarks = ConvertToUpper(AdditionalRemarks);"/>
+                    <span *ngIf="
+                        AdditionalRemarks == '' || AdditionalRemarks == null
+                      " style="
+                        padding: 4px;
+                        background-color: #ccc6c682;
+                        font-size: x-small;
+                        border-radius: 0 5px 5px 0;
+                      ">100</span>
+                    <span *ngIf="
+                        AdditionalRemarks != '' && AdditionalRemarks != null
+                      " style="
+                        padding: 4px;
+                        background-color: #ccc6c682;
+                        font-size: x-small;
+                        border-radius: 0 5px 5px 0;
+                      ">{{ 100 - AdditionalRemarks.length }}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12" style="padding-bottom: 15px">
+                  <label class="form-label" style="font-weight: bold;">Remarks will Reflect to DO (将出现在交货单上的备注):
+                  </label>
+                  <br />
+                  <div class="d-flex" style="flex-wrap: nowrap">
+                    <input type="text" class="form-control" [(ngModel)]="Remarks" [readonly]="true" maxlength="100"
+                      style="border-radius: 5px 0 0 5px;font-weight:bold"  (blur)="Remarks = ConvertToUpper(Remarks); setRemarks()"/>
+                    <span *ngIf="Remarks == '' || Remarks == null" style="
+                        padding: 4px;
+                        background-color: #ccc6c682;
+                        font-size: x-small;
+                        border-radius: 0 5px 5px 0;
+                      ">100</span>
+                    <span *ngIf="Remarks != '' && Remarks != null" style="
+                        padding: 4px;
+                        background-color: #ccc6c682;
+                        font-size: x-small;
+                        border-radius: 0 5px 5px 0;
+                      ">{{ 100 - Remarks.length }}</span>
+                  </div>
+                </div>
+              </div>
+              <h4 *ngIf="CheckMeshItem()">
+                Note: All the mesh items in this order will be bent using a
+                common size former
+              </h4>
+            </div>
+          </section>
+        </div>
+        <div style="
+            display: flex;
+            justify-content: end;
+            font-size: x-large;
+            align-items: center;
+            padding-top: 10px;
+          ">
+          <span>
+            <i class="fa fa-save" ngbTooltip="Save Details" *ngIf="isEditble" (click)="SaveDetails()"></i>&nbsp;
+            <i class="bi bi-printer" ngbTooltip="Print" (click)="PrintOrder()"></i>&nbsp;
+            <i class="bi bi-clipboard2" ngbTooltip="Clone Orders" (click)="CloneOrder()"></i>&nbsp;
+            <i class="bi bi-trash3" ngbTooltip="Delete" *ngIf="isEditble && (lOrderStatus == 'New' || lOrderStatus == 'Created')"
+              (click)="deleteOrders()"></i>
+          </span>
+        </div>
+        <div style="
+            display: flex;
+            justify-content: end;
+            font-size: x-large;
+            align-items: center;
+          ">
+          <div class="d-flex">
+            <button *ngIf="ShowCreate" class="btn btn-primary btn-sm" type="button"
+              (click)="submitOrder = true; Create()" style="width: 100px; height: 35px">
+              Create Order*
+            </button>
+            <button *ngIf="ShowApprove" class="btn btn-primary btn-sm" type="button" style="width: 115px; height: 35px" (click)="OrderApproval('Approval')">
+              Approve Order
+            </button>
+            <button *ngIf="ShowSubmit" class="btn btn-primary btn-sm" type="button"
+              (click)="submitOrder = true; Submit()" style="width: 100px; height: 35px">
+              Submit Order
+            </button>
+            <button *ngIf="ShowSendApproval" class="btn btn-primary btn-sm" type="button" (click)="SendForApproval()"
+              style="width: 130px; height: 35px">
+              Send for Approval
+            </button>
+            <button *ngIf="Showithdraw" class="btn btn-primary btn-sm" type="button" (click)="Withdraw()"
+              style="width: 130px; height: 35px">
+              Withdraw
+            </button>
+            <button *ngIf="ShowReject" class="btn btn-primary btn-sm" type="button" style="width: 130px; height: 35px" (click)="OrderApproval('Reject')">
+              Reject
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,13 @@
+.table th{
+    /* min-width: fit-content !important; */
+    font-size: 14px;
+  }
+  .table td{
+    text-align: center;
+    min-width: fit-content !important;
+    padding: 0 !important;
+  }
+
+  tbody tr:hover {
+    background: #8bcce8 !important;
+  }

@@ -1,0 +1,17 @@
+.container-fluid {
+  padding: 0;
+}
+.Header {
+  display: flex;
+  justify-content: space-between;
+  font-size: x-large;
+  padding: 10px 5px;
+  background: #e6e6e6;
+}
+
+.subHeading {
+  font-size: large;
+  padding: 8px;
+  border-bottom: 1px solid #e6e6e6;
+  background: #eeeeee;
+}

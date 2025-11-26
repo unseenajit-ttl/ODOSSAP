@@ -1,0 +1,125 @@
+<div cdkDrag cdkDragRootElement=".your-custom-dialog-class">
+  <div class="movable-container">
+    <div class="container-fluid">
+      <div *ngIf="OrderdetailsLoading" style="z-index: 500">
+        <div
+          id="pause"
+          class="d-flex align-items-center justify-content-center"
+        >
+          <div id="spinner" class="loader"></div>
+        </div>
+      </div>
+      <div class="Header">
+        <span>List of Shapes of {{ ShapeCategory }} (段图形列表)</span>
+        <button
+          type="button"
+          class="btn-close"
+          aria-label="Close"
+          (click)="activeModal.dismiss('Cross click')"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div id="shape_category_list">
+          <table id="info-table" border="1" rules="none" style="width: 98%">
+            <tr>
+              <td>&nbsp;J = COUPLER + STANDARD THREAD</td>
+              <td id="info-table-img">
+                <img
+                  src="../../../../../assets/images/J2.jpg"
+                  style="margin: 0px; padding: 0px"
+                />
+                <img
+                  src="../../../../../assets/images/J1.jpg"
+                  style="margin: 0px; padding: 0px"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>&nbsp;K = STANDARD THREAD</td>
+              <td id="info-table-img">
+                <img
+                  src="../../../../../assets/images/K2.jpg"
+                  style="margin: 0px; padding: 0px"
+                />
+                <img
+                  src="../../../../../assets/images/K1.jpg"
+                  style="margin: 0px; padding: 0px"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>&nbsp;H = POSITION COUPLER + EXTENDED THREAD</td>
+              <td id="info-table-img">
+                <img
+                  src="../../../../../assets/images/H2.jpg"
+                  style="margin: 0px; padding: 0px"
+                />
+                <img
+                  src="../../../../../assets/images/H1.jpg"
+                  style="margin: 0px; padding: 0px"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>&nbsp;I = EXTENDED THREAD</td>
+              <td id="info-table-img">
+                <img
+                  src="../../../../../assets/images/I2.jpg"
+                  style="margin: 0px; padding: 0px"
+                />
+                <img
+                  src="../../../../../assets/images/I1.jpg"
+                  style="margin: 0px; padding: 0px"
+                />
+              </td>
+            </tr>
+          </table>
+
+          <table border="1" style="width: 98%" id="table_imagelist">
+            <ng-container *ngFor="let group of groupedShapes">
+              <tr>
+                <td
+                  colspan="6"
+                  style="
+                    font: 14px Helvetica, Arial, sans-serif;
+                    font-weight: bold;
+                  "
+                  bgcolor="lightblue"
+                >
+                  &nbsp;{{ setLabel(group.label) }}
+                </td>
+              </tr>
+              <tr *ngFor="let row of group.rows">
+                <td
+                  *ngFor="let item of row"
+                  style="font: 12px Helvetica, Arial, sans-serif"
+                  [ngClass]="{ 'img-selected': item.isSelected === true }"
+                  (click)="onImageClick($event, item)"
+                >
+                  <img
+                    [id]="'ImageList_' + item.shapeCode"
+                    [src]="convImg(item.shapeImage)"
+                    style="width: 100px; height: 100px"
+                    (click)="onImageClick($event, item)"
+                  />
+                  {{ item.shapeCode }}
+                </td>
+              </tr>
+            </ng-container>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary me-2" (click)="Select()">
+          Select (选入)
+        </button>
+        <button type="button" class="btn btn-primary me-2" (click)="Download()">
+          Download (下载)
+        </button>
+        <button type="button" class="btn btn-primary me-2" (click)="Cancel()">
+          Cancel (关闭)
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

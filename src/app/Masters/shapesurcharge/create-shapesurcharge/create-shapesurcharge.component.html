@@ -1,0 +1,74 @@
+<div class="modal-header">
+  <h4 class="modal-title">Add New</h4>
+  <i class="fa-solid fa-xmark"></i>
+  <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+
+</div>
+<div class="modal-body ">
+  
+    <form [formGroup]="createshapesurchargeForm">
+     
+        <div class="row ">
+          <div class="col">
+            <label class="form-label"> Shape Code</label> <br>
+           <ng-select  [selectOnTab]="true"  formControlName="shapecode" [multiple]="true" class="ng-selectcustomer">
+              <ng-option *ngFor="let sList of ShapecodeList" [value]="sList.ShapeCode">
+                {{sList.ShapeCode}}
+              </ng-option>
+            </ng-select>
+            <span  class="text-danger" *ngIf=" isformsubmit && createshapesurchargeForm.controls['shapecode'].invalid && createshapesurchargeForm.controls['shapecode'].errors && createshapesurchargeForm.controls['shapecode'].hasError('required')" >* Shape Code Required. </span> 
+          </div>
+          <div class="col">
+            <label class="form-label"> Bar Dia</label> <br>
+            <!-- <input type="text" placeholder="Bar Dia" formControlName="bardia" class="form-control" /> &nbsp;
+            -->
+            <ng-select  [selectOnTab]="true"  formControlName="bardia"  [multiple]="true" class="ng-selectcustomer">
+              <ng-option *ngFor="let sList of bardialist" [value]="sList.item_id">
+                {{sList.item_text}}
+              </ng-option>
+            </ng-select>
+            <span  class="text-danger" *ngIf=" isformsubmit && createshapesurchargeForm.controls['bardia'].invalid && createshapesurchargeForm.controls['bardia'].errors && createshapesurchargeForm.controls['bardia'].hasError('required')" >* Bar Dia Required. </span> 
+
+          </div>
+          <div class="col">
+            <label class="form-label"> Invoice Length</label> <br>
+            <input type="number" placeholder="Invoice Length" formControlName="invoicelength" class="form-control" /> &nbsp;
+            <span  class="text-danger" *ngIf=" isformsubmit && createshapesurchargeForm.controls['invoicelength'].invalid && createshapesurchargeForm.controls['invoicelength'].errors && createshapesurchargeForm.controls['invoicelength'].hasError('required')" >* Invoice Length Required. </span> 
+
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <label class="form-label"> Surcharge</label> <br>
+            <ng-select  [selectOnTab]="true"  formControlName="surcharge" class="ng-selectcustomer">
+              <ng-option *ngFor="let sList of SurchargeList" [value]="sList.Surcharge">
+                {{sList.Surcharge}}
+              </ng-option>
+            </ng-select>
+            <span  class="text-danger" *ngIf=" isformsubmit && createshapesurchargeForm.controls['surcharge'].invalid && createshapesurchargeForm.controls['surcharge'].errors && createshapesurchargeForm.controls['surcharge'].hasError('required')" >* Surcharge Required. </span> 
+
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Dia Condition</label> <br>
+            <ng-select  [selectOnTab]="true"  formControlName="diacondition" class="ng-selectcustomer">
+              <ng-option *ngFor="let sList of diaconditionList" [value]="sList.item_id">
+                {{sList.item_text}}
+              </ng-option>
+            </ng-select>
+            <span  class="text-danger" *ngIf=" isformsubmit && createshapesurchargeForm.controls['diacondition'].invalid && createshapesurchargeForm.controls['diacondition'].errors && createshapesurchargeForm.controls['diacondition'].hasError('required')" >* Dia Condition Required. </span> 
+
+          </div>
+
+        </div>
+      
+    </form>
+  
+</div>
+<div class="modal-footer">
+  <button type="button" (click)="cancel()" class="btn btn-secondary">
+    Cancel
+  </button>
+  <button type="button" (click)="submit()" class="btn btn-primary me-2" [disabled]="disableSubmit">
+    Submit
+  </button>
+</div>

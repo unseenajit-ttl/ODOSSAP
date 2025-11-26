@@ -1,0 +1,273 @@
+<div id="pause" class="d-flex align-items-center justify-content-center" *ngIf="loading">
+    <div id="spinner" class="loader"></div>
+</div>
+
+<div class="container-fluid">
+    <div class="card m-1">
+
+        <div class="card-body" style="margin-top:-11px !important;">
+            <div class="filter ">
+                <form [formGroup]="ESMCabBBSpostingForm">
+
+                    <div class="card-body">
+                        <div class="row " style="padding-bottom: 5px;">
+
+                            <div class="col-md-3">
+                                <label class="form-label">Tracking Number</label> <br>
+                                <ng-select [selectOnTab]="true" formControlName="sor" [multiple]="false"
+                                    class="ng-selectprodtype" [closeOnSelect]="true" [searchable]="true"
+                                    (change)="changeSOR($event)">
+                                    <ng-option *ngFor="let sList of SORList" [value]="sList.ORD_REQ_NO">
+                                        {{sList.ORD_REQ_NO}}
+                                    </ng-option>
+                                </ng-select>
+                            </div>
+
+                            <div class="col-md-2" style="margin-top:20px">
+
+                                <button type="submit" class="btn btn-primary btn-sm" (click)="showDetails()">Show
+                                    Details</button>
+                            </div>
+                            <div class="col-md-6">
+
+                            </div>
+                            <div class="col-md-3 float-right">
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                </form>
+
+                <div class="row">
+                    <!-- <div class="col-md-4"></div>
+                    <div class="col-md-4">
+                        <div class="row d-flex">
+
+                            <div #buttons style="text-align: end; display: contents">
+                                <p style="background-color: #90ee90"> Posted </p>
+                                &nbsp;
+                                <p style="background-color: #e6e6fa">Confirmed/Ready</p>
+                                &nbsp;
+                                <p style="background-color: #ffb6c1">Released</p>
+                                &nbsp;
+                                <p style="background-color: #808080">Cancelled</p>
+                                &nbsp;
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4"></div>
+                    <br /> -->
+
+                </div>
+                <br>
+                <div class=" table-responsive table-wrapper-scroll-y my-custom-scrollbar">
+
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr style="height:10px">
+                                <th style="text-align:left;vertical-align:top;width:4px;" colspan="2">
+                                    <div class="d-flex" style="justify-content: center;">
+                                        <!-- <input type="checkbox" [(ngModel)]="masterSelected"
+                                            (change)="checkUncheckAll()" /> -->
+                                        <i class="bi bi-search" style="margin-top:3px; font-size: 15px;"
+                                            (click)="toggleFilters = !toggleFilters"></i>
+                                    </div>
+                                </th>
+                                <th style="text-align:left;vertical-align:top;">Tracking No#</th>
+                                <th style="text-align:left;vertical-align:top;"> BBS </th>
+                                <th style="text-align:left;vertical-align:top;">Structure</th>
+                                <th style="text-align:left;vertical-align:top;">Product Type</th>
+                                <th style="text-align:left;vertical-align:top;"> WBS1 </th>
+                                <th style="text-align:left;vertical-align:top;"> WBS2 </th>
+                                <th style="text-align:left;vertical-align:top;"> WBS3 </th>
+                                <th style="text-align:left;vertical-align:top;"> TotWt </th>
+                                <th style="text-align:left;vertical-align:top;"> TotQty </th>
+                                <th style="text-align:left;vertical-align:top;">Status</th>
+                                <th style="text-align:left;vertical-align:top;">Req Delivery </th>
+
+
+                            </tr>
+                        </thead>
+
+
+                        <tbody>
+
+                            <tr *ngIf="toggleFilters">
+                                <th style="text-align:left;vertical-align:top;" colspan="2"></th>
+                                <th style="text-align:left;vertical-align:top;"><input class="form-control" type="text"
+                                        [(ngModel)]="searchSOR" id="searchBlock" placeholder="Search here"
+                                        (ngModelChange)="searchCABPostListData()" />
+                                </th>
+                                <th style="text-align:left;vertical-align:top;"><input class="form-control" type="text"
+                                        [(ngModel)]="searchBBS" id="searchBlock" placeholder="Search here"
+                                        (ngModelChange)="searchCABPostListData()" />
+                                </th>
+
+                                <th style="text-align:left;vertical-align:top;"><input class="form-control" type="text"
+                                        [(ngModel)]="searchStructure" id="searchFrom" placeholder="Search here"
+                                        (ngModelChange)="searchCABPostListData()" />
+                                </th>
+                                <th style="text-align:left;vertical-align:top;"><input class="form-control" type="text"
+                                        [(ngModel)]="searchProductType" id="searchBlock" placeholder="Search here"
+                                        (ngModelChange)="searchCABPostListData()" />
+                                </th>
+
+                                <th style="text-align:left;vertical-align:top;"><input class="form-control" type="text"
+                                        [(ngModel)]="searchWBS1" id="searchTo" placeholder="Search here"
+                                        (ngModelChange)="searchCABPostListData()" />
+                                </th>
+                                <th style="text-align:left;vertical-align:top;"><input class="form-control" type="text"
+                                        [(ngModel)]="searchWBS2" id="searchPart" placeholder="Search here"
+                                        (ngModelChange)="searchCABPostListData()" />
+                                </th>
+                                <th style="text-align:left;vertical-align:top;"><input class="form-control" type="text"
+                                        [(ngModel)]="searchWBS3" id="searchStructure" placeholder="Search here"
+                                        (ngModelChange)="searchCABPostListData()" />
+                                </th>
+
+                                <th style="text-align:left;vertical-align:top;"><input class="form-control" type="text"
+                                        [(ngModel)]="searchTotWt" id="searchTo" placeholder="Search here"
+                                        (ngModelChange)="searchCABPostListData()" />
+                                </th>
+                                <th style="text-align:left;vertical-align:top;"><input class="form-control" type="text"
+                                        [(ngModel)]="searchTotQty" id="searchPart" placeholder="Search here"
+                                        (ngModelChange)="searchCABPostListData()" />
+                                </th>
+                                <th style="text-align:left;vertical-align:top;"><input class="form-control" type="text"
+                                        [(ngModel)]="searchStatus" id="searchStatus" placeholder="Search here"
+                                        (ngModelChange)="searchCABPostListData()" /></th>
+                                <th style="text-align:left;vertical-align:top;"><input class="form-control" type="text"
+                                        [(ngModel)]="searchReqDelivery" id="searchFrom" placeholder="Search here"
+                                        (ngModelChange)="searchCABPostListData()" />
+                                </th>
+
+
+                            </tr>
+
+
+                            <ng-container
+                                *ngFor="let item of esmcabpostingarray  |slice: pageSize | slice: 0:itemsPerPage | filter:searchText ; index as i;">
+                                <tr [ngStyle]="{'background-color':giveRowcolor(item)}">
+                                    <td style="text-align:left;width:2px">
+                                        <input type="checkbox" [(ngModel)]="item.isSelected" [disabled]="item.ReadOnly"
+                                            (click)="item.isSelected=!item.isSelected;multipleSelect(item)" />
+                                    </td>
+                                    <td style="text-align:left;width:2px">
+                                      
+                                    </td>
+                                    <td style="text-align:left">{{item.ORD_REQ_NO}}</td>
+                                    <td style="text-align:left">{{item.BBS_NO}}</td>
+                                    <td style="text-align:left">{{item.STRUC_ELEM}}</td>
+                                    <td style="text-align:left">{{item.PROD_TYPE}}</td>
+                                    <td style="text-align:left">{{item.WBS1}}</td>
+                                    <td style="text-align:left">{{item.WBS2}}</td>
+                                    <td style="text-align:left">{{item.WBS3}}</td>
+                                    <td style="text-align:left">{{item.TotalWeight}}</td>
+                                    <td style="text-align:left">{{item.TotalQty}}</td>
+                                    <td style="text-align:left">{{item.WBSSTATUS}}</td>
+                                    <td style="text-align:left">{{item.ReqDate}}</td>
+
+
+                                </tr>
+                                <tr *ngIf="esmcabpostingarray.length==0">
+                                    <td>
+                                        No Records Found
+                                    </td>
+
+
+                                </tr>
+
+                            </ng-container>
+
+                        </tbody>
+                    </table>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="d-flex mt-2">
+                            <ngb-pagination [collectionSize]="esmcabpostingarray.length" [(page)]="currentPage"
+                                [pageSize]="itemsPerPage" (pageChange)="onPageChange(currentPage)"
+                                [boundaryLinks]="false" [maxSize]="maxSize" *ngIf="searchResult">
+                                <ng-template ngbPaginationPrevious>Prev</ng-template>
+                                <ng-template ngbPaginationNext>Next</ng-template>
+                            </ngb-pagination>
+
+                            <select class="custom-select mr-2 ml-3" style="width: auto" [(ngModel)]="itemsPerPage"
+                                (ngModelChange)="OnPageSizeChange(itemsPerPage);">
+                                <option [ngValue]="5">5 </option>
+                                <option [ngValue]="10">10 </option>
+                                <option [ngValue]="20">20 </option>
+                                <option [ngValue]="50">50 </option>
+                                <option [ngValue]="100">100 </option>
+                            </select>
+                            <span style="margin-top: 5px;">Items per page</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+
+                    </div>
+                    <div class="col-md-4 text-right">
+                        <div class="row d-flex">
+
+                            <div #buttons style="text-align: end; display: contents">
+                                <p style="background-color: #90ee90"> Posted </p>
+                                &nbsp;
+                                <p style="background-color: #e6e6fa">Confirmed/Ready</p>
+                                &nbsp;
+                                <p style="background-color: #ffb6c1">Released</p>
+                                &nbsp;
+                                <p style="background-color: #808080">Cancelled</p>
+                                &nbsp;
+                            </div>
+                        </div>
+                     
+                    </div>
+
+
+                </div>
+
+
+                <div class="row">
+                    <div class="col-md-3 float-right"></div>
+                    <div class="col-md-4 float-right">
+                        <button class="btn btn-primary btn-sm" type="button" style="width:29%" (click)="Posting()"
+                            [disabled]="disablepost" [ngClass]="{'btn-secondary': disablepost===true}">Post</button>
+                        <button class="btn btn-primary btn-sm" type="button" style="width:29%"
+                            [ngClass]="{'btn-secondary': disableunpost===true}" (click)="Unposting()"
+                            [disabled]="disableunpost">Un-Post</button>
+                        <button class="btn btn-primary btn-sm" type="button" style="width:30%"
+                            [ngClass]="{'btn-secondary': disablecreate===true}" (click)="btnCreateEdit()"
+                            [disabled]="disablecreate">Create\Edit BBS</button>
+
+
+                    </div>
+
+                    <div class="col-md-4 float-right">
+                        <button class="btn btn-primary btn-sm" type="button" style="width:29%" (click)="btnViewReport()">View
+                            Report</button>
+
+                        <button class="btn btn-primary btn-sm" type="button" style="width:29%"
+                            [ngClass]="{'btn-secondary': disablerelease===true}" (click)="btnRelease()"
+                            [disabled]="disablerelease">Release</button>
+
+
+                        <button class="btn btn-primary btn-sm" type="button" style="width:29%"
+                            [ngClass]="{'btn-secondary': disablecancel===true}" (click)="btnCancel()"
+                            [disabled]="disablecancel">Cancel Order</button>
+
+
+                    </div>
+                    <div class="col-md-1 float-right"></div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,272 @@
+<div class="container-fluid">
+
+  <div class="card m-1">
+    <h3 class="card-header d-flex flex-column justify-content-center align-items-center">
+      <b> BOM</b>
+    </h3>
+    <!-- <div class="card-header  d-flex ">
+      <i class="fa fa-arrow-left" aria-hidden="true"></i>
+      <h3 class="  d-flex flex-column justify-content-center align-items-center">       
+        <b>BOM</b>
+    </h3>
+    </div> -->
+    <div class="row  d-flex ">
+      <span style="display: flex; align-items: center">
+
+        <i class="bi bi-arrow-left-short" style="font-size: x-large; color: blue" ngbTooltip="Back"
+          (click)="goBack()"></i>
+
+        <a style="color: blue">Back to Structure Marking </a></span>
+      <br />
+    </div>
+
+
+    <div class="card-body border border-secondary">
+      <div class="row d-flex">
+        <div class="col-md-2 ">
+          <label class="form-label">Product Marking</label>
+        </div>
+        <div class="col-md-2">
+          <input type="text" [value]="Marking" readonly="true"
+            class="form-control form-control-sm" />
+        </div>
+        <div class="col-md-2"></div>
+        <div class="col-md-2">
+          <label class="form-label">Product Code</label>
+        </div>
+        <div class="col-md-2">
+          <input type="text" readonly="true" class="form-control form-control-sm"
+            [value]="ProductCode" />
+        </div>
+        <div class="col-md-2"></div>
+      </div>
+      <br>
+
+      <div class="row d-flex">
+
+        <div class="col-md-2 ">
+
+          <label class="form-label">Theoritical WT(KG)</label>
+
+        </div>
+
+        <div class="col-md-2">
+
+          <input type="text" readonly="true" [value]="TheroticalWeight" class="form-control form-control-sm" />
+
+        </div>
+
+        <div class="col-md-2"></div>
+
+
+
+        <div class="col-md-2">
+
+          <label class="form-label">Actual WT(KG)</label>
+
+        </div>
+
+        <div class="col-md-2">
+
+          <input type="text" readonly="true" [value]="ActualWeight" class="form-control form-control-sm"
+             />
+
+        </div>
+
+        <div class="col-md-2"></div>
+
+      </div>
+    </div>
+
+
+    <div class="row">     
+
+      <div class="col-md-3 switches-container ml-4 mb-2">
+        <input type="radio" id="switchMonthly"  name="switchPlan" value="Monthly" checked="checked" />
+        <input type="radio" id="switchYearly" name="switchPlan" value="Yearly" />
+        <label for="switchMonthly" (dblclick)="onclick($event)" (click)="onclick($event)">Detailing BOM</label>
+        <label for="switchYearly" (dblclick)="onclick($event)"  (click)="onclick($event)">Production BOM</label>
+        <div class="switch-wrapper">
+          <div class="switch">
+            <div>Detailing BOM</div>
+            <div>Production BOM</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 ml-4 mb-2">
+        <button type="button" class="btn btn-info" style="border-radius: 20px;width: 50%;" (click)="showPostingReport()">Print</button>
+      </div>
+    </div>
+    <!-- Default switch -->
+    <!-- <div class="custom-control custom-switch" style="padding-left: 40px;">
+   <input type="checkbox" class="custom-control-input" id="customSwitches">
+   <label class="custom-control-label" for="customSwitches">Production BOM</label>
+  </div> -->
+    <div class="row">
+      <div class="col-md-6">
+
+        <ng-container *ngIf="ProductionVisible">
+          <div class="table-responsive ml-4">
+
+            <table class="table table-striped table-bordered" style="height: 10px;">
+              <thead>
+                <tr>
+                  <th class="text-center" style="width:75px; background-color: #14A38B !important;">Wire Type</th>
+                  <th style="background-color: #14A38B !important;">Line <br> No</th>
+                  <th style="background-color: #14A38B !important;">No Pitches</th>
+                  <th style="background-color: #14A38B !important; width:12%">Wire Space</th>
+                  <th style="background-color: #14A38B !important;">Wire Len</th>
+                  <th style="background-color: #14A38B !important;">Wire Dia</th>
+                  <th class="text-center" style="width:110px;background-color: #14A38B !important;">Raw Material</th>
+                  <!-- <th class="text-center" style="width:75px;background-color: #14A38B !important;;">Action</th> -->
+
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of ProductionData" style="height: 10px;">
+                  <td class="text-center"> {{item.vchWireType}} </td>
+                  <td class="text-center"> {{item.tntWireSequence}} </td>
+                  <td class="text-center"> {{item.tntNoOfPitch}} </td>
+                  <td class="text-center"> {{item.intWirePitch}}</td>
+                  <td class="text-center"> {{item.decWireLength}} </td>
+                  <td class="text-center"> {{item.decWireDiameter}} </td>
+                  <td class="text-center"> {{item.vchRawMaterial}} </td>
+                </tr>
+
+
+
+        
+              </tbody>
+          
+            </table>
+          </div>
+
+
+
+
+        </ng-container>
+        <ng-container *ngIf="Detailing">
+          <div class=" row table-responsive ml-4">
+
+            <table class="table table-striped table-bordered"
+              style="height: 10px; margin-bottom: 0; align-self:flex-start;">
+              <thead>
+                <tr>
+                  <th  *ngIf="intRecordCount==0" class="text-center"></th>
+                  <th  >Wire Type</th>
+                  <th  >Line <br> No</th>
+                  <th  >No Pitches</th>
+                  <th  >Wire Space</th>
+                  <th  >Wire Len</th>
+                  <th  >Wire Dia</th>
+                  <th  style="width:110px;">Raw Material</th>
+
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of BomDetails; index as i">
+
+                   <td  *ngIf="intRecordCount==0" class="text-center"> 
+             <!-- <i class="material-icons" ngbTooltip="Edit">mode_edit</i>&nbsp;     -->
+               <i class="bi bi-trash" ngbTooltip="Delete" (click)="Delete_BOM(item)" style="color:red; font-size:22px"></i>
+              </td> 
+                  <td>
+                    {{item.vchWireType}}
+                  </td>
+                  <td class="text-center">
+              
+                    {{item.tntWireSequence}}
+
+                  </td>
+                  <td class="text-center" (dblclick)="onEditNew(item,'No_Pitches')">
+                    <div *ngIf="item.editFieldName=='No_Pitches'">
+                      <input type="text"
+                        (keydown.enter)="item.editFieldName='';item.varRowIndex=i;fnGridDDLValidation(item)"
+                        [(ngModel)]="item.tntNoOfPitch" class="form-control">
+                    </div>
+                    <div *ngIf="item.editFieldName !=='No_Pitches'">
+                      {{item.tntNoOfPitch}}
+                    </div>
+                  </td>
+                  <td class="text-center" (dblclick)="onEditNew(item,'Wire_Space')">
+                    <div *ngIf="item.editFieldName=='Wire_Space'">
+                      <input type="text" [(ngModel)]="item.intWirePitch"
+                        (keydown.enter)="item.editFieldName='';item.varRowIndex=i;fnGridDDLValidation(item)"
+                        class="form-control">
+                    </div>
+                    <div *ngIf="item.editFieldName !=='Wire_Space'">
+                      {{item.intWirePitch}}
+                    </div>
+                  </td>
+                  <td>
+                    {{item.decWireLength}}
+                  </td>
+                  <td>
+                    {{item.decWireDiameter}}
+                  </td>
+                  <td>
+                    {{item.vchRawMaterial}}
+                  </td>
+
+                </tr>
+
+
+              </tbody>
+              <tfoot *ngIf="intRecordCount==0">
+                <tr *ngFor="let item of newSlabData">
+                  <td></td>
+                  <td>
+                    <ng-select dropdownPosition="top" [(ngModel)]="item.Wire_Type" (change)="ChangeRawMaterial(item)">
+                      <ng-option *ngFor="let List of wire_type_data" [value]="List.Key">
+                        {{List.Key}}
+                      </ng-option>
+                    </ng-select>
+                  </td>
+                  <td> </td>
+                  <td><input class="form-control" type="text" [(ngModel)]="item.No_Pitches"
+                      (keydown.enter)="fnGridDDLValidation(item)" /></td>
+                  <td> <input class="form-control" type="text" [(ngModel)]="item.Wire_Space"
+                      (keydown.enter)="fnGridDDLValidation(item)" /> </td>
+                  <td> <input class="form-control" readonly="true" type="text" [(ngModel)]="item.Wire_Len"
+                      (keydown.enter)="fnGridDDLValidation(item)" /> </td>
+                  <td> <input class="form-control" readonly="true" type="text" [(ngModel)]="item.Wire_Dia"
+                      (keydown.enter)="fnGridDDLValidation(item)" /> </td>
+                  <!-- <td>
+                <ng-select dropdownPosition="top" [(ngModel)]="item.Raw_Material" class="ng-selectwbs"
+                  (keydown.enter)="AddNewSlabData()">
+                  <ng-option *ngFor="let sList of Raw_Material_data" [value]="sList">
+                    {{sList}}
+                  </ng-option>
+                </ng-select>
+              </td> -->
+                  <td>
+                    {{item.Raw_Material}}
+
+
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+
+          </div>
+
+        </ng-container>
+
+        <div class="width_set image-class">
+          <img class="img-responsive" [src]="'assets/images/Shapes/'+ Imagename +''" alt="image" style="position: relative ;
+  left: 0px;">
+        </div>
+        <br>
+        <div style="padding-left: 40px;">
+          {{BomData.ParamValues}}
+        </div>
+
+      </div>
+      <div class="col-md-6 ml-0">
+        <div class="canvas-container col-md-3">
+          <canvas #myCanvas></canvas>
+        </div>
+      </div>
+    </div>
+
+  </div>

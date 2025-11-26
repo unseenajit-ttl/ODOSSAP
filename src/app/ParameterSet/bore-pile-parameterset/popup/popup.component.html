@@ -1,0 +1,32 @@
+<div class="modal-header">
+    <h4 class="modal-title">Add Parameter </h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-3">
+            <label class="form-label ">Parameter Set</label> <br>
+        </div>
+        <div class="col-md-3">
+   
+
+    <ng-select [selectOnTab]="true"  
+         [(ngModel)]="Product_Type" [ngModelOptions]="{standalone: true}" class="ng-selectwbs"
+                                                       >
+                                                      
+                                                        <ng-option *ngFor="let sList of ProductTypeList"
+                                                            [value]="sList.ProductTypeId">
+                                                            {{sList.ProductType}}
+                                                        </ng-option>
+                                                    </ng-select>
+                                                </div>
+                                            </div>
+  </div>
+  <div class="modal-footer">
+      <button type="button" class="btn btn-primary" (click)="Submit()">Create</button>
+      <button type="button" class="btn btn-primary" (click)="activeModal.dismiss('Cross click')">Close</button>
+
+  </div>

@@ -1,0 +1,67 @@
+.table-container {
+  height: 70vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.h-scroll {
+  overflow-x: auto;   /* horizontal scroll */
+  flex: 1;
+}
+
+/* HEADER */
+.header-row {
+  display: flex;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #f8f9fa;
+  min-width: max-content;
+}
+
+/* BODY */
+.viewport {
+  height: 70vh;
+  width: 100%;
+  overflow: auto;
+  display: block;
+}
+
+.header-row,
+.data-row {
+  display: flex;
+  min-width: max-content; /* enables horizontal scroll if too many columns */
+}
+
+.cell {
+  flex: 1 0 0;   /* fixed column width */
+  max-width: 150px;  /* optional: prevent stretch */
+  min-width: 150px;
+  padding: 4px 8px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+   /* allow wrapping */
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: break-word;
+
+  /* limit height to 2 lines */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;    /* show only 2 lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.sticky-col {
+  position: sticky;
+  background: #f7f7f7;
+  z-index: 2;
+}
+::ng-deep .header-cell{
+  background: #003ec4 !important;
+  color: #fff;
+}

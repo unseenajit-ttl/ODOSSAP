@@ -1,0 +1,790 @@
+this.gridColumns = [
+      {
+        id: 'cage_id',
+        name: 'SNo',
+        field: 'cage_id',
+        toolTip: 'Serial Number (序列号码)',
+        maxWidth: 35,
+        width: 10,
+        minWidth: 10,
+        cssClass: 'center-align',
+        filterable: false,
+      },
+      {
+        id: 'pile_type',
+        name: 'Pile Type',
+        field: 'pile_type',
+        toolTip: 'Bored pile type (钻孔桩类型)',
+        cssClass: 'center-align',
+        minWidth: 99,
+        maxWidth: 99,
+        width: 10,
+        editor: {
+          model: Editors.autocompleter,
+          editorOptions: {
+            showOnFocus: true,
+            minLength: 0,
+            classes: {
+              // choose a custom style layout
+              'ui-autocomplete': 'autocomplete-custom-four-corners',
+            },
+            position: {
+              my: 'left top',
+              at: 'left bottom-10', // Adjusted to append dropdown above the input
+              collision: 'flip',
+            },
+            fetch: (searchText: any, updateCallback: any) => {
+              let data = [
+                { value: 'Single-Layer', label: 'Single-Layer' },
+                { value: 'Double-Layer', label: 'Double-Layer' },
+                { value: 'Others', label: 'Others' },
+              ];
+              const activeCell = this.grid.slickGrid.getActiveCell();
+              const currentItem = activeCell
+                ? this.grid.dataView.getItem(activeCell.row)
+                : null;
+              const currentValue = currentItem
+                ? currentItem['pile_type']
+                : null;
+              if (
+                searchText === currentValue?.toString() ||
+                searchText === ''
+              ) {
+                updateCallback(data);
+              } else {
+                data = data.filter((barsize: any) =>
+                  barsize.label
+                    .toLowerCase()
+                    .startsWith(searchText.toLowerCase())
+                );
+                updateCallback(data); // add here the array
+              }
+            },
+          },
+        },
+        validator: this.PileTypeValidator,
+        sortable: true,
+        filterable: false,
+      },
+      {
+        id: 'pile_dia',
+        name: 'Pile Dia (mm)',
+        field: 'pile_dia',
+        toolTip: 'Bored pile diameter (钻孔桩直径)(mm)',
+        minWidth: 50,
+        maxWidth: 60,
+        width: 10,
+        editor: {
+          model: Editors.autocompleter,
+          editorOptions: {
+            showOnFocus: true,
+            minLength: 0,
+            classes: {
+              // choose a custom style layout
+              'ui-autocomplete': 'autocomplete-custom-four-corners',
+            },
+            position: {
+              my: 'left top',
+              at: 'left bottom-10', // Adjusted to append dropdown above the input
+              collision: 'flip',
+            },
+            fetch: (searchText: any, updateCallback: any) => {
+              console.log('searchText=>', searchText);
+              this.gBPCDia = this.gBPCDiaBackup;
+              const activeCell = this.grid.slickGrid.getActiveCell();
+              const currentItem = activeCell
+                ? this.grid.dataView.getItem(activeCell.row)
+                : null;
+              const currentValue = currentItem ? currentItem['pile_dia'] : null;
+              if (
+                searchText === currentValue?.toString() ||
+                searchText === ''
+              ) {
+                updateCallback(this.gBPCDia);
+              } else {
+                this.gBPCDia = this.gBPCDia.filter((barsize: any) =>
+                  barsize.label.startsWith(searchText)
+                );
+                updateCallback(this.gBPCDia); // add here the array
+              }
+            },
+          },
+        },
+        cssClass: 'center-align',
+        sortable: true,
+        filterable: false,
+      },
+      {
+        id: 'set_code',
+        name: 'Set Code',
+        field: 'set_code',
+        toolTip: 'Set Code ',
+        minWidth: 10,
+        width: 170,
+        maxWidth: 190,
+        editor: { model: Editors.text },
+        cssClass: 'left-align',
+        sortable: true,
+        filterable: false,
+      },
+      {
+        id: 'main_bar_arrange',
+        name: 'Main Bar Arrange',
+        field: 'main_bar_arrange',
+        toolTip: 'main bar arrangement (主筋排法)',
+        minWidth: 102,
+        width: 10,
+        maxWidth: 105,
+        cssClass: 'center-align',
+        editor: {
+          model: Editors.autocompleter,
+          editorOptions: {
+            showOnFocus: true,
+            minLength: 0,
+            classes: {
+              // choose a custom style layout
+              'ui-autocomplete': 'autocomplete-custom-four-corners',
+            },
+            position: {
+              my: 'left top',
+              at: 'left bottom-10', // Adjusted to append dropdown above the input
+              collision: 'flip',
+            },
+            fetch: (searchText: any, updateCallback: any) => {
+              const activeCell = this.grid.slickGrid.getActiveCell();
+              const currentItem = activeCell
+                ? this.grid.dataView.getItem(activeCell.row)
+                : null;
+              const currentValue = currentItem
+                ? currentItem['main_bar_arrange']
+                : null;
+              if (
+                searchText === currentValue?.toString() ||
+                searchText === ''
+              ) {
+                updateCallback(this.bpcMainBarArrangeBackup);
+              } else {
+                this.bpcMainBarArrange = this.bpcMainBarArrangeBackup;
+                this.bpcMainBarArrange = this.bpcMainBarArrange.filter(
+                  (barsize: any) =>
+                    barsize.label
+                      .toLowerCase()
+                      .startsWith(searchText.toLowerCase())
+                );
+                updateCallback(this.bpcMainBarArrange);
+              }
+              // updateCallback(this.bpcMainBarArrange); // add here the array
+            },
+          },
+        },
+        validator: this.BarArrangeValidator,
+        sortable: true,
+        filterable: false,
+      },
+      {
+        id: 'main_bar_type',
+        name: 'Main Bar Type',
+        field: 'main_bar_type',
+        toolTip: 'Main bar type in terms of grade and size (主筋种类)',
+        minWidth: 10,
+        width: 60,
+        maxWidth: 72,
+        cssClass: 'center-align',
+        editor: {
+          model: Editors.autocompleter,
+          editorOptions: {
+            showOnFocus: true,
+            minLength: 0,
+            classes: {
+              // choose a custom style layout
+              'ui-autocomplete': 'autocomplete-custom-four-corners',
+            },
+            position: {
+              my: 'left top',
+              at: 'left bottom-10', // Adjusted to append dropdown above the input
+              collision: 'flip',
+            },
+            fetch: (searchText: any, updateCallback: any) => {
+              let data = [
+                { value: 'Single', label: 'Single' },
+                { value: 'Mixed', label: 'Mixed' },
+              ];
+              const activeCell = this.grid.slickGrid.getActiveCell();
+              const currentItem = activeCell
+                ? this.grid.dataView.getItem(activeCell.row)
+                : null;
+              const currentValue = currentItem
+                ? currentItem['main_bar_type']
+                : null;
+              if (
+                searchText === currentValue?.toString() ||
+                searchText === ''
+              ) {
+                updateCallback(data);
+              } else {
+                data = data.filter((barsize: any) =>
+                  barsize.label
+                    .toLowerCase()
+                    .startsWith(searchText.toLowerCase())
+                );
+                updateCallback(data); // add here the array
+              }
+            },
+          },
+        },
+        validator: this.BarTypeValidator,
+        sortable: true,
+        filterable: false,
+      },
+      {
+        id: 'main_bar_ct',
+        name: 'No of Main Bars',
+        field: 'main_bar_ct',
+        toolTip: 'No of main bars (主筋数量)',
+        minWidth: 10,
+        width: 65,
+        maxWidth: 70,
+        editor: { model: Editors.text },
+        cssClass: 'center-align',
+        sortable: true,
+        filterable: false,
+      },
+      {
+        id: 'main_bar_shape',
+        name: 'Main Bar Shape',
+        field: 'main_bar_shape',
+        toolTip: 'Main bar shape (主筋图形)',
+        minWidth: 10,
+        width: 80,
+        maxWidth: 88,
+        editor: {
+          model: Editors.autocompleter,
+          editorOptions: {
+            showOnFocus: true,
+            minLength: 0,
+            classes: {
+              // choose a custom style layout
+              'ui-autocomplete': 'autocomplete-custom-four-corners',
+            },
+            position: {
+              my: 'left top',
+              at: 'left bottom-10', // Adjusted to append dropdown above the input
+              collision: 'flip',
+            },
+            fetch: (searchText: any, updateCallback: any) => {
+              let data = [
+                { value: 'Straight', label: 'Straight' },
+                { value: 'Crank', label: 'Crank' },
+              ];
+              const activeCell = this.grid.slickGrid.getActiveCell();
+              const currentItem = activeCell
+                ? this.grid.dataView.getItem(activeCell.row)
+                : null;
+              const currentValue = currentItem
+                ? currentItem['main_bar_shape']
+                : null;
+              if (
+                searchText === currentValue?.toString() ||
+                searchText === ''
+              ) {
+                updateCallback(data);
+              } else {
+                data = data.filter((barsize: any) =>
+                  barsize.label
+                    .toLowerCase()
+                    .startsWith(searchText.toLowerCase())
+                );
+                updateCallback(data); // add here the array
+              }
+            },
+          },
+        },
+        cssClass: 'center-align',
+        sortable: true,
+        filterable: false,
+      },
+      {
+        id: 'main_bar_grade',
+        name: 'Main Bar Grade',
+        field: 'main_bar_grade',
+        toolTip: 'Main bar grade (主筋等级)',
+        minWidth: 10,
+        width: 37,
+        maxWidth: 40,
+        editor: {
+          model: Editors.autocompleter,
+          editorOptions: {
+            showOnFocus: true,
+            minLength: 0,
+            classes: {
+              // choose a custom style layout
+              'ui-autocomplete': 'autocomplete-custom-four-corners',
+            },
+            position: {
+              my: 'left top',
+              at: 'left bottom-10', // Adjusted to append dropdown above the input
+              collision: 'flip',
+            },
+            fetch: (searchText: any, updateCallback: any) => {
+              let data = [
+                { value: 'H', label: 'H' },
+                { value: 'T', label: 'T' },
+                { value: 'X', label: 'X' },
+              ];
+              const activeCell = this.grid.slickGrid.getActiveCell();
+              const currentItem = activeCell
+                ? this.grid.dataView.getItem(activeCell.row)
+                : null;
+              const currentValue = currentItem
+                ? currentItem['main_bar_grade']
+                : null;
+              if (
+                searchText === currentValue?.toString() ||
+                searchText === ''
+              ) {
+                updateCallback(data);
+              } else {
+                data = data.filter((barsize: any) =>
+                  barsize.label
+                    .toLowerCase()
+                    .startsWith(searchText.toLowerCase())
+                );
+                updateCallback(data); // add here the array
+              }
+            },
+          },
+        },
+        cssClass: 'center-align',
+        sortable: true,
+        filterable: false,
+      },
+      {
+        id: 'main_bar_dia',
+        name: 'Main Bar Dia',
+        field: 'main_bar_dia',
+        toolTip: 'Main bar diameter (主筋直径)',
+        minWidth: 10,
+        width: 45,
+        maxWidth: 50,
+        editor: {
+          model: Editors.autocompleter,
+          editorOptions: {
+            showOnFocus: true,
+            minLength: 0,
+            classes: {
+              // choose a custom style layout
+              'ui-autocomplete': 'autocomplete-custom-four-corners',
+            },
+            position: {
+              my: 'left top',
+              at: 'left bottom-10', // Adjusted to append dropdown above the input
+              collision: 'flip',
+            },
+            fetch: (searchText: any, updateCallback: any) => {
+              this.bpcMainBarDia = this.bpcMainBarDiaBackup;
+              const activeCell = this.grid.slickGrid.getActiveCell();
+              const currentItem = activeCell
+                ? this.grid.dataView.getItem(activeCell.row)
+                : null;
+              const currentValue = currentItem
+                ? currentItem['main_bar_dia']
+                : null;
+              if (
+                searchText === currentValue?.toString() ||
+                searchText === ''
+              ) {
+                updateCallback(this.bpcMainBarDia);
+              } else {
+                this.bpcMainBarDia = this.bpcMainBarDia.filter((barsize: any) =>
+                  barsize.label.startsWith(searchText)
+                );
+                updateCallback(this.bpcMainBarDia); // add here the array
+              }
+            },
+          },
+        },
+        cssClass: 'center-align',
+        sortable: true,
+        filterable: false,
+      },
+      {
+        id: 'cage_length',
+        name: 'Cage Length',
+        field: 'cage_length',
+        toolTip: 'Cage length (铁笼长)',
+        minWidth: 10,
+        width: 58,
+        maxWidth: 58,
+        editor: { model: Editors.text },
+        cssClass: 'center-align',
+        sortable: true,
+        filterable: false,
+      },
+      {
+        id: 'spiral_link_type',
+        name: 'Spiral Link Type',
+        field: 'spiral_link_type',
+        toolTip: 'Spiral link Type (螺旋筋类型)',
+        minWidth: 10,
+        width: 100,
+        maxWidth: 105,
+        editor: {
+          model: Editors.autocompleter,
+          editorOptions: {
+            showOnFocus: true,
+            minLength: 0,
+            classes: {
+              // choose a custom style layout
+              'ui-autocomplete': 'autocomplete-custom-four-corners',
+            },
+            position: {
+              my: 'left top',
+              at: 'left bottom-10', // Adjusted to append dropdown above the input
+              collision: 'flip',
+            },
+            fetch: (searchText: any, updateCallback: any) => {
+              let data = [
+                { value: '1 Spacing', label: '1 Spacing' },
+                { value: '2 Spacing', label: '2 Spacing' },
+                { value: '3 Spacing', label: '3 Spacing' },
+                { value: 'Twin 1 Spacing', label: 'Twin 1 Spacing' },
+                { value: 'Twin 2 Spacing', label: 'Twin 2 Spacing' },
+                { value: 'Twin 3 Spacing', label: 'Twin 3 Spacing' },
+                { value: 'Single-Twin', label: 'Single-Twin' },
+                { value: 'Twin-Single', label: 'Twin-Single' },
+              ];
+              const activeCell = this.grid.slickGrid.getActiveCell();
+              const currentItem = activeCell
+                ? this.grid.dataView.getItem(activeCell.row)
+                : null;
+              const currentValue = currentItem
+                ? currentItem['spiral_link_type']
+                : null;
+              if (
+                searchText === currentValue?.toString() ||
+                searchText === ''
+              ) {
+                updateCallback(data);
+              } else {
+                data = data.filter((barsize: any) =>
+                  barsize.label
+                    .toLowerCase()
+                    .startsWith(searchText.toLowerCase())
+                );
+                updateCallback(data); // add here the array
+              }
+            },
+          },
+        },
+        validator: this.LinkTypeValidator,
+        cssClass: 'center-align',
+        sortable: true,
+        filterable: false,
+      },
+      {
+        id: 'spiral_link_grade',
+        name: 'Spiral Link Grade',
+        field: 'spiral_link_grade',
+        toolTip: 'Spiral link grade (螺旋筋等级)',
+        minWidth: 10,
+        width: 39,
+        maxWidth: 39,
+        editor: {
+          model: Editors.autocompleter,
+          editorOptions: {
+            showOnFocus: true,
+            minLength: 0,
+            classes: {
+              // choose a custom style layout
+              'ui-autocomplete': 'autocomplete-custom-four-corners',
+            },
+            position: {
+              my: 'left top',
+              at: 'left bottom-10', // Adjusted to append dropdown above the input
+              collision: 'flip',
+            },
+            fetch: (searchText: any, updateCallback: any) => {
+              let data = [
+                { value: 'H', label: 'H' },
+                { value: 'T', label: 'T' },
+                { value: 'X', label: 'X' },
+                { value: 'R', label: 'R' },
+              ];
+              const activeCell = this.grid.slickGrid.getActiveCell();
+              const currentItem = activeCell
+                ? this.grid.dataView.getItem(activeCell.row)
+                : null;
+              const currentValue = currentItem
+                ? currentItem['spiral_link_grade']
+                : null;
+              if (
+                searchText === currentValue?.toString() ||
+                searchText === ''
+              ) {
+                updateCallback(data);
+              } else {
+                data = data.filter((barsize: any) =>
+                  barsize.label
+                    .toLowerCase()
+                    .startsWith(searchText.toLowerCase())
+                );
+                updateCallback(data); // add here the array
+              }
+            },
+          },
+        },
+        cssClass: 'center-align',
+        sortable: true,
+        filterable: false,
+      },
+      {
+        id: 'spiral_link_dia',
+        name: 'Spiral Link Dia',
+        field: 'spiral_link_dia',
+        toolTip: 'Spiral link diameter (螺旋筋直径)',
+        minWidth: 10,
+       width: 48,
+        maxWidth: 48,
+        editor: {
+          model: Editors.autocompleter,
+          editorOptions: {
+            showOnFocus: true,
+            minLength: 0,
+            classes: {
+              // choose a custom style layout
+              'ui-autocomplete': 'autocomplete-custom-four-corners',
+            },
+            position: {
+              my: 'left top',
+              at: 'left bottom-10', // Adjusted to append dropdown above the input
+              collision: 'flip',
+            },
+            fetch: (searchText: any, updateCallback: any) => {
+              let data = [
+                { value: 16, label: '16' },
+                { value: 13, label: '13' },
+                { value: 10, label: '10' },
+              ];
+              const activeCell = this.grid.slickGrid.getActiveCell();
+              const currentItem = activeCell
+                ? this.grid.dataView.getItem(activeCell.row)
+                : null;
+              const currentValue = currentItem
+                ? currentItem['spiral_link_dia']
+                : null;
+              if (
+                searchText === currentValue?.toString() ||
+                searchText === ''
+              ) {
+                updateCallback(data);
+              } else {
+                data = data.filter((barsize: any) =>
+                  barsize.label.startsWith(searchText)
+                );
+                updateCallback(data); // add here the array
+              }
+            },
+          },
+        },
+        cssClass: 'center-align',
+        sortable: true,
+        filterable: false,
+      },
+      {
+        id: 'spiral_link_spacing',
+        name: 'Spiral Link Spacing',
+        field: 'spiral_link_spacing',
+        toolTip: 'Spiral link spacing (螺旋筋间距)',
+        minWidth: 10,
+        width: 102,
+        maxWidth: 102,
+        editor: {
+          model: Editors.text,
+        },
+        validator: this.LinkSpacingValidator,
+        cssClass: 'center-align',
+        sortable: true,
+        filterable: false,
+      },
+      {
+        id: 'lap_length',
+        name: 'Lap Length',
+        field: 'lap_length',
+        toolTip: 'Lap length reserved (桩顶重叠预留长度)',
+        minWidth: 10,
+        width: 49,
+        maxWidth: 49,
+        editor: {
+          model: Editors.text,
+        },
+        validator: this.LapLengthValidator,
+        cssClass: 'center-align',
+        sortable: true,
+        filterable: false,
+      },
+      {
+        id: 'end_length',
+        name: 'End Length',
+        field: 'end_length',
+        toolTip: 'End length (桩底预留长度)',
+        minWidth: 10,
+        width: 45,
+        maxWidth: 45,
+        editor: {
+          model: Editors.text,
+        },
+        validator: this.LapLengthValidator,
+        cssClass: 'center-align',
+        sortable: true,
+        filterable: false,
+      },
+      {
+        id: 'cage_location',
+        name: 'Cage Location',
+        field: 'cage_location',
+        toolTip:
+          'The location of the cage in a entire pile (此铁笼在整个桩的位置)',
+        minWidth: 10,
+        width: 67,
+        maxWidth: 67,
+        editor: {
+          model: Editors.autocompleter,
+          editorOptions: {
+            showOnFocus: true,
+            minLength: 0,
+            classes: {
+              // choose a custom style layout
+              'ui-autocomplete': 'autocomplete-custom-four-corners',
+            },
+            position: {
+              my: 'left top',
+              at: 'left bottom-10', // Adjusted to append dropdown above the input
+              collision: 'flip',
+            },
+            fetch: (searchText: any, updateCallback: any) => {
+              let data = [
+                { value: 'Top', label: 'Top' },
+                { value: 'Middle', label: 'Middle' },
+                { value: 'End', label: 'End' },
+                { value: 'NA', label: 'NA' },
+              ];
+              const activeCell = this.grid.slickGrid.getActiveCell();
+              const currentItem = activeCell
+                ? this.grid.dataView.getItem(activeCell.row)
+                : null;
+              const currentValue = currentItem
+                ? currentItem['cage_location']
+                : null;
+              if (
+                searchText === currentValue?.toString() ||
+                searchText === ''
+              ) {
+                updateCallback(data);
+              } else {
+                data = data.filter((barsize: any) =>
+                  barsize.label
+                    .toLowerCase()
+                    .startsWith(searchText.toLowerCase())
+                );
+                updateCallback(data); // add here the array
+              }
+            },
+          },
+        },
+        cssClass: 'center-align',
+        sortable: true,
+        filterable: false,
+      },
+      {
+        id: 'cage_weight',
+        name: 'Est. Weight',
+        field: 'cage_weight',
+        toolTip: 'Estimated weight (估计重量)',
+        minWidth: 10,
+        width: 75,
+        maxWidth: 80,
+        editor: {
+          model: Editors.text,
+        },
+        cssClass: 'center-align',
+        sortable: true,
+        filterable: false,
+      },
+      {
+        id: 'cage_qty',
+        name: "<span style='color:bisque;'><b>Qty</b></span>",
+        field: 'cage_qty',
+        toolTip:
+          'Cage Quantity (订购数量). Cages per Load (Trailer) can be found from above table. Low Bed can be loaded 3 cages from 1500mm to 1800mm (Subject to low bed availability).',
+        minWidth: 10,
+        width: 55,
+        maxWidth: 60,
+        editor: {
+          model: Editors.text,
+        },
+        cssClass: 'center-align-bold',
+        sortable: true,
+        filterable: false,
+      },
+      {
+        id: 'per_set',
+        name: "<span style='color:bisque;'><b>Per Set</b></span>",
+        field: 'per_set',
+        toolTip: 'Number of Cages per set (每组笼数)',
+        minWidth: 10,
+        width: 55,
+        maxWidth: 60,
+        editor: {
+          model: Editors.text,
+        },
+        cssClass: 'center-align',
+        sortable: true,
+        filterable: false,
+      },
+      {
+        id: 'bbs_no',
+        name: "<span style='color:bisque;'><b>Cage/Set Mark</b></span>",
+        field: 'bbs_no',
+        toolTip:
+          'Cage/Set mark, the mark will be printed on Production Tag. (铁笼/铁笼组编号,此编号将印在标签上)',
+        minWidth: 10,
+        width: 90,
+        maxWidth:110,
+        editor: {
+          model: Editors.text,
+        },
+        cssClass: 'center-align',
+        sortable: true,
+        filterable: false,
+      },
+      {
+        id: 'cage_remarks',
+        name: "<span style='color:bisque;'><b>Remarks</b></span>",
+        field: 'cage_remarks',
+        toolTip: 'Remarks (备注)',
+        minWidth: 10,
+        width: 80,
+        maxWidth:90,
+        editor: {
+          model: Editors.text,
+        },
+        cssClass: 'center-align',
+        sortable: true,
+        filterable: false,
+      },
+      {
+        id: 'deletelink',
+        name: 'Remove',
+        field: 'deletelink',
+        toolTip:
+          'Click button to remove the cage from the order (点击按钮删除此产品)',
+        headerCssClass: 'cell-head',
+        formatter: this.linkFormatter,
+        cssClass: 'cell-row',
+        maxWidth: 60,
+        width: 50,
+        selectable: true,
+        sortable: false,
+        filterable: false,
+      },
+    ];

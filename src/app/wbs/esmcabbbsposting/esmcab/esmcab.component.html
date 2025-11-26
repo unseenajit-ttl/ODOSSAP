@@ -1,0 +1,49 @@
+<div>
+    <label>
+      Coupler Type:
+    </label>
+    <ng-select [selectOnTab]="true" class="ng-selectcustomer" [(ngModel)]="CouplerType"
+      (ngModelChange)="OnChangeCouplerType()" [disabled]="NON_Editable">
+      <ng-option *ngFor="let sList of CouplerList" [value]="sList">
+        {{ sList }}
+      </ng-option>
+    </ng-select>
+    <span  class="Coupler-Type">The purpose of the dropdown is simply to provide the required shape codes corresponding to the coupler type.</span>
+  </div>
+
+<div>
+<span style="display: flex; align-items: center">
+    <i class="bi bi-arrow-left-short" style="font-size: x-large; color: blue" ngbTooltip="Back"
+      (click)="backToOrder()"></i>
+    <a  (click)="backToOrder()" style="color: blue">Back to Order Summary</a></span>
+</div>
+<div>
+    <ul id="contextMenuCAB" style="display:none;position:absolute;">
+        <li data="insert" (click)="InsertItem()">Insert</li>
+        <li data="delete" (click)="Delete()">Delete</li>
+        <li data="clear" (click)="ClearRows()">Clear Contents</li>
+        <!-- <li data="" style="background: url('@Url.Content(" ~/Content/images/line.png")') no-repeat center left"></li> -->
+        <li data="copy" (click)="CopyRows()">Copy</li>
+        <li data="paste" (click)="PasteRows()">Paste</li>
+        <!-- <li data="" style="background: url('@Url.Content(" ~/Content/images/line.png")') no-repeat center left"></li> -->
+        <!-- <li data="weight" (click)="SubTotalWeight()">Sub-total Weight</li>
+        <li data="qty" (click)="SubTotalQty()">Sub-total Qty</li> -->
+        <!-- <li data="" style="background: url('@Url.Content(" ~/Content/images/line.png")') no-repeat center left"></li> -->
+        <!-- <li data="MoreInfo" (click)="OpenMoreInfo()">More Info</li> -->
+    </ul>
+    <angular-slickgrid gridId="grid2" [columnDefinitions]="templateColumns"
+        [gridOptions]="gridOptions"  gridHeight="600" [dataset]="bbsOrderdataset"
+        gridWidth="700" (onAngularGridCreated)="angularGridReady($event)">
+    </angular-slickgrid>
+   
+</div>
+
+<div id="imageBox" class="movable-container" [ngClass]="{'hide-image': showShapeImage===false}"
+[style.right.px]="right" [style.top.px]="top" (mousedown)="onMouseDown($event)"
+(document:mousemove)="onMouseMove($event)" (document:mouseup)="onMouseUp($event)">
+<div class="close-button"><i class="bi bi-x" (click)="showShapeImage = false"></i></div>
+<!-- IMAGE HERE ONLY-->
+<div>
+    <canvas #myCanvas width="355" height="246" style="width: 355px; height: 246px"></canvas>
+</div>
+</div>

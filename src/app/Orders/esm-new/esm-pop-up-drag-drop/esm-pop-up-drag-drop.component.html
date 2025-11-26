@@ -1,0 +1,77 @@
+<div cdkDrag cdkDragRootElement=".your-custom-dialog-class" class="your-custom-dialog-class">
+  <div class="movable-container w-100" style="height: 80vh;">
+
+    <div class="card h-100 shadow-sm">
+
+      <!-- Dialog Header -->
+      <div class="mainHeading d-flex justify-content-between align-items-center" cdkDragHandle>
+        <span>Select columns to create customized view</span>
+        <!-- <button type="button" class="btn-close" aria-label="Close" (click)="onClose()"></button> -->
+      </div>
+
+      <!-- Loader -->
+      <div *ngIf="ProcessOrderLoading" class="loader-overlay">
+        <div class="loader"></div>
+      </div>
+
+      <!-- Content Area -->
+      <div class="card-body flex-grow-1">
+        <div class="row h-100">
+          <!-- First List -->
+          <div class="col-12">
+            <div class="row align-items-center">
+              <div class="col-md-1">Custom View:</div>
+              <div class="col-md-5">
+                <input type="text" class="form-control" placeholder="Enter Custom View Name" [(ngModel)]="selectedRow.VIEWNAME">
+              </div>
+              <div class="col-md-1">View Description:</div>
+              <div class="col-md-5">
+                <input type="text" class="form-control" placeholder="Enter View Description" [(ngModel)]="selectedRow.VIEWDESCRIPTION">
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col-6 h-100">
+                <h3>Available Columns</h3>
+                <div
+                  cdkDropList
+                  #firstList="cdkDropList"
+                  [cdkDropListData]="availableColumns"
+                  [cdkDropListConnectedTo]="[secondList]"
+                  class="example-list scrollable-list"
+                  (cdkDropListDropped)="drop($event)"
+                >
+                  <div class="example-box" *ngFor="let item of availableColumns" cdkDrag>
+                    {{ item.DisplayName }}
+                  </div>
+                </div>
+              </div>
+              <!-- Main List -->
+              <div class="col-6 h-100">
+                <h3>Display Columns</h3>
+                <div
+                  cdkDropList
+                  #secondList="cdkDropList"
+                  [cdkDropListData]="displayColumns"
+                  [cdkDropListConnectedTo]="[firstList]"
+                  class="example-list scrollable-list"
+                  (cdkDropListDropped)="drop($event)"
+                >
+                  <div class="example-box" *ngFor="let item of displayColumns" cdkDrag>
+                    {{ item.DisplayName }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dialog Footer -->
+      <div class="card-footer d-flex justify-content-end gap-2">
+        <button class="btn btn-secondary" (click)="onClose()">Close</button>
+        <button class="btn btn-primary" (click)="onSave()">Save</button>
+      </div>
+
+    </div>
+  </div>
+</div>

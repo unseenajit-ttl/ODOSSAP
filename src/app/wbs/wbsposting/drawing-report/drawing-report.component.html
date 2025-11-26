@@ -1,0 +1,164 @@
+<div id="pause" class="d-flex align-items-center justify-content-center" *ngIf="loading">
+    <div id="spinner" class="loader"></div>
+  </div>
+
+
+  <div class="container-fluid">
+    <h3 class="card-header mb-1 pb-0">
+      <div class="row">
+        <a (click)="backToSummary()" style="color: blue;cursor: pointer;" class="col-md-4">
+          <i class="fa fa-arrow-left arrow-left" aria-hidden="true"></i>
+          Back to {{pageName}}
+        </a>
+        <b class="col-md-8">Drawing Report</b>
+      </div>
+    </h3>
+    <div class="card m-1">
+
+      <div class="card-body">
+        <div class="card-body mt-3">
+
+          <fieldset>
+
+            <div class="row">
+              <form [formGroup]="DrawingReportForm" class="col-12">
+                <div class="d-flex justify-content-start">
+                  <div class="p-2">
+                    <label class="required-label" style="padding-right:5px;">* </label>
+                    <label class="form-label"><b>Date From</b></label>
+                    <input type="date" class="form-control" formControlName="fromDate" (change)="checkSelectedDate()"
+                      [(ngModel)]="From_Date">
+                  </div>
+                  <div class="p-2">
+                    <label class="required-label" style="padding-right:5px;">* </label>
+                    <label class="form-label"><b>Date To</b></label>
+                    <input type="date" class="form-control" formControlName="toDate" [(ngModel)]="To_Date">
+
+                  </div>
+                  <div class="p-2 d-none">
+                    <label class="required-label" style="padding-right:5px;">* </label>
+                    <label class="form-label"><b>Customer </b></label>
+                    <ng-select [selectOnTab]="true" formControlName="customerCode" class="w-auto"
+                      (change)="GetOrderProjectsList($event);">
+                      <ng-option *ngFor="let sList of customerList" [value]="sList.CustomerCode">
+                        {{sList.CustomerName}}
+                      </ng-option>
+                    </ng-select>
+
+                  </div>
+                  <div class="p-2 d-none">
+                    <label class="form-label"><b>Project</b></label>
+                    <label class="required-label" style="padding-right:5px;">* </label>
+                    <ng-select [selectOnTab]="true" formControlName="projectCode" class="w-auto">
+                      <ng-option *ngFor="let sList of projectList" [value]="sList.ProjectCode">
+                        {{sList.ProjectTitle}}
+                      </ng-option>
+                    </ng-select>
+                  </div>
+                  <div class="p-2">
+                    <!-- <label class="required-label" style="padding-right:5px;">* </label>
+                    <label class="form-label"><b>Report Type</b> </label>
+                    <ng-select formControlName="rptType" class="w-auto" placeholder="Report type">
+                      <ng-option *ngFor="let sList of ReportTypeList" [value]="sList.type">
+                        {{sList.type}}
+                      </ng-option>
+                    </ng-select> -->
+
+                  </div>
+                  <div class="p-2">
+                    <label class="form-label"> </label>
+                    <div class="d-flex">
+                      <button class="btn btn-primary btn-sm" type="button" ngbTooltip="View Report" (click)="viewReport()">View
+
+                      </button>
+
+                      <div class="input-group flex-nowrap" style="width: 39px;">
+                        <span class="input-group-text " style="cursor: pointer;">
+                          <i class="material-icons" style="font-size:20px;" ngbTooltip="Download Excel"
+                            (click)="downloadFile()">download</i>
+                        </span>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+
+              </form>
+
+              <hr>
+
+
+            </div>
+          </fieldset>
+
+          <ng-container *ngIf="showIframe">
+            <div class="table-responsive table-wrapper-scroll-y my-custom-scrollbar mt-3" style="padding: 0; margin:0">
+              <table class="table table-bordered" style="width:110%; padding: 0; margin:0" id="TrackingDetailslist">
+                <thead style="position:sticky;top:0px;">
+                  <tr>
+
+                    <th style="width:40px">Customer Code</th>
+                    <th style="width:40px">Project Code</th>
+                    <th style="width:40px">Submit By</th>
+                    <th style="width:40px">Submit Date</th>
+                    <th style="width:40px">Approved By</th>
+                    <th style="width:40px">Approved Date</th>
+                    <th style="width:40px">Status</th>
+
+                  </tr>
+                </thead>
+
+
+                <tbody>
+
+                  <tr *ngFor="let item of DrawingReportList| slice: pageSize | slice: 0:itemsPerPage; index as i">
+                    <td>{{item.CustomerCode}}</td>
+                    <td>{{item.ProjectCode}}</td>
+                    <td>{{item.SubmitBy}}</td>
+                    <td>{{item.SubmitDate}}</td>
+                    <td>{{item.ApprovedBy}}</td>
+                    <td>{{item.ApprovedDate}}</td>
+                    <td>{{item.DrawingStatus}}</td>
+
+
+                  </tr>
+
+                  <tr *ngIf="DrawingReportList.length==0">
+                    <td colspan="31">
+                      No Records Found
+                    </td>
+
+
+                  </tr>
+
+                </tbody>
+
+              </table>
+            </div>
+
+            <div class="d-flex mt-2">
+              <ngb-pagination [collectionSize]="DrawingReportList.length" [(page)]="currentPage" [pageSize]="itemsPerPage"
+                (pageChange)="onPageChange(currentPage)" [boundaryLinks]="false" [maxSize]="maxSize" *ngIf="searchResult">
+                <ng-template ngbPaginationPrevious>Prev</ng-template>
+                <ng-template ngbPaginationNext>Next</ng-template>
+              </ngb-pagination>
+
+              <select class="custom-select mr-2 ml-3" style="width: auto" [(ngModel)]="itemsPerPage"
+                (ngModelChange)="OnPageSizeChange(itemsPerPage);">
+                <option [ngValue]="5">5 </option>
+                <option [ngValue]="10">10 </option>
+                <option [ngValue]="20">20 </option>
+                <option [ngValue]="50">50 </option>
+                <option [ngValue]="100">100 </option>
+              </select>
+              <span style="margin-top: 5px;">Items per page</span>
+            </div>
+
+
+          </ng-container>
+
+
+        </div>
+      </div>
+    </div>
+  </div>

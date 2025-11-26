@@ -1,0 +1,33 @@
+
+export interface CAB_PRODUCT_CODE_LIST {
+BPCItem:boolean, 
+protype: string,
+BaseUOM:number,
+CABProductCodeID:number, 
+CoupDiameter:number,
+CoupGradeID:number, 
+CoupSAPMaterialID:number, 
+CouplStdID: number,
+CouplerIndicator:boolean,
+
+CouplerType?: string,
+CreatedDate:string,
+CreatedUId: number,
+Description:string, 
+Diameter: number,
+FGSAPMaterialID: number,
+Grade: number,
+GradeType: string,
+RMSAPMaterialID: number,
+// SalesUOM:number, 
+StatusId: number,
+StdID: number,
+// UpdatedDate: string,
+UpdatedUId: number,
+WeightPerMRun:number,
+FG_SAPMaterialCode: string,
+RM_SAPMaterialCode: string,
+ProductType:number,
+ProductCode: string,
+}
+

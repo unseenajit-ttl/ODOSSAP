@@ -1,0 +1,26 @@
+
+<div class="modal-header" >
+  <h4 class="modal-title">Add New</h4>
+  <i class="fa-solid fa-xmark"></i>
+  <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+
+</div>
+<div class="modal-body " >
+  <!-- <div  *ngIf="formname=='wbs'">
+  <app-create-wbs [wbsdata]="wbsitemdata"></app-create-wbs> -->
+<!-- </div> -->
+
+</div>
+<div class="modal-footer" >
+  <button type="button" (click)="cancel()" class="btn btn-secondary">
+ Cancel
+  </button>
+  <button
+    type="button"
+    (click)="submitReview()"
+    class="btn btn-primary me-2"
+    [disabled]="disableSubmit"
+  >
+    Submit
+  </button>
+</div>

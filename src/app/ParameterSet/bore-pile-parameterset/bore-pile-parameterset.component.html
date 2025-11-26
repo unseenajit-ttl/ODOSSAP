@@ -1,0 +1,166 @@
+<div class="container-fluid">
+    <div class="card m-1">
+        <div class="card-body" style="height: 500px;">
+            <div class="filter ">
+                    <ngb-accordion #acc="ngbAccordion" title="Filters" activeIds="panel1">
+                        <ngb-panel id="panel1" class="pb-5">
+                            <ng-template ngbPanelContent>
+                                <div class="card-body">
+                                    <div class="row">                                       
+                                        <div class="col-md-3">
+                                            <label class="form-label ">Parameter Set</label> <br>
+                                            <div class=" d-flex">
+                                                <div>
+                                                    <ng-select [selectOnTab]="true" 
+                                                        [(ngModel)]="tntParameterSet" [ngModelOptions]="{standalone: true}" class="ng-selectwbs" (change)="onChangeParameterList()"
+                                                       >
+                                                      
+                                                        <ng-option *ngFor="let sList of ParameterSetList"
+                                                            [value]="sList.tntParamSetNumber">
+                                                            {{sList.intParameterSet}}
+                                                        </ng-option>
+                                                    </ng-select>
+                                                  
+                                                </div>
+                                                &nbsp;
+                                                <i class="material-icons" ngbTooltip="Add New Parameter Set" (click)="AddNewParameter()"
+                                                    >add_circle</i>
+
+                                               <div>
+                                        
+                                               </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </ng-template>
+                        </ngb-panel>
+
+                    </ngb-accordion>
+             
+            </div>
+            <br>
+            <div>
+                <div class="row" style="margin-top: 10px;">
+                    <!---------------PARAMETER SET---------------->
+                    <div class="col card_pad flex  align-items-stretch" style="padding-top:0px;">
+                        <div class="card">
+
+
+
+                            <div class="card-header" style="text-align: center;">
+                                <b>PARAMETER</b>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-2 card_pad d-flex align-items-stretch">
+
+                                </div>
+                                <div class="col-sm-8 card_pad d-flex align-items-stretch">
+                                    <div class="card" style="max-height: 10;">
+                                        <div class="card-body">
+                                            <table
+                                                class="table  d-block d-md-table table-responsive table-striped  table-bordered ">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-center card-text" style="width:270px">
+                                                            Product Type
+                                                          </th>
+                                                        <th class="text-center card-text" style="width:230px">
+                                                            Lap Length</th>
+                                                        <th class="text-center card-text" style="width:230px">
+                                                            Lap End
+                                                        </th>
+                                                        <th class="text-center card-text" style="width:270px">
+                                                            Adj Factor
+                                                        </th>
+                                                        <th class="text-center card-text" style="width:270px">
+                                                            Cover to link
+                                                        </th>
+                                                       
+                                                        <th class="text-center card-text" style="width:270px">
+                                                            Action
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    
+                                                    <ng-container
+                                                        *ngFor="let item of Top_Parameters">
+                                                        <tr>
+                                                     
+                                                            <td>
+                                                                <ng-select [selectOnTab]="true"  [readonly]="true"
+                                                                [(ngModel)]="item.Product_Type" [ngModelOptions]="{standalone: true}" class="ng-selectwbs"
+                                                                                                              >
+                                                                                                             
+                                                                                                               <ng-option *ngFor="let sList of ProductTypeList"
+                                                                                                                   [value]="sList.ProductTypeId">
+                                                                                                                   {{sList.ProductType}}
+                                                                                                               </ng-option>
+                                                                                                           </ng-select>
+                                                            </td>
+                                                                <td>
+                                                                    <input type="number" class="form-control"
+                                                                        [(ngModel)]="item.Lap_Length"
+                                                                        style=" height: auto;" />
+
+                                                                </td>
+                                                                <td>
+                                                                    <input type="number" class="form-control"
+                                                                        [(ngModel)]="item.Lap_End"
+                                                                        style=" height: auto;" />
+
+                                                                </td>
+                                                                <td>
+                                                                    <input type="number" class="form-control"
+                                                                        [(ngModel)]="item.Adj_Factor"
+                                                                        style=" height: auto;" />
+
+                                                                </td>
+
+                                                                <td>
+                                                                    <input type="number" class="form-control"
+                                                                        [(ngModel)]="item.Cover_to_link"
+                                                                        style=" height: auto;" />
+
+                                                                </td>
+                                                                <td class="text-center" style="width:200px;">
+                                                                    <i class="material-icons"  (click)="Update_Parameter(item)"
+                                                                        
+                                                                        ngbTooltip="Update">save</i>
+                                                                    &nbsp;
+                                                                
+                                                                </td>
+
+                                                        </tr>
+                                                    </ng-container>
+
+                                                    <!-- Add blank row when no paramater select -->
+                                                    
+                                                </tbody>
+
+                                            </table>
+                                         
+
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2 card_pad d-flex align-items-stretch">
+
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+          
+            </div>
+        </div>
+    </div>
+</div>

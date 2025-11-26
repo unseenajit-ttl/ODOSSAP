@@ -1,0 +1,418 @@
+<div *ngIf="Loading" style="z-index: 500">
+    <div id="pause" class="d-flex align-items-center justify-content-center">
+        <div id="spinner" class="loader"></div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <h3 class="card-header d-flex flex-column justify-content-center align-items-center">
+        <b>Tracking Number Generator</b>
+    </h3>
+    <div class="card m-1">
+       
+        <div class="card-body mt-0">
+           
+
+            <div class="row">
+                    <form [formGroup]="trackDetailsForm">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="required-label" style="padding-right:5px;">* </label>
+                                <label class="form-label">Customer : </label>
+                                <ng-select [selectOnTab]="true" formControlName="customer"
+                                    [ngClass]="{ 'disabled-ng-select': isEditing }" class="w-auto"
+                                    (change)="ChangeCustomer($event)">
+                                    <ng-option *ngIf="LoadingCustomerName">
+                                        <div style="justify-content: center;display: flex;">
+                                            <div class="spinner-border text-secondary" role="status">
+                                                <span class="sr-only">Loading...</span>
+                                            </div>
+                                        </div>
+                                    </ng-option>
+                                    <ng-option *ngFor="let sList of Customerlist" [value]="sList.CustomerNo">
+                                        {{sList.Customername}}
+                                    </ng-option>
+                                </ng-select>
+                                <span class="text-danger"
+                                    *ngIf=" isformsubmit && trackDetailsForm.controls['customer'].invalid && trackDetailsForm.controls['customer'].errors && trackDetailsForm.controls['customer'].hasError('required')">*
+                                    Select Customer. </span>
+
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="required-label" style="padding-right:5px;">* </label>
+                                <label class="form-label">Project</label>
+                                <ng-select [selectOnTab]="true" formControlName="project"
+                                    [ngClass]="{ 'disabled-ng-select': isEditing }" class="w-auto"
+                                    (change)="ChangeProject($event)">
+                                    <ng-option *ngFor="let sList of projectList" [value]="sList.ProjectId">
+                                        {{sList.Description}}
+                                    </ng-option>
+                                </ng-select>
+                                <span class="text-danger"
+                                    *ngIf=" isformsubmit && trackDetailsForm.controls['project'].invalid && trackDetailsForm.controls['project'].errors && trackDetailsForm.controls['project'].hasError('required')">*
+                                    Select Project. </span>
+
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row ">
+                            <div class="col-md-3">
+                                <label class="required-label" style="padding-right:5px;">* </label>
+                                <label class="form-label">Product Type</label>
+                                <ng-select formControlName="Producttype" [ngClass]="{ 'disabled-ng-select': isEditing }"
+                                    (change)="ChangeProductType($event)">
+                                    <ng-option *ngFor="let sList of ProductTypeList" [value]="sList.ProductTypeID">
+                                        {{sList.ProductType}}
+                                    </ng-option>
+                                </ng-select>
+                                <span class="text-danger"
+                                    *ngIf=" isformsubmit && trackDetailsForm.controls['Producttype'].invalid && trackDetailsForm.controls['Producttype'].errors && trackDetailsForm.controls['Producttype'].hasError('required')">*
+                                    Select ProductType. </span>
+
+                            </div>
+
+                            <div class="col-md-3">
+                                <label class="required-label" style="padding-right:5px;">* </label>
+                                <label class="form-label">Structure Element</label>
+                                <ng-select [selectOnTab]="true" formControlName="structureelement"
+                                    [ngClass]="{ 'disabled-ng-select': isEditing }" (change)="changeStructure($event)"
+                                    class="ng-selectcustomer">
+                                    <ng-option *ngFor="let sList of structureList"
+                                        [value]="sList.StructureElementTypeId">
+                                        {{sList.StructureElementType}}
+                                    </ng-option>
+                                </ng-select>
+                                <span class="text-danger"
+                                    *ngIf=" isformsubmit && trackDetailsForm.controls['structureelement'].invalid && trackDetailsForm.controls['structureelement'].errors && trackDetailsForm.controls['structureelement'].hasError('required')">*
+                                    Select Structure Element. </span>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label class="required-label" style="padding-right:5px;">* </label>
+                                <label class="form-label">Contract</label>
+                                <ng-select [selectOnTab]="true" formControlName="contract"
+                                    [ngClass]="{ 'disabled-ng-select': isEditing }" class="w-auto">
+                                    <ng-select [selectOnTab]="true" formControlName="contract" class="w-auto">
+                                        <ng-option *ngFor="let sList of Contractlist" [value]="sList.ContractNo">
+                                            {{sList.ContractCode}}
+
+                                        </ng-option>
+
+                                    </ng-select>
+                                </ng-select>
+                                <span class="text-danger"
+                                    *ngIf=" isformsubmit && trackDetailsForm.controls['contract'].invalid && trackDetailsForm.controls['contract'].errors && trackDetailsForm.controls['contract'].hasError('required')">*
+                                    Select Contract. </span>
+
+                            </div>
+                            <div class="col-md-1">
+                                <label class="form-label"> </label>
+                                <div class="d-flex" style="justify-content: flex-end;">
+                                    <button class="btn btn-primary btn-sm" type="button" (click)="ViewList()">Retrieve
+                                    </button>
+
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <br>
+
+                    </form>
+                    <form [formGroup]="trackDetailsForm2">
+
+                        <div class="row">
+                            <div class="col-md-2">
+                                <label class="required-label" style="padding-right:5px;">* </label>
+                                <label class="form-label"> WBS1</label>
+                                <ng-select class="w-auto" formControlName="wbs1"
+                                    [ngClass]="{ 'disabled-ng-select': isEditing }" (change)="changeWbs1($event)">
+                                    <ng-option *ngFor="let sList of WBS1dropList" [value]="sList.WBS1">
+                                        {{sList.WBS1}}
+                                    </ng-option>
+                                </ng-select>
+                                <span class="text-danger"
+                                    *ngIf=" isformsubmit && trackDetailsForm2.controls['wbs1'].invalid && trackDetailsForm2.controls['wbs1'].errors && trackDetailsForm2.controls['wbs1'].hasError('required')">*
+                                    Select WBS. </span>
+
+                            </div>
+                            <div class="col-md-2">
+                                <label class="required-label" style="padding-right:5px;">* </label>
+                                <label class="form-label">WBS2</label>
+                                <ng-select [selectOnTab]="true" formControlName="wbs2"
+                                    [ngClass]="{ 'disabled-ng-select': isEditing }" (change)="changeWbs2($event)">
+                                    <ng-option *ngFor="let sList of WBS2dropList" [value]="sList.WBS2">
+                                        {{sList.WBS2}}
+                                    </ng-option>
+                                </ng-select>
+                                <span class="text-danger"
+                                    *ngIf=" isformsubmit && trackDetailsForm2.controls['wbs2'].invalid && trackDetailsForm2.controls['wbs2'].errors && trackDetailsForm2.controls['wbs2'].hasError('required')">*
+                                    Select WBS. </span>
+
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">WBS3</label>
+                                <ng-select [selectOnTab]="true" formControlName="wbs3"
+                                    [ngClass]="{ 'disabled-ng-select': isEditing }" (change)="changeWbs3($event)">
+                                    <ng-option *ngFor="let sList of WBS3dropList" [value]="sList.WBS3">
+                                        {{sList.WBS3}}
+                                    </ng-option>
+
+                                </ng-select>
+
+                            </div>
+                            <div class="col-md-2">
+                                <label class="required-label" style="padding-right:5px;">* </label>
+                                <label class="form-label">BBS</label>
+                                <input type="text" class="form-control form-control-sm" formControlName="bbs" [ngClass]="{ 'disabled-ng-select': isEditing }" maxlength="15" oninput="this.value = this.value.toUpperCase()">
+                                <span class="text-danger"
+                                    *ngIf=" isformsubmit && trackDetailsForm2.controls['bbs'].invalid && trackDetailsForm2.controls['bbs'].errors && trackDetailsForm2.controls['bbs'].hasError('required')">*
+                                    BBS# is mandatory </span>
+                                <span class="text-danger"
+                                    *ngIf=" trackDetailsForm2.controls['bbs'].invalid && trackDetailsForm2.controls['bbs'].errors && trackDetailsForm2.controls['bbs'].hasError('minlength')">*
+                                    BBS# should have 11 characters</span>
+                            </div>
+
+
+                            <div class="col-md-2">
+                                <label class="required-label" style="padding-right:5px;">* </label>
+                                <label class="form-label">BBS Description</label>
+                                <input type="text" class="form-control form-control-sm"
+                                    formControlName="bbsdescription" oninput="this.value = this.value.toUpperCase()">
+                                <span class="text-danger"
+                                    *ngIf=" isformsubmit && trackDetailsForm2.controls['bbsdescription'].invalid && trackDetailsForm2.controls['bbsdescription'].errors && trackDetailsForm2.controls['bbsdescription'].hasError('required')">*
+                                    BBS Description is mandatory</span>
+                                
+                            </div>
+                            <div class="col-md-2">
+                                <label class="required-label" style="padding-right:5px;">* </label>
+                                <label class="form-label">PO Number</label>
+                                <input type="text" class="form-control form-control-sm" formControlName="ponumber" oninput="this.value = this.value.toUpperCase()"/>
+                                <span class="text-danger"
+                                    *ngIf=" isformsubmit && trackDetailsForm2.controls['ponumber'].invalid && trackDetailsForm2.controls['ponumber'].errors && trackDetailsForm2.controls['ponumber'].hasError('required')">*
+                                    PO Number is mandatory</span>
+                            </div>
+                        </div><br>
+                        <div class="row">
+
+                                <div class="col-md-2">
+                                    <label class="required-label" style="padding-right:5px;">* </label>
+                                    <label class="form-label">PO Date</label>
+                                    <input type="date" class="form-control form-control-sm"
+                                        formControlName="podate"/>
+                                        <span class="text-danger"
+                                        *ngIf=" isformsubmit && trackDetailsForm2.controls['podate'].invalid && trackDetailsForm2.controls['podate'].errors && trackDetailsForm2.controls['podate'].hasError('required')">*
+                                        podate is mandatory</span>
+
+
+                                </div>
+                                <div class="col-md-2">
+                                    <label class="required-label" style="padding-right:5px;">* </label>
+                                    <label class="form-label">Req.Date</label>
+                                    <input type="date"   class="form-control form-control-sm"
+                                        formControlName="reqdate" />
+                                    <span class="text-danger"
+                                        *ngIf=" isformsubmit && trackDetailsForm2.controls['reqdate'].invalid && trackDetailsForm2.controls['reqdate'].errors && trackDetailsForm2.controls['reqdate'].hasError('required')">*
+                                        Required Del. Date is mandatory</span>
+
+                                </div>
+                                <div class="col-md-2">
+                                    <label class="required-label" style="padding-right:5px;">* </label>
+                                    <label class="form-label">Prod Date</label>
+                                    <input type="date"  class="form-control form-control-sm"
+                                        formControlName="proddate" />
+                                    <span class="text-danger"
+                                        *ngIf=" isformsubmit && trackDetailsForm2.controls['proddate'].invalid && trackDetailsForm2.controls['proddate'].errors && trackDetailsForm2.controls['proddate'].hasError('required')">*
+                                        Production Date is mandatory</span>
+                                </div>
+                                <div class="col-md-2">
+                                    <label class="required-label" style="padding-right:5px;">* </label>
+                                    <label class="form-label">Order Type</label>
+                                    <ng-select formControlName="ordertype" class="ng-selectcustomer"
+                                        [(ngModel)]="selectedOrdertype">
+                                        <ng-option *ngFor="let sList of OrdertypeList" [value]="sList.OrderTypeName">
+                                            {{sList.OrderTypeName}}
+                                        </ng-option>
+                                    </ng-select>
+                                    <span class="text-danger"
+                                        *ngIf=" isformsubmit && trackDetailsForm2.controls['ordertype'].invalid && trackDetailsForm2.controls['ordertype'].errors && trackDetailsForm2.controls['ordertype'].hasError('required')">*
+                                        Select Order Type !</span>
+
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Location</label>
+                                <input type="text" class="form-control form-control-sm" formControlName="location" />
+
+                            </div>
+
+                                <div class="col-md-2">
+                                    <label class="required-label" style="padding-right:5px;">* </label>
+                                    <label class="form-label">Over Delv. Tolerance</label>
+                                    <input type="text" class="form-control form-control-sm"
+                                        formControlName="overdelv" />
+                                    <span class="text-danger"
+                                        *ngIf=" isformsubmit && trackDetailsForm2.controls['overdelv'].invalid && trackDetailsForm2.controls['overdelv'].errors && trackDetailsForm2.controls['overdelv'].hasError('required')">*
+                                        Over Delivery Tolerance is mandatory"
+                                    </span>
+                                </div>
+                        </div><br>
+                        <div class="row">
+
+                                <div class="col-md-2">
+                                    <label class="required-label" style="padding-right:5px;">* </label>
+                                    <label class="form-label">Under Delv. Tolerance</label>
+                                    <input type="text" class="form-control form-control-sm"
+                                        formControlName="underdelv" />
+                                        <span class="text-danger"
+                                        *ngIf=" isformsubmit && trackDetailsForm2.controls['underdelv'].invalid && trackDetailsForm2.controls['underdelv'].errors && trackDetailsForm2.controls['underdelv'].hasError('required')">*
+                                        Under Delivery Tolerance is mandatory"
+                                    </span>
+                                </div>
+                                <div class="col-md-2">
+                                    <label class="required-label" style="padding-right:5px;">* </label>
+                                    <label class="form-label">Estimated Weight</label>
+                                    <input type="text" class="form-control form-control-sm"
+                                        formControlName="estimatedweight" />
+
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Site Contact Person</label>
+                                <input type="text" class="form-control form-control-sm"
+                                    formControlName="sitecontactperson" />
+
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Remark</label>
+                                <input type="text" class="form-control form-control-sm" formControlName="remark" />
+
+                            </div>
+
+                            <div class="col-md-2">
+                                <label class="form-label"></label>
+
+                                <div class="d-flex" style="justify-content: flex-end;">
+
+                                    <button *ngIf="generateLabel=='Generate'" class="btn btn-primary btn-sm"
+                                        type="button" (click)="onGenerate()">{{generateLabel}}</button>
+                                    <button *ngIf="generateLabel=='Update'" class="btn btn-primary btn-sm" type="button"
+                                        (click)="Update(trackingId)">{{generateLabel}}</button>
+                                    <button class="btn  btn-sm" type="button" (click)="reset()">
+                                        <i class="fa fa-refresh text-center" ngbTooltip="Reset"
+                                            style=" color:red;font-size:20px;"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="col-md-1">
+                                <label class="form-label"></label>
+
+                                <div class="d-flex" style="justify-content: flex-end;">
+
+
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+                    <br>
+                    <div class="row table-responsive table-bordered" style="padding: 0; margin:0">
+                        <table class="table  w-90 table-bordered" style="padding: 0; margin:0" id="TrackingDetailslist">
+                            <thead>
+                                <tr>
+                                    <th>
+
+                                        <i class="bi bi-search" style="margin-top:3px; font-size: 15px;"
+                                            (click)="toggleFilters = !toggleFilters"></i>
+
+                                    </th>
+                                    <th class="w-125px">Tracker Id</th>
+                                    <th class="w-125px">PO Number </th>
+                                    <th class="w-125px">WBS1</th>
+                                    <th class="w-125px">WBS2</th>
+                                    <th class="w-125px">WBS3</th>
+                                    <th class="w-125px">BBS#</th>
+                                    <th class="w-125px">BBS Desc</th>
+                                    <th class="w-125px">Req Date</th>
+                                </tr>
+                            </thead>
+                            <thead>
+                                <tr *ngIf="toggleFilters">
+                                    <th></th>
+                                    <th><input type="text" placeholder="Tracking No" [(ngModel)]="searchTrackerId"
+                                            (keyup)="searchTrackingDetailsData()" /></th>
+                                    <th><input type="text" placeholder="PONumber" [(ngModel)]="searchPONumber"
+                                            (keyup)="searchTrackingDetailsData()" /></th>
+                                    <th><input type="text" placeholder="WBS1" [(ngModel)]="searchWBS1"
+                                            (keyup)="searchTrackingDetailsData()" /></th>
+                                    <th><input type="text" placeholder="WBS2" [(ngModel)]="searchWBS2"
+                                            (keyup)="searchTrackingDetailsData()" /></th>
+                                    <th><input type="text" placeholder="WBS3" [(ngModel)]="searchWBS3"
+                                            (keyup)="searchTrackingDetailsData()" />
+                                    </th>
+                                    <th><input type="text" placeholder="BBS" [(ngModel)]="searchBBS"
+                                            (keyup)="searchTrackingDetailsData()" /></th>
+                                    <th><input type="text" placeholder="BBSDesc" [(ngModel)]="searchBBSDesc"
+                                            (keyup)="searchTrackingDetailsData()" />
+                                    </th>
+                                    <th><input type="text" placeholder="ReqDelivery" [(ngModel)]="searchReqDelivery"
+                                            (keyup)="searchTrackingDetailsData()" /></th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <tr
+                                    *ngFor="let item of TrackingDetailslist| slice: pageSize | slice: 0:itemsPerPage; index as i">
+
+                                    <td><i class="material-icons" ngbTooltip="Edit"  [style.color]="item.TrakingId === '' ? 'gray' : 'black'"
+                                            (click)="Edit(item)" [style.pointer-events]="item.TrakingId === '' ? 'none' : 'auto'">mode_edit</i>&nbsp;</td>
+                                    <td>{{item.TrakingId}}</td>
+                                    <td>{{item.PONumber}}</td>
+                                    <td>{{item.WBS1}}</td>
+                                    <td>{{item.WBS2}}</td>
+                                    <td>{{item.WBS3}}</td>
+                                    <td>{{item.BBSNO}}</td>
+                                    <td>{{item.BBSSDesc}}</td>
+                                    <td>{{item.ReqDate}}</td>
+
+                                </tr>
+
+                                <tr *ngIf="TrackingDetailslist.length==0">
+                                    <td colspan="10">
+                                        No Records Found
+                                    </td>
+
+
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                        <div class="d-flex mt-2">
+                            <ngb-pagination [collectionSize]="TrackingDetailslist.length" [(page)]="currentPage"
+                                [pageSize]="itemsPerPage" (pageChange)="onPageChange(currentPage)"
+                                [boundaryLinks]="false" [maxSize]="maxSize" *ngIf="searchResult">
+                                <ng-template ngbPaginationPrevious>Prev</ng-template>
+                                <ng-template ngbPaginationNext>Next</ng-template>
+                            </ngb-pagination>
+
+                            <select class="custom-select mr-2 ml-3" style="width: auto" [(ngModel)]="itemsPerPage"
+                                (ngModelChange)="OnPageSizeChange(itemsPerPage);">
+                                <option [ngValue]="5">5 </option>
+                                <option [ngValue]="10">10 </option>
+                                <option [ngValue]="20">20 </option>
+                                <option [ngValue]="50">50 </option>
+                                <option [ngValue]="100">100 </option>
+                            </select>
+                            <span style="margin-top: 5px;">Items per page</span>
+                        </div>
+
+                    </div>
+
+            </div>
+                     
+        </div>
+    </div>

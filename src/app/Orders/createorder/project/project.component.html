@@ -1,0 +1,2062 @@
+<div class="container-fluid" style="padding: 0px">
+  <div class="card m-1">
+    <!-- <h3 class="card-header d-flex flex-column justify-content-center align-items-center">
+            <b>WBS DETAILS </b>
+        </h3> -->
+    <div class="row" style="margin: 0">
+      <div class="col">
+        <span style="margin-left: 10px">
+          <h3><b>WBS DETAILS (工作分解结构)</b></h3>
+        </span>
+      </div>
+    </div>
+    <div class="card-body" style="padding-top: 0">
+      <div class="filter">
+        <form [formGroup]="projectorderForm" (ngSubmit)="onSubmit()">
+          <ng-container class="border">
+            <div class="card-body" style="padding: 0">
+              <div class="row">
+                <div class="col-md-2">
+                  <label class="form-label" style="font-size: medium;font-weight: bold;">WBS1 (大牌)</label>
+                  <ng-select formControlName="wbs1" class="w-auto" (change)="changewbs1($event)" style="font-weight:bold">
+                    <ng-option *ngIf="loading">
+                      <div style="justify-content: center;display: flex;">
+                        <div class="spinner-border text-secondary" role="status">
+                          <span class="sr-only">Loading...</span>
+                        </div>
+                      </div>
+                    </ng-option>
+                    <ng-option *ngFor="let sList of WBS1dropList.WBS1" [value]="sList" style="font-weight:bold">
+                      {{ sList }}
+                    </ng-option>
+                  </ng-select>
+                </div>
+                <div class="col-md-2">
+                  <label class="form-label" style="font-size: medium;font-weight: bold;">WBS2 (楼层)</label>
+                  <br />
+                  <!-- <input type="text" formControlName="wbs2" class="form-control form-control-sm" /> -->
+                  <ng-select formControlName="wbs2" class="w-auto" (change)="changewbs2($event,wbs2Change)" [multiple]="true"
+                  [closeOnSelect]="false" style="font-weight:bold" #wbs2Change>
+                    <ng-option *ngIf="loading">
+                      <div style="justify-content: center;display: flex;">
+                        <div class="spinner-border text-secondary" role="status">
+                          <span class="sr-only">Loading...</span>
+                        </div>
+                      </div>
+                    </ng-option>
+                    <ng-option *ngFor="let sList of WBS2dropList.WBS2" [value]="sList" style="font-weight:bold">
+                      {{ sList }}
+                    </ng-option>
+                  </ng-select>
+                </div>
+                <div class="col-md-2">
+                  <label class="form-label" style="font-size: medium;font-weight: bold;">WBS3 (分部)</label><br />
+                  <!-- <input type="text" formControlName="wbs3" class="form-control form-control-sm"> -->
+                  <ng-select formControlName="wbs3" class="w-auto" (change)="pInitialFlag = true;changewbs3($event);openDropdownStructureElement();" [multiple]="true"
+                    [closeOnSelect]="false" style="font-weight:bold">
+                    <ng-option *ngIf="loading">
+                      <div style="justify-content: center;display: flex;">
+                        <div class="spinner-border text-secondary" role="status">
+                          <span class="sr-only">Loading...</span>
+                        </div>
+                      </div>
+                    </ng-option>
+                    <ng-option *ngFor="let sList of WBS3dropList" [value]="sList" style="font-weight:bold">
+                      {{ sList }}
+                    </ng-option>
+                  </ng-select>
+                </div>
+                <div class="col-md-1">
+                  <label class="form-label"></label><br />
+                  <button class="btn btn-md btn-outline-primary" ngbTooltip="Extend" tooltipClass="my-custom-class"
+                    type="button" (click)="open()" style="margin: 0" [disabled]="disableCreateOrder">
+                    <i class="fa fa-plus"></i></button><br />
+                </div>
+                <div class="col-md-4 float-right">
+                  <div>
+                    <label class="form-label" style="font-size: medium;font-weight: bold;">
+                      STRUCTURE ELEMENTS (结构)
+                    </label>
+                  </div>
+                  <div>
+                    <ng-select #dataEntrySelect formControlName="DataEntry" class="ng-selectcustomer" (remove)="RemoveStructure($event)" (change)="
+                        UpdateDataEntry();
+                        showOrderSummary = false;
+                        structureElementCollapse = false
+                      " [multiple]="true" style="font-weight:bold">
+                      <ng-option *ngFor="let sList of DATAENTRY" [value]="sList.statusId" style="font-weight:bold">
+                        {{ sList.displayName }}
+                      </ng-option>
+                    </ng-select>
+
+                    <!-- <ng-select formControlName="DataEntry" [items]="DATAENTRY" bindLabel="status" bindValue="statusId" [multiple]="true"></ng-select> -->
+                  </div>
+                </div>
+                <!-- <div class="col-md-3 green-steel">
+                  <table>
+                    <tr>
+                      <td>
+                        <div class="Green-Steel-label">
+                          <label class="form-label bold">LOW CARBON INDICATOR </label>
+                        </div>
+                      </td>
+                      <td>
+                        <div class=" Green-Steel-input form-check form-switch" [matTooltip]="greenSteelToolTip()">
+                          <input _ngcontent-vlm-c257="" type="checkbox" role="switch" id="flexSwitchCheckDefault"
+                            class="form-check-input ng-valid ng-dirty ng-touched" ng-reflect-model="false"
+                            [(ngModel)]="gGreenSteelSelection" [ngModelOptions]="{ standalone: true }" (change)="UpdateGreenSteel()"
+                            [disabled]="disableGreenSteelToggle()">
+                          <label _ngcontent-vlm-c257="" for="flexSwitchCheckDefault" class="form-check-label"></label>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <div class="Green-Steel-label">
+                          <label class="form-label bold">CARBON-RATE </label>
+                        </div>
+                      </td>
+                      <td>
+                        <div class=" Green-Steel-input form-check form-switch" [matTooltip]="greenSteelToolTip()">
+                          <label class="form-label bold" [style.height]="'10px'"> {{ GreenSteelCarbonValue }}%</label>
+                        </div>
+                      </td>
+                    </tr>
+                  </table>
+                </div> -->
+
+                <!-- <div class="col-md-3 green-steel">
+                  <div class="green-steel-sub">
+                    <div class="Green-Steel-label">
+                      <label class="form-label bold">LOW CARBON INDICATOR </label>
+                    </div>
+                    <div class=" Green-Steel-input form-check form-switch" [matTooltip]="greenSteelToolTip()">
+                      <input _ngcontent-vlm-c257="" type="checkbox" role="switch" id="flexSwitchCheckDefault"
+                        class="form-check-input ng-valid ng-dirty ng-touched" ng-reflect-model="false" [(ngModel)]="gGreenSteelSelection"
+                        [ngModelOptions]="{ standalone: true }" (change)="UpdateGreenSteel()" [disabled]="disableGreenSteelToggle()">
+                      <label _ngcontent-vlm-c257="" for="flexSwitchCheckDefault" class="form-check-label"></label>
+                    </div>
+                  </div>
+                  <div class="green-steel-sub">
+                    <div class="Green-Steel-label" style="font-size:medium;font-weight:bold">
+                      <label class="form-label bold">CARBON-RATE </label>
+                    </div>
+                    <div class=" Green-Steel-input form-check form-switch" style="font-size:medium;font-weight:bold" [matTooltip]="greenSteelToolTip()">
+                      <label class="form-label bold" [style.height]="'10px'"> {{ GreenSteelCarbonValue }}%</label>
+                    </div>
+                  </div>
+                </div> -->
+                <!-- <div class="col-md-2">
+                  <label class="form-label" style="font-size: x-small;"> SELECT STRUCTURE ELEMENTS / PRODUCT TYPES THAT
+                    SCHEDULED BY NATSTEEL </label> <br>
+                  <ng-select formControlName="NatsteelDataEntry" class="ng-selectcustomer"
+                    (change)="changeNatsteelDataEntry();" [multiple]="true">
+                    <ng-option *ngFor="let sList of NATSTEELDATAENTRY " [value]="sList.statusId">
+                      {{sList.status}}
+                    </ng-option>
+                  </ng-select>
+                </div> -->
+                <!-- <div class="col md-3" style="text-align:right;">
+                                    <label></label>
+                                    <br>
+                                    <button class="btn btn-primary btn-sm" type="submit">Extend</button>
+
+                                </div> -->
+              </div>
+            </div>
+          </ng-container>
+        </form>
+
+        <div style="display: none">
+          <div class="row">
+            <div class="col">
+              <span style="font-weight: bold; size: h3; font-size: smaller">SELECT STRUCTURE ELEMENTS, PRODUCT TYPE FOR
+                DETAIL DATA ENTRY
+                (请选择构建与产品类型来进行详细产品清单输入)
+              </span>
+            </div>
+          </div>
+          <div class="row" style="margin-left: 30px">
+            <div class="col row custom-control custom-switch">
+              <input type="checkbox" class="custom-control-input" id="BeamSwitches" [(ngModel)]="beamShow"
+                [checked]="beamShow" [disabled]="beamData.ProdName.length == 0" />
+              <label class="custom-control-label" for="BeamSwitches">
+                Beam</label>
+            </div>
+            &nbsp;&nbsp;
+            <div class="col row custom-control custom-switch">
+              <input type="checkbox" class="custom-control-input" id="ColumnSwitches" [(ngModel)]="columnShow"
+                [checked]="columnShow" [disabled]="columnData.ProdName.length == 0" />
+              <label class="custom-control-label" for="ColumnSwitches">
+                Column</label>
+            </div>
+            <div class="col row custom-control custom-switch">
+              <input type="checkbox" class="custom-control-input" id="SlabSwitches" [checked]="slabShow"
+                [(ngModel)]="slabShow" [disabled]="slabData.ProdName.length == 0" />
+              <label class="custom-control-label" for="SlabSwitches">
+                Slab</label>
+            </div>
+            <div class="col row custom-control custom-switch">
+              <input type="checkbox" class="custom-control-input" id="SlabBSwitches" [checked]="slabbShow"
+                [(ngModel)]="slabbShow" [disabled]="slabbData.ProdName.length == 0" />
+              <label class="custom-control-label" for="SlabBSwitches">
+                Slab-B</label>
+            </div>
+            <div class="col row custom-control custom-switch">
+              <input type="checkbox" class="custom-control-input" id="SlabTSwitches" [checked]="slabtShow"
+                [(ngModel)]="slabtShow" [disabled]="slabtData.ProdName.length == 0" />
+              <label class="custom-control-label" for="SlabTSwitches">
+                Slab-T</label>
+            </div>
+            <div class="col row custom-control custom-switch">
+              <input type="checkbox" class="custom-control-input" id="DwallSwitches" [checked]="DwallShow"
+                [(ngModel)]="DwallShow" [disabled]="DwallData.ProdName.length == 0" />
+              <label class="custom-control-label" for="DwallSwitches">
+                Dwall</label>
+            </div>
+            <div class="col row custom-control custom-switch">
+              <input type="checkbox" class="custom-control-input" id="PileSwitches" [checked]="pileShow"
+                [(ngModel)]="pileShow" [disabled]="pileData.ProdName.length == 0" />
+              <label class="custom-control-label" for="PileSwitches">
+                Pile</label>
+            </div>
+            <div class="col row custom-control custom-switch">
+              <input type="checkbox" class="custom-control-input" id="WallSwitches" [checked]="wallShow"
+                [(ngModel)]="wallShow" [disabled]="wallData.ProdName.length == 0" />
+              <label class="custom-control-label" for="WallSwitches">
+                Wall</label>
+            </div>
+
+            <!-- <button class="btn btn-primary btn-sm" type="button">Posting Report</button>
+                                    <button class="btn btn-primary btn-sm" type="button">Posted Report</button>
+                            -->
+          </div>
+          <br />
+
+          <div class="row">
+            <span class="subHeading">
+              SELECT STRUCTURE ELEMENTS / PRODUCT TYPES THAT SCHEDULED BY
+              NATSTEEL (如果由大众钢铁提供产品详细清单,
+              请选择以下的结构与产品类型)
+            </span>
+          </div>
+          <div class="row" style="margin-left: 30px">
+            <div class="col-md-2 row custom-control custom-switch">
+              <input type="checkbox" class="custom-control-input" id="MeshSwitches" [(ngModel)]="meshShow"
+                [checked]="meshShow" />
+              <label class="custom-control-label" for="MeshSwitches">
+                Mesh</label>
+            </div>
+            &nbsp;&nbsp;
+            <div class="col-md-2 row custom-control custom-switch" style="margin-left: -41px">
+              <input type="checkbox" class="custom-control-input" id="prcSwitches" [(ngModel)]="prcShow"
+                [checked]="prcShow" />
+              <label class="custom-control-label" for="prcSwitches"> PRC</label>
+            </div>
+            <!-- <div class="col row custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="SlabSwitches" [checked]="slabShow"
+                        [(ngModel)]="slabShow">
+                        <label class="custom-control-label" for="SlabSwitches"> Slab</label>
+                    </div>
+                    <div class="col row custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="SlabBSwitches" [checked]="slabbShow"
+                        [(ngModel)]="slabbShow">
+                        <label class="custom-control-label" for="SlabBSwitches"> Slab-B</label>
+                    </div>
+                    <div class="col row custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="SlabTSwitches" [checked]="slabtShow"
+                        [(ngModel)]="slabtShow">
+                        <label class="custom-control-label" for="SlabTSwitches"> Slab-T</label>
+                    </div>
+                    <div class="col row custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="DwallSwitches" [checked]="DwallShow"
+                        [(ngModel)]="DwallShow">
+                        <label class="custom-control-label" for="DwallSwitches"> Dwall</label>
+                    </div>
+                    <div class="col row custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="PileSwitches" [checked]="pileShow"
+                        [(ngModel)]="pileShow">
+                        <label class="custom-control-label" for="PileSwitches"> Pile</label>
+                    </div>
+                    <div class="col row custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="WallSwitches" [checked]="wallShow"
+                        [(ngModel)]="wallShow">
+                        <label class="custom-control-label" for="WallSwitches"> Wall</label>
+                    </div> -->
+
+            <!-- <button class="btn btn-primary btn-sm" type="button">Posting Report</button>
+                                    <button class="btn btn-primary btn-sm" type="button">Posted Report</button>
+                            -->
+          </div>
+        </div>
+
+        <!-- <div class="row">
+                                <div class="col">
+                                    <span> SELECT STRUCTURE ELEMENTS, PRODUCT TYPE FOR DETAIL
+                                        DATA ENTRY
+                                    </span>
+                                </div>
+                            </div> -->
+        <!-- <hr style="border-top: 1px solid #000000;"> -->
+      </div>
+    </div>
+  </div>
+  <div id="StructureandButton" class="card m-1" style="padding: 10px">
+    <div class="d-flex" style="justify-content: space-between">
+      <h3><b>SELECT STRUCTURE ELEMENTS (选择结构元素)</b></h3>
+      <span style="font-size: xx-large">
+        <i class="bi bi-chevron-double-down" *ngIf="structureElementCollapse && !disableCreateOrder" (click)="
+            structureElementCollapse = !structureElementCollapse;
+            showOrderSummary = false;ReloadData();
+          "></i>
+        <i class="bi bi-chevron-double-up" *ngIf="!structureElementCollapse && !disableCreateOrder"
+          (click)="structureElementCollapse = !structureElementCollapse;"></i>
+      </span>
+
+      <!-- <button class="btn"
+        (click)="structureElementCollapse=!structureElementCollapse;showOrderSummary=false">OPEN</button> -->
+    </div>
+    <section class="collapsible" [@collapse]="structureElementCollapse" style="margin: 0">
+      <div id="SelectStructure">
+        <div *ngIf="beamShow" style="border: 1px solid #dad6d6;padding: 8px;border-radius: 10px;margin: 2px;">
+          <div id="beam" style="min-height: 30px">
+            <div class="row" style="justify-content: space-between">
+
+              <div class="col-md-2">
+                <b>Beam</b>
+              </div>
+
+              <div class="col-md-2 d-flex" *ngFor="let product of beamData.ProdName; index as i">
+                <div class="col" *ngIf="beamCollapse && showProduct(beamData.ProdCode[i])">
+                  <input type="checkbox" [(ngModel)]="beamData.isSelected[i]" [checked]="beamData.isSelected[i]"
+                    (ngModelChange)="AddToTempData('BEAM',beamData,beamData.ProdCode[i],i,beamData.isSelected[i])"
+                    [disabled]="checkInputDisable(beamData,i)" />
+                  &nbsp;<label style="font-weight: bold;">{{ product }}</label>
+                </div>
+              </div>
+
+              <div class="col" style="text-align: end">
+                <i class="bi bi-chevron-up" *ngIf="!beamCollapse" (click)="beamCollapse = !beamCollapse"
+                  style="font-size: x-large"></i>
+                <i class="bi bi-chevron-down" *ngIf="beamCollapse" (click)="beamCollapse = !beamCollapse"
+                  style="font-size: x-large"></i>
+              </div>
+            </div>
+            <section class="collapsible" [@collapse]="beamCollapse">
+              <div class="row" *ngIf="!beamCollapse" style="margin: 0">
+                <div class="col-md-4 card-body" *ngFor="let product of beamData.ProdName; index as i"
+                  style="border: #dad6d6 solid 1px; border-radius: 10px; margin: 5px; height: fit-content;background-color: {{beamData.isSelected[i] == true ? '#90eb6875' : 'white'}};">
+
+                  <div class="row"
+                    *ngIf=" beamData.ProdName[i] != 'STIRRUP-LINK-MESH' && beamData.ProdName[i] != 'COLUMN-LINK-MESH' && beamData.ProdName[i] != 'CUT-TO-SIZE-MESH' && beamData.ProdName[i] != 'BPC' ">
+
+                    <div class="col-md-4">
+                      <img style="max-width: 140px" src="../../../../assets/imagesuiux/{{beamData.ProdCode[i]}}.png" />
+                    </div>
+
+                    <div class="col-md-8" style="display: flex;flex-direction: column;justify-content: space-between;">
+
+                      <div>
+                        <b>{{ product }}</b>
+                      </div>
+
+                      <div style="text-align: end">
+                        <button *ngIf="!beamData.isSelected[i]" class="btn btn-primary btn-sm" type="button"
+                          [disabled]="checkInputDisable(beamData,i)"
+                          (click)="
+                            beamData.isSelected[i] = true;AddToTempData('BEAM',beamData,beamData.ProdCode[i],i,beamData.isSelected[i])">
+                          Add To Cart
+                        </button>
+                        <button *ngIf="beamData.isSelected[i]" class="btn btn-primary btn-sm" type="button"
+                          [disabled]="checkInputDisable(beamData,i)"
+                          (click)="
+                            beamData.isSelected[i] = false; AddToTempData('BEAM',beamData,beamData.ProdCode[i],i,beamData.isSelected[i])"
+                          style="background-color: #ff9b00d6;border: #ff9b00d6;font-size: larger;">
+                          Remove
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div id="Beam-Card"
+                    *ngIf="beamData.ProdName[i] == 'STIRRUP-LINK-MESH' ||beamData.ProdName[i] == 'COLUMN-LINK-MESH' ||beamData.ProdName[i] == 'CUT-TO-SIZE-MESH' ||beamData.ProdName[i] == 'PRE-CAGE' || beamData.ProdName[i] == 'BPC'">
+                    <ngb-carousel [interval]="0">
+                      <ng-template ngbSlide>
+                        <div>
+                          <div class="row" (dblclick)="beamData.isSelected[i] = !beamData.isSelected[i]">
+                            <div class="col-md-4">
+                              <img src="../../../../assets/imagesuiux/{{beamData.ProdCode[i].split('/')[0]}}.png" />
+                            </div>
+                            <div class="col-md-8"
+                              style="display: flex;flex-direction: column;justify-content: space-between;">
+                              <div class="d-flex">
+                                <b>{{ product }}</b>&nbsp;
+                                <span>
+                                  <i class="bi bi-info-circle"
+                                    [ngbTooltip]="GetInfoCardData(beamData.ProdCode[i].split('/')[1],'WBS')"></i>
+                                </span>
+                              </div>
+                              <div style="text-align: end">
+                                <button *ngIf="!beamData.isSelected[i]" class="btn btn-primary btn-sm" type="button"
+                                  [disabled]="checkInputDisable(beamData,i)"
+                                  (click)="beamData.isSelected[i] = !beamData.isSelected[i];AddToTempData('BEAM',beamData,beamData.ProdCode[i],i,beamData.isSelected[i])">
+                                  Add To Cart
+                                </button>
+                                <button *ngIf="beamData.isSelected[i]" class="btn btn-primary btn-sm" type="button"
+                                  [disabled]="checkInputDisable(beamData,i)"
+                                  (click)="beamData.isSelected[i] = !beamData.isSelected[i];AddToTempData('BEAM',beamData,beamData.ProdCode[i],i,beamData.isSelected[i])"
+                                  style="background-color: #ff9b00d6;border: #ff9b00d6;font-size: larger;">
+                                  Remove
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </ng-template>
+                      <ng-template ngbSlide>
+                        <div class="card-body" style="padding: 0" (dblclick)="
+                        beamData.isSelected[i] = !beamData.isSelected[i]
+                          ">
+                          <div class="row">
+                            <div class="col">
+                              <!-- <div class="d-flex" style="justify-content: space-between;">
+                                <h3 style="margin:0;">1</h3>
+                              </div> -->
+                              <div style="text-align: left">
+                                <div>
+                                  <b>BBS DESC (加工表概述)</b>-
+                                  {{ GetInfoCardData( beamData.ProdCode[i].split("/")[1], "BBS DESC" ) }}
+                                </div>
+                                <div>
+                                  <b>STRUCTURE ELEMENT (结构)</b> -
+                                  {{ GetInfoCardData( beamData.ProdCode[i].split("/")[1], "STRUCTURE ELEMENT" ) }}
+                                </div>
+                                <div>
+                                  <b>PRODUCT TYPE (产品类型)</b> -
+                                  {{ GetInfoCardData( beamData.ProdCode[i].split("/")[1], "PRODUCT TYPE" ) }}
+                                </div>
+                                <div>
+                                  <b>TOTAL PEICES (总数量)</b> -
+                                  {{ GetInfoCardData( beamData.ProdCode[i].split("/")[1], "TOTAL PEICES" ) }}
+                                </div>
+                                <div>
+                                  <b>TOTAL WEIGHT (总重量)</b> -
+                                  {{ GetInfoCardData( beamData.ProdCode[i].split("/")[1], "TOTAL WEIGHT" ) }}
+                                </div>
+                                <div>
+                                  <b>POSTED BY (发布人)</b> -
+                                  {{ GetInfoCardData( beamData.ProdCode[i].split("/")[1], "POSTED BY" ) }}
+                                </div>
+                                <div>
+                                  <b>POSTED DATE (发布日期)</b> -
+                                  {{ GetInfoCardData( beamData.ProdCode[i].split("/")[1], "POSTED DATE" ) }}
+                                </div>
+                                <div>
+                                  <b>STATUS</b> -
+                                  {{ GetInfoCardData( beamData.ProdCode[i].split("/")[1], "STATUS" ) }}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </ng-template>
+                    </ngb-carousel>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+        <div *ngIf="columnShow" style="border: 1px solid #dad6d6;padding: 8px;border-radius: 10px;margin: 2px;">
+          <div id="column" style="min-height: 30px">
+            <div class="row" style="justify-content: space-between">
+
+              <div class="col-md-2">
+                <b>Column</b>
+              </div>
+
+              <div class="col-md-2 d-flex" *ngFor="let product of columnData.ProdName; index as i">
+                <div class="col" *ngIf="columnCollapse && showProduct(columnData.ProdCode[i])">
+                  <input type="checkbox" [(ngModel)]="columnData.isSelected[i]" [checked]="columnData.isSelected[i]"
+                    (ngModelChange)="
+                      AddToTempData('COLUMN',columnData,columnData.ProdCode[i],i,columnData.isSelected[i])"
+                    [disabled]="checkInputDisable(columnData,i)" />
+                  &nbsp;<label style="font-weight: bold;">{{ product }}</label>
+                </div>
+              </div>
+              <!-- <button (click)="columnCollapse = !columnCollapse">collapsed</button> -->
+              <div class="col" style="text-align: end">
+                <i class="bi bi-chevron-up" *ngIf="!columnCollapse" (click)="columnCollapse = !columnCollapse"
+                  style="font-size: x-large"></i>
+                <i class="bi bi-chevron-down" *ngIf="columnCollapse" (click)="columnCollapse = !columnCollapse"
+                  style="font-size: x-large"></i>
+              </div>
+
+            </div>
+            <section class="collapsible" [@collapse]="columnCollapse">
+              <div class="row" *ngIf="!columnCollapse" style="margin: 0">
+                <div class="col-md-4 card-body" *ngFor="let product of columnData.ProdName; index as i" style="border: #dad6d6 solid 1px; border-radius: 10px; margin: 5px; height: fit-content;
+                background-color: {{columnData.isSelected[i] == true ? '#90eb6875' : 'white'}};">
+
+                  <div class="row"
+                    *ngIf=" columnData.ProdName[i] != 'STIRRUP-LINK-MESH' && columnData.ProdName[i] != 'COLUMN-LINK-MESH' && columnData.ProdName[i] != 'CUT-TO-SIZE-MESH' && columnData.ProdName[i] != 'PRE-CAGE' && columnData.ProdName[i] != 'BPC'  ">
+                    <div class="col-md-4">
+                      <img style="max-width: 140px"
+                        src="../../../../assets/imagesuiux/{{columnData.ProdCode[i]}}.png" />
+                    </div>
+                    <div class="col-md-8" style="display: flex;flex-direction: column;justify-content: space-between;">
+                      <div>
+                        <b>{{ product }}</b>
+                      </div>
+                      <div style="text-align: end">
+                        <button *ngIf="!columnData.isSelected[i]" class="btn btn-primary btn-sm" type="button"
+                          [disabled]="checkInputDisable(columnData,i)"
+                          (click)="
+                            columnData.isSelected[i] = true;AddToTempData('COLUMN',columnData,columnData.ProdCode[i],i,columnData.isSelected[i])">
+                          Add To Cart
+                        </button>
+                        <button *ngIf="columnData.isSelected[i]" class="btn btn-primary btn-sm" type="button"
+                          [disabled]="checkInputDisable(columnData,i)"
+                          (click)="columnData.isSelected[i] = false;AddToTempData('COLUMN',columnData,columnData.ProdCode[i],i,columnData.isSelected[i])"
+                          style="background-color: #ff9b00d6;border: #ff9b00d6;font-size: larger;">
+                          Remove
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- CONDITION -->
+                  <div id="COLUMN-Card"
+                    *ngIf="columnData.ProdName[i] == 'STIRRUP-LINK-MESH' ||columnData.ProdName[i] == 'COLUMN-LINK-MESH' ||columnData.ProdName[i] == 'CUT-TO-SIZE-MESH' ||  columnData.ProdName[i] == 'PRE-CAGE' || columnData.ProdName[i] == 'BPC'">
+                    <ngb-carousel [interval]="0">
+                      <ng-template ngbSlide>
+                        <div>
+                          <div class="row" (dblclick)="columnData.isSelected[i] = !columnData.isSelected[i]">
+                            <div class="col-md-4">
+                              <img src="../../../../assets/imagesuiux/{{columnData.ProdCode[i].split('/')[0]}}.png" />
+                            </div>
+                            <div class="col-md-8"
+                              style="display: flex;flex-direction: column;justify-content: space-between;">
+                              <div class="d-flex">
+                                <b>{{ product }}</b>&nbsp;
+                                <span>
+                                  <i class="bi bi-info-circle"
+                                    [ngbTooltip]="GetInfoCardData(columnData.ProdCode[i].split('/')[1],'WBS')"></i>
+                                </span>
+                              </div>
+                              <div style="text-align: end">
+                                <button *ngIf="!columnData.isSelected[i]" class="btn btn-primary btn-sm" type="button"
+                                  [disabled]="checkInputDisable(columnData,i)"
+                                  (click)="columnData.isSelected[i] = !columnData.isSelected[i];AddToTempData('COLUMN',columnData,columnData.ProdCode[i],i,columnData.isSelected[i])">
+                                  Add To Cart
+                                </button>
+                                <button *ngIf="columnData.isSelected[i]" class="btn btn-primary btn-sm" type="button"
+                                  [disabled]="checkInputDisable(columnData,i)"
+                                  (click)="columnData.isSelected[i] = !columnData.isSelected[i];AddToTempData('COLUMN',columnData,columnData.ProdCode[i],i,columnData.isSelected[i])"
+                                  style="background-color: #ff9b00d6;border: #ff9b00d6;font-size: larger;">
+                                  Remove
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </ng-template>
+                      <ng-template ngbSlide>
+                        <div class="card-body" style="padding: 0" (dblclick)="
+                            columnData.isSelected[i] = !columnData.isSelected[i]
+                          ">
+                          <div class="row">
+                            <div class="col">
+                              <!-- <div class="d-flex" style="justify-content: space-between;">
+                                <h3 style="margin:0;">1</h3>
+                              </div> -->
+                              <div style="text-align: left">
+                                <div>
+                                  <b>BBS DESC (加工表概述)</b>-
+                                  {{ GetInfoCardData( columnData.ProdCode[i].split("/")[1], "BBS DESC" ) }}
+                                </div>
+                                <div>
+                                  <b>STRUCTURE ELEMENT (结构)</b> -
+                                  {{ GetInfoCardData( columnData.ProdCode[i].split("/")[1], "STRUCTURE ELEMENT" ) }}
+                                </div>
+                                <div>
+                                  <b>PRODUCT TYPE (产品类型)</b> -
+                                  {{ GetInfoCardData( columnData.ProdCode[i].split("/")[1], "PRODUCT TYPE" ) }}
+                                </div>
+                                <div>
+                                  <b>TOTAL PEICES (总数量)</b> -
+                                  {{ GetInfoCardData( columnData.ProdCode[i].split("/")[1], "TOTAL PEICES" ) }}
+                                </div>
+                                <div>
+                                  <b>TOTAL WEIGHT (总重量)</b> -
+                                  {{ GetInfoCardData( columnData.ProdCode[i].split("/")[1], "TOTAL WEIGHT" ) }}
+                                </div>
+                                <div>
+                                  <b>POSTED BY (发布人)</b> -
+                                  {{ GetInfoCardData( columnData.ProdCode[i].split("/")[1], "POSTED BY" ) }}
+                                </div>
+                                <div>
+                                  <b>POSTED DATE (发布日期)</b> -
+                                  {{ GetInfoCardData( columnData.ProdCode[i].split("/")[1], "POSTED DATE" ) }}
+                                </div>
+                                <div>
+                                  <b>STATUS</b> -
+                                  {{ GetInfoCardData( columnData.ProdCode[i].split("/")[1], "STATUS" ) }}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </ng-template>
+                    </ngb-carousel>
+                  </div>
+                </div>
+              </div>
+            </section>
+            <!-- <section class="collapsible" [@collapse]="columnCollapse">
+              <div class="row" *ngIf="!columnCollapse" style="margin: 0">
+                <div class="col-md-4 card-body" *ngFor="let product of columnData.ProdName; index as i" style="border: #dad6d6 solid 1px; border-radius: 10px; margin: 5px; height: fit-content;background-color: {{
+                    columnData.isSelected[i] == true ? '#90eb6875' : 'white'
+                  }};">
+                  <div class="row">
+                    <div class="col-md-4">
+                      <img style="max-width: 140px" src="../../../../assets/imagesuiux/{{
+                          columnData.ProdCode[i]
+                        }}.png" />
+                    </div>
+                    <div class="col-md-8" style="
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: space-between;
+                      ">
+                      <div>
+                        <b>{{ product }}</b>
+                      </div>
+                      <div style="text-align: end">
+                        <button *ngIf="!columnData.isSelected[i]" class="btn btn-primary btn-sm" type="button" (click)="
+                            columnData.isSelected[i] = true;
+                            AddToTempData(
+                              'COLUMN',
+                              columnData,
+                              columnData.ProdCode[i],
+                              i,
+                              columnData.isSelected[i]
+                            )
+                          ">
+                          Add To Cart
+                        </button>
+                        <button *ngIf="columnData.isSelected[i]" class="btn btn-primary btn-sm" type="button" (click)="
+                            columnData.isSelected[i] = false;
+                            AddToTempData(
+                              'COLUMN',
+                              columnData,
+                              columnData.ProdCode[i],
+                              i,
+                              columnData.isSelected[i]
+                            )
+                          " style="
+                            background-color: #ff9b00d6;
+                            border: #ff9b00d6;
+                            font-size: larger;
+                          ">
+                          Remove
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section> -->
+          </div>
+        </div>
+        <div *ngIf="slabShow" style="border: 1px solid #dad6d6;padding: 8px;border-radius: 10px;margin: 2px;">
+          <div id="slab" style="min-height: 30px">
+            <div class="row" style="justify-content: space-between">
+
+              <div class="col-md-2">
+                <b>Slab</b>
+              </div>
+
+              <!-- CHECKBOXES -->
+              <div class="col-md-2 d-flex" *ngFor="let product of slabData.ProdName; index as i">
+                <div class="col" *ngIf="slabCollapse && showProduct(slabData.ProdCode[i])">
+                  <input type="checkbox" [(ngModel)]="slabData.isSelected[i]" [checked]="slabData.isSelected[i]"
+                    (ngModelChange)="AddToTempData('SLAB',slabData,slabData.ProdCode[i],i,slabData.isSelected[i])"
+                    [disabled]="checkInputDisable(slabData,i)" />
+                  &nbsp;<label style="font-weight: bold;">{{ product }}</label>
+                </div>
+              </div>
+
+              <!-- COLLAPSE/UNCOLLAPSE BUTTON -->
+              <div class="col" style="text-align: end">
+                <i class="bi bi-chevron-up" *ngIf="!slabCollapse" (click)="slabCollapse = !slabCollapse"
+                  style="font-size: x-large"></i>
+                <i class="bi bi-chevron-down" *ngIf="slabCollapse" (click)="slabCollapse = !slabCollapse"
+                  style="font-size: x-large"></i>
+              </div>
+
+            </div>
+
+            <section class="collapsible" [@collapse]="slabCollapse">
+              <div class="row" *ngIf="!slabCollapse" style="margin: 0">
+                <div class="col-md-4 card-body" *ngFor="let product of slabData.ProdName; index as i" 
+                style="border: #dad6d6 solid 1px; border-radius: 10px; margin: 5px; height: fit-content;
+                background-color: {{slabData.isSelected[i] == true ? '#90eb6875' : 'white'}};">
+
+                  <div class="row"
+                    *ngIf=" slabData.ProdName[i] != 'STIRRUP-LINK-MESH' && slabData.ProdName[i] != 'COLUMN-LINK-MESH' && slabData.ProdName[i] != 'CUT-TO-SIZE-MESH'&& slabData.ProdName[i] != 'PRE-CAGE' && slabData.ProdName[i] != 'BPC'  ">
+                    <div class="col-md-4">
+                      <img style="max-width: 140px" src="../../../../assets/imagesuiux/{{slabData.ProdCode[i]}}.png" />
+                    </div>
+                    <div class="col-md-8" style="display: flex;flex-direction: column;justify-content: space-between;">
+                      <div>
+                        <b>{{ product }}</b>
+                      </div>
+                      <div style="text-align: end">
+                        <button *ngIf="!slabData.isSelected[i]" class="btn btn-primary btn-sm" type="button"
+                          [disabled]="checkInputDisable(slabData,i)"
+                          (click)="
+                            slabData.isSelected[i] = true;AddToTempData('SLAB',slabData,slabData.ProdCode[i],i,slabData.isSelected[i])">
+                          Add To Cart
+                        </button>
+                        <button *ngIf="slabData.isSelected[i]" class="btn btn-primary btn-sm" type="button"
+                          [disabled]="checkInputDisable(slabData,i)"
+                          (click)="slabData.isSelected[i] = false;AddToTempData('SLAB',slabData,slabData.ProdCode[i],i,slabData.isSelected[i])"
+                          style="background-color: #ff9b00d6;border: #ff9b00d6;font-size: larger;">
+                          Remove
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- CONDITION -->
+                  <div id="Slab-Card"
+                    *ngIf="slabData.ProdName[i] == 'STIRRUP-LINK-MESH' ||slabData.ProdName[i] == 'COLUMN-LINK-MESH' ||slabData.ProdName[i] == 'CUT-TO-SIZE-MESH' ||slabData.ProdName[i] == 'PRE-CAGE' || slabData.ProdName[i] == 'BPC'">
+                    <ngb-carousel [interval]="0">
+                      <ng-template ngbSlide>
+                        <div>
+                          <div class="row" (dblclick)="slabData.isSelected[i] = !slabData.isSelected[i]">
+                            <div class="col-md-4">
+                              <img src="../../../../assets/imagesuiux/{{slabData.ProdCode[i].split('/')[0]}}.png" />
+                            </div>
+                            <div class="col-md-8"
+                              style="display: flex;flex-direction: column;justify-content: space-between;">
+                              <div class="d-flex">
+                                <b>{{ product }}</b>&nbsp;
+                                <span>
+                                  <i class="bi bi-info-circle"
+                                    [ngbTooltip]="GetInfoCardData(slabData.ProdCode[i].split('/')[1],'WBS')"></i>
+                                </span>
+                              </div>
+                              <div style="text-align: end">
+                                <button *ngIf="!slabData.isSelected[i]" class="btn btn-primary btn-sm" type="button"
+                                  [disabled]="checkInputDisable(slabData,i)"
+                                  (click)="slabData.isSelected[i] = !slabData.isSelected[i];AddToTempData('SLAB',slabData,slabData.ProdCode[i],i,slabData.isSelected[i])">
+                                  Add To Cart
+                                </button>
+                                <button *ngIf="slabData.isSelected[i]" class="btn btn-primary btn-sm" type="button"
+                                  [disabled]="checkInputDisable(slabData,i)"
+                                  (click)="slabData.isSelected[i] = !slabData.isSelected[i];AddToTempData('SLAB',slabData,slabData.ProdCode[i],i,slabData.isSelected[i])"
+                                  style="background-color: #ff9b00d6;border: #ff9b00d6;font-size: larger;">
+                                  Remove
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </ng-template>
+                      <ng-template ngbSlide>
+                        <div class="card-body" style="padding: 0" (dblclick)="
+                            slabData.isSelected[i] = !slabData.isSelected[i]
+                          ">
+                          <div class="row">
+                            <div class="col">
+                              <!-- <div class="d-flex" style="justify-content: space-between;">
+                                <h3 style="margin:0;">1</h3>
+                              </div> -->
+                              <div style="text-align: left">
+                                <div>
+                                  <b>BBS DESC (加工表概述)</b>-
+                                  {{ GetInfoCardData( slabData.ProdCode[i].split("/")[1], "BBS DESC" ) }}
+                                </div>
+                                <div>
+                                  <b>STRUCTURE ELEMENT (结构)</b> -
+                                  {{ GetInfoCardData( slabData.ProdCode[i].split("/")[1], "STRUCTURE ELEMENT" ) }}
+                                </div>
+                                <div>
+                                  <b>PRODUCT TYPE (产品类型)</b> -
+                                  {{ GetInfoCardData( slabData.ProdCode[i].split("/")[1], "PRODUCT TYPE" ) }}
+                                </div>
+                                <div>
+                                  <b>TOTAL PEICES (总数量)</b> -
+                                  {{ GetInfoCardData( slabData.ProdCode[i].split("/")[1], "TOTAL PEICES" ) }}
+                                </div>
+                                <div>
+                                  <b>TOTAL WEIGHT (总重量)</b> -
+                                  {{ GetInfoCardData( slabData.ProdCode[i].split("/")[1], "TOTAL WEIGHT" ) }}
+                                </div>
+                                <div>
+                                  <b>POSTED BY (发布人)</b> -
+                                  {{ GetInfoCardData( slabData.ProdCode[i].split("/")[1], "POSTED BY" ) }}
+                                </div>
+                                <div>
+                                  <b>POSTED DATE (发布日期)</b> -
+                                  {{ GetInfoCardData( slabData.ProdCode[i].split("/")[1], "POSTED DATE" ) }}
+                                </div>
+                                <div>
+                                  <b>STATUS</b> -
+                                  {{ GetInfoCardData( slabData.ProdCode[i].split("/")[1], "STATUS" ) }}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </ng-template>
+                    </ngb-carousel>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+        <div *ngIf="slabbShow" style="border: 1px solid #dad6d6;padding: 8px;border-radius: 10px;margin: 2px;">
+          <div id="slabb" style="min-height: 30px">
+            <div class="row" style="justify-content: space-between">
+              <div class="col-md-2">
+                <b>Slab-B</b>
+              </div>
+              <div class="col-md-2 d-flex" *ngFor="let product of slabbData.ProdName; index as i">
+                <div class="col" *ngIf="slabbCollapse && showProduct(slabbData.ProdCode[i])">
+                  <input type="checkbox" [(ngModel)]="slabbData.isSelected[i]" [checked]="slabbData.isSelected[i]"
+                    [disabled]="checkInputDisable(slabbData,i)" (ngModelChange)="
+                      AddToTempData(
+                        'SLAB-B',
+                        slabbData,
+                        slabbData.ProdCode[i],
+                        i,
+                        slabbData.isSelected[i]
+                      )
+                    " />
+                  &nbsp;<label style="font-weight: bold;">{{ product }}</label>
+                </div>
+              </div>
+              <!-- <button (click)="slabbCollapse = !slabbCollapse">collapsed</button> -->
+              <div class="col" style="text-align: end">
+                <i class="bi bi-chevron-up" *ngIf="!slabbCollapse" (click)="slabbCollapse = !slabbCollapse"
+                  style="font-size: x-large"></i>
+                <i class="bi bi-chevron-down" *ngIf="slabbCollapse" (click)="slabbCollapse = !slabbCollapse"
+                  style="font-size: x-large"></i>
+              </div>
+            </div>
+            <section class="collapsible" [@collapse]="slabbCollapse">
+              <div class="row" *ngIf="!slabbCollapse" style="margin: 0">
+                <div class="col-md-4 card-body" *ngFor="let product of slabbData.ProdName; index as i" style="border: #dad6d6 solid 1px; border-radius: 10px; margin: 5px; height: fit-content;
+                background-color: {{slabbData.isSelected[i] == true ? '#90eb6875' : 'white'}};">
+
+                  <div class="row"
+                    *ngIf=" slabbData.ProdName[i] != 'STIRRUP-LINK-MESH' && slabbData.ProdName[i] != 'COLUMN-LINK-MESH' && slabbData.ProdName[i] != 'CUT-TO-SIZE-MESH' && slabbData.ProdName[i] != 'PRE-CAGE' && slabbData.ProdName[i] != 'BPC' ">
+                    <div class="col-md-4">
+                      <img style="max-width: 140px" src="../../../../assets/imagesuiux/{{slabbData.ProdCode[i]}}.png" />
+                    </div>
+                    <div class="col-md-8" style="display: flex;flex-direction: column;justify-content: space-between;">
+                      <div>
+                        <b>{{ product }}</b>
+                      </div>
+                      <div style="text-align: end">
+                        <button *ngIf="!slabbData.isSelected[i]" class="btn btn-primary btn-sm" type="button"
+                          [disabled]="checkInputDisable(slabbData,i)"
+                          (click)="
+                            slabbData.isSelected[i] = true;AddToTempData('SLAB-B',slabbData,slabbData.ProdCode[i],i,slabbData.isSelected[i])">
+                          Add To Cart
+                        </button>
+                        <button *ngIf="slabbData.isSelected[i]" class="btn btn-primary btn-sm" type="button"
+                          [disabled]="checkInputDisable(slabbData,i)"
+                          (click)="slabbData.isSelected[i] = false;AddToTempData('SLAB-B',slabbData,slabbData.ProdCode[i],i,slabbData.isSelected[i])"
+                          style="background-color: #ff9b00d6;border: #ff9b00d6;font-size: larger;">
+                          Remove
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- CONDITION -->
+                  <div id="SLAB-B-Card"
+                    *ngIf="slabbData.ProdName[i] == 'STIRRUP-LINK-MESH' ||slabbData.ProdName[i] == 'COLUMN-LINK-MESH' ||slabbData.ProdName[i] == 'CUT-TO-SIZE-MESH' || slabbData.ProdName[i] == 'PRE-CAGE' || slabbData.ProdName[i] == 'BPC'">
+                    <ngb-carousel [interval]="0">
+                      <ng-template ngbSlide>
+                        <div>
+                          <div class="row" (dblclick)="slabbData.isSelected[i] = !slabbData.isSelected[i]">
+                            <div class="col-md-4">
+                              <img src="../../../../assets/imagesuiux/{{slabbData.ProdCode[i].split('/')[0]}}.png" />
+                            </div>
+                            <div class="col-md-8"
+                              style="display: flex;flex-direction: column;justify-content: space-between;">
+                              <div class="d-flex">
+                                <b>{{ product }}</b>&nbsp;
+                                <span>
+                                  <i class="bi bi-info-circle"
+                                    [ngbTooltip]="GetInfoCardData(slabbData.ProdCode[i].split('/')[1],'WBS')"></i>
+                                </span>
+                              </div>
+                              <div style="text-align: end">
+                                <button *ngIf="!slabbData.isSelected[i]" class="btn btn-primary btn-sm" type="button"
+                                  [disabled]="checkInputDisable(slabbData,i)"
+                                  (click)="slabbData.isSelected[i] = !slabbData.isSelected[i];AddToTempData('SLAB-B',slabbData,slabbData.ProdCode[i],i,slabbData.isSelected[i])">
+                                  Add To Cart
+                                </button>
+                                <button *ngIf="slabbData.isSelected[i]" class="btn btn-primary btn-sm" type="button"
+                                  [disabled]="checkInputDisable(slabbData,i)"
+                                  (click)="slabbData.isSelected[i] = !slabbData.isSelected[i];AddToTempData('SLAB-B',slabbData,slabbData.ProdCode[i],i,slabbData.isSelected[i])"
+                                  style="background-color: #ff9b00d6;border: #ff9b00d6;font-size: larger;">
+                                  Remove
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </ng-template>
+                      <ng-template ngbSlide>
+                        <div class="card-body" style="padding: 0" (dblclick)="
+                            slabbData.isSelected[i] = !slabbData.isSelected[i]
+                          ">
+                          <div class="row">
+                            <div class="col">
+                              <!-- <div class="d-flex" style="justify-content: space-between;">
+                                <h3 style="margin:0;">1</h3>
+                              </div> -->
+                              <div style="text-align: left">
+                                <div>
+                                  <b>BBS DESC (加工表概述)</b>-
+                                  {{ GetInfoCardData( slabbData.ProdCode[i].split("/")[1], "BBS DESC" ) }}
+                                </div>
+                                <div>
+                                  <b>STRUCTURE ELEMENT (结构)</b> -
+                                  {{ GetInfoCardData( slabbData.ProdCode[i].split("/")[1], "STRUCTURE ELEMENT" ) }}
+                                </div>
+                                <div>
+                                  <b>PRODUCT TYPE (产品类型)</b> -
+                                  {{ GetInfoCardData( slabbData.ProdCode[i].split("/")[1], "PRODUCT TYPE" ) }}
+                                </div>
+                                <div>
+                                  <b>TOTAL PEICES (总数量)</b> -
+                                  {{ GetInfoCardData( slabbData.ProdCode[i].split("/")[1], "TOTAL PEICES" ) }}
+                                </div>
+                                <div>
+                                  <b>TOTAL WEIGHT (总重量)</b> -
+                                  {{ GetInfoCardData( slabbData.ProdCode[i].split("/")[1], "TOTAL WEIGHT" ) }}
+                                </div>
+                                <div>
+                                  <b>POSTED BY (发布人)</b> -
+                                  {{ GetInfoCardData( slabbData.ProdCode[i].split("/")[1], "POSTED BY" ) }}
+                                </div>
+                                <div>
+                                  <b>POSTED DATE (发布日期)</b> -
+                                  {{ GetInfoCardData( slabbData.ProdCode[i].split("/")[1], "POSTED DATE" ) }}
+                                </div>
+                                <div>
+                                  <b>STATUS</b> -
+                                  {{ GetInfoCardData( slabbData.ProdCode[i].split("/")[1], "STATUS" ) }}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </ng-template>
+                    </ngb-carousel>
+                  </div>
+                </div>
+              </div>
+            </section>
+            <!-- <section class="collapsible" [@collapse]="slabbCollapse">
+              <div class="row" *ngIf="!slabbCollapse" style="margin: 0">
+                <div class="col-md-4 card-body" *ngFor="let product of slabbData.ProdName; index as i" style="border: #dad6d6 solid 1px; border-radius: 10px; margin: 5px; height: fit-content;background-color: {{
+                    slabbData.isSelected[i] == true ? '#90eb6875' : 'white'
+                  }};">
+                  <div class="row">
+                    <div class="col-md-4">
+                      <img style="max-width: 140px" src="../../../../assets/imagesuiux/{{
+                          slabbData.ProdCode[i]
+                        }}.png" />
+                    </div>
+                    <div class="col-md-8" style="
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: space-between;
+                      ">
+                      <div>
+                        <b>{{ product }}</b>
+                      </div>
+                      <div style="text-align: end">
+                        <button *ngIf="!slabbData.isSelected[i]" class="btn btn-primary btn-sm" type="button" (click)="
+                            slabbData.isSelected[i] = true;
+                            AddToTempData(
+                              'SLAB-B',
+                              slabbData,
+                              slabbData.ProdCode[i],
+                              i,
+                              slabbData.isSelected[i]
+                            )
+                          ">
+                          Add To Cart
+                        </button>
+                        <button *ngIf="slabbData.isSelected[i]" class="btn btn-primary btn-sm" type="button" (click)="
+                            slabbData.isSelected[i] = false;
+                            AddToTempData(
+                              'SLAB-B',
+                              slabbData,
+                              slabbData.ProdCode[i],
+                              i,
+                              slabbData.isSelected[i]
+                            )
+                          " style="
+                            background-color: #ff9b00d6;
+                            border: #ff9b00d6;
+                            font-size: larger;
+                          ">
+                          Remove
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section> -->
+          </div>
+        </div>
+        <div *ngIf="slabtShow" style="border: 1px solid #dad6d6;padding: 8px;border-radius: 10px;margin: 2px;">
+          <div id="slabt" style="min-height: 30px">
+            <div class="row" style="justify-content: space-between">
+              <div class="col-md-2">
+                <b>Slab-T</b>
+              </div>
+              <div class="col-md-2 d-flex" *ngFor="let product of slabtData.ProdName; index as i">
+                <div class="col" *ngIf="slabtCollapse && showProduct(slabtData.ProdCode[i])">
+                  <input type="checkbox" [(ngModel)]="slabtData.isSelected[i]" [checked]="slabtData.isSelected[i]"
+                    [disabled]="checkInputDisable(slabtData,i)" (ngModelChange)="
+                      AddToTempData('SLAB-T',slabtData,slabtData.ProdCode[i],i,slabtData.isSelected[i])
+                    " />
+                  &nbsp;<label style="font-weight: bold;">{{ product }}</label>
+                </div>
+              </div>
+              <!-- <button (click)="slabtCollapse = !slabtCollapse">collapsed</button> -->
+              <div class="col" style="text-align: end">
+                <i class="bi bi-chevron-up" *ngIf="!slabtCollapse" (click)="slabtCollapse = !slabtCollapse"
+                  style="font-size: x-large"></i>
+                <i class="bi bi-chevron-down" *ngIf="slabtCollapse" (click)="slabtCollapse = !slabtCollapse"
+                  style="font-size: x-large"></i>
+              </div>
+            </div>
+            <section class="collapsible" [@collapse]="slabtCollapse">
+              <div class="row" *ngIf="!slabtCollapse" style="margin: 0">
+                <div class="col-md-4 card-body" *ngFor="let product of slabtData.ProdName; index as i" style="border: #dad6d6 solid 1px; border-radius: 10px; margin: 5px; height: fit-content;
+                background-color: {{slabtData.isSelected[i] == true ? '#90eb6875' : 'white'}};">
+
+                  <div class="row"
+                    *ngIf=" slabtData.ProdName[i] != 'STIRRUP-LINK-MESH' && slabtData.ProdName[i] != 'COLUMN-LINK-MESH' && slabtData.ProdName[i] != 'CUT-TO-SIZE-MESH' && slabtData.ProdName[i] != 'PRE-CAGE' && slabtData.ProdName[i] != 'BPC' ">
+                    <div class="col-md-4">
+                      <img style="max-width: 140px" src="../../../../assets/imagesuiux/{{slabtData.ProdCode[i]}}.png" />
+                    </div>
+                    <div class="col-md-8" style="display: flex;flex-direction: column;justify-content: space-between;">
+                      <div>
+                        <b>{{ product }}</b>
+                      </div>
+                      <div style="text-align: end">
+                        <button *ngIf="!slabtData.isSelected[i]" class="btn btn-primary btn-sm" type="button"
+                          [disabled]="checkInputDisable(slabtData,i)"
+                          (click)="
+                            slabtData.isSelected[i] = true;AddToTempData('SLAB-T',slabtData,slabtData.ProdCode[i],i,slabtData.isSelected[i])">
+                          Add To Cart
+                        </button>
+                        <button *ngIf="slabtData.isSelected[i]" class="btn btn-primary btn-sm" type="button"
+                          [disabled]="checkInputDisable(slabtData,i)"
+                          (click)="slabtData.isSelected[i] = false;AddToTempData('SLAB-T',slabtData,slabtData.ProdCode[i],i,slabtData.isSelected[i])"
+                          style="background-color: #ff9b00d6;border: #ff9b00d6;font-size: larger;">
+                          Remove
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- CONDITION -->
+                  <div id="SLAB-T-Card"
+                    *ngIf="slabtData.ProdName[i] == 'STIRRUP-LINK-MESH' ||slabtData.ProdName[i] == 'COLUMN-LINK-MESH' ||slabtData.ProdName[i] == 'CUT-TO-SIZE-MESH' ||slabtData.ProdName[i] == 'PRE-CAGE' || slabData.ProdName[i] == 'BPC'">
+                    <ngb-carousel [interval]="0">
+                      <ng-template ngbSlide>
+                        <div>
+                          <div class="row" (dblclick)="slabtData.isSelected[i] = !slabtData.isSelected[i]">
+                            <div class="col-md-4">
+                              <img src="../../../../assets/imagesuiux/{{slabtData.ProdCode[i].split('/')[0]}}.png" />
+                            </div>
+                            <div class="col-md-8"
+                              style="display: flex;flex-direction: column;justify-content: space-between;">
+                              <div class="d-flex">
+                                <b>{{ product }}</b>&nbsp;
+                                <span>
+                                  <i class="bi bi-info-circle"
+                                    [ngbTooltip]="GetInfoCardData(slabtData.ProdCode[i].split('/')[1],'WBS')"></i>
+                                </span>
+                              </div>
+                              <div style="text-align: end">
+                                <button *ngIf="!slabtData.isSelected[i]" class="btn btn-primary btn-sm" type="button"
+                                  [disabled]="checkInputDisable(slabtData,i)"
+                                  (click)="slabtData.isSelected[i] = !slabtData.isSelected[i];AddToTempData('SLAB-T',slabtData,slabtData.ProdCode[i],i,slabtData.isSelected[i])">
+                                  Add To Cart
+                                </button>
+                                <button *ngIf="slabtData.isSelected[i]" class="btn btn-primary btn-sm" type="button"
+                                  [disabled]="checkInputDisable(slabtData,i)"
+                                  (click)="slabtData.isSelected[i] = !slabtData.isSelected[i];AddToTempData('SLAB-T',slabtData,slabtData.ProdCode[i],i,slabtData.isSelected[i])"
+                                  style="background-color: #ff9b00d6;border: #ff9b00d6;font-size: larger;">
+                                  Remove
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </ng-template>
+                      <ng-template ngbSlide>
+                        <div class="card-body" style="padding: 0" (dblclick)="
+                            slabtData.isSelected[i] = !slabtData.isSelected[i]
+                          ">
+                          <div class="row">
+                            <div class="col">
+                              <!-- <div class="d-flex" style="justify-content: space-between;">
+                                <h3 style="margin:0;">1</h3>
+                              </div> -->
+                              <div style="text-align: left">
+                                <div>
+                                  <b>BBS DESC (加工表概述)</b>-
+                                  {{ GetInfoCardData( slabtData.ProdCode[i].split("/")[1], "BBS DESC" ) }}
+                                </div>
+                                <div>
+                                  <b>STRUCTURE ELEMENT (结构)</b> -
+                                  {{ GetInfoCardData( slabtData.ProdCode[i].split("/")[1], "STRUCTURE ELEMENT" ) }}
+                                </div>
+                                <div>
+                                  <b>PRODUCT TYPE (产品类型)</b> -
+                                  {{ GetInfoCardData( slabtData.ProdCode[i].split("/")[1], "PRODUCT TYPE" ) }}
+                                </div>
+                                <div>
+                                  <b>TOTAL PEICES (总数量)</b> -
+                                  {{ GetInfoCardData( slabtData.ProdCode[i].split("/")[1], "TOTAL PEICES" ) }}
+                                </div>
+                                <div>
+                                  <b>TOTAL WEIGHT (总重量)</b> -
+                                  {{ GetInfoCardData( slabtData.ProdCode[i].split("/")[1], "TOTAL WEIGHT" ) }}
+                                </div>
+                                <div>
+                                  <b>POSTED BY (发布人)</b> -
+                                  {{ GetInfoCardData( slabtData.ProdCode[i].split("/")[1], "POSTED BY" ) }}
+                                </div>
+                                <div>
+                                  <b>POSTED DATE (发布日期)</b> -
+                                  {{ GetInfoCardData( slabtData.ProdCode[i].split("/")[1], "POSTED DATE" ) }}
+                                </div>
+                                <div>
+                                  <b>STATUS</b> -
+                                  {{ GetInfoCardData( slabtData.ProdCode[i].split("/")[1], "STATUS" ) }}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </ng-template>
+                    </ngb-carousel>
+                  </div>
+                </div>
+              </div>
+            </section>
+            <!-- <section class="collapsible" [@collapse]="slabtCollapse">
+              <div class="row" *ngIf="!slabtCollapse" style="margin: 0">
+                <div class="col-md-4 card-body" *ngFor="let product of slabtData.ProdName; index as i" style="border: #dad6d6 solid 1px; border-radius: 10px; margin: 5px; height: fit-content;background-color: {{
+                    slabtData.isSelected[i] == true ? '#90eb6875' : 'white'
+                  }};">
+                  <div class="row">
+                    <div class="col-md-4">
+                      <img style="max-width: 140px" src="../../../../assets/imagesuiux/{{
+                          slabtData.ProdCode[i]
+                        }}.png" />
+                    </div>
+                    <div class="col-md-8" style="
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: space-between;
+                      ">
+                      <div>
+                        <b>{{ product }}</b>
+                      </div>
+                      <div style="text-align: end">
+                        <button *ngIf="!slabtData.isSelected[i]" class="btn btn-primary btn-sm" type="button" (click)="
+                            slabtData.isSelected[i] = true;
+                            AddToTempData(
+                              'SLAB-T',
+                              slabtData,
+                              slabtData.ProdCode[i],
+                              i,
+                              slabtData.isSelected[i]
+                            )
+                          ">
+                          Add To Cart
+                        </button>
+                        <button *ngIf="slabtData.isSelected[i]" class="btn btn-primary btn-sm" type="button" (click)="
+                            slabtData.isSelected[i] = false;
+                            AddToTempData(
+                              'SLAB-T',
+                              slabtData,
+                              slabtData.ProdCode[i],
+                              i,
+                              slabtData.isSelected[i]
+                            )
+                          " style="
+                            background-color: #ff9b00d6;
+                            border: #ff9b00d6;
+                            font-size: larger;
+                          ">
+                          Remove
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section> -->
+          </div>
+        </div>
+        <div *ngIf="DwallShow" style="border: 1px solid #dad6d6;padding: 8px;border-radius: 10px;margin: 2px;">
+          <div id="dwall" style="min-height: 30px">
+            <div class="row" style="justify-content: space-between">
+              <div class="col-md-2">
+                <b>Dwall</b>
+              </div>
+              <div class="col-md-2 d-flex" *ngFor="let product of DwallData.ProdName; index as i">
+                <div class="col" *ngIf="DwallCollapse && showProduct(DwallData.ProdCode[i])">
+                  <input type="checkbox" [(ngModel)]="DwallData.isSelected[i]" [checked]="DwallData.isSelected[i]"
+                    [disabled]="checkInputDisable(DwallData,i)" (ngModelChange)="
+                      AddToTempData(
+                        'DWALL',
+                        DwallData,
+                        DwallData.ProdCode[i],
+                        i,
+                        DwallData.isSelected[i]
+                      )
+                    " />
+                  &nbsp;<label style="font-weight: bold;">{{ product }}</label>
+                </div>
+              </div>
+              <!-- <button (click)="DwallCollapse = !DwallCollapse">collapsed</button> -->
+              <div class="col" style="text-align: end">
+                <i class="bi bi-chevron-up" *ngIf="!DwallCollapse" (click)="DwallCollapse = !DwallCollapse"
+                  style="font-size: x-large"></i>
+                <i class="bi bi-chevron-down" *ngIf="DwallCollapse" (click)="DwallCollapse = !DwallCollapse"
+                  style="font-size: x-large"></i>
+              </div>
+            </div>
+            <section class="collapsible" [@collapse]="DwallCollapse">
+              <div class="row" *ngIf="!DwallCollapse" style="margin: 0">
+                <div class="col-md-4 card-body" *ngFor="let product of DwallData.ProdName; index as i" style="border: #dad6d6 solid 1px; border-radius: 10px; margin: 5px; height: fit-content;
+                background-color: {{DwallData.isSelected[i] == true ? '#90eb6875' : 'white'}};">
+
+                  <div class="row"
+                    *ngIf=" DwallData.ProdName[i] != 'STIRRUP-LINK-MESH' && DwallData.ProdName[i] != 'COLUMN-LINK-MESH' && DwallData.ProdName[i] != 'CUT-TO-SIZE-MESH' && DwallData.ProdName[i] != 'PRE-CAGE' && DwallData.ProdName[i] != 'BPC' ">
+                    <div class="col-md-4">
+                      <img style="max-width: 140px" src="../../../../assets/imagesuiux/{{DwallData.ProdCode[i]}}.png" />
+                    </div>
+                    <div class="col-md-8" style="display: flex;flex-direction: column;justify-content: space-between;">
+                      <div>
+                        <b>{{ product }}</b>
+                      </div>
+                      <div style="text-align: end">
+                        <button *ngIf="!DwallData.isSelected[i]" class="btn btn-primary btn-sm" type="button"
+                          [disabled]="checkInputDisable(DwallData,i)"
+                          (click)="
+                            DwallData.isSelected[i] = true;AddToTempData('DWALL',DwallData,DwallData.ProdCode[i],i,DwallData.isSelected[i])">
+                          Add To Cart
+                        </button>
+                        <button *ngIf="DwallData.isSelected[i]" class="btn btn-primary btn-sm" type="button"
+                          [disabled]="checkInputDisable(DwallData,i)"
+                          (click)="DwallData.isSelected[i] = false;AddToTempData('DWALL',DwallData,DwallData.ProdCode[i],i,DwallData.isSelected[i])"
+                          style="background-color: #ff9b00d6;border: #ff9b00d6;font-size: larger;">
+                          Remove
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- CONDITION -->
+                  <div id="DWALL-Card"
+                    *ngIf="DwallData.ProdName[i] == 'STIRRUP-LINK-MESH' ||DwallData.ProdName[i] == 'COLUMN-LINK-MESH' ||DwallData.ProdName[i] == 'CUT-TO-SIZE-MESH' || DwallData.ProdName[i] == 'PRE-CAGE' || DwallData.ProdName[i] == 'BPC'">
+                    <ngb-carousel [interval]="0">
+                      <ng-template ngbSlide>
+                        <div>
+                          <div class="row" (dblclick)="DwallData.isSelected[i] = !DwallData.isSelected[i]">
+                            <div class="col-md-4">
+                              <img src="../../../../assets/imagesuiux/{{DwallData.ProdCode[i].split('/')[0]}}.png" />
+                            </div>
+                            <div class="col-md-8"
+                              style="display: flex;flex-direction: column;justify-content: space-between;">
+                              <div class="d-flex">
+                                <b>{{ product }}</b>&nbsp;
+                                <span>
+                                  <i class="bi bi-info-circle"
+                                    [ngbTooltip]="GetInfoCardData(DwallData.ProdCode[i].split('/')[1],'WBS')"></i>
+                                </span>
+                              </div>
+                              <div style="text-align: end">
+                                <button *ngIf="!DwallData.isSelected[i]" class="btn btn-primary btn-sm" type="button"
+                                  [disabled]="checkInputDisable(DwallData,i)"
+                                  (click)="DwallData.isSelected[i] = !DwallData.isSelected[i];AddToTempData('DWALL',DwallData,DwallData.ProdCode[i],i,DwallData.isSelected[i])">
+                                  Add To Cart
+                                </button>
+                                <button *ngIf="DwallData.isSelected[i]" class="btn btn-primary btn-sm" type="button"
+                                  [disabled]="checkInputDisable(DwallData,i)"
+                                  (click)="DwallData.isSelected[i] = !DwallData.isSelected[i];AddToTempData('DWALL',DwallData,DwallData.ProdCode[i],i,DwallData.isSelected[i])"
+                                  style="background-color: #ff9b00d6;border: #ff9b00d6;font-size: larger;">
+                                  Remove
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </ng-template>
+                      <ng-template ngbSlide>
+                        <div class="card-body" style="padding: 0" (dblclick)="
+                            DwallData.isSelected[i] = !DwallData.isSelected[i]
+                          ">
+                          <div class="row">
+                            <div class="col">
+                              <!-- <div class="d-flex" style="justify-content: space-between;">
+                                <h3 style="margin:0;">1</h3>
+                              </div> -->
+                              <div style="text-align: left">
+                                <div>
+                                  <b>BBS DESC (加工表概述)</b>-
+                                  {{ GetInfoCardData( DwallData.ProdCode[i].split("/")[1], "BBS DESC" ) }}
+                                </div>
+                                <div>
+                                  <b>STRUCTURE ELEMENT (结构)</b> -
+                                  {{ GetInfoCardData( DwallData.ProdCode[i].split("/")[1], "STRUCTURE ELEMENT" ) }}
+                                </div>
+                                <div>
+                                  <b>PRODUCT TYPE (产品类型)</b> -
+                                  {{ GetInfoCardData( DwallData.ProdCode[i].split("/")[1], "PRODUCT TYPE" ) }}
+                                </div>
+                                <div>
+                                  <b>TOTAL PEICES (总数量)</b> -
+                                  {{ GetInfoCardData( DwallData.ProdCode[i].split("/")[1], "TOTAL PEICES" ) }}
+                                </div>
+                                <div>
+                                  <b>TOTAL WEIGHT (总重量)</b> -
+                                  {{ GetInfoCardData( DwallData.ProdCode[i].split("/")[1], "TOTAL WEIGHT" ) }}
+                                </div>
+                                <div>
+                                  <b>POSTED BY (发布人)</b> -
+                                  {{ GetInfoCardData( DwallData.ProdCode[i].split("/")[1], "POSTED BY" ) }}
+                                </div>
+                                <div>
+                                  <b>POSTED DATE (发布日期)</b> -
+                                  {{ GetInfoCardData( DwallData.ProdCode[i].split("/")[1], "POSTED DATE" ) }}
+                                </div>
+                                <div>
+                                  <b>STATUS</b> -
+                                  {{ GetInfoCardData( DwallData.ProdCode[i].split("/")[1], "STATUS" ) }}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </ng-template>
+                    </ngb-carousel>
+                  </div>
+                </div>
+              </div>
+            </section>
+            <!-- <section class="collapsible" [@collapse]="DwallCollapse">
+              <div class="row" *ngIf="!DwallCollapse" style="margin: 0">
+                <div class="col-md-4 card-body" *ngFor="let product of DwallData.ProdName; index as i" style="border: #dad6d6 solid 1px; border-radius: 10px; margin: 5px; height: fit-content;background-color: {{
+                    DwallData.isSelected[i] == true ? '#90eb6875' : 'white'
+                  }};">
+                  <div class="row">
+                    <div class="col-md-4">
+                      <img style="max-width: 140px" src="../../../../assets/imagesuiux/{{
+                          DwallData.ProdCode[i]
+                        }}.png" />
+                    </div>
+                    <div class="col-md-8" style="
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: space-between;
+                      ">
+                      <div>
+                        <b>{{ product }}</b>
+                      </div>
+                      <div style="text-align: end">
+                        <button *ngIf="!DwallData.isSelected[i]" class="btn btn-primary btn-sm" type="button" (click)="
+                            DwallData.isSelected[i] = true;
+                            AddToTempData('DWALL',DwallData,DwallData.ProdCode[i],i,DwallData.isSelected[i])">
+                          Add To Cart
+                        </button>
+                        <button *ngIf="DwallData.isSelected[i]" class="btn btn-primary btn-sm" type="button" (click)="
+                            DwallData.isSelected[i] = false;
+                            AddToTempData(
+                              'DWALL',
+                              DwallData,
+                              DwallData.ProdCode[i],
+                              i,
+                              DwallData.isSelected[i]
+                            )
+                          " style="
+                            background-color: #ff9b00d6;
+                            border: #ff9b00d6;
+                            font-size: larger;
+                          ">
+                          Remove
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section> -->
+          </div>
+        </div>
+        <div *ngIf="pileShow" style="border: 1px solid #dad6d6;padding: 8px;border-radius: 10px;margin: 2px;">
+          <div id="pile" style="min-height: 30px">
+            <div class="row" style="justify-content: space-between">
+              <div class="col-md-2">
+                <b>Pile</b>
+              </div>
+              <div class="col-md-2 d-flex" *ngFor="let product of pileData.ProdName; index as i">
+                <div class="col" *ngIf="pileCollapse && showProduct(pileData.ProdCode[i])">
+                  <input type="checkbox" [(ngModel)]="pileData.isSelected[i]" [checked]="pileData.isSelected[i]"
+                    [disabled]="checkInputDisable(pileData,i)"
+                    (ngModelChange)="
+                      AddToTempData('PILE',pileData,pileData.ProdCode[i],i,pileData.isSelected[i])                    " />
+                  &nbsp;<label style="font-weight: bold;">{{ product }}</label>
+                </div>
+              </div>
+              <!-- <button (click)="pileCollapse = !pileCollapse">collapsed</button> -->
+              <div class="col" style="text-align: end">
+                <i class="bi bi-chevron-up" *ngIf="!pileCollapse" (click)="pileCollapse = !pileCollapse"
+                  style="font-size: x-large"></i>
+                <i class="bi bi-chevron-down" *ngIf="pileCollapse" (click)="pileCollapse = !pileCollapse"
+                  style="font-size: x-large"></i>
+              </div>
+            </div>
+
+            <section class="collapsible" [@collapse]="pileCollapse">
+              <div class="row" *ngIf="!pileCollapse" style="margin: 0">
+                <div class="col-md-4 card-body" *ngFor="let product of pileData.ProdName; index as i" style="border: #dad6d6 solid 1px; border-radius: 10px; margin: 5px; height: fit-content;
+                background-color: {{pileData.isSelected[i] == true ? '#90eb6875' : 'white'}};">
+
+                  <div class="row"
+                    *ngIf=" pileData.ProdName[i] != 'STIRRUP-LINK-MESH' && pileData.ProdName[i] != 'COLUMN-LINK-MESH'  && pileData.ProdName[i] != 'PRE-CAGE' && pileData.ProdName[i] != 'BPC' ">
+                    <div class="col-md-4">
+                      <img style="max-width: 140px" src="../../../../assets/imagesuiux/{{pileData.ProdCode[i]}}.png" />
+                    </div>
+                    <div class="col-md-8" style="display: flex;flex-direction: column;justify-content: space-between;">
+                      <div>
+                        <b>{{ product }}</b>
+                      </div>
+                      <div style="text-align: end">
+                        <button *ngIf="!pileData.isSelected[i]" class="btn btn-primary btn-sm" type="button"
+                          [disabled]="checkInputDisable(pileData,i)"
+                          (click)="
+                            pileData.isSelected[i] = true;AddToTempData('PILE',pileData,pileData.ProdCode[i],i,pileData.isSelected[i])">
+                          Add To Cart
+                        </button>
+                        <button *ngIf="pileData.isSelected[i]" class="btn btn-primary btn-sm" type="button"
+                          [disabled]="checkInputDisable(pileData,i)"
+                          (click)="pileData.isSelected[i] = false;AddToTempData('PILE',pileData,pileData.ProdCode[i],i,pileData.isSelected[i])"
+                          style="background-color: #ff9b00d6;border: #ff9b00d6;font-size: larger;">
+                          Remove
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- CONDITION -->
+                  <div id="PILE-Card"
+                    *ngIf="pileData.ProdName[i] == 'STIRRUP-LINK-MESH' ||pileData.ProdName[i] == 'COLUMN-LINK-MESH' ||pileData.ProdName[i] == 'CUT-TO-SIZE-MESH' ||pileData.ProdName[i] == 'PRE-CAGE' || pileData.ProdName[i] == 'BPC' ">
+                    <ngb-carousel [interval]="0">
+                      <ng-template ngbSlide>
+                        <div>
+                          <div class="row" (dblclick)="pileData.isSelected[i] = !pileData.isSelected[i]">
+                            <div class="col-md-4">
+                              <img src="../../../../assets/imagesuiux/{{pileData.ProdCode[i].split('/')[0]}}.png" />
+                            </div>
+                            <div class="col-md-8"
+                              style="display: flex;flex-direction: column;justify-content: space-between;">
+                              <div class="d-flex">
+                                <b>{{ product }}</b>&nbsp;
+                                <span>
+                                  <i class="bi bi-info-circle"
+                                    [ngbTooltip]="GetInfoCardData(pileData.ProdCode[i].split('/')[1],'WBS')"></i>
+                                </span>
+                              </div>
+                              <div style="text-align: end">
+                                <button *ngIf="!pileData.isSelected[i]" class="btn btn-primary btn-sm" type="button"
+                                  [disabled]="checkInputDisable(pileData,i)"
+                                  (click)="pileData.isSelected[i] = !pileData.isSelected[i];AddToTempData('PILE',pileData,pileData.ProdCode[i],i,pileData.isSelected[i])">
+                                  Add To Cart
+                                </button>
+                                <button *ngIf="pileData.isSelected[i]" class="btn btn-primary btn-sm" type="button"
+                                  [disabled]="checkInputDisable(pileData,i)"
+                                  (click)="pileData.isSelected[i] = !pileData.isSelected[i];AddToTempData('PILE',pileData,pileData.ProdCode[i],i,pileData.isSelected[i])"
+                                  style="background-color: #ff9b00d6;border: #ff9b00d6;font-size: larger;">
+                                  Remove
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </ng-template>
+                      <ng-template ngbSlide>
+                        <div class="card-body" style="padding: 0" (dblclick)="
+                            pileData.isSelected[i] = !pileData.isSelected[i]
+                          ">
+                          <div class="row">
+                            <div class="col">
+                              <!-- <div class="d-flex" style="justify-content: space-between;">
+                                <h3 style="margin:0;">1</h3>
+                              </div> -->
+                              <div style="text-align: left">
+                                <div>
+                                  <b>BBS DESC (加工表概述)</b>-
+                                  {{ GetInfoCardData( pileData.ProdCode[i].split("/")[1], "BBS DESC" ) }}
+                                </div>
+                                <div>
+                                  <b>STRUCTURE ELEMENT (结构)</b> -
+                                  {{ GetInfoCardData( pileData.ProdCode[i].split("/")[1], "STRUCTURE ELEMENT" ) }}
+                                </div>
+                                <div>
+                                  <b>PRODUCT TYPE (产品类型)</b> -
+                                  {{ GetInfoCardData( pileData.ProdCode[i].split("/")[1], "PRODUCT TYPE" ) }}
+                                </div>
+                                <div>
+                                  <b>TOTAL PEICES (总数量)</b> -
+                                  {{ GetInfoCardData( pileData.ProdCode[i].split("/")[1], "TOTAL PEICES" ) }}
+                                </div>
+                                <div>
+                                  <b>TOTAL WEIGHT (总重量)</b> -
+                                  {{ GetInfoCardData( pileData.ProdCode[i].split("/")[1], "TOTAL WEIGHT" ) }}
+                                </div>
+                                <div>
+                                  <b>POSTED BY (发布人)</b> -
+                                  {{ GetInfoCardData( pileData.ProdCode[i].split("/")[1], "POSTED BY" ) }}
+                                </div>
+                                <div>
+                                  <b>POSTED DATE (发布日期)</b> -
+                                  {{ GetInfoCardData( pileData.ProdCode[i].split("/")[1], "POSTED DATE" ) }}
+                                </div>
+                                <div>
+                                  <b>STATUS</b> -
+                                  {{ GetInfoCardData( pileData.ProdCode[i].split("/")[1], "STATUS" ) }}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </ng-template>
+                    </ngb-carousel>
+                  </div>
+                </div>
+              </div>
+            </section>
+            <!-- <section class="collapsible" [@collapse]="pileCollapse">
+              <div class="row" *ngIf="!pileCollapse" style="margin: 0">
+                <div class="col-md-4 card-body" *ngFor="let product of pileData.ProdName; index as i" style="border: #dad6d6 solid 1px; border-radius: 10px; margin: 5px; height: fit-content;background-color: {{
+                    pileData.isSelected[i] == true ? '#90eb6875' : 'white'
+                  }};">
+                  <div class="row">
+                    <div class="col-md-4">
+                      <img style="max-width: 140px" src="../../../../assets/imagesuiux/{{
+                          pileData.ProdCode[i]
+                        }}.png" />
+                    </div>
+                    <div class="col-md-8" style="
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: space-between;
+                      ">
+                      <div>
+                        <b>{{ product }}</b>
+                      </div>
+                      <div style="text-align: end">
+                        <button *ngIf="!pileData.isSelected[i]" class="btn btn-primary btn-sm" type="button" (click)="
+                            pileData.isSelected[i] = true;
+                            AddToTempData(
+                              'PILE',
+                              pileData,
+                              pileData.ProdCode[i],
+                              i,
+                              pileData.isSelected[i]
+                            )
+                          ">
+                          Add To Cart
+                        </button>
+                        <button *ngIf="pileData.isSelected[i]" class="btn btn-primary btn-sm" type="button" (click)="
+                            pileData.isSelected[i] = false;
+                            AddToTempData(
+                              'PILE',
+                              pileData,
+                              pileData.ProdCode[i],
+                              i,
+                              pileData.isSelected[i]
+                            )
+                          " style="
+                            background-color: #ff9b00d6;
+                            border: #ff9b00d6;
+                            font-size: larger;
+                          ">
+                          Remove
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section> -->
+          </div>
+        </div>
+        <div *ngIf="wallShow" style="border: 1px solid #dad6d6;padding: 8px;border-radius: 10px;margin: 2px;">
+          <div id="wall" style="min-height: 30px">
+            <div class="row" style="justify-content: space-between">
+              <div class="col-md-2">
+                <b>Wall</b>
+              </div>
+              <div class="col-md-2 d-flex" *ngFor="let product of wallData.ProdName; index as i">
+                <div class="col" *ngIf="wallCollapse && showProduct(wallData.ProdCode[i])">
+                  <input type="checkbox" [(ngModel)]="wallData.isSelected[i]" [checked]="wallData.isSelected[i]"
+                    [disabled]="checkInputDisable(wallData,i)" (ngModelChange)="
+                      AddToTempData('WALL',wallData,wallData.ProdCode[i],i,wallData.isSelected[i])
+                    " />
+                  &nbsp;<label style="font-weight: bold;">{{ product }}</label>
+                </div>
+              </div>
+              <!-- <button (click)="wallCollapse = !wallCollapse">collapsed</button> -->
+              <div class="col" style="text-align: end">
+                <i class="bi bi-chevron-up" *ngIf="!wallCollapse" (click)="wallCollapse = !wallCollapse"
+                  style="font-size: x-large"></i>
+                <i class="bi bi-chevron-down" *ngIf="wallCollapse" (click)="wallCollapse = !wallCollapse"
+                  style="font-size: x-large"></i>
+              </div>
+            </div>
+
+            <section class="collapsible" [@collapse]="wallCollapse">
+              <div class="row" *ngIf="!wallCollapse" style="margin: 0">
+                <div class="col-md-4 card-body" *ngFor="let product of wallData.ProdName; index as i" style="border: #dad6d6 solid 1px; border-radius: 10px; margin: 5px; height: fit-content;
+                background-color: {{wallData.isSelected[i] == true ? '#90eb6875' : 'white'}};">
+
+                  <div class="row"
+                    *ngIf=" wallData.ProdName[i] != 'STIRRUP-LINK-MESH' && wallData.ProdName[i] != 'COLUMN-LINK-MESH' && wallData.ProdName[i] != 'CUT-TO-SIZE-MESH' && wallData.ProdName[i] != 'PRE-CAGE' ">
+                    <div class="col-md-4">
+                      <img style="max-width: 140px" src="../../../../assets/imagesuiux/{{wallData.ProdCode[i]}}.png" />
+                    </div>
+                    <div class="col-md-8" style="display: flex;flex-direction: column;justify-content: space-between;">
+                      <div>
+                        <b>{{ product }}</b>
+                      </div>
+                      <div style="text-align: end">
+                        <button *ngIf="!wallData.isSelected[i]" class="btn btn-primary btn-sm" type="button"
+                          [disabled]="checkInputDisable(wallData,i)"
+                          (click)="
+                            wallData.isSelected[i] = true;AddToTempData('WALL',wallData,wallData.ProdCode[i],i,wallData.isSelected[i])">
+                          Add To Cart
+                        </button>
+                        <button *ngIf="wallData.isSelected[i]" class="btn btn-primary btn-sm" type="button"
+                          [disabled]="checkInputDisable(wallData,i)"
+                          (click)="wallData.isSelected[i] = false;AddToTempData('WALL',wallData,wallData.ProdCode[i],i,wallData.isSelected[i])"
+                          style="background-color: #ff9b00d6;border: #ff9b00d6;font-size: larger;">
+                          Remove
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- CONDITION -->
+                  <div id="WALL-Card"
+                    *ngIf="wallData.ProdName[i] == 'STIRRUP-LINK-MESH' ||wallData.ProdName[i] == 'COLUMN-LINK-MESH' ||wallData.ProdName[i] == 'CUT-TO-SIZE-MESH'  ||wallData.ProdName[i] == 'PRE-CAGE'">
+                    <ngb-carousel [interval]="0">
+                      <ng-template ngbSlide>
+                        <div>
+                          <div class="row" (dblclick)="wallData.isSelected[i] = !wallData.isSelected[i]">
+                            <div class="col-md-4">
+                              <img src="../../../../assets/imagesuiux/{{wallData.ProdCode[i].split('/')[0]}}.png" />
+                            </div>
+                            <div class="col-md-8"
+                              style="display: flex;flex-direction: column;justify-content: space-between;">
+                              <div class="d-flex">
+                                <b>{{ product }}</b>&nbsp;
+                                <span>
+                                  <i class="bi bi-info-circle"
+                                    [ngbTooltip]="GetInfoCardData(wallData.ProdCode[i].split('/')[1],'WBS')"></i>
+                                </span>
+                              </div>
+                              <div style="text-align: end">
+                                <button *ngIf="!wallData.isSelected[i]" class="btn btn-primary btn-sm" type="button"
+                                  [disabled]="checkInputDisable(wallData,i)"
+                                  (click)="wallData.isSelected[i] = !wallData.isSelected[i];AddToTempData('WALL',wallData,wallData.ProdCode[i],i,wallData.isSelected[i])">
+                                  Add To Cart
+                                </button>
+                                <button *ngIf="wallData.isSelected[i]" class="btn btn-primary btn-sm" type="button"
+                                  [disabled]="checkInputDisable(wallData,i)"
+                                  (click)="wallData.isSelected[i] = !wallData.isSelected[i];AddToTempData('WALL',wallData,wallData.ProdCode[i],i,wallData.isSelected[i])"
+                                  style="background-color: #ff9b00d6;border: #ff9b00d6;font-size: larger;">
+                                  Remove
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </ng-template>
+                      <ng-template ngbSlide>
+                        <div class="card-body" style="padding: 0" (dblclick)="
+                            wallData.isSelected[i] = !wallData.isSelected[i]
+                          ">
+                          <div class="row">
+                            <div class="col">
+                              <!-- <div class="d-flex" style="justify-content: space-between;">
+                                <h3 style="margin:0;">1</h3>
+                              </div> -->
+                              <div style="text-align: left">
+                                <div>
+                                  <b>BBS DESC (加工表概述)</b>-
+                                  {{ GetInfoCardData( wallData.ProdCode[i].split("/")[1], "BBS DESC" ) }}
+                                </div>
+                                <div>
+                                  <b>STRUCTURE ELEMENT (结构)</b> -
+                                  {{ GetInfoCardData( wallData.ProdCode[i].split("/")[1], "STRUCTURE ELEMENT" ) }}
+                                </div>
+                                <div>
+                                  <b>PRODUCT TYPE (产品类型)</b> -
+                                  {{ GetInfoCardData( wallData.ProdCode[i].split("/")[1], "PRODUCT TYPE" ) }}
+                                </div>
+                                <div>
+                                  <b>TOTAL PEICES (总数量)</b> -
+                                  {{ GetInfoCardData( wallData.ProdCode[i].split("/")[1], "TOTAL PEICES" ) }}
+                                </div>
+                                <div>
+                                  <b>TOTAL WEIGHT (总重量)</b> -
+                                  {{ GetInfoCardData( wallData.ProdCode[i].split("/")[1], "TOTAL WEIGHT" ) }}
+                                </div>
+                                <div>
+                                  <b>POSTED BY (发布人)</b> -
+                                  {{ GetInfoCardData( wallData.ProdCode[i].split("/")[1], "POSTED BY" ) }}
+                                </div>
+                                <div>
+                                  <b>POSTED DATE (发布日期)</b> -
+                                  {{ GetInfoCardData( wallData.ProdCode[i].split("/")[1], "POSTED DATE" ) }}
+                                </div>
+                                <div>
+                                  <b>STATUS</b> -
+                                  {{ GetInfoCardData( wallData.ProdCode[i].split("/")[1], "STATUS" ) }}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </ng-template>
+                    </ngb-carousel>
+                  </div>
+                </div>
+              </div>
+            </section>
+            <!-- <section class="collapsible" [@collapse]="wallCollapse">
+              <div class="row" *ngIf="!wallCollapse" style="margin: 0">
+                <div class="col-md-4 card-body" *ngFor="let product of wallData.ProdName; index as i" style="border: #dad6d6 solid 1px; border-radius: 10px; margin: 5px; height: fit-content;background-color: {{
+                    wallData.isSelected[i] == true ? '#90eb6875' : 'white'
+                  }};">
+                  <div class="row">
+                    <div class="col-md-4">
+                      <img style="max-width: 140px" src="../../../../assets/imagesuiux/{{
+                          wallData.ProdCode[i]
+                        }}.png" />
+                    </div>
+                    <div class="col-md-8" style="
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: space-between;
+                      ">
+                      <div>
+                        <b>{{ product }}</b>
+                      </div>
+                      <div style="text-align: end">
+                        <button *ngIf="!wallData.isSelected[i]" class="btn btn-primary btn-sm" type="button" (click)="
+                            wallData.isSelected[i] = true;
+                            AddToTempData(
+                              'WALL',
+                              wallData,
+                              wallData.ProdCode[i],
+                              i,
+                              wallData.isSelected[i]
+                            )
+                          ">
+                          Add To Cart
+                        </button>
+                        <button *ngIf="wallData.isSelected[i]" class="btn btn-primary btn-sm" type="button" (click)="
+                            wallData.isSelected[i] = false;
+                            AddToTempData(
+                              'WALL',
+                              wallData,
+                              wallData.ProdCode[i],
+                              i,
+                              wallData.isSelected[i]
+                            )
+                          " style="
+                            background-color: #ff9b00d6;
+                            border: #ff9b00d6;
+                            font-size: larger;
+                          ">
+                          Remove
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section> -->
+          </div>
+        </div>
+
+        <!-- ON SELECTION OF WBS  -->
+        <!-- TO BE MERGED WITH EXSISTING STRUCTURE ELEMENTS -->
+        <div style="display: none">
+          <div *ngIf="meshShow" style="
+              border: 1px solid #dad6d6;
+              padding: 8px;
+              border-radius: 10px;
+              margin: 2px;
+            ">
+            <div id="mesh" style="min-height: 30px">
+              <div class="row" style="justify-content: space-between">
+                <div class="col">
+                  <b>MESH</b>
+                </div>
+                <div class="col" *ngIf="meshCollapse">
+                  <input type="checkbox" [(ngModel)]="meshSelectAll" [checked]="meshSelectAll"
+                    (change)="selectAll(meshSelectAll, MeshData)" />
+                  <label>Select All</label>
+                </div>
+                <div class="col" *ngIf="meshCollapse">
+                  <!-- <input type="checkbox"> -->
+                  <label>Count = {{ MeshData.length }}</label>
+                </div>
+                <!-- <button (click)="meshCollapse = !meshCollapse">collapsed</button> -->
+                <div class="col" style="text-align: end">
+                  <i class="bi bi-chevron-up" *ngIf="!meshCollapse" (click)="meshCollapse = !meshCollapse"
+                    style="font-size: x-large"></i>
+                  <i class="bi bi-chevron-down" *ngIf="meshCollapse" (click)="meshCollapse = !meshCollapse"
+                    style="font-size: x-large"></i>
+                </div>
+              </div>
+              <section class="collapsible" [@collapse]="meshCollapse">
+                <div class="row" *ngIf="!meshCollapse" style="margin: 0">
+                  <div style="display: flex; overflow: auto">
+                    <div class="col-md-3 card-body" style="border: #dad6d6 solid 1px; border-radius: 10px; margin: 5px;
+                                        min-width: 275px; height: fit-content;padding:3px 10px;
+                                        background-color: {{
+                        item.isSelected == true ? '#90eb6875' : 'white'
+                      }};" (dblclick)="item.isSelected = !item.isSelected" *ngFor="let item of MeshData; index as i">
+                      <div class="d-flex" style="justify-content: space-between">
+                        <h3 style="margin: 0">{{ item.SSNNo }}</h3>
+                        <input type="checkbox" [(ngModel)]="item.isSelected" [checked]="item.isSelected" />
+                      </div>
+                      <div style="text-align: left">
+                        <div>
+                          <b>WBS</b> - {{ item.WBS1 }}/{{ item.WBS2 }}/{{
+                          item.WBS3
+                          }}
+                        </div>
+                        <div><b>BBS DESC</b>- {{ item.BBSDesc }}</div>
+                        <div>
+                          <b>STRUCTURE ELEMENT</b> - {{ item.StructEle }}
+                        </div>
+                        <div><b>PRODUCT TYPE</b> - {{ item.ProductType }}</div>
+                        <div><b>STATUS</b> - {{ item.Status }}</div>
+                        <div><b>TOTAL PEICES</b> - {{ item.TotalPCs }}</div>
+                        <div><b>TOTAL WEIGHT</b> -{{ item.TotalWeight }}</div>
+                        <div><b>POSTED BY</b> -{{ item.PostedBy }}</div>
+                        <div><b>POSTED DATE</b> -{{ item.PostedDate }}</div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- KUNAL -->
+
+                  <div class="col-md-4"></div>
+                </div>
+              </section>
+            </div>
+          </div>
+          <div *ngIf="prcShow" style="
+              border: 1px solid #dad6d6;
+              padding: 8px;
+              border-radius: 10px;
+              margin: 2px;
+            ">
+            <div id="prc" style="min-height: 30px">
+              <div class="row" style="justify-content: space-between">
+                <div class="col">
+                  <b>PRC</b>
+                </div>
+                <div class="col" *ngIf="prcCollapse">
+                  <input type="checkbox" [(ngModel)]="prcSelectAll" [checked]="prcSelectAll"
+                    (change)="selectAll(prcSelectAll, prcData)" />
+                  <label>Select All</label>
+                </div>
+                <div class="col" *ngIf="prcCollapse">
+                  <!-- <input type="checkbox"> -->
+                  <label>Count = {{ prcData.length }}</label>
+                </div>
+                <!-- <button (click)="prcCollapse = !prcCollapse">collapsed</button> -->
+                <div class="col" style="text-align: end">
+                  <i class="bi bi-chevron-up" *ngIf="!prcCollapse" (click)="prcCollapse = !prcCollapse"
+                    style="font-size: x-large"></i>
+                  <i class="bi bi-chevron-down" *ngIf="prcCollapse" (click)="prcCollapse = !prcCollapse"
+                    style="font-size: x-large"></i>
+                </div>
+              </div>
+              <section class="collapsible" [@collapse]="prcCollapse">
+                <div class="row" *ngIf="!prcCollapse" style="margin: 0">
+                  <div style="display: flex; overflow: auto">
+                    <div class="col-md-3 card-body" style="border: #dad6d6 solid 1px; border-radius: 10px; margin: 5px;
+                                        min-width: 275px; height: fit-content;padding:3px 10px;
+                                        background-color: {{
+                        item.isSelected == true ? '#90eb6875' : 'white'
+                      }};" (dblclick)="item.isSelected = !item.isSelected" *ngFor="let item of prcData; index as i">
+                      <div class="d-flex" style="justify-content: space-between">
+                        <h3 style="margin: 0">{{ item.SSNNo }}</h3>
+                        <input type="checkbox" [(ngModel)]="item.isSelected" [checked]="item.isSelected" />
+                      </div>
+                      <div style="text-align: left">
+                        <div>
+                          <b>WBS</b> - {{ item.WBS1 }}/{{ item.WBS2 }}/{{
+                          item.WBS3
+                          }}
+                        </div>
+                        <div><b>BBS DESC</b>- {{ item.BBSDesc }}</div>
+                        <div>
+                          <b>STRUCTURE ELEMENT</b> - {{ item.StructEle }}
+                        </div>
+                        <div><b>PRODUCT TYPE</b> - {{ item.ProductType }}</div>
+                        <div><b>STATUS</b> - {{ item.Status }}</div>
+                        <div><b>TOTAL PEICES</b> - {{ item.TotalPCs }}</div>
+                        <div><b>TOTAL WEIGHT</b> -{{ item.TotalWeight }}</div>
+                        <div><b>POSTED BY</b> -{{ item.PostedBy }}</div>
+                        <div><b>POSTED DATE</b> -{{ item.PostedDate }}</div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- KUNAL -->
+
+                  <div class="col-md-4"></div>
+                </div>
+              </section>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="row">
+                <div class="col">
+                    <span style="font-weight: bold;size:h3;font-size: smaller;">
+                        SELECT STRUCTURE ELEMENTS / PRODUCT TYPES THAT SCHEDULED BY NATSTEEL (如果由大众钢铁提供产品详细清单,
+                        请选择以下的结构与产品类型)
+                    </span>
+                </div>
+            </div> -->
+      <div id="Scheduled_Data" *ngIf="showScheduledData">
+        <span class="subHeading">SELECT STRUCTURE ELEMENTS / PRODUCT TYPES THAT SCHEDULED BY NATSTEEL (如果由大众钢铁提供产品详细清单,
+          请选择以下的结构与产品类型)
+
+        </span>
+        <div class="d-flex table-responsive table-bordered" style="padding: 0; margin:0">
+          <table class="table  table-responsive table-bordered">
+            <thead>
+              <tr>
+                <th style="min-width:80px">S/No<br>序号</th>
+                <th style="min-width:80px">
+                  <span>Select<br>选择</span><br/>
+                  <input type="checkbox" [(ngModel)]="isSelectAllScheduled" [checked]="isSelectAllScheduled"
+                    (change)="selectAllScheduledData(isSelectAllScheduled);">
+                  <label for="vehicle1">All</label>
+                </th>
+                <th style="min-width:130px">WBS<br> 分解结构</th>
+                <th style="min-width:130px">BBS Desc<br> 加工表概述</th>
+                <th style="min-width:130px">Structure Element<br> 结构</th>
+                <th style="min-width:130px">Product Type<br> 产品类型</th>
+                <th style="min-width:130px">Status<br> 状态</th>
+                <th style="min-width:100px">Total Pieces<br> 总数量</th>
+                <th style="min-width:100px">Total Weight<br> 总重量</th>
+                <th style="min-width:130px">Posted By<br> 发布人</th>
+                <th style="min-width:130px">Posted Date<br> 发布日期</th>
+              </tr>
+              </thead>
+              <tbody>
+                <tr [ngClass]="{'change-color': sItem.isSelected===true}" *ngFor=" let sItem of MeshPRCDataList; index as
+                              x">
+                <td>{{sItem.SSNNo}}</td>
+                <td><input type="checkbox" [(ngModel)]="sItem.isSelected" [checked]="sItem.isSelected"
+                    (change)="selectScheduledData(sItem, sItem.isSelected);unselectScheduledData(sItem.isSelected)"></td>
+                <td>{{sItem.WBS1}} / {{sItem.WBS2}} / {{sItem.WBS3 }}</td>
+                <td>{{sItem.BBSDesc}}</td>
+                <td>{{sItem.StructEle}}</td>
+                <td>{{sItem.ProductType}}</td>
+                <td>{{sItem.Status}}</td>
+                <td>{{sItem.TotalPCs}}</td>
+                <td>{{sItem.TotalWeight}}</td>
+                <td>{{sItem.PostedBy}}</td>
+                <td>{{sItem.PostedDate}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- <div class="row" style="text-align: right">
+        <div>
+          <button class="btn btn-primary btn-sm" type="button" style="width: 80px" [disabled]="nextbuttonClicked"
+            (click)="getData(); gotoOrderSummary()">
+            Next
+          </button>
+           <button class="btn btn-primary btn-sm" type="button" style="width: 80px" (click)="getData()"
+          [routerLink]="['../ordersummary']" [state]="{tempOrderSummaryList}">
+          Next
+        </button> 
+        </div>
+      </div> -->
+
+
+
+      <div class="row">
+        <div class="col text-end d-flex" style="justify-content: flex-end;">
+          <div class="green-steel-sub">
+            <div class="Green-Steel-label">
+              <label class="form-label bold">CARBON-RATE -</label>
+            </div>
+            <div class=" Green-Steel-input form-check form-switch" style="padding-left: 0.5rem;" [matTooltip]="greenSteelToolTip()">
+              <label class="form-label bold" [style.height]="'10px'">{{ GreenSteelCarbonValue }}%</label>
+            </div>
+          </div>
+
+      <select
+        class="form-select form-select-sm d-inline-block me-2 green-steel-dropdown"
+        appendTo="body" 
+        [disabled]="disableGreenSteelToggle()"
+        [(ngModel)]="selectedGreenOption"
+        (change)="GreenSteelSelection()"
+        [matTooltip]="greenSteelSelectToolTip()"
+        required >
+      <option style="font-weight:bold" value="">--Select Greensteel--</option>
+      <option style="font-weight:bold" value="Green">Green</option>
+      <option style="font-weight:bold" value="Non-Green">Non-Green</option>
+    </select>
+
+          <button
+            class="btn btn-primary btn-sm"
+            type="button"
+            style="width: 80px;"
+            [disabled]="nextbuttonClicked"
+            (click)="onNextClick()"
+          >
+            Next
+          </button>
+        </div>
+      </div>
+
+
+    </section>
+  </div>
+  <div id="OrderSummary" class="container-fluid" style="padding: 0" *ngIf="showOrderSummary">
+    <app-ordersummary [state]="{tempOrderSummaryList}"></app-ordersummary>
+  </div>
+</div>

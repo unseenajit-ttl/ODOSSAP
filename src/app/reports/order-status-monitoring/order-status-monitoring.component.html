@@ -1,0 +1,209 @@
+<div id="pause" class="d-flex align-items-center justify-content-center" *ngIf="loading">
+    <div id="spinner" class="loader"></div>
+  </div>
+  
+  <div class="container-fluid">
+    <h3 class="card-header d-flex flex-column justify-content-center align-items-center">
+      <b>Order Status Monitoring</b>
+    </h3>
+  
+    <ul ngbNav #nav="ngbNav" class="nav-tabs custom-tabs mt-3 mb-3" [destroyOnHide]="false">
+      <li [ngbNavItem]="1">
+        <a ngbNavLink>Order Status</a>
+        <ng-template ngbNavContent>
+          <!-- ALL CURRENT CODE STARTS HERE -->
+          <div class="card m-1">
+            <div class="card-body mt-5">
+              <fieldset>
+                <form [formGroup]="OrderStatusReportForm">
+                  <div class="row">
+                    <div class="col-md-3">
+                      <label class="required-label" style="padding-right:5px;">* </label>
+                      <label class="form-label"><b>Date From</b></label>
+                      <input type="date" class="form-control" formControlName="FromDate"
+                        (change)="checkSelectedDate()" [(ngModel)]="From_Date">
+                    </div>
+  
+                    <div class="col-md-3">
+                      <label class="required-label" style="padding-right:5px;">* </label>
+                      <label class="form-label"><b>Date To</b></label>
+                      <input type="date" class="form-control" formControlName="ToDate"
+                        [(ngModel)]="To_Date">
+                    </div>
+
+                    <div class="col-md-2" >
+                        <label class="form-label"><b>Product Type</b> </label>
+                          <ng-select class="w-auto" placeholder="Product Type" [(ngModel)]="selectedProductType" name="productType" (open)="getProductType()" [ngModelOptions]="{standalone: true}">
+                            <ng-option *ngFor="let sList of ProducttypeList" [value]="sList.product_type">
+                              {{sList.product_type}}
+                            </ng-option>
+                          </ng-select>
+                      </div>
+  
+                    <div class="col-md-2">
+                      <label class="form-label"> </label>
+                      <div class="d-flex" style="justify-content: flex-end;">
+                        <button class="btn btn-primary btn-sm" type="button" (click)="viewReport()">View Report</button>
+                      </div>
+                    </div>
+  
+                    <div class="col-md-1">
+                      <label class="form-label"></label> <br />
+                      <div class="input-group flex-nowrap">
+                        <span class="input-group-text">
+                          <i class="material-icons" style="font-size:20px;"
+                            ngbTooltip="Download Excel" (click)="downloadFile()">download</i>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </fieldset><br>
+  
+              <!-- Table Section -->
+              <ng-container *ngIf="showIframe">
+                <div class="table-responsive table-wrapper-scroll-y my-custom-scrollbar"
+                     style="padding: 0; margin:0;max-height: 700px;overflow-x: auto; overflow-y: auto;">
+                  <table class="table table-bordered" style="table-layout: auto; width: auto; min-width: 100%;">
+                    <thead>
+                      <tr>
+                        <th *ngFor="let col of tableColumns">{{ col }}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let row of OrderStatusList | slice: (currentPage-1)*itemsPerPage : currentPage*itemsPerPage">
+                        <td *ngFor="let col of tableColumns">{{ row[col] }}</td>
+                      </tr>
+                      <tr *ngIf="OrderStatusList.length === 0">
+                        <td [attr.colspan]="tableColumns.length" class="text-center">No Records Found</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+  
+                <!-- Pagination -->
+                <div class="d-flex mt-2">
+                  <ngb-pagination [collectionSize]="OrderStatusList.length" [(page)]="currentPage"
+                                  [pageSize]="itemsPerPage" (pageChange)="onPageChange(currentPage)" 
+                                  [boundaryLinks]="false" [maxSize]="maxSize">
+                    <ng-template ngbPaginationPrevious>Prev</ng-template>
+                    <ng-template ngbPaginationNext>Next</ng-template>
+                  </ngb-pagination>
+  
+                  <select class="custom-select mr-2 ml-3" style="width: auto" [(ngModel)]="itemsPerPage"
+                          (ngModelChange)="OnPageSizeChange(itemsPerPage);">
+                    <option [ngValue]="5">5</option>
+                    <option [ngValue]="10">10</option>
+                    <option [ngValue]="20">20</option>
+                    <option [ngValue]="50">50</option>
+                    <option [ngValue]="100">100</option>
+                  </select>
+                  <span style="margin-top: 5px;">Items per page</span>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+          <!-- ALL CURRENT CODE ENDS HERE -->
+        </ng-template>
+      </li>
+  
+      <li [ngbNavItem]="2">
+        <a ngbNavLink>Missing GI and ACT Batches</a>
+        <ng-template ngbNavContent>
+          <!-- Content for Tab 2 -->
+          <div class="card m-1">
+            <div class="card-body mt-5">
+              <fieldset>
+                <form [formGroup]="MissingGIReportForm">
+                  <div class="row">
+                    <div class="col-md-3">
+                      <label class="required-label" style="padding-right:5px;">* </label>
+                      <label class="form-label"><b>Date From</b></label>
+                      <input type="date" class="form-control" formControlName="FromDate1"
+                        (change)="checkSelectedDate1()" [(ngModel)]="From_Date1">
+                    </div>
+  
+                    <div class="col-md-3">
+                      <label class="required-label" style="padding-right:5px;">* </label>
+                      <label class="form-label"><b>Date To</b></label>
+                      <input type="date" class="form-control" formControlName="ToDate1"
+                        [(ngModel)]="To_Date1">
+                    </div>
+
+                    <div class="col-md-2" >
+                        <label class="form-label"><b>Product Type</b> </label>
+                          <ng-select class="w-auto" placeholder="Product Type" [(ngModel)]="selectedProductType1" name="productType" (open)="getProductType1()" [ngModelOptions]="{standalone: true}">
+                            <ng-option *ngFor="let sList of ProducttypeList1" [value]="sList.product_type">
+                              {{sList.product_type}}
+                            </ng-option>
+                          </ng-select>
+                      </div>
+  
+                    <div class="col-md-2">
+                      <label class="form-label"> </label>
+                      <div class="d-flex" style="justify-content: flex-end;">
+                        <button class="btn btn-primary btn-sm" type="button" (click)="viewReport1()">View Report</button>
+                      </div>
+                    </div>
+  
+                    <!-- <div class="col-md-1">
+                      <label class="form-label"></label> <br />
+                      <div class="input-group flex-nowrap">
+                        <span class="input-group-text">
+                          <i class="material-icons" style="font-size:20px;"
+                            ngbTooltip="Download Excel" (click)="downloadFile()">download</i>
+                        </span>
+                      </div>
+                    </div> -->
+                  </div>
+                </form>
+              </fieldset><br>
+  
+              <!-- Table Section -->
+              <ng-container *ngIf="showIframeMGI">
+                <div class="table-responsive table-wrapper-scroll-y my-custom-scrollbar"
+                     style="padding: 0; margin:0;max-height: 700px;overflow-x: auto; overflow-y: auto;">
+                  <table class="table table-bordered" style="table-layout: auto; width: auto; min-width: 100%;">
+                    <thead>
+                      <tr>
+                        <th *ngFor="let col of tableColumnsMissingGI">{{ col }}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let row of MissingGIList | slice: (currentPage1-1)*itemsPerPage1 : currentPage1*itemsPerPage1">
+                        <td *ngFor="let col of tableColumnsMissingGI">{{ row[col] }}</td>
+                      </tr>
+                      <tr *ngIf="MissingGIList.length === 0">
+                        <td [attr.colspan]="tableColumnsMissingGI.length" class="text-center">No Records Found</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+  
+                <!-- Pagination -->
+                <div class="d-flex mt-2">
+                  <ngb-pagination [collectionSize]="MissingGIList.length" [(page)]="currentPage1"
+                                  [pageSize]="itemsPerPage1" (pageChange)="onPageChange1(currentPage1)" 
+                                  [boundaryLinks]="false" [maxSize]="maxSize">
+                    <ng-template ngbPaginationPrevious>Prev</ng-template>
+                    <ng-template ngbPaginationNext>Next</ng-template>
+                  </ngb-pagination>
+  
+                  <select class="custom-select mr-2 ml-3" style="width: auto" [(ngModel)]="itemsPerPage1"
+                          (ngModelChange)="OnPageSizeChange1(itemsPerPage1);">
+                    <option [ngValue]="5">5</option>
+                    <option [ngValue]="10">10</option>
+                    <option [ngValue]="20">20</option>
+                    <option [ngValue]="50">50</option>
+                    <option [ngValue]="100">100</option>
+                  </select>
+                  <span style="margin-top: 5px;">Items per page</span>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </ng-template>
+      </li>
+    </ul>
+    <div [ngbNavOutlet]="nav" class="mt-2"></div>
+  </div>

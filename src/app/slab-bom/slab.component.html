@@ -1,0 +1,38 @@
+<table class="table m-auto   d-table table-responsive table-striped  table-bordered " [cellPadding]="0"
+[cellPadding]="0">
+<thead>
+  <tr>
+    <th>Wire Type</th>
+    <th>Line No</th>
+    <th>Start Pos</th>
+    <th>No Pitches</th>
+    <th>Wire Space</th>
+    <th>Wire Len</th>
+    <th>Wire Dia</th>
+    <th>Raw Material</th>
+    <th>Wire Spec</th>
+    <th>Rep From</th>
+    <th>Rep To</th>
+    <th>Rep</th>
+    <th>Twin Wire</th>
+  </tr>
+</thead>
+
+<tbody>
+
+  <tr *ngFor="let item of SlabData  ; index as i ">
+      <td>{{item.Wire_Type}} </td>
+      <td>{{item.Line_No}} </td>
+      <td>{{item.Start_Pos}} </td>
+      <td>{{item.No_Pitches}} </td>
+      <td>{{item.Wire_Space}} </td>
+      <td>{{item.Wire_Len}} </td>
+      <td>{{item.Wire_Dia}} </td>
+      <td>{{item.Raw_Material}} </td>
+      <td>{{item.Wire_Spec}} </td>
+      <td>{{item.Rep_From}} </td>
+      <td>{{item.Rep_To}} </td>
+      <td>{{item.Rep}} </td>
+      <td><input type="checkbox" /></td>
+</tbody>
+</table>

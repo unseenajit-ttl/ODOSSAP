@@ -1,0 +1,19 @@
+.modal-header {
+    background: #cdd4df;
+    font-size: x-large;
+}
+
+.neg-info-box {
+    font-size: large;
+    font-weight: 500;
+    background: #edf2faa1;
+    padding: 10px;
+}
+
+.modal-body {
+    font-size: medium;
+}
+
+.body-title b {
+    min-width: 160px !important;
+  }

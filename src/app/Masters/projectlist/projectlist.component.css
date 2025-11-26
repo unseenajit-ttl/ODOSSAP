@@ -1,0 +1,18 @@
+.colbutton {
+    flex-basis: 0;
+    flex-grow: 1;
+    max-width: 100%;
+    padding: 5px;
+    padding-left: 10px;
+    }
+    
+    .custom-switch {
+        padding-left: 3rem;
+    }
+
+    .ng-selectcustomer {    
+        width: 250px;
+      }
+      .mdc-text-field--invalid:not(.mdc-text-field--disabled) .mdc-floating-label {
+        color: black;
+   }

@@ -1,0 +1,126 @@
+<div id="pause" class="d-flex align-items-center justify-content-center" *ngIf="loading">
+  <div id="spinner" class="loader"></div>
+</div>
+<div class="container-fluid py-4">
+  <h3 class="card-header mb-1 pb-0">
+    <div class="row">
+      <a (click)="backToDataset()" style="color: blue;cursor: pointer;" class="col-md-4">
+        <i class="fa fa-arrow-left arrow-left" aria-hidden="true"></i>
+        Back to View Dataset
+      </a>
+    </div>
+  </h3>
+  <!-- Page Header -->
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="d-flex align-items-center">
+      <img src="../../../assets/imagesuiux/saved.png" style="width: 40px; height: 40px;" class="me-2">
+      <h3 class="mb-0"><b>Custom Views</b></h3>
+    </div>
+  </div>
+
+
+
+  <!-- Page Content -->
+  <div class="row">
+
+    <!-- First Table -->
+    <div class="col-12 mb-3" style="overflow-x: auto;">
+      <table class="table table-bordered">
+        <thead class="table-light">
+          <tr>
+            <th>Sr</th>
+            <th>Custom View</th>
+            <th>View Description</th>
+            <th>Created By</th>
+            <th>Created On</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of CustomViewData; let i = index" (click)="sortColumnOrder(row,i)" [ngClass]="{'selected-row': selectedViewIndex === i}">
+            <td>{{ i + 1 }}</td>
+            <td>{{ row.VIEWNAME }}</td>
+            <td>{{ row.VIEWDESCRIPTION }}</td>
+            <td>{{ row.CREATEDBY }}</td>
+            <td>{{ row.CREATEDON | date:'dd-MM-yyyy' }}</td>
+            <td>
+              <i class="bi"
+                [ngClass]="row.editable ? 'bi-check-square-fill text-success' : 'bi-pencil-fill text-primary'"
+                style="cursor:pointer; font-size: 1.2rem; margin-right: 8px;" (click)="addRowAbove(row, i)">
+              </i>
+              <i class="bi bi-trash-fill text-danger" style="cursor:pointer; font-size: 1.2rem;"
+                (click)="deleteRow(row.ID)">
+              </i>
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="6" class="text-end">
+              <button class="btn btn-success rounded-circle" style="float: inline-end;" (click)="addRowAbove(0,0)">
+                <i class="bi bi-plus-lg" style="color: #ffff;"></i>
+              </button>
+
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <!-- Second Table -->
+    <div class="col-12 position-relative" style="min-height: 200px;">
+       <!-- Loader -->
+  <div *ngIf="isLoding" class="loader-overlay">
+    <div class="loader"></div>
+  </div>
+      <button class="btn btn-primary float-end" (click)="exportToExcel()" *ngIf="this.tableData.length > 0">Export to
+        Excel</button>
+      <div class="table-container" >
+        <div class="header-row" role="row" *ngIf="tableData.length <= 0">
+           <div class="cell sticky-col header-cell" style="left:0;">SR No</div>
+           <div *ngFor="let col of selectedColumns; trackBy: trackByCol" class="cell header-cell">
+             {{ col }}
+           </div>
+         </div>
+         <div>
+          No Data Found
+         </div>
+        <div *ngIf="tableData.length > 0">
+          <!-- body -->
+          <cdk-virtual-scroll-viewport itemSize="36" class="viewport">
+            <div class="header-row" role="row">
+              <div class="cell sticky-col header-cell" style="left:0;">SR No</div>
+              <div *ngFor="let col of selectedColumns; trackBy: trackByCol" class="cell header-cell">
+                {{ col.DisplayName }}
+              </div>
+            </div>
+            <div *cdkVirtualFor="let row of tableData; let i = index; trackBy: trackByRow" class="data-row">
+              <div class="cell sticky-col index-cell" style="left:0;">{{ i + 1 }}</div>
+              <div *ngFor="let col of selectedColumns; trackBy: trackByCol" class="cell">
+                {{ row[col.ColumnName] }}
+              </div>
+            </div>
+          </cdk-virtual-scroll-viewport>
+        </div>
+      </div>
+      <!-- <div class="mb-2 table-wrapper">
+        <table class="table table-bordered" *ngIf="tableData.length > 0">
+          <thead class="table-light">
+            <tr>
+              <ng-container *ngFor="let col of selectedColumns">
+                <th>{{ col }}</th>
+              </ng-container>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of tableData">
+              <ng-container *ngFor="let col of selectedColumns">
+                <td>{{ row[col] }}</td>
+              </ng-container>
+            </tr>
+          </tbody>
+        </table>
+      </div> -->
+    </div>
+  </div>
+</div>

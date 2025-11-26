@@ -1,0 +1,21 @@
+export interface Insert_Drain_WM{
+    intDrainWMId: any,
+    tntParamSetNumber: any,
+    sitDrainTypeId: any,
+    tntDrainLayerId: any,
+    sitDrainWidth: any,
+    sitMaxDepth: any,
+    intDrainDepthParamId: any,
+    intProductCodeId: any,
+    intShapeId: any,
+    intParamA: any,
+    numLeftWallThickness: any,
+    numLeftWallFactor: any,
+    numRightWallThickness: any,
+    numRightWallFactor: any,
+    numBaseThickness: any,
+    intQty: any,
+    bitDetail: boolean,
+    intUserId: any,
+
+}

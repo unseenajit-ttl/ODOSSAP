@@ -1,0 +1,25 @@
+<div class="container-fluid">
+  <div class="card m-1">
+    <div class="mainHeading">
+      <span>Update Detailling In-charge to Selected Rows</span>
+    </div>
+    <div class="body">
+      <label style="width: 50%">Detailling In-charge: </label>
+      <!-- <ng-select style="width: 50%" [multiple]="true" [(ngModel)]="DetaillingIncharge">
+        <ng-option>{{DetailingIncharge}}</ng-option>
+        <ng-option *ngFor="let item of DetaillingInchargeList; index as i" [value]="item">
+          {{item}}
+        </ng-option>
+      </ng-select> -->
+      <ng-select style="width: 50%" [multiple]="true" [items]="DetaillingInchargeList" bindLabel="DetailingIncharge"
+        bindValue="DetailingIncharge" [(ngModel)]="DetaillingIncharge" [addTag]="true">
+      </ng-select>
+    </div>
+    <div class="footer">
+      <button type="button" class="btn btn-primary me-2" (click)="UpdateIncharge()">Update</button>
+      <button type="button" class="btn btn-primary me-2" (click)="close() ">
+        Close
+      </button>
+    </div>
+  </div>
+</div>

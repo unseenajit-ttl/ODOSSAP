@@ -1,0 +1,72 @@
+<div id="mydiv2">
+    <div>
+        <div class="container-fluid">
+            <div>
+                <div class="mainHeading">
+                    &nbsp;&nbsp;<span>Create New PO</span>
+                </div>
+
+                <div style="padding: 20px;">
+                    <div style="padding: 1px;">
+                        <div class="form-inline">
+                            <label class="form-label" style="font-weight: bold;">Copy From (复制资源):</label>&nbsp;&nbsp;
+                            <div class="form-check" style="font-weight: bold;">
+                                <label class="form-check-label" for="OfflineBBS">
+                                    <input class="form-check-input" type="radio" [value]="option1"
+                                        name="flexRadioDefault" id="OfflineBBS" (click)="changediv('OfflineBBS')" [checked]="option1">
+                                    Offline BBS
+                                </label>
+                            </div>&nbsp;&nbsp;
+                            <div class="form-check">
+                                <label class="form-check-label" for="OnlineBBS" style="font-weight: bold;">
+                                    <input class="form-check-input" type="radio" [value]="option2"
+                                        name="flexRadioDefault" id="OnlineBBS" (click)="changediv('OnlineBBS')">
+                                    Online BBS
+                                </label>
+                            </div>
+                        </div>
+                        <!-- </div> -->
+                        <div id="OnlineBBS" [hidden]="!option2">
+                            <label class="form-label" style="font-weight: bold;">Customer (客户名称): </label>
+                            <ng-select [selectOnTab]="true" class="w-auto" [(ngModel)]="SearchData.CustomerName"
+                                (change)="GetProjectSelectList()">
+                                <ng-option *ngFor="let item of CustomerList"
+                                    [value]="item.Value">{{item.Text}}</ng-option>
+                            </ng-select>
+                            <label class="form-label" style="font-weight: bold;">Project (工程项目):</label>
+                            <ng-select [multiple]="true" [(ngModel)]="SearchData.ProjectTitle" [selectOnTab]="true"
+                                (change)="GetPOList()" class="w-auto">
+                                <ng-option *ngFor="let item of ProjectCodeList" [value]="item.ProjectCode">
+                                    {{item.ProjectTitle}}
+                                </ng-option>
+                            </ng-select>
+                            <label class="form-label" style="font-weight: bold;">PO (订单选项):</label>
+                            <ng-select [multiple]="true" [(ngModel)]="SearchData.PONo" [selectOnTab]="true"
+                                class="w-auto">
+                                <ng-option *ngFor="let item of POList" [value]="item.OrderNumber">
+                                    {{item.PONumber}} ( {{item.StructureElement}}-{{item.OrderNumber}} )
+                                </ng-option>
+                            </ng-select>
+
+                        </div>
+                        <div id="OfflineBBS" [hidden]="!option1">
+                            <label class="form-label" style="font-weight: bold;">PO (订单选项):</label>
+                            <ng-select [multiple]="true" [(ngModel)]="SearchData.PONo" [selectOnTab]="true"
+                                class="w-auto">
+                                <ng-option *ngFor="let item of POList" [value]="item.OrderNumber">
+                                    {{item.PONumber}} ( {{item.StructureElement}}-{{item.OrderNumber}} )
+                                </ng-option>
+                            </ng-select> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer">
+                <button class="btn btn-primary me-2">Create</button>
+                <button type="button" class="btn btn-primary me-2" (click)="activeModal.dismiss('Cross click')">
+                    Close (关闭)
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

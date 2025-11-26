@@ -1,0 +1,21 @@
+.modal-header {
+    background: #a5a7ab8c;
+    font-weight: 500;
+    font-size: x-large;
+  }
+  
+  .subHeading {
+    font-size: large;
+    font-weight: 500;
+    padding-bottom: 20px;
+  }
+
+  .carousel-control-next-icon {
+    background-color: darkblue !important;
+  }
+
+  .carousel-control-prev-icon {
+    background-color: darkblue !important;
+  }
+  
+  

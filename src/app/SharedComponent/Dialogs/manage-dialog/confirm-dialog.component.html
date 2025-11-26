@@ -1,0 +1,48 @@
+<div class="modal-header">
+  <h4 class="modal-title">Are you sure you want yo delete this?</h4>
+  <i class="fa-solid fa-xmark"></i>
+  <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+
+</div>
+<div class="modal-body " *ngIf="innertable===false">
+
+  <span>{{message}}</span>
+
+</div>
+<div class="modal-body " *ngIf="innertable===true">
+
+  <div class="row">
+    <div class="col-md-8">
+      <span>{{message}} for Individual</span> 
+    </div>
+    <div class="col-md-4">
+      <button class="btn btn-primary btn-sm mt-n2 " style="width:80px;" type="button"
+      (click)="innertableIndividualsubmit()">Delete</button>
+    </div>
+  </div>
+  <div class="row mt-2">
+    <div class="col-md-8">
+      <span>{{message}} from Set </span> 
+    </div>
+    <div class="col-md-4">
+      <button class="btn btn-primary btn-sm mt-n1" style="width:80px;" type="button"
+      (click)="innertableSetsubmit()">Delete</button>
+    </div>
+  </div>
+
+</div>
+<div class="modal-footer" *ngIf="innertable===false">
+  <button type="button" (click)="cancel()" class="btn btn-transparent">
+    Cancel
+  </button>
+  <button type="button" class="btn btn-primary me-2"  (click)="submit()">Ok</button>
+ 
+    
+</div>
+<div class="modal-footer" *ngIf="innertable===true">
+  <button type="button" (click)="innertablecancel()" class="btn btn-transparent"> Cancel</button>
+  
+  <!-- <button type="button" class="btn btn-primary me-2"  (click)="innertablesubmit()">Ok</button>
+  -->
+    
+</div>

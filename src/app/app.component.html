@@ -1,0 +1,31 @@
+<!-- 
+<app-header></app-header>  -->
+
+<!-- <link
+  href="https://fonts.googleapis.com/icon?family=Material+Icons"
+  rel="stylesheet"
+/>
+    
+  <div class="mat-app-background basic-container ">
+ 
+    <nested-menu ></nested-menu>
+  </div> -->
+
+<link
+  href="https://fonts.googleapis.com/icon?family=Material+Icons"
+  rel="stylesheet"
+/>
+<div class="mat-app-background basic-container" *ngIf="Token != ''">
+  <SideMenu>loading</SideMenu>
+</div>
+<div class="mat-app-background basic-container Invalid-Page" *ngIf="Token == ''">
+  <app-invalid-token>loading</app-invalid-token>
+</div>
+
+<!--  -->
+<!--  -->
+<!-- <nested-menu ></nested-menu>
+</div> -->
+
+<!-- <router-outlet></router-outlet> -->
+<!-- <app-footer></app-footer> -->

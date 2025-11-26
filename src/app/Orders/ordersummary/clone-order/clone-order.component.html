@@ -1,0 +1,83 @@
+<div cdkDrag cdkDragRootElement=".your-custom-dialog-class">
+<div class="container-fluid">
+  <div class="card m-1">
+    <div
+      id="Heading"
+      class="d-flex"
+      style="background: #dfdfdf; justify-content: space-between" cdkDragHandle
+    >
+      <span
+        ><h3><b>Clone Order (克隆订单)</b></h3></span
+      >
+      <div id="closebutton">
+        <i class="fa-solid fa-xmark"></i>
+        <button
+          type="button"
+          class="btn-close"
+          aria-label="Close"
+          (click)="activeModal.dismiss('Cross click')"
+        ></button>
+      </div>
+    </div>
+
+    <div id="body" style="padding: 5px; border-bottom: 1px solid #dfdfdf">
+      <div id="description">
+        <p>
+          The function will clone new orders from current order. After clone,
+          you can find them from Drafted Orders in destination project. Please
+          select destination project and enter the number of orders you would
+          like the system to clone.
+          <br />
+          此程序将从现有订单克隆新的订单. 新订单克隆后,
+          您可从所选工程项目的保存订单选项(Drafted Orders)找到它们.
+          请输入您要保存订单的工程项目,及克隆订单数目.
+        </p>
+      </div>
+      <div id="inputDropdown">
+        <div class="d-flex" style="margin-bottom: 2px">
+          <label>Destination Project (工程项目)</label>&nbsp;
+          <ng-select class="ng-selectcustomer" [(ngModel)]="newprojectCode">
+            <ng-option
+              *ngFor="let sList of projectList"
+              [value]="sList.ProjectCode"
+            >
+              {{ sList.ProjectTitle }} ({{ sList.ProjectCode }})
+            </ng-option>
+          </ng-select>
+        </div>
+        <div class="d-flex" style="margin-bottom: 2px">
+          <label>No. of Clone Orders (克隆数目)</label>&nbsp;
+          <input
+            class="form-control"
+            type="number"
+            max="100"
+            min="1"
+            style="width: 50%"
+            [(ngModel)]="numofClones"
+          />
+        </div>
+      </div>
+    </div>
+    <div if="footer">
+      <div class="d-flex" style="justify-content: flex-end">
+        <button
+          class="btn btn-primary btn-sm"
+          type="button"
+          (click)="GetOrderClone()"
+        >
+          Clone (克隆)
+        </button>
+        <button class="btn btn-primary btn-sm" type="button" (click)="cancel()">
+          Cancel (取消)
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Loader -->
+<div *ngIf="CloneLoading" style="z-index: 500">
+  <div id="pause" class="d-flex align-items-center justify-content-center">
+      <div id="spinner" class="loader"></div>
+  </div>
+</div>
+</div>

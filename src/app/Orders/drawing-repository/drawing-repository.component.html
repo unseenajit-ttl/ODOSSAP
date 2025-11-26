@@ -1,0 +1,226 @@
+<div *ngIf="isLoding" style="z-index: 500;opacity:1">
+  <div id="pause" class="d-flex align-items-center justify-content-center">
+    <div id="spinner" class="loader"></div>
+  </div>
+</div>
+<div *ngIf="isIframeLoading" style="z-index: 500;opacity:1">
+  <div id="pause" class="d-flex align-items-center justify-content-center">
+    <div id="spinner" class="loader"></div>
+  </div>
+</div>
+<div class="container-fluid">
+  <div class="logo4">
+    <div class="card m-1">
+      <h3 class="card-header mb-1 pb-0">
+        <div class="row">
+          <div class="col-12">
+            <span> <img src="../../../assets/imagesuiux/review.png" style="width: 40px;height: 40px;">
+            <b class="col-md-8">DRAWING/BIM MODEL REPOSITORY 绘画/建筑信息模型 模型库</b>
+            </span>
+          </div>
+        </div>
+      </h3>
+      <div class="card-body mt-0 pt-0">
+        <div class="row">
+          <div class="col-12 pl-0">
+            <table class="border-less">
+              <tr>
+                <td>
+                  <tr>
+                    <td><button class="btn btn-sm btn-primary" (click)="getDrawingList(retrieveForm)">Retrieve</button></td>
+                  </tr>
+                </td>
+                <td>
+                  <tr>
+                    <td><span class="label2">Category (种类):</span></td>
+                    <td>
+                      <ng-select name="proj_category" id="proj_category" [(ngModel)]="retrieveForm.Category">
+                        <ng-option value="NSH Drawings">NSH Drawings</ng-option>
+                        <ng-option value="Order Docs">Order Docs</ng-option>
+                      </ng-select>
+                    </td>
+                  </tr>
+                </td>
+
+                <td>
+                  <tr>
+                    <td><span class="label2">Product (产品):</span></td>
+                    <td>
+                      <ng-select  name="proj_prod" id="proj_prod" [multiple]="true" [(ngModel)]="retrieveForm.ProductType">
+                        <ng-option *ngFor="let prod of productList" [value]="prod">{{prod}}</ng-option>
+                      </ng-select>
+                    </td>
+                  </tr>
+                </td>
+                <td><span class="label2">Structure Element (结构):</span></td>
+                <td>
+                  <ng-select  name="proj_strele" id="proj_strele" [multiple]="true" [(ngModel)]="retrieveForm.StructureElement" (change)="onStrucureChange($event,'top')">
+                    <ng-option *ngFor="let strEL of structureElementList" [value]="strEL">{{strEL}}</ng-option>
+                  </ng-select>
+                </td>
+                <td>
+                  <tr>
+                    <td><span class="label2">WBS1 (大牌):</span></td>
+                    <td>
+                      <ng-select  name="proj_wbs1" id="proj_wbs1" [multiple]="true" [(ngModel)]="retrieveForm.WBS1" (change)="onWBS1Change($event,'top')">
+                        <ng-option *ngFor="let WBS1d of WBS1List" [value]="WBS1d">{{WBS1d}}</ng-option>
+                      </ng-select>
+                    </td>
+                  </tr>
+                </td>
+
+                <td>
+                  <tr>
+                    <td><span class="label2">WBS2 (大牌):</span></td>
+                    <td>
+                      <ng-select  name="proj_wbs2" id="proj_wbs2" [multiple]="true" [(ngModel)]="retrieveForm.WBS2" (change)="onWBS2Change($event,'top')">
+                        <ng-option *ngFor="let WBS2d of WBS2List" [value]="WBS2d">{{WBS2d}}</ng-option>
+                      </ng-select>
+                    </td>
+                  </tr>
+                </td>
+
+                <td>
+                  <tr>
+                    <td><span class="label2">WBS3 (大牌):</span></td>
+                    <td>
+                      <ng-select  name="proj_wbs3" id="proj_wbs3" [multiple]="true" [(ngModel)]="retrieveForm.WBS3">
+                        <ng-option *ngFor="let WBS3d of WBS3List" [value]="WBS3d">{{WBS3d}}</ng-option>
+                      </ng-select>
+                    </td>
+                  </tr>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-md-6" style="border: solid 1px gray;">
+            <angular-slickgrid gridId="grid1" [columnDefinitions]="gridColumns"  [gridOptions]="options"
+              [dataset]="drawingData"
+              (onAngularGridCreated)="angularGridReady($event)" (onBeforeGridDestroy)="saveCurrentGridState($event)">
+            </angular-slickgrid>
+          </div>
+          <div class="col-6">
+            <div class="ibox-content" style="width: 100%;height:300px" id="iframeHolder" >
+              <iframe id="iframePDFViewerList" width='700' height='300' allowfullscreen webkitallowfullscreen
+                style="width: 100%;height:300px"
+                [src]='blobUrl' (load)="onIframeLoad()" *ngIf="isDrawingPreview">
+              </iframe>
+            </div>
+            <div style="height: 30px;float:right;z-index: 2;font-size:14px;margin:5px;"><input type="checkbox" id="dr_review"
+                name="dr_review" checked chan="setDrawingReview();" [(ngModel)]="isDrawingPreview"><label for="dr_review"> Drawing Preview</label> </div>
+            <div id="exTab3" class="container"
+              style="width: auto;height:calc(100% - 300px);margin:0px; padding-left:1px;padding-right:1px;">
+              <div id="tabs">
+                <tabset>
+                  <tab id="wbs-tab" heading="WBS" style="background: #fff">
+                    <div  class="table-responsive  min-height">
+                      <table class="table table-bordered new-table">
+                        <thead>
+                          <th [matTooltip]="'Tick to select the WBS（打勾 - 选择此工作分解结构）'">Sel</th>
+                          <th [matTooltip]="'Drawing file revision'">Revision</th>
+                          <th [matTooltip]="'Product Type'">Product Type</th>
+                          <th [matTooltip]="'Structure Element'">Structure Element</th>
+                          <th [matTooltip]="'WBS1 - such as Block (工作分解结构1 - 打牌)'">WBS1</th>
+                          <th [matTooltip]="'WBS2 - such as Storey (工作分解结构2 - 楼层)'">WBS2</th>
+                          <th [matTooltip]="'WBS3 - such as Part (工作分解结构3 - 分部)'">WBS3</th>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let wbs of wbsTableList" [ngClass]="wbs.Status == 'Released' ? 'listitemWBS-released' : ''">
+                            <td><input type="checkbox" [name]="wbs.DrawingID" [id]="wbs.DrawingID" [(ngModel)]="wbs.isSelected" [value]="wbs.isSelected" (change)="unAssignDocsChecks();"></td>
+                            <td>{{wbs.Revision}}</td>
+                            <td>{{wbs.ProductType}}</td>
+                            <td>{{wbs.StructureElement}}</td>
+                            <td>{{wbs.WBS1}}</td>
+                            <td>{{wbs.WBS2}}</td>
+                            <td>{{wbs.WBS3}}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="align-item-center" *ngIf="isUnassignable">
+                      <input type="button" name="drawing_upload" id="drawing_upload" class="dwg-btn" style="width: 125px;height: 30px; padding: 2px; margin: 2px" value="UnAssign" (click)="unAssignDocs();" />
+                    </div>
+                  </tab>
+                  <tab id="orders-tab" heading="Orders" style="background: #fff" >
+                    <div  class="table-responsive  min-height">
+                      <table class="table table-bordered new-table">
+                        <thead>
+                          <th [matTooltip]="'Assigned Serial Number/ Product Type.(序列号码/产品类型)'">S/No\n序号"</th>
+                          <th [matTooltip]="'PO Number (订单号码)'">PO Number\n订单号码</th>
+                          <th [matTooltip]="'Required date (交货日期)'">Required Date\n交货日期</th>
+                          <th [matTooltip]="'Total tonnage (总重量)'">Tonnage\n总重量</th>
+                          <th [matTooltip]="'Order Status (订单状态)'">Status\n订单状态</th>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let order of ordersList">
+                            <td>{{order.OrderNumber}}</td>
+                            <td>{{order.PONumber}}</td>
+                            <td>{{order.RequiredDate}}</td>
+                            <td>{{order.TotalWeight}}</td>
+                            <td>{{order.OrderStatus}}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+
+                  </tab>
+                  <tab id="assign-tab" heading="Assign" style="background: #fff" >
+                    <div class="assign-form2">
+                      <div class="field">
+                          <div class="label1">Product Type: </div>
+                          <div class="input1">
+                              <ng-select id="assign_prodtype" name="assign_prodtype" [(ngModel)]="assignForm.ProductType" [multiple]="true">
+                                <ng-option *ngFor="let prodt of productList" [value]="prodt">{{prodt}}</ng-option>
+                              </ng-select>
+                          </div>
+                      </div>
+                      <div class="field">
+                          <div class="label1">Structure Element: </div>
+                          <div class="input1">
+                              <ng-select  id="assign_strele" name="assign_strele" [multiple]="true" (change)="onStrucureChange($event,'assign')" [(ngModel)]="assignForm.StructureElement">
+                                <ng-option *ngFor="let strEL of structureElementList" [value]="strEL">{{strEL}}</ng-option>
+                              </ng-select>
+                          </div>
+                      </div>
+                      <div class="field">
+                          <div class="label1">WBS1: </div>
+                          <div class="input1"><ng-select id="assign_wbs1" name="assign_wbs1" [multiple]="true" (change)="onWBS1Change($event,'assign')" [(ngModel)]="assignForm.WBS1" [loading]="isWBS1Loading">
+                            <ng-option *ngFor="let WBS1Assign of WBS1AssignList" [value]="WBS1Assign">{{WBS1Assign}}</ng-option>
+                          </ng-select></div>
+                      </div>
+                      <div class="field">
+                          <div class="label1">WBS2: </div>
+                          <div class="input1"><ng-select id="assign_wbs2" name="assign_wbs2" [multiple]="true" (change)="onWBS2Change($event,'assign')" [(ngModel)]="assignForm.WBS2" [loading]="isWBS2Loading">
+                            <ng-option *ngFor="let WBS2Assign of WBS2AssignList" [value]="WBS2Assign">{{WBS2Assign}}</ng-option>
+                          </ng-select></div>
+                      </div>
+                      <div class="field">
+                          <div class="label1">WBS3: </div>
+                          <div class="input1"><ng-select id="assign_wbs3" name="assign_wbs3" [multiple]="true" [(ngModel)]="assignForm.WBS3" [loading]="isWBS3Loading">
+                            <ng-option *ngFor="let WBS3Assign of WBS3AssignList" [value]="WBS3Assign">{{WBS3Assign}}</ng-option>
+                          </ng-select></div>
+                      </div>
+                      <input type="button" name="drawing_upload" id="drawing_upload" class="dwg-btn" style="width: 125px;height: 30px; padding: 2px; margin: 2px" value="Assign" (click)="assignWbsToDoc();" />&nbsp;
+                  </div>
+                  </tab>
+                </tabset>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 pt-3 mt-2">
+            <input type="button" name="drawing_upload" id="drawing_upload" class="dwg-btn" style="width: 125px;height: 30px; padding: 2px; margin: 2px" value="Upload" (click)="attachDocs();" />&nbsp;
+            <input type="button" name="drawing_delete" id="drawing_delete" class="dwg-btn" style="width: 125px;height: 30px; padding: 2px; margin: 2px" value="Delete" (click)="checkOrder();" />&nbsp;
+            <input type="button" name="drawing_search" id="drawing_search" class="dwg-btn" style="width: 125px;height: 30px; padding: 2px; margin: 2px" value="Search" (click)="drawingSearch();" />&nbsp;
+            <input type="button" name="drawing_download" id="drawing_download" class="dwg-btn" style="width: 125px;height: 30px; padding: 2px; margin: 2px" value="Download" (click)="drawingDownload();" />&nbsp;
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- <input type="button" name="drawing_update" id="drawing_update" class="dwg-btn" style="width: 125px;height: 30px; padding: 2px; margin: 2px" value="Update" onclick="drawingUpdate();" />&nbsp; -->
+<!-- <div style="text-align: center;">
+  <h1>Under Development</h1>
+   </div> -->

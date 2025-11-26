@@ -1,0 +1,37 @@
+<div class="container-fluid">
+  <div class="card m-1">
+    <h3 class="card-header mb-1 pb-0">
+      <div class="row">
+        <a (click)="goBack()" style="color: blue;cursor: pointer;" class="col-md-4">
+          <i class="fa fa-arrow-left arrow-left" aria-hidden="true"></i>
+          Back to BPC
+        </a>
+        <b class="col-md-7">Bored Pile Cage Edit Advanced Table</b>
+      </div>
+    </h3>
+
+    <div class="card-body mt-0 pt-0">
+      <!-- <angular-slickgrid gridId="cabGrid" [columnDefinitions]="templateColumns" [gridOptions]="gridOptions"
+        [dataset]="cabData" gridHeight="500" gridWidth="500" (onAngularGridCreated)="angularGridReady($event)">
+      </angular-slickgrid> -->
+
+        <!-- <app-bbs-orderdetails></app-bbs-orderdetails>                             -->
+        <div>
+          <!-- <ul id="contextMenuCAB" style="display:none;position:absolute;">
+            <li data="insert" (click)="InsertItem()">Insert</li>
+            <li data="delete" (click)="Delete()">Delete</li>
+            <li data="clear" (click)="ClearRows()">Clear Contents</li>
+            <li data="copy" (click)="CopyRows()">Copy</li>
+            <li data="paste" (click)="PasteRows()">Paste</li>
+          </ul> -->
+          <angular-slickgrid gridId="cabGrid" [columnDefinitions]="templateColumns" [gridOptions]="gridOptions"
+            [dataset]="cabData" gridHeight="600" gridWidth="700"
+            (onAngularGridCreated)="angularGridReady($event)">
+          </angular-slickgrid>
+        </div>
+        <div>
+          <canvas #myCanvas width="355" height="246" style="width: 355px; height: 246px"></canvas>
+        </div>
+    </div>
+  </div>
+</div>

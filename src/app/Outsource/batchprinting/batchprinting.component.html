@@ -1,0 +1,269 @@
+<div class="container-fluid">
+  <div class="logo2">
+    <div class="card m-1">
+      <h3 class="card-header d-flex justify-content-between align-items-center">
+        <span class="d-flex align-items-center">
+          <img src="../../../assets/imagesuiux/review.png" style="width: 40px;height: 40px;">
+          <b> Batch Printing For OutSourcing</b>
+        </span>
+      </h3>
+
+      <div class="d-flex justify-content-start">
+
+        <div class="col-md-2">
+          <!-- <label class="required-label" style="padding-right:5px;">* </label> -->
+          <label class="form-label"><b>Supplier</b></label>
+          <ng-select [selectOnTab]="true" [(ngModel)]="selectedsupplier" class="w-100" placeholder="Supplier">
+            <ng-option *ngFor="let sList of Suppliertlist" [value]="sList.vendorcode">
+              {{ sList.vendorcode }}-{{sList.VendorName}}
+            </ng-option>
+          </ng-select>
+        </div>
+        <div class="col-md-2">
+          <!-- <label class="required-label" style="padding-right:5px;">* </label> -->
+          <label class="form-label"><b>Delivery In</b></label>
+          <div class="d-flex align-items-center">
+            <ng-select class="fixed-select me-2" [selectOnTab]="true" [(ngModel)]="selectedDeliveredIn"
+              placeholder="Delivery In">
+              <ng-option [value]="1">1</ng-option>
+              <ng-option [value]="2">2</ng-option>
+              <ng-option [value]="3">3</ng-option>
+              <ng-option [value]="4">4</ng-option>
+              <ng-option [value]="5">5</ng-option>
+              <ng-option [value]="6">6</ng-option>
+              <ng-option [value]="7">7</ng-option>
+              <ng-option [value]="8">8</ng-option>
+              <ng-option [value]="9">9</ng-option>
+              <ng-option [value]="10">10</ng-option>
+              <ng-option [value]="11">11</ng-option>
+              <ng-option [value]="12">12</ng-option>
+              <ng-option [value]="13">13</ng-option>
+              <ng-option [value]="14">14</ng-option>
+              <ng-option [value]="15">15</ng-option>
+            </ng-select>
+            <label class="form-label" style="padding-left: 3%;"><b>Days</b></label>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <!-- <label class="required-label" style="padding-right:5px;">* </label> -->
+          <label class="form-label"><b>SO Number</b></label>
+          <ng-select [selectOnTab]="true" [(ngModel)]="selectedSONo" class="w-100" placeholder="So No"
+            (open)="GetSoNo()">
+            <ng-option *ngFor="let sList of SoNolist" [value]="sList.order_no">
+              {{ sList.order_no }}
+            </ng-option>
+          </ng-select>
+        </div>
+        <div class="col-md-2">
+          <label class="form-label"> </label>
+          <div class="d-flex">
+            <button class="btn btn-primary btn-sm" type="button" ngbTooltip="View Report" 
+            (click)="getSOBatchdetails()">View</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="row logo2 customerandprojecthideonweb" style="padding: 0% ;margin-left: 0.3%;">
+        <div _ngcontent-auh-c182="" class="col-md-6" style="font-size: medium;padding-right: 0px;"><br
+            _ngcontent-auh-c182=""><br><b _ngcontent-auh-c182="">
+            Batch details</b>
+        </div>
+        <div class="col-md-4 float-left" style="padding-left: 0px;padding-right: 0px;">
+          <label class="form-label"></label> <br />
+          <div class="input-group flex-nowrap" *ngIf="searchResult">
+            <input class="form-control" type="search" placeholder="Search (查找)" value="search" id="example-search-input"
+              name="search" [(ngModel)]="searchText" [ngModelOptions]="{ standalone: true }" />
+            <span class="input-group-append ms-n5">
+              <span class="input-group-text">
+                <i class="bi bi-search"></i>
+              </span>
+            </span>
+          </div>
+        </div>
+        <div class="col-md-1">
+          <label class="form-label"></label> <br />
+          <div class="input-group flex-nowrap">
+            <div class="mr-0 pd-0 d-flex" style="margin-top: -6px">
+              <span class="btn input-group-text">
+                <i class="material-icons" style="font-size: 20px" ngbTooltip="Export   (导出)"
+                  (click)="ExportToExcel()">download</i>
+                <!-- ?<i class="material-icons" style="font-size: 20px" ngbTooltip="Export   (导出)">download</i> -->
+              </span>&nbsp;&nbsp;
+              <span class="btn input-group-text" (click)="editColumn = !editColumn" (mouseenter)="HoverSetting=true"
+                (mouseleave)="HoverSetting=false">
+                <i class="bi bi-gear-fill" style="font-size: medium; z-index: 1" ngbTooltip="Edit Column"></i></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="setting-menu float-right logo2" [class.mat-elevation-z8]="true" *ngIf="editColumn"
+        (mouseenter)="HoverSetting=true" (mouseleave)="HoverSetting=false">
+        <div class="d-flex heading">
+          <div class="d-flex" style="width: 50%; justify-content: space-between">
+            <label class="fixed-xolumn-head">Fixed Columns: </label>
+            <input class="form-control" type="number" max="7" min="0" [(ngModel)]="fixedColumn"
+              (change)="UpdateFixedColumns(fixedColumn)" />
+          </div>
+          <button type="button" class="btn-close" aria-label="Close" (click)="editColumn = false"></button>
+        </div>
+        <hr style="margin: 10px;border-top: 1px solid #101112;" />
+        <div class="d-flex" style="
+                                    justify-content: space-between;
+                                    align-items: flex-end;
+                                    padding-left: 5px;
+                                  ">
+          <span>Visible Colums</span>
+        </div>
+        <div class="d-flex">
+
+          <table class="table table-bordered mobile2" style="height: fit-content" style="min-width: 0">
+            <tbody>
+              <tr *ngFor="let headerColumn of splitArray(1,BatchPrintColumns);">
+                <td>{{headerColumn.displayName}}</td>
+                <td><input type="checkbox" [(ngModel)]="headerColumn.isVisible" [checked]="headerColumn.isVisible"
+                    (ngModelChange)="SaveColumnsSetting()">
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table class="table table-bordered mobile2" style="height: fit-content" style="min-width: 0">
+            <tbody>
+              <tr *ngFor="let headerColumn of splitArray(0,BatchPrintColumns);">
+                <td>{{headerColumn.displayName}}</td>
+                <td><input type="checkbox" [(ngModel)]="headerColumn.isVisible" [checked]="headerColumn.isVisible"
+                    (ngModelChange)="SaveColumnsSetting()">
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div *ngIf="!loading" style="z-index: 500">
+        <div id="pause" class="d-flex align-items-center justify-content-center">
+          <div id="spinner" class="loader"></div>
+        </div>
+      </div>
+
+      <div style="margin-left: 0.9%;">
+        <div class="table-responsive table-wrapper-scroll-y my-custom-scrollbar" *ngIf="loading">
+          <cdk-virtual-scroll-viewport itemSize="100" #scrollViewportENT (scroll)="syncScroll($event)"
+            style="height: 50vh;">
+            <form [formGroup]="searchForm">
+              <table class="table new-table">
+                <thead [style.top]="inverseOfENT" id="DraftOrderHeading"
+                  [ngStyle]="{'position':'sticky','top': '0px'}">
+
+                  <tr [style.top]="inverseOfENT" cdkDropList cdkDropListOrientation="horizontal"
+                    [cdkDropListData]="BatchPrintColumns" (cdkDropListDropped)="dropCol($event)">
+
+                    <ng-container *ngFor="let headerColumn of BatchPrintColumns;index as headIndex;">
+                      <th #thNomVar [style.top]="inverseOfENT"
+                        (click)="toggleSortingOrder(headerColumn.field,headerColumn.colName)"
+                        [style.cursor]="'pointer'"
+                        [style.left]="(headIndex+1) <= fixedColumn ? getRightWidthTest(thNomVar,headIndex) : 'inherit'"
+                        [style.display]="'table-cell'" [class.FixedColumn]="(headIndex+1) <= fixedColumn"
+                        *ngIf="headerColumn.isVisible"
+                        style="cursor: pointer; background-color: #003ec4b3; border-radius: 0px;
+                        white-space: normal; word-wrap: break-word;" cdkDrag>
+                        <div [style.width.px]="headerColumn.resizeWidth" role="columnheader">
+                          <div class="d-flex" [style.width.px]="headerColumn.resizeWidth" style="
+                                                align-items: center;
+                                                justify-content: space-between; 
+                                              ">
+                            <span style="color: white; font-size: medium;white-space: normal; word-break: break-word;"
+                              [style.width.px]="headerColumn.resizeWidth">
+                              {{headerColumn.displayName}}<br />{{headerColumn.chineseDisplayName}}</span>
+                            <i class="bi bi-arrow-up" style="color: white; font-weight: 900; font-size: 1.2rem; text-shadow: 0 0 1px white;"
+                              *ngIf="
+                                                  !isAscending && currentSortingColumn == headerColumn.field"></i><i
+                              class="bi bi-arrow-down"  style="color: white; font-weight: 900; font-size: 1.2rem; text-shadow: 0 0 1px white;"
+                               *ngIf="
+                                                  isAscending && currentSortingColumn == headerColumn.field"></i>
+                          </div>
+                        </div>
+                        <div [style.width.px]="headerColumn.resizeWidth"></div>
+
+                      </th>
+                    </ng-container>
+                  </tr>
+                </thead>
+               
+                <tbody>
+                  <tr class="no-record" *ngIf="Sobatchdetails.length == 0">
+                    <td colspan="16" style="text-align: center">
+                      No Record Found
+                    </td>
+                  </tr>
+                  <ng-container *ngFor="
+                  let item of Sobatchdetails | filter : searchText;
+                  index as i;">
+                    <tr class="draft-table"
+                    [class.row-focused]="selectedRowIndex === i"
+                    [class.shared-draft-table]="item.OrderShared"
+                    (keydown)="onRowKeyDown($event, i)"
+                    [attr.tabindex]="selectedRowIndex === i ? '0' : '-1'"
+                    [attr.aria-selected]="selectedRowIndex === i"
+                    style="cursor: pointer;"
+                    [attr.data-index]="i">
+                      <ng-container *ngFor="let showDataColumn of BatchPrintColumns;index as searchIndex;">
+                        <td [style.width]="showDataColumn.width+ 'px !important'"
+                          [style.left]="(searchIndex+1) <= fixedColumn ? showDataColumn.left+'px !important' : 'inherit'"
+                          [style.display]="'table-cell'" [class.FixedColumn]="(searchIndex+1) <= fixedColumn"
+                          *ngIf="showDataColumn.isVisible" [title]="item[showDataColumn.colName]"> {{
+                          item[showDataColumn.colName]}}</td>
+                      </ng-container>
+                    </tr>
+                  </ng-container>
+                </tbody>
+              </table>
+            </form>
+          </cdk-virtual-scroll-viewport>
+        </div>
+        <!-- <ngb-pagination [collectionSize]="schnellOrders.length" [pageSize]="itemsPerPageCommon"
+          [(page)]="currentPageCommon" (pageChange)="onPageChangeCommon(currentPageCommon)" [boundaryLinks]="true"
+          [maxSize]="maxSize">
+
+          <ng-template ngbPaginationPrevious>Prev</ng-template>
+
+          <ng-template ngbPaginationNext>Next</ng-template>
+
+        </ngb-pagination> -->
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-start" style="margin-left: 1%;">
+
+      <div class="col-md-2">
+        <!-- <label class="required-label" style="padding-right:5px;">* </label> -->
+        <label class="form-label"><b>Product Type</b></label>
+        <ng-select [selectOnTab]="true" [(ngModel)]="selectedproductype" class="w-100" placeholder="Product Type">
+          <ng-option *ngFor="let pList of producttypelist" [value]="pList.product_type">
+            {{ pList.product_type }}
+          </ng-option>
+        </ng-select>
+      </div>
+      <div class="col-md-2">
+        <!-- <label class="required-label" style="padding-right:5px;">* </label> -->
+        <label class="form-label"><b>Template</b></label>
+        <ng-select class="fixed-select me-2" [selectOnTab]="true" placeholder="Template"></ng-select>
+      </div>
+      <div class="col-md-2">
+        <!-- <label class="required-label" style="padding-right:5px;">* </label> -->
+        <label class="form-label"><b>Printer Name</b></label>
+        <ng-select [selectOnTab]="true" [(ngModel)]="selectedPrinter" class="w-100" placeholder="Printer Name">
+          <ng-option *ngFor="let pList of PrinterNameList" [value]="pList.name">
+            {{ pList.name }}
+          </ng-option>
+        </ng-select>
+      </div>
+      <div class="col-md-2">
+        <label class="form-label"> </label>
+        <div class="d-flex">
+          <button class="btn btn-primary btn-sm" type="button" ngbTooltip="Print">Print</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

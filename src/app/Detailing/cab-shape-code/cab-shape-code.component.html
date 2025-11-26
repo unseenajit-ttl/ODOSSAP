@@ -1,0 +1,112 @@
+<div class="d-flex">
+
+<button id="btnVLine" (click)="addLengthSegment(1000,'Actual','visible',0,0)">Horizontal Line</button>
+    <button id="btnHLine" (click)="addAngle(90,'AnitiClockwise',0,0)">Angle</button>
+    <button id="btnArc" (click)="createGroupAre()"> Arc </button>
+    <!-- <button id="btnArc" (click)="addArc(360,'AnitiClockwise',500)"> addArc </button> -->
+    <button id="btnText" (click)="UndoOperation()">Undo </button>
+    <button id="btnDelete" (click)="DeleteGroup()">Delete</button>
+    <!-- <button id="ClearAll" (click)="clearall()">Clear All</button> -->
+    <!-- <button id="Save" (click)="DrawCoupler()">DrawCoupler</button> -->
+    <button id="btnNsplice" (click)="loadCabShape(selectedShapecode)">Cabshape</button>
+    <!-- <input type="text" [(ngModel)]="shapeId" > -->
+    <!-- <input type="text" class="form-control" 
+    [ngbTypeahead]="search" 
+    (focus)="triggerTypeahead()"
+    placeholder="Type or focus to see suggestions"> -->
+    <!-- <input id="typeahead-basic" type="text" class="form-control" [(ngModel)]="model" [ngbTypeahead]="search"/> -->
+    <ng-select class="d-inline" [selectOnTab]="true"  [(ngModel)]="selectedShapecode"  appendTo="body" (change)="loadCabShape(selectedShapecode)"
+    class="ng-selectcustomer" style="width:100px">
+    <ng-option *ngFor="let sList of shapeList" [value]="sList.chrShapeCode" style="font-family:Verdana">
+        {{sList.chrShapeCode}}
+    </ng-option>
+</ng-select>
+    <button id="btnNsplice" (click)="SwitchToParamNames()">switchToNames</button>
+    <button id="btnNsplice" (click)="onSave()">Save</button>
+  </div>
+
+
+
+
+    <br>
+    <br>
+    <canvas  id="fabricCanvas" #canvas></canvas>
+
+    <!-- <script src="main5.js"></script> -->
+
+    <div class="table-responsive ml-4">
+
+        <table class="table table-striped table-bordered" style="height: 10px;">
+          <thead>
+            <tr>
+              <th class="text-center" style="width:75px; background-color: #14A38B !important;">S No.</th>
+              <th style="background-color: #14A38B !important;"> Match</th>
+              <th style="background-color: #14A38B !important;">Geometry Type</th>
+              <th style="background-color: #14A38B !important; width:12%">Length</th>
+              <th style="background-color: #14A38B !important;">Angle</th>
+              <th style="background-color: #14A38B !important;">Type</th>
+              <th style="background-color: #14A38B !important;">Length2</th>
+              <th style="background-color: #14A38B !important;">Visible</th>
+              <th class="text-center" style="width:110px;background-color: #14A38B !important;">Action</th>
+              <!-- <th class="text-center" style="width:75px;background-color: #14A38B !important;;">Action</th> -->
+
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of shapeData;index as i" style="height: 10px;">
+              <ng-container *ngIf="enableEditIndex != i">
+
+              <td class="text-center"> {{item.SNo}} </td>
+              <td class="text-center"> {{item.Match}} </td>
+              <td class="text-center"> {{item.Geometry }}</td>
+              <td class="text-center"> {{item.Length}} </td>
+              <td class="text-center"> {{item.Angle}}</td>
+              <td class="text-center"> {{item.Type}}</td>
+              <td class="text-center"> {{item.Length2}} </td>
+              <td class="text-center"> {{item.Visible}} </td>
+              <td class="text-center">
+                <i class="material-icons"
+                    ngbTooltip="Edit" (click)="onEdit(i)">mode_edit</i>&nbsp;
+            </td>
+          </ng-container>
+          <ng-container *ngIf="enableEditIndex == i">
+            <td>{{item.SNo}}</td>
+            <td>{{item.Match}}</td>
+            <td class="text-center"> {{item.Geometry }}</td>
+
+              <td><input type="number"  [(ngModel)]="item.Length" name="" id="" ></td>
+              <td><input type="number"  [(ngModel)]="item.Angle" name="" id="" ></td>
+
+
+              <td>
+                <select class="ng-selectcustomer"[(ngModel)]="item.Type">
+                <option  value="ClockWise">
+                        ClockWise
+                </option>
+                <option  value="AntiClockWise">
+                        AntiClockWise
+                </option>
+            </select>
+        </td>
+              <!-- <td class="text-center"> {{item.Type}}</td> -->
+              <td class="text-center"> {{item.Length2}} </td>
+              <td class="text-center"> {{item.Visible}} </td>
+
+              <td class="text-center" style="width:200px;">
+                <i class="material-icons"  (click)="changeData()"
+                    ngbTooltip="Update">save</i>
+                &nbsp;
+                <i class="material-icons"  (click)="EditCancel()"
+                    ngbTooltip="Cancel">cancel</i>
+            </td>
+                        </ng-container>
+
+            </tr>
+
+
+
+
+          </tbody>
+
+        </table>
+      </div>

@@ -1,0 +1,516 @@
+<loading *ngIf="loading"> </loading>
+<div class="example-container" [class.example-is-mobile]="mobileQuery.matches">
+  <mat-toolbar color="primary" class="example-toolbar" style="height: 8%">
+    <div class="row" style="align-items: center; width: 100%">
+      <div #menu&icon class="col-md-2 d-flex">
+        <button #sidemenubutton mat-icon-button (click)="toggleSidebar()">
+          <mat-icon>menu</mat-icon>
+        </button>
+        <div class="logo1"><a href="https://devniceump.natsteel.com.sg/">
+            <img src="assets/images/natsteel_logo_white_big@2x.png" class="desktop" alt="Natseetl"
+              style="height: 40px" />
+            <img src="assets/images/logo-mobileview.png" class="mobile" alt="Natseetl" />
+          </a>
+        </div>
+      </div>
+    
+      <div #dropdown class="col-md-8">
+        <div id="ordering" class="displayDropdown create-order-wrapper"
+          *ngIf="DisplayName=='Cancelled Orders'||DisplayName=='Drawing Approval'||DisplayName=='Upcoming Orders'||DisplayName=='Deleted Orders'||DisplayName=='Components'||DisplayName=='Delivered Orders'||DisplayName=='Active Orders'||DisplayName=='Draft Orders'||DisplayName=='Drawing Repository'"
+          >
+          <!-- WORKING -->
+
+          <!-- CUSTOMER & PROJECT TEXT HEADING--START -->
+          <div class="single-inline-info" *ngIf="ShowSingleCustomer()" #customerText>{{displayCustomer_Single()}}</div>
+          <div class="single-inline-info" *ngIf="ShowSingleProject()" #projectText>{{displayProject_Single()}}</div>
+          <div class="single-inline-info" *ngIf="ShowSingleAddress()" #projectText>{{displayAddress_Single()}}</div>
+          <!-- END -->
+
+          <mat-form-field *ngIf="!ShowSingleCustomer()"
+            style="padding-top: 20px; height: 70px;">
+            <mat-select #orderingCustomer id="select" placeholder="Select a Customer"
+              (openedChange)="onDropdownOpenedChange($event,'InputCustomerOrder')"
+              (selectionChange)="changeCustomerForBoth($event,'O')" [(ngModel)]="SelectCustomerCode" [state]="SelectCustomerCode"
+              style="font-weight:bold">
+              <mat-option style="
+                  position: sticky;
+                  top: 0;
+                  z-index: 10;
+                  background-color: white;
+                " style="font-weight:bold">
+                <input #InputCustomerOrder matInput type="text" [(ngModel)]="searchcustomertext"
+                  [placeholder]="CustomerPlaceholder" (click)="$event.stopPropagation()"
+                  (keydown)="onSearchInputKeydown($event)" (ngModelChange)="updateFilteredOptions(searchcustomertext)"
+                  style="font-weight:bold" />
+              </mat-option>
+
+              <mat-option *ngFor="let sList of filteredOptions" [value]="sList.CustomerCode" style="font-weight: bold;">
+                {{sList.CustomerName}}
+                ({{sList.CustomerCode}})</mat-option>
+            </mat-select>
+          </mat-form-field>
+          &nbsp;
+          <mat-form-field *ngIf="!ShowSingleProject()"
+            style="padding-top: 20px; height: 70px;font-weight:bold;">
+            <mat-select #orderingProject id="select" placeholder="Select a Project"
+              (openedChange)="onDropdownOpenedChange($event,'InputProjectOrder')"
+              (selectionChange)="changeProjectforBoth($event,'O', true, false, false, false)" onSelectionChange multiple [(ngModel)]="SelectProjectCode"
+              [state]="SelectProjectCode" style="font-weight: bold;">
+              <mat-option style="
+                  position: sticky;
+                  top: 0;
+                  z-index: 10;
+                  background-color: white;
+                ">
+                <input #InputProjectOrder matInput type="text" [(ngModel)]="searchprojecttext" placeholder="Search"
+                  (click)="$event.stopPropagation()" (keydown)="onSearchInputKeydown($event)"
+                  (ngModelChange)="updateFilteredProjectOptions(searchprojecttext)" />
+              </mat-option>
+              <mat-option>
+                <div style="display: flex; justify-content: space-between">
+                  <button class="btn btn-primary btn-sm" type="button" (click)="selectAll()">
+                    Select All
+                  </button>
+                  <button class="btn btn-primary btn-sm" type="button" (click)="clearAll()">
+                    Clear All
+                  </button>
+                </div>
+              </mat-option>
+              <mat-option *ngFor="let sList of filteredProjectOptions; let i =index;" [value]="sList.ProjectCode"
+                style="font-weight: bold;">
+                {{sList.ProjectTitle}}&nbsp;
+                <mat-checkbox [checked]="SelectProjectCode.includes(sList.ProjectCode)">
+                </mat-checkbox>
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          &nbsp;     
+          <mat-form-field *ngIf="!ShowSingleAddress()" style="padding-top: 20px; height: 70px; font-weight: bold;">
+            <!-- <mat-select #OrderngAddress
+              placeholder="Select Address"
+              [(ngModel)]="SelectAddress"
+              [state]="SelectAddress" 
+              (selectionChange)="AddressChanged($event, false, false)" 
+              (openedChange)="searchAddressText=''" multiple onSelectionChange
+              style="font-weight: bold;"
+            > -->
+            <mat-select #OrderngAddress id="select" 
+              placeholder="Select an Address"
+              (openedChange)="searchAddressText=''"
+              (selectionChange)="AddressChanged($event, false, false)" 
+              multiple 
+              [(ngModel)]="SelectAddress"
+              [state]="SelectAddress" 
+              style="font-weight: bold;">
+
+              <!-- ✅ Search box -->
+              <mat-option>
+                <input
+                  matInput
+                  type="text"
+                  placeholder="Search"
+                  [(ngModel)]="searchAddressText"
+                  (ngModelChange)="filterAddressList(searchAddressText)"
+                  (click)="$event.stopPropagation()"
+                />
+              </mat-option>
+              <mat-option>
+                <div style="display: flex; justify-content: space-between">
+                  <button class="btn btn-primary btn-sm" type="button" (click)="SelectAll_Address()">
+                    Select All
+                  </button>
+                  <button class="btn btn-primary btn-sm" type="button" (click)="ClearAll_Address()">
+                    Clear All
+                  </button>
+                </div>
+              </mat-option>
+              <!-- ✅ Project List -->
+
+              <mat-option *ngFor="let sList of filteredAddressOptions; let i = index;" [value]="sList.id"
+                style="font-weight: bold;">
+                {{sList.projectAddress}} ({{sList.id}})
+                &nbsp;
+                <mat-checkbox [checked]="SelectAddress.includes(sList.id)">
+                </mat-checkbox>
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+
+        </div>
+      <div id="createOrder" class="create-order-wrapper" *ngIf="showCreateOrderDropdown()">
+      
+        <div class="single-inline-info" *ngIf="ShowSingleCustomer()">
+          {{displayCustomer_Single()}}
+        </div>
+      
+        <div class="single-inline-info" *ngIf="ShowSingleProject()">
+          {{displayProject_Single()}}
+        </div>
+      
+        <div class="single-inline-info" *ngIf="ShowSingleAddress()">
+          {{displayAddress_Single()}}
+        </div>
+
+
+
+
+  <!-- CUSTOMER DROPDOWN -->
+  <mat-form-field *ngIf="!ShowSingleCustomer()" class="responsive-field" style="height: 50px;">
+    <mat-select #createCustomer placeholder="Select a Customer"
+                (openedChange)="onDropdownOpenedChange($event,'InputCustomerCreateOrder')"
+                (selectionChange)="changeCustomerForBoth($event,'O')"
+                [(ngModel)]="SelectCustomerCode"
+                style="font-weight: bold;">
+      <mat-option style="position: sticky; top: 0; background: #fff; z-index: 10;">
+        <input #InputCustomerCreateOrder matInput placeholder="Search" [(ngModel)]="searchcustomertext"
+            (click)="$event.stopPropagation()" (keydown)="onSearchInputKeydown($event)" 
+            (ngModelChange)="updateFilteredOptions(searchcustomertext)" />
+      </mat-option>
+
+      <mat-option *ngFor="let sList of filteredOptions" [value]="sList.CustomerCode">
+        {{sList.CustomerName}} ({{sList.CustomerCode}})
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <!-- PROJECT DROPDOWN -->
+  <mat-form-field *ngIf="!ShowSingleProject()" class="responsive-field" style="height: 50px;">
+    <mat-select #createProject placeholder="Select a Project"
+                (openedChange)="onDropdownOpenedChange($event,'InputProjectCreateOrder')"
+                (selectionChange)="changeProjectforBoth($event,'O', true, false, false, false)"
+                [(ngModel)]="SelectProjectCode[0]">
+      <mat-option style="position: sticky; top: 0; background: #fff; z-index: 10;">
+        <input #InputProjectCreateOrder matInput placeholder="Search" [(ngModel)]="searchprojecttext"
+              (click)="$event.stopPropagation()" (keydown)="onSearchInputKeydown($event)"
+              (ngModelChange)="updateFilteredProjectOptions(searchprojecttext)" />
+      </mat-option>
+
+      <mat-option *ngFor="let sList of filteredProjectOptions" [value]="sList.ProjectCode">
+        {{sList.ProjectTitle}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <!-- ADDRESS DROPDOWN -->
+  <mat-form-field *ngIf="!ShowSingleAddress()" class="responsive-field" style="height: 50px;">
+    <mat-select placeholder="Select Address"
+                [(ngModel)]="SelectAddress[0]"
+                (selectionChange)="AddressChanged($event, true, false)"
+                (openedChange)="searchAddressText=''">
+
+      <mat-option>
+        <input matInput placeholder="Search"
+               [(ngModel)]="searchAddressText"
+               (click)="$event.stopPropagation()"
+               (ngModelChange)="filterAddressList(searchAddressText)" />
+      </mat-option>
+
+      <mat-option *ngFor="let sList of filteredAddressOptions" [value]="sList.id">
+        {{sList.projectAddress}} ({{sList.id}})
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+</div>
+
+        <!-- Detailing Part  -->
+        <div id="detailing" class="displayDropdown" *ngIf="ShowDetailling()" style="display: flex; align-items: center;justify-content: center;">
+          &nbsp;
+
+          <mat-form-field style="padding-top: 16px; height: 60px; min-width: 363px !important">
+            <mat-select #detailingCustomer placeholder="Select a Customer"
+              (openedChange)="onDropdownOpenedChange($event,'InputCustomerDetailling')"
+              (selectionChange)="changeCustomerForBoth($event,'D')" [(ngModel)]="SelectDetailingCustomerCode"
+              [state]="SelectDetailingCustomerCode">
+              <mat-option style="
+                  position: sticky;
+                  top: 0;
+                  z-index: 10;
+                  background-color: white;
+                ">
+                <input #InputCustomerDetailling matInput type="text" [(ngModel)]="searchDetailingcustomertext"
+                  placeholder="Search" (click)="$event.stopPropagation()" (keydown)="onSearchInputKeydown($event)"
+                  (ngModelChange)="updateDetailingFilteredOptions(searchDetailingcustomertext)" />
+              </mat-option>
+
+              <mat-option *ngFor="let sList of DetailingCutsomerfilteredOptions;let i = index"
+                [ngClass]="{'even-option': i % 2 === 0, 'odd-option': i % 2 !== 0}" [value]="sList.CustomerNo">
+                {{sList.Customername}}({{sList.CustomerNo}})</mat-option>
+
+              <!-- <mat-option *ngFor="let sList of filteredDetailingProjectOptions; let i = index"
+                [ngClass]="{'even-option': i % 2 === 0, 'odd-option': i % 2 !== 0}" [value]="sList.ProjectId">
+                {{sList.Description}}
+              </mat-option> -->
+            </mat-select>
+          </mat-form-field>
+          &nbsp;
+          <mat-form-field style="padding-top: 16px; height: 60px; min-width: 363px !important">
+            <mat-select #selectDetailingProject placeholder="Select a Project"
+              (openedChange)="onDropdownOpenedChange($event,'InputProjectDetailling')"
+              (selectionChange)="changeProjectforBoth($event,'D', true, false, false, false)" [(ngModel)]="SelectDetailingProductCode"
+              [state]="SelectDetailingProductCode">
+              <!-- <mat-option style="position: sticky; top: 0;z-index: 10;background-color: white;">
+                <input matInput type="text" [(ngModel)]="searchDetailingprojecttext" placeholder="Search"
+                  (click)="$event.stopPropagation()" (keydown)="onSearchInputKeydown($event)"
+                  (ngModelChange)="updateDetailingFilteredProjectOptions(searchDetailingprojecttext)" />
+              </mat-option> -->
+              <mat-option style="
+                  position: sticky;
+                  top: 0;
+                  z-index: 10;
+                  background-color: white;
+                ">
+                <input #InputProjectDetailling matInput type="text" [(ngModel)]="searchDetailingprojecttext"
+                  placeholder="Search" (click)="$event.stopPropagation()" (keydown)="onSearchInputKeydown($event)"
+                  (ngModelChange)="updateDetailingFilteredProjectOptions(searchDetailingprojecttext)" />
+              </mat-option>
+
+              <mat-option *ngFor="let sList of filteredDetailingProjectOptions; let i = index"
+                [ngClass]="{'even-option': i % 2 === 0, 'odd-option': i % 2 !== 0}" [value]="sList.ProjectId">
+                {{sList.Description}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          &nbsp;
+        </div>
+      </div>
+
+      <div #info class="col-md-2" style="text-align: center">
+        <div class="displayHeading" style="font-size: small">
+          <!-- <div>
+            <i class="bi bi-clock" style="padding: 0% !important"></i>
+            <span class="user-id-name" style="font-size: x-small">{{currentDateTime}}</span>
+          </div> -->
+          <div class="d-flex" style="padding-left: 10px">
+            <!-- <i class="bi bi-person-fill"></i> -->
+            <span ngbTooltip="{{UserName}}" style="
+                border: 3px solid;
+                padding: 0px;
+                border-radius: 50%;
+                width: 35px;
+              ">
+              {{GetFirstLetter(UserName)}}</span>&nbsp;
+            <span class="user-id-name" style="font-size: small">Hi {{UserName}}!</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-toolbar>
+  <nav class="navbar navbar-expand-sm" style=" padding: 0px;
+  max-width: 100%;
+  overflow-y: hidden;z-index: 0 !important;">
+
+    <ul class="navbar-nav" style="display: contents;">
+      <li class="nav-item">
+        <span class="nav-link" style="color:maroon;font-weight: bolder;">Quick Links >></span>
+      </li>
+
+      <li class="nav-item" *ngFor="let item of gVerticleSideMenu; index as i">
+        <span class="nav-link" *ngIf="showOrderingMenu(item)" (click)="setActiveTab(item)" style="font-weight:bold"
+          [matTooltip]="item.tooltip?item.tooltip:item.displayName">|&nbsp;&nbsp;<u>{{item.displayName}}</u></span>
+      </li>
+
+      <!-- added by vidya  -->
+      <li class="nav-item">
+        <span class="nav-link" style="font-weight: bold;">
+          <a href="javascript:void(0)" (click)="openPdfInNewTab('en')" >
+           | Help |
+          </a>
+          <a href="javascript:void(0)" (click)="openPdfInNewTab('ch')" >
+            幫助
+          </a>
+        </span>
+
+      </li>
+      <li class="nav-item">
+
+      </li>
+
+
+    </ul>
+  </nav>
+
+  <div>
+
+    <!-- <tabset>
+
+        <tab heading="WBS Maintenance" style="background:#fff;" (selectTab)="setActiveTab('WBSMaintenance')" >
+        </tab>
+        <tab heading="WBS Posting" style="background:#fff" (selectTab)="setActiveTab('WBSPosting')">
+        </tab>
+        <tab heading="Group Mark Listing" style="background:#fff" (selectTab)="setActiveTab('GroupMarkListing')">
+        </tab>
+        <tab heading="Process Order" style="background:#fff;" (selectTab)="setActiveTab('ProcessOrder')">
+        </tab>
+        <tab heading="Copy WBS" style="background:#fff; width: 208px;" (selectTab)="setActiveTab('CopyWBS')">
+        </tab>
+        <tab heading="Copy GropuMarking" style="background:#fff; width: 208px;" (selectTab)="setActiveTab('CopyGroupMarking')">
+        </tab>
+        <tab heading="Copy WBS" style="background:#fff; width: 208px;" (selectTab)="setActiveTab('CopyProjectParameter')">
+        </tab>
+    </tabset> -->
+  </div>
+  <mat-sidenav-container class="example-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
+    <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches"
+      fixedTopGap="56" [class.sidenav-collapsed]="isCollapsed && !freezSideMenu"
+      [class.sidenav-expanded]="!isCollapsed&& !freezSideMenu" [opened]="true">
+      <mat-nav-list *ngIf="!isCollapsed">
+        <span *ngFor="let item of menu">
+          <span *ngIf="item.children  &&  item.children.length > 0">
+            <mat-accordion>
+              <mat-expansion-panel #panel="matExpansionPanel" (mouseleave)="checkforUsers(panel, false)"
+                [expanded]="isPanelOpen">
+                <mat-expansion-panel-header (mouseenter)="checkforUsers(panel, true)">
+                  <mat-panel-title class="list-menu">
+                    <!-- Cabeceras del submenu -->
+                    <div fxLayout="row" fxLayoutAlign="space-between center" class="d-flex"
+                      [style.align-items]="'center'" [style.font-size]="'medium'" [style.font-weight]="'500'">
+                      <!-- <mat-icon>{{item.iconName}}</mat-icon> -->
+                      <span>
+                        <div *ngIf="item.displayName.includes('Home')">
+                          <i class="bi bi-house-add"></i>
+                        </div>
+                        <div *ngIf="item.displayName.includes('Ordering')">
+                          <i class="bi bi-receipt-cutoff"></i>
+                        </div>
+                        <div *ngIf="item.displayName.includes('Admin')">
+                          <i class="bi bi-person-fill-gear"></i>
+                        </div>
+                        <div *ngIf="item.displayName.includes('WBS')">
+                          <i class="bi bi-building-add"></i>
+                        </div>
+                        <div *ngIf="item.displayName.includes('Master')">
+                          <i class="bi bi-clipboard2-check"></i>
+                        </div>
+                        <div *ngIf="item.displayName.includes('Detailing')">
+                          <i class="bi bi-file-spreadsheet"></i>
+                        </div>
+                        <div *ngIf="item.displayName.includes('Parameter')">
+                          <i class="bi bi-file-medical"></i>
+                        </div>
+                        <div *ngIf="item.displayName.includes('Utility')">
+                          <i class="bi bi-journal-medical"></i>
+                        </div>
+                        <div *ngIf="item.displayName.includes('ESM')">
+                          <i class="bi bi-window-stack"></i>
+                        </div>
+                        <div *ngIf="item.displayName.includes('Reports')">
+                          <i class="bi bi-clipboard2-data"></i>
+                        </div>
+                        <div *ngIf="item.displayName.includes('Order Assignment')">
+                          <i class="bi bi-receipt-cutoff"></i>
+                        </div>
+                      </span>&nbsp;&nbsp; {{item.displayName}}
+                    </div>
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <span *ngFor="let child of item.children">
+                  <mat-list-item [routerLink]="[child.route]" *ngIf="showOrderingMenuVerticle(child,item.displayName)"
+                    (click)="selectedmenu(child.displayName, child.route);RefreshOrderCreation()">
+                    <!-- Entradas de cada submenú  -->
+                    <div fxLayout="row" fxLayoutAlign="space-between center" class="sub-menu"
+                      [matTooltip]="child.tooltip?child.tooltip:child.displayName" matTooltipPosition="right">
+                      <mat-icon>{{child.iconName}}</mat-icon>
+                      {{child.displayName}}
+                    </div>
+                  </mat-list-item>
+                </span>
+              </mat-expansion-panel>
+            </mat-accordion>
+          </span>
+          <span *ngIf="!item.children || item.children.length === 0">
+            <mat-list-item [routerLink]="[item.route]">
+              <!-- Entradas principales -->
+              <div fxLayout="row" fxLayoutAlign="space-between center">
+                <mat-icon>{{item.iconName}}</mat-icon>
+                {{item.displayName}}
+              </div>
+            </mat-list-item>
+          </span>
+        </span>
+      </mat-nav-list>
+
+      <mat-nav-list class="sidenav-icons" *ngIf="isCollapsed">
+        <span>
+          <div *ngIf="showIcon('Home')" (click)="onMouseEnter('Home')">
+            <i class="bi bi-house-add"></i>
+          </div>
+        </span>
+        <span>
+          <div *ngIf="showIcon('Ordering')" (click)="onMouseEnter('Ordering')">
+            <i class="bi bi-receipt-cutoff"></i>
+          </div>
+        </span>
+        <span>
+          <div *ngIf="showIcon('Admin')" (click)="onMouseEnter('Admin')">
+            <i class="bi bi-person-fill-gear"></i>
+          </div>
+        </span>
+        <span>
+          <div *ngIf="showIcon('WBS')" (click)="onMouseEnter('WBS')">
+            <i class="bi bi-building-add"></i>
+          </div>
+        </span>
+        <span>
+          <div *ngIf="showIcon('Master')" (click)="onMouseEnter('Master')">
+            <i class="bi bi-clipboard2-check"></i>
+          </div>
+        </span>
+        <span>
+          <div *ngIf="showIcon('Detailing')" (click)="onMouseEnter('Detailing')">
+            <i class="bi bi-file-spreadsheet"></i>
+          </div>
+        </span>
+        <span>
+          <div *ngIf="showIcon('Parameter')" (click)="onMouseEnter('Parameter')">
+            <i class="bi bi-file-medical"></i>
+          </div>
+        </span>
+        <span>
+          <div *ngIf="showIcon('Utility')" (click)="onMouseEnter('Utility')">
+            <i class="bi bi-journal-medical"></i>
+          </div>
+        </span>
+        <span>
+          <div *ngIf="showIcon('ESM')" (click)="onMouseEnter('ESM')">
+            <i class="bi bi-window-stack"></i>
+          </div>
+        </span>
+        <span>
+          <div *ngIf="showIcon('Reports')" (click)="onMouseEnter('Reports')">
+            <i class="bi bi-clipboard2-data"></i>
+          </div>
+        </span>
+        <span>
+          <div *ngIf="showIcon('Order Assignment')" (click)="onMouseEnter('Order Assignment')">
+            <i class="bi bi-receipt-cutoff"></i>
+          </div>
+        </span>
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content [class.sidenav-content-expand]="isCollapsed" [class.sidenav-content-collapsed]="!isCollapsed"
+      (mouseenter)="onMouseLeave()">
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+
+  <div class="submenu" *ngIf="showSubMenu || hoverSubMenuFlag" [style.top]="GetSubMenuTop()"
+    (mouseenter)="onMouseSubMenuEnter()" (mouseleave)="onMouseSubMenuLeave()">
+    <aside>
+      <div class="triangle-left"></div>
+      <ul>
+        <li class="subhead">{{ hoveredIndex }}</li>
+        <li *ngFor="let child of gChildrenList" [routerLink]="[child.route]"
+          (click)="selectedmenu(child.displayName, child.route);RefreshOrderCreation()"
+          [matTooltip]="child.tooltip?child.tooltip:child.displayName" matTooltipPosition="right">{{ child.displayName
+          }}</li>
+      </ul>
+    </aside>
+  </div>
+
+  <div class="row" style="margin-left: 15px; width: 80%">
+    <b>© 2024 - NatSteel Holdings Pte Ltd</b>
+  </div>
+

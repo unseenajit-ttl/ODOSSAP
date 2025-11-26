@@ -1,0 +1,85 @@
+<div class="container-fluid">
+    <div class="card m-1">
+        <!-- <h3 class="card-header d-flex flex-column justify-content-center align-items-center">
+            <b>Detailing </b>
+        </h3> -->
+        <div class="card-body" style="margin-top:-11px !important;">
+
+            <div >
+                <div class="row ">
+                    <ngb-accordion #acc="ngbAccordion" title="Filters">
+                        <ngb-panel id="panel1">
+                            <ng-template ngbPanelContent>
+                                <div class="card-body">
+                                    <ng-container class="border">
+                                        <div class="row">
+                                            <div class="col-sm-3" style="margin-right: auto;">
+                                                <label class="form-label">Customer</label>
+                                                <input type="text" readonly="true" class="form-control"
+                                                    [value]="MeshData.CustomerName"/>
+                                            </div>
+                                            <div class="col-sm-2" style="margin: auto;">
+                                                <label class="form-label ">Project</label> <br>
+                                                <input type="text" readonly="true" class="form-control"
+                                                    [value]="MeshData.ProjectName" />
+                                            </div>
+                                            <div class="col-sm" style="margin: auto;">
+                                                <label class="form-label">ProductType </label><br>
+                                                <input type="text" readonly="true" class="form-control" [value]="MeshData.VCHPRODUCTTYPE">
+                                            </div>
+                                            <div class="col-sm-2" style="margin: auto;">
+                                                <label for="bendingtype"
+                                                    class="form-label ">StructureElement</label><br>
+                                                <input type="text"   readonly="true" class="form-control" [value]="MeshData.VCHSTRUCTUREELEMENTTYPE">
+                                            </div>
+                                            <div class="col-sm" style="margin: auto;">
+                                                <label for="bendingtype" class="form-label ">GroupMarking</label><br>
+                                                <input type="text" readonly="true" class="form-control"
+                                                   [value]="MeshData.VCHGROUPMARKINGNAME">
+                                            </div>
+                                            <div class="col-sm" style="margin-left: auto;">
+                                                <label class="form-label">ParameterSet</label> <br>
+                                                <ng-select 
+                                                    [(ngModel)]="ParameterSet"  (change)="changeParameter($event)"  [ngModelOptions]="{standalone: true}">
+                                                    <ng-option *ngFor="let sList of ParameterSetList"
+                                                        [value]="sList">
+                                                        {{sList.INTPARAMETESET}}
+                                                    </ng-option>
+                                                </ng-select>
+                                            </div>
+                                        </div>
+
+                                    </ng-container>
+                                </div>
+                            </ng-template>
+                        </ngb-panel>
+                    </ngb-accordion>
+                </div>
+                <br>
+                <div>
+                    <tabset>
+                        <tab class="tab"  heading={{SlabHeading}}  [active]="structElement=='Slab' ||  structElement=='SLAB-T'||structElement=='Wall'||structElement=='SLAB-B'"  title="Tab 1" style="background:#fff">
+                            <app-slab-tab [ParameterSetNo]="ParameterSet" ></app-slab-tab>
+                        </tab>
+                        
+                        <tab class="tab"  heading=Column   [active]="structElement=='Column'" title="Tab 2" style="background:#fff">
+                            <app-column [ParameterSetNo]="ParameterSet"></app-column>
+                        </tab>
+                        <tab class="tab" heading=Beam   [active]="structElement=='Beam'" title="Tab 3" style="background:#fff">
+                            <app-beam [ParameterSetNo]="ParameterSet"></app-beam>
+                        </tab>
+                        <tab class="tab" heading="Accessories"  [active]="structElement=='Accessories'" title="Tab 4" style="background:#fff">
+                            <app-accessories></app-accessories>
+                        </tab>
+
+                    </tabset>
+                   
+                </div>
+            </div>
+
+            <br>
+
+
+        </div>
+    </div>
+</div>

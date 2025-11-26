@@ -1,0 +1,100 @@
+<div id="pause" class="d-flex align-items-center justify-content-center" *ngIf="loading">
+    <div id="spinner" class="loader"></div>
+  </div>
+
+<div class="modal-header">
+    <h4 class="modal-title">Input Output Validation Form</h4>
+    <i class="fa-solid fa-xmark"></i>
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+
+</div>
+<div class="modal-body ">  
+    <div class=" table-responsive table-wrapper-scroll-y my-custom-scrollbar">
+        <table class="table m-auto   d-table table-responsive table-striped  table-bordered " [cellPadding]="0"
+            [cellPadding]="5">
+            <thead>
+                <tr>
+                    <th class="text-center">Attribute</th>
+                    <th class="text-center ">Validation Constraints</th>
+                    <th class="text-center w-25">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <ng-container *ngFor="let item of validationconstraintList   ; index as i; ">
+                    <tr>
+                        <ng-container *ngIf="enableEditIndex != i">
+                            <td class="text-center">{{item.Attribute}}</td>
+                            <td class="text-center">{{item.ValidationConstraint}}</td>
+                            <td> <i class="material-icons" (click)="onEdit(item,i)"
+                                    ngbTooltip="Edit">mode_edit</i>&nbsp;
+                                <i class="bi bi-trash"  (click)="DeleteValidation(item.Id)" ngbTooltip="Delete"></i>
+                            </td>
+                        </ng-container>
+                        <ng-container *ngIf="enableEditIndex == i">
+                            <td><input class="form-control" readonly="true" [(ngModel)]="item.Attribute"
+                                    style=" height: auto;" /></td>
+                            <td><input class="form-control" [(ngModel)]="item.ValidationConstraint"
+                                    style=" height: auto;" /></td>
+                            <td class="text-center">
+                                <i class="material-icons" (click)="UpdateValidation(item,i)"
+                                    ngbTooltip="Update">save</i>
+                                &nbsp;
+                                <i class="material-icons" (click)="Editcancel()" ngbTooltip="Cancel">cancel</i>
+                            </td>
+                        </ng-container>
+                    </tr>
+
+                </ng-container>
+
+                <tr *ngIf="validationconstraintList.length==0">
+                    <td colspan="15">
+                        No Record Available
+                    </td>
+
+
+                </tr>
+
+            </tbody>
+            <tfoot>
+
+                <tr *ngFor="let table of newattribute">
+                    <!-- <td><input class="form-control" placeholder="Attribute" type="text" [(ngModel)]="table.attribute" style=" height: auto;" /></td> -->
+                    <td>
+                        <ng-select [(ngModel)]="table.Attribute" placeholder="Select Attribute">
+                            <ng-option *ngFor="let sList of attributelist" [value]="sList.Attribute">
+                                {{sList.Attribute}}
+                            </ng-option>
+                        </ng-select>
+                    </td>
+                    <td><input class="form-control" placeholder="Validation Constraints" type="text"
+                            [(ngModel)]="table.ValidationConstraint" style=" height: auto;" /></td>
+
+                    <td class="text-center" style="width:200px;">
+                        <i class="material-icons" (click)="AddNewValidation()" ngbTooltip="Save">save</i> &nbsp;
+                        <i class="material-icons" (click)="AddReset()" ngbTooltip="Reset">cancel</i>
+                    </td>
+
+                </tr>
+
+
+            </tfoot>
+
+
+        </table>
+
+    </div>
+</div>
+<div class="modal-footer">
+    <!-- <button type="button" (click)="cancel()" class="btn btn-secondary">
+   Cancel
+    </button>
+    <button
+      type="button"
+      (click)="submitReview()"
+      class="btn btn-primary me-2"
+      [disabled]="disableSubmit"
+    >
+      Submit
+    </button> -->
+</div>

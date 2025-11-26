@@ -1,0 +1,226 @@
+<div class="container-fluid">
+  <h3 class="card-header d-flex flex-column justify-content-center align-items-center">
+    <b>COPY GROUPMARKING</b>
+</h3>
+<div class="container-fluid">
+
+  <div class="card-body">
+
+    <div class="card-body mt-3">
+      <fieldset>
+        <legend>Source</legend>
+        <div class="row ">
+        <form [formGroup]="Source">
+          <div class="row ">
+
+            <div class="col-md-4">
+              <label class="form-label">Customer </label>
+              <ng-select [selectOnTab]="true" formControlName="customer" class="w-auto"  [disabled]="true"
+                (change)="changecustomer($event,'S');">
+                <ng-option *ngIf="LoadingCustomerName">
+
+                </ng-option>
+                <ng-option *ngFor="let sList of Customerlist" [value]="sList.CustomerNo">
+                  {{sList.Customername}}
+                </ng-option>
+              </ng-select>
+              <span class="text-danger"
+                *ngIf=" isformsubmit && Source.controls['customer'].invalid && Source.controls['customer'].errors && Source.controls['customer'].hasError('required')">*
+                Customer Required. </span>
+
+            </div>
+
+
+            <div class="col-md-4">
+              <label class="form-label">Project</label>
+              <ng-select [selectOnTab]="true" formControlName="project" class="w-auto" [disabled]="true"
+                (change)="changeproject($event,'S');">
+                <ng-option *ngFor="let sList of projectList_source" [value]="sList.ProjectCode">
+                  {{sList.Description}}
+                </ng-option>
+              </ng-select>
+              <span class="text-danger"
+                *ngIf=" isformsubmit && Source.controls['project'].invalid && Source.controls['project'].errors && Source.controls['project'].hasError('required')">*
+                Project Required. </span>
+
+            </div>
+
+
+
+          </div>
+
+
+          <div class="row mt-2">
+
+            <div class="col-md-2">
+              <label class="form-label">Product Type</label>
+              <ng-select [selectOnTab]="true" formControlName="producttype" (change)="changeProdType($event)"
+                class="ng-selectcustomer">
+                <ng-option *ngFor="let sList of ProductCodeTypeList" [value]="sList.ProductTypeID">
+                  {{sList.ProductType}}
+                </ng-option>
+              </ng-select>
+              <span class="text-danger"
+                *ngIf=" isformsubmit && Source.controls['producttype'].invalid && Source.controls['producttype'].errors && Source.controls['producttype'].hasError('required')">*
+                ProductType Required. </span>
+
+            </div>
+
+            <div class="col-md-2">
+              <label class="form-label">Structure Element</label>
+              <ng-select [selectOnTab]="true" formControlName="structureelement" (change)="changeStrElement($event,'S')"
+                class="ng-selectcustomer">
+                <ng-option *ngFor="let sList of structureList" [value]="sList.StructureElementTypeId">
+                  {{sList.StructureElementType}}
+                </ng-option>
+              </ng-select>
+
+              
+              <span class="text-danger"
+                *ngIf=" isformsubmit && Source.controls['structureelement'].invalid && Source.controls['structureelement'].errors && Source.controls['structureelement'].hasError('required')">*
+                Structure Element Required. </span>
+
+            </div>
+            <div class="col-md-2">
+              <label class="form-label">Group Marking </label>
+              <ng-select formControlName="groupmarking" (change)="changeGroupmarking($event,'S')">
+
+                <ng-option *ngFor="let sList of groupmarking_Source" [value]="sList.INTGROUPMARKID">
+                  {{sList.VCHGROUPMARKINGNAME}}
+                </ng-option>
+              </ng-select>
+              <span class="text-danger"
+                *ngIf=" isformsubmit && Source.controls['groupmarking'].invalid && Source.controls['groupmarking'].errors && Source.controls['groupmarking'].hasError('required')">*
+                Groupmarking Required. </span>
+
+            </div>
+            <div class="col-md-2">
+              <label class="form-label">Revision No</label>
+              <ng-select formControlName="revision" (change)="changeRevision($event)">
+
+                <ng-option *ngFor="let sList of Revision_Source" [value]="sList.TNTGROUPREVNO">
+                  {{sList.TNTGROUPREVNO}}
+                </ng-option>
+              </ng-select>
+              <span class="text-danger"
+                *ngIf=" isformsubmit && Source.controls['revision'].invalid && Source.controls['revision'].errors && Source.controls['revision'].hasError('required')">*
+                Revision Required. </span>
+
+            </div>
+
+          </div>
+         
+
+        </form>
+        </div>
+      </fieldset>
+    </div>
+
+
+    <div class="card-body mt-3">
+      <fieldset>
+        <legend>Destination</legend>
+        <div class="row ">
+        <form [formGroup]="Destination">
+          <div class="row d-flex">
+          
+            <div class="col-md-4">
+              <label class="form-label">Customer </label>
+              <ng-select [selectOnTab]="true" formControlName="customer" class="w-auto"
+                (change)="changecustomer($event,'D');">
+                <ng-option *ngIf="LoadingCustomerName">
+
+                </ng-option>
+                <ng-option *ngFor="let sList of Customerlist" [value]="sList.CustomerNo">
+                  {{sList.Customername}}
+                </ng-option>
+              </ng-select>
+              <span class="text-danger"
+                *ngIf=" isformsubmit && Source.controls['customer'].invalid && Source.controls['customer'].errors && Source.controls['customer'].hasError('required')">*
+                Customer Required. </span>
+
+            </div>          
+            <div class="col-md-4">
+              <label class="form-label">Project</label>
+              <ng-select [selectOnTab]="true" formControlName="project" class="w-auto"
+                (change)="changeproject($event,'D');">
+                <ng-option *ngFor="let sList of projectList_destination" [value]="sList.ProjectCode">
+                  {{sList.Description}}
+                </ng-option>
+              </ng-select>
+            </div>
+
+
+          </div>
+        
+          <div class="row mt-2">
+           
+            <div class="col-md-2">
+              <label class="form-label">Product Type</label>
+              <ng-select [selectOnTab]="true" formControlName="producttype" [readonly]="true" class="ng-selectcustomer">
+                <ng-option *ngFor="let sList of ProductCodeTypeList" [value]="sList.ProductTypeID">
+                  {{sList.ProductType}}
+                </ng-option>
+              </ng-select>
+            </div>
+          
+            <div class="col-md-2">
+              <label class="form-label">Structure Element</label>
+              <ng-select  *ngIf="Enable_StructureElement"  [selectOnTab]="true" formControlName="structureelement"  
+                [readonly]="Enable_StructureElement" class="ng-selectcustomer">
+                <ng-option *ngFor="let sList of structureList" [value]="sList.StructureElementTypeId">
+                  {{sList.StructureElementType}}
+                </ng-option>
+              </ng-select>
+
+              <ng-select *ngIf="!Enable_StructureElement"  [selectOnTab]="true" formControlName="structureelement"  
+              [readonly]="Enable_StructureElement" class="ng-selectcustomer">
+              <ng-option *ngFor="let sList of Slab_StrList" [value]="sList.StructureElementTypeId">
+                {{sList.StructureElementType}}
+              </ng-option>
+            </ng-select>
+            </div>
+            <div class="col-md-2">
+              <label class="form-label">Group Marking</label>
+              <input id=GmName type="text" class="form-control form-control-sm" maxlength="20" formControlName="groupmarking" />
+
+            </div>
+
+            <div class="col-md-2">
+              <label class="form-label">Revision No</label>
+              <ng-select formControlName="revision" [readonly]="true">
+
+                <ng-option *ngFor="let sList of Revision_Source" [value]="sList.TNTGROUPREVNO">
+                  {{sList.TNTGROUPREVNO}}
+                </ng-option>
+              </ng-select>
+            </div>
+            <div class="col-md-2">
+
+              
+            <div class=" row custom-control custom-switch" style="margin:auto; padding-left: 4rem;">
+              
+
+              <input type="checkbox"  class="custom-control-input"   [(ngModel)]="ParameterSet"  [ngModelOptions]="{standalone: true}"
+              id="Split_Up_Ind_inp_3">
+              <label class="custom-control-label" for="Split_Up_Ind_inp_3"> Is parameter</label>
+
+
+              
+
+          </div>
+        </div>
+          </div> 
+
+        </form>
+        </div>
+      </fieldset>
+    </div>
+    <div class="d-flex" style="justify-content: flex-end;">
+      <button class="btn btn-primary btn-sm" type="button" (click)="CheckGmName()">Copy</button>
+      <button class="btn btn-primary btn-sm" type="button" (click)="reset()">Cancel</button>
+    </div>
+  </div>
+
+</div>
+

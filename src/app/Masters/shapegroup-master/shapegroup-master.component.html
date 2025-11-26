@@ -1,0 +1,218 @@
+<div class="container-fluid">
+  <div class="card m-1">
+
+    <div class="card-body">
+      <div class="filter ">
+      <div class="row">
+          <div class="col-md-8">
+            <button class="btn btn-md btn-outline-primary" ngbTooltip="Add Shape Group" tooltipClass="my-custom-class"
+              type="button" (click)="Createshapegrp()"><i class="fa fa-plus"></i></button>
+          </div>
+          <div class="col-md-4 float-right">
+            <div class="input-group flex-nowrap ">
+              <input class="form-control" type="search" placeholder="Search " value="search" id="example-search-input"
+                name="search" [(ngModel)]="searchText" [ngModelOptions]="{standalone: true}"
+                (ngModelChange)="filterData()">
+
+              <span class="input-group-append  ms-n5">
+                <span class="input-group-text ">
+                  <i class="fa fa-refresh wild-search-reset" ngbTooltip="Reset search" style=" color:#0479d6;font-size:20px;width:10px"
+                    *ngIf="searchText != ''" (click)="resetPageSize()"></i>
+                  <i class="bi bi-search" (click)="changePageSize()"></i>
+                </span>
+              </span>
+           
+              <div class="ml-4 mr-3">
+                <span class="input-group-text ">
+                  <i class="material-icons" style="font-size:20px;" ngbTooltip="Download Excel"
+                    (click)="download()">download</i>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class=" table-responsive table-wrapper table-bordered" style="min-height:250px">
+
+          <table class="table m-auto d-table table-responsive table-bordered  " [cellPadding]="0"
+            [cellPadding]="5">
+            <thead>
+              <tr>
+                <th><i class="bi bi-search" (click)="toggleFilters = !toggleFilters;"></i>
+                </th>
+
+                <th>Shape Group</th>
+                <th>Description</th>
+                <th>Dimension Type </th>
+                <th>Structure Type </th>
+                <th>Bending Bar Type </th>
+                <th>Coupler Type </th>
+                <th>Status </th>
+                <th class="text-center" style="width:150px;">Actions</th>
+              </tr>
+            </thead>
+
+            <tbody>
+
+              <tr *ngIf="toggleFilters">
+                <td></td>
+                <td><input class="form-control" [(ngModel)]="searchgroupname" (ngModelChange)="filterData()" type="text"
+                    id="searchBlock" placeholder="Shape Group" />
+                </td>
+                <td><input class="form-control" [(ngModel)]="searchDesc" (ngModelChange)="filterData()" type="text"
+                    id="searchFrom" placeholder="Description" />
+                </td>
+                <td><input class="form-control" [(ngModel)]="searchDimention" (ngModelChange)="filterData()" type="text"
+                    id="searchTo" placeholder="Dimension Type" />
+                </td>
+                <td><input class="form-control" [(ngModel)]="searchStructure" (ngModelChange)="filterData()" type="text"
+                    id="searchStructure" placeholder="Structure Type" />
+                </td>
+                <td><input class="form-control" [(ngModel)]="searchBendingBar" (ngModelChange)="filterData()"
+                    type="text" id="searchBendingBar" placeholder="Bending Bar Type" />
+                </td>
+                <td><input class="form-control" [(ngModel)]="searchCouple" (ngModelChange)="filterData()" type="text"
+                    id="searchCouple" placeholder="Couple Type" />
+                </td>
+                <td>
+                  <!-- <input class="form-control" [(ngModel)]="searchStatus" type="text" id="searchStatus"
+                      placeholder="Status" /> -->
+
+                  <ng-select  [selectOnTab]="true"  [(ngModel)]="searchStatus" (ngModelChange)="filterData()" placeholder="Status"
+                    style=" width: 100px; height: auto;">
+                    <ng-option *ngFor="let sList of statuslist" [value]="sList.item_id">
+                      {{sList.item_text}}
+                    </ng-option>
+                  </ng-select>
+                </td>
+                <td><span style="margin:auto; padding:2px">
+                    <i class="fa fa-refresh text-center" ngbTooltip="Reset" style=" color:red;font-size:20px;"
+                      (click)="resetsearchValue()"></i>
+                  </span></td>
+              </tr>
+
+
+              <tr *ngFor="let item of shapegroupList  | slice: pageSize | slice: 0:itemsPerPage ; index as i ">
+                <ng-container *ngIf="enableEditIndex != i">
+                  <td>
+
+                  </td>
+                  <td>{{item.ShapeGroupName}} </td>
+                  <td>{{item.ShapeGroupDesc}} </td>
+                  <td>{{item.DimentionType}} </td>
+                  <td>{{item.StructureType}} </td>
+                  <td>{{item.BendingBarType}} </td>
+                  <td>{{item.CouplerType}} </td>
+
+                  <td *ngIf="item.IsArchived==true" style="color: red">Inactive</td>
+                  <td *ngIf="item.IsArchived==false" style="color: rgb(105, 218, 82);">Active</td>
+
+                  <td class="text-center" style="width:150px;">
+                    <i class="material-icons" ngbTooltip="Edit" (click)="onEdit(item,i)">mode_edit</i>&nbsp;
+
+                    <i class="bi bi-trash" ngbTooltip="Delete" (click)="delete(item.Id,i)"></i>
+                  </td>
+                </ng-container>
+                <ng-container *ngIf="enableEditIndex == i">
+                  <td></td>
+                  <td>
+                    <input type="text" [(ngModel)]="item.ShapeGroupName" [readOnly]="true" class="form-control" />
+                    <div class="text-danger edit-label" *ngIf=" item.ShapeGroupName == '' ">*Share Group Required.
+                    </div>
+                  </td>
+                  <td>
+                    <input type="text" class="form-control" [(ngModel)]="item.ShapeGroupDesc"
+                      (ngModelChange)="Changedesc(item.ShapeGroupDesc)" />
+                    <div class="text-danger edit-label" *ngIf=" item.ShapeGroupDesc == '' ">*Description Required.
+                    </div>
+                  </td>
+                  <td>
+                    <ng-select  [selectOnTab]="true"  [(ngModel)]="item.DimentionType"
+                      (change)="item.DimentionType=$event; ChangeDimention(item.DimentionType)">
+                      <ng-option *ngFor="let sList of dimentiontypeList" [value]="sList.item_id">
+                        {{sList.item_text}}
+                      </ng-option>
+                    </ng-select>
+                    <div class="text-danger edit-label" *ngIf=" item.DimentionType == undefined ">*Dimention Required.
+                    </div>
+
+                  </td>
+                  <td>
+                    <ng-select  [selectOnTab]="true"  [(ngModel)]="item.StructureType"
+                      (change)="item.StructureType=$event;Changestruct(item.StructureType)">
+                      <ng-option *ngFor="let sList of structuretypeList" [value]="sList.item_id">
+                        {{sList.item_text}}
+                      </ng-option>
+                    </ng-select>
+                    <div class="text-danger edit-label" *ngIf=" item.StructureType == undefined ">*Structure Required.
+                    </div>
+                  </td>
+                  <td>
+                    <ng-select  [selectOnTab]="true"  [(ngModel)]="item.BendingBarType"
+                      (change)="item.BendingBarType=$event;  Changebending(item.BendingBarType)">
+                      <ng-option *ngFor="let sList of bendingtypeList" [value]="sList.item_id">
+                        {{sList.item_text}}
+                      </ng-option>
+                    </ng-select>
+                    <div class="text-danger edit-label" *ngIf=" item.BendingBarType == undefined ">*BendingBar Required.
+                    </div>
+
+                  </td>
+                  <td>
+                    <ng-select  [selectOnTab]="true"  [(ngModel)]="item.CouplerType"
+                      (change)="item.CouplerType=$event; Changecoupler(item.CouplerType)">
+                      <ng-option *ngFor="let sList of couplertypeList" [value]="sList.item_id">
+                        {{sList.item_text}}
+                      </ng-option>
+                    </ng-select>
+                    <div class="text-danger edit-label" *ngIf=" item.CouplerType == undefined ">*Coupler Required.
+                    </div>
+                  </td>
+                  <td>
+                    <ng-select  [selectOnTab]="true"  [(ngModel)]="item.IsArchived"
+                      (change)="item.IsArchived=$event; changeStatus(item.IsArchived)"
+                      style=" width: 100px; height: auto;">
+                      <ng-option *ngFor="let sList of statuslist" [value]="sList.item_id">
+                        {{sList.item_text}}
+                      </ng-option>
+                    </ng-select>
+                    <div class="text-danger edit-label" *ngIf=" item.IsArchived == undefined ">*Status Required. </div>
+                  </td>
+                  <td class="text-center" style="width:200px;">
+                    <i class="material-icons" (click)="Update(item,i)" ngbTooltip="Update">save</i>
+                    &nbsp;
+                    <i class="material-icons" (click)="Editcancel(item)" ngbTooltip="Cancel">cancel</i>
+                  </td>
+                </ng-container>
+              </tr>
+              <span class="ml-3" *ngIf="!searchResult">No Record Found</span>
+
+            </tbody>
+          </table>
+          <div class="d-flex mt-2 ">
+            <div>
+              <ngb-pagination [collectionSize]="shapegroupList.length" [pageSize]="itemsPerPage" [(page)]="currentPage"
+                (pageChange)="onPageChange(currentPage)" [boundaryLinks]="true" [maxSize]="maxSize">
+                <ng-template ngbPaginationPrevious>Prev</ng-template>
+                <ng-template ngbPaginationNext>Next</ng-template>
+              </ngb-pagination>
+            </div>
+            <div>
+              <select class="custom-select mr-2 ml-3" style="width: auto" [(ngModel)]="itemsPerPage"
+                (ngModelChange)="OnPageSizeChange(itemsPerPage);">
+                <option [ngValue]="5">5 </option>
+                <option [ngValue]="10">10 </option>
+                <option [ngValue]="20">20 </option>
+                <option [ngValue]="50">50 </option>
+                <option [ngValue]="100">100 </option>
+              </select>
+              <span>Items per page</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>

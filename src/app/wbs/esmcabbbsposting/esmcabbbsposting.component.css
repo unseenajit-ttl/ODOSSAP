@@ -1,0 +1,101 @@
+ion-icon {
+  color: blue;
+}
+
+.accordion-button.collapsed {
+  background: blue
+}
+
+.accordion-button.collapsed::after {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+}
+.accordion-button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;    
+  font-size: 0.8rem;
+  color: var(--bs-accordion-btn-color);
+  text-align: left;
+  background-color: var(--bs-accordion-btn-bg);
+  border: 0;
+  border-radius: 0;
+  overflow-anchor: none;
+  transition: var(--bs-accordion-transition);
+}
+
+
+
+table {
+width: 100%;
+}
+
+.mat-mdc-table .mdc-data-table__row:nth-child(odd) {  
+background-color: #e6e6e6;
+
+}
+/* .mat-mdc-table .mdc-data-table__row :nth-child(even){
+background-color: #ffffff;
+}
+
+
+.mat-mdc-table .mdc-data-table__row :nth-child(odd){
+background-color: #e6e6e6;
+} */
+
+
+
+
+
+.ng-selectcustomer {    
+width: 240px;
+}
+
+.ng-selectwbs{    
+width: 240px;
+}
+
+.colbutton {
+flex-basis: 0;
+flex-grow: 1;
+max-width: 100%;
+padding: 2px;
+padding-left: -10px;
+}
+
+.custom-switch {
+padding-left: 3rem;
+padding-top: 7px;
+}
+.custom-control-label {
+position: relative;
+padding-left: 5px;
+margin-bottom: 0;
+vertical-align: top; 
+}
+
+
+
+
+/* .custom-control-input:checked~.custom-control-label::before {
+  color: #fff;
+  border-color: #6AB200;
+  background-color: #6AB200;
+} */
+
+
+
+.darkrowcolor {
+color: white;
+
+}
+.wbsfilter{
+padding-left: 10px;
+}
+
+/* .custom-control-label:before{
+background-color:red;
+}
+.custom-checkbox .custom-control-input:checked~.custom-control-label::before{
+background-color:black;
+} */

@@ -1,0 +1,189 @@
+<div class="Row" style="margin-left: 20px; margin-top: 10px; font-size: medium">
+    <!-- <a  [routerLink]="['/order/createorder']" > -->
+        <div class="row">
+            <a href="javaScript:; " (click)="goBack()" style="color: blue">
+              <i class="fa fa-arrow-left arrow-left" aria-hidden="true"></i>
+              Back to order summary (返回订单汇总)
+            </a>
+          </div>
+    <!-- </a> -->
+</div>
+<div class="Row" style="margin-left: 20px; margin-top: 10px; font-size: medium;">
+    <h4>{{StructureElement}} CAGES (铁龙):</h4>
+</div>
+<!-- <div class="app-columnlinkmeshorder"></div> -->
+<!-- <app-columnlinkmeshorder></app-columnlinkmeshorder> -->
+<div class="container-fluid">
+    <div class=" table-responsive table-wrapper-scroll-y my-custom-scrollbar">
+
+        <table class="table  table-bordered">
+            <thead>
+                <tr>
+                    <th>SNo<br>序号</th>
+                    <th>Cage Mark<br>铁笼编号</th>
+                    <th>Qty<br>件数</th>
+                    <th>Width<br>宽</th>
+                    <th>Length<br>长</th>
+                    <th>Height<br>高</th>
+                    <th>Assembly<br>组装</th>
+                    <th>CAB Weight<br> 加工铁重量</th>
+                    <th>Beam Stirrup MESH Weight<br> 梁箍筋铁网重量</th>
+                    <th>Column Link MESH Weight<br> 柱箍筋铁网重量</th>
+                    <th>Cut-To-Size MESH Weight<br> 加工铁网重量</th>
+                    <th>Cage Weight<br> 铁笼重量</th>
+                    <th>Remarks<br>备注</th>
+                    <!-- <th>B</th>
+                    <th>C</th>
+                    <th>P</th>
+                    <th>Q</th>
+                    <th>HOOK</th>
+                    <th>LEG</th>
+                    <th>MeshTotalWT</th>
+                    <th>MWLength</th>
+                    <th>MWBOM</th>
+                    <th>CWBOM</th>
+                    <th>Remarks</th>
+                     -->
+                    <!-- <th style="min-width: 80px;">Remove</th> -->
+                </tr>
+            </thead>
+            <tbody id="body">
+                <ng-container *ngFor="let item of bbsOrderTable; index as i">
+                    <tr *ngIf="editIndex!=i && item.BBSAssembly === true" (click)="getRowData(item, i)" >
+                        <td [class.selected]="i === selectedRowIndex">{{i+1}}</td>
+
+                        <td [class.selected]="i === selectedRowIndex">{{item.BBSCageMark}}</td>
+                        <td [class.selected]="i === selectedRowIndex">{{item.BBSQty}}</td>
+                        <td [class.selected]="i === selectedRowIndex">{{item.BBSWidth}}</td>
+                        <td [class.selected]="i === selectedRowIndex">{{item.BBSLength}}</td>
+                        <td [class.selected]="i === selectedRowIndex">{{item.BBSDepth}}</td>
+                        <td [class.selected]="i === selectedRowIndex">{{item.BBSAssembly}}</td>
+                        <td [class.selected]="i === selectedRowIndex">{{item.BBSCABWT}}</td>
+                        <td [class.selected]="i === selectedRowIndex">{{item.BBSBeamMESHWT}}</td>
+                        <td [class.selected]="i === selectedRowIndex">{{item.BBSColumnMESHWT}}</td>
+                        <td [class.selected]="i === selectedRowIndex">{{item.BBSCTSMESHWT}}</td>
+                        <td [class.selected]="i === selectedRowIndex">{{item.BBSTotalWT}}</td>
+                        <td [class.selected]="i === selectedRowIndex">{{item.BBSRemarks}}</td>
+                        <!-- <td>{{item.B}}</td>
+                        <td>{{item.C}}</td>
+                        <td>{{item.P}}</td>
+                        <td>{{item.Q}}</td>
+                        <td>{{item.HOOK}}</td>
+                        <td>{{item.LEG}}</td>
+                        <td>{{item.MeshTotalWT}}</td>
+                        <td>{{item.MWLength}}</td>
+                        <td>{{item.MWBOM}}</td>
+                        <td>{{item.CWBOM}}</td>
+                        <td>
+                            {{item.Remarks}}
+                        </td> -->
+                        <!-- <td style="text-align: center;"><i (click)="editIndex=i" class="bi bi-pencil-square"></i></td> -->
+                    </tr>
+
+                    <!-- <tr *ngIf="editIndex==i">
+                        
+                        <td></td>
+                        <td><input type="checkbox"></td>
+                        <td><input class="form-control w-auto" type="text" [(ngModel)]="item.ElementMark"
+                                style="max-width:85px"></td>
+                        <td><input class="form-control w-auto" type="text" [(ngModel)]="item.Mark"></td>
+                        <td><input class="form-control" type="text" [(ngModel)]="item.Type"></td>
+                        <td>
+                            <ng-select class="w-auto" appendTo="body" [(ngModel)]="item.Size">
+                                <ng-option> 1</ng-option>
+                                <ng-option> 3</ng-option>
+                                <ng-option> 2</ng-option>
+                            </ng-select>
+                        </td>
+                        <td><input type="checkbox" (ngModelChange)="onQtyChange()"></td>
+                        <td><input class="form-control" type="text" [(ngModel)]="item.Memberqty"
+                                (ngModelChange)="onQtyChange()"></td>
+                        <td><input class="form-control" type="text" [(ngModel)]="item.Eachqty"
+                                (ngModelChange)="onQtyChange()"></td>
+                        <td><input class="form-control" type="text" [(ngModel)]="item.Totalqty" readonly>
+                        </td>
+                        <td>
+                            <ng-select class="w-auto" appendTo="body" [(ngModel)]="item.Shapecode">
+                                <ng-option> 1</ng-option>
+                                <ng-option> 3</ng-option>
+                                <ng-option> 2</ng-option>
+                            </ng-select>
+                        </td>
+                        <td><input class="form-control" type="text" [(ngModel)]="item.A"
+                                (ngModelChange)="onLengthChange()"></td>
+                        <td><input class="form-control" type="text" [(ngModel)]="item.B"
+                                (ngModelChange)="onLengthChange()"></td>
+                        <td><input class="form-control" type="text" [(ngModel)]="item.C"
+                                (ngModelChange)="onLengthChange()"></td>
+                        <td><input class="form-control" type="text" [(ngModel)]="item.D"
+                                (ngModelChange)="onLengthChange()"></td>
+                        <td><input class="form-control" type="text" [(ngModel)]="item.E"></td>
+                        <td><input class="form-control" type="text" [(ngModel)]="item.F"></td>
+                        <td><input class="form-control" type="text" [(ngModel)]="item.G"></td>
+                        <td><input class="form-control" type="text" [(ngModel)]="item.PinSize" readonly>
+                        </td>
+                        <td><input class="form-control" type="text" [(ngModel)]="item.Length" readonly>
+                        </td>
+                        <td><input class="form-control" type="text" [(ngModel)]="item.Weight"></td>
+                        <td><input class="form-control" type="text" [(ngModel)]="item.Remarks"
+                                style="min-width: 120px;"></td>
+                        <td><i (click)="updateData()">A</i></td>
+                    </tr> -->
+                </ng-container>
+            </tbody>
+
+        </table>
+        <!-- <span><i class="bi bi-plus-circle" ngbTooltip="Add Row"></i></span> -->
+    </div>
+</div>
+<div class="Row" style="margin-left: 20px; margin-top: 10px; font-size: medium;">
+    <h4>Bill Of Materials (材料清单):</h4>
+</div>
+<div class="container-fluid">
+    <!-- <h1>Tab Example</h1> -->
+    <ul class="nav nav-tabs" id="myTabs" role="tablist">
+        <li class="nav-item" (click)="getTab('CAB')">
+            <a class="nav-link active" id="tab1-tab" data-toggle="tab" href="#tab1" role="tab" aria-controls="tab1"
+                aria-selected="true">Cut and Bend</a>
+        </li>
+        <li class="nav-item" (click)="getTab('BEAM')">
+            <a class="nav-link" id="tab2-tab" data-toggle="tab" href="#tab2" role="tab" aria-controls="tab2"
+                aria-selected="false">Beam Stirrup Mesh</a>
+        </li>
+        <li class="nav-item" (click)="getTab('COLUMN')">
+            <a class="nav-link" id="tab3-tab" data-toggle="tab" href="#tab3" role="tab" aria-controls="tab3"
+                aria-selected="false">Column Link Mesh</a>
+        </li>
+        <li class="nav-item" (click)="getTab('CTSMESH')">
+            <a class="nav-link" id="tab4-tab" data-toggle="tab" href="#tab4" role="tab" aria-controls="tab4"
+                aria-selected="false">Cut-To-Size Mesh</a>
+        </li>
+        <li class="nav-item" (click)="getTab('DRAWING')">
+            <a class="nav-link" id="tab5-tab" data-toggle="tab" href="#tab5" role="tab" aria-controls="tab5"
+                aria-selected="false">Drawings</a>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabsContent">
+        <div *ngIf="LoadCABContent==true" class="tab-pane fade show active" #tab1 id="tab1" role="tabpanel"
+            aria-labelledby="tab1-tab">
+            <app-cabprc [selectedRow]="selectedRow"></app-cabprc>
+        </div>
+        <div *ngIf="LoadBEAMContent==true" class="tab-pane fade" #tab2 id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
+            <app-beamprc [selectedRow]="selectedRow"></app-beamprc>
+        </div>
+        <div *ngIf="LoadColumnContent==true" class="tab-pane fade" #tab3 id="tab3" role="tabpanel" aria-labelledby="tab3-tab">
+            <app-columnprc [selectedRow]="selectedRow"></app-columnprc>
+        </div>
+        <div *ngIf="LoadCTSMeshContent==true" class="tab-pane fade" #tab4 id="tab4" role="tabpanel" aria-labelledby="tab4-tab">
+            <app-ctsmeshprc [selectedRow]="selectedRow"></app-ctsmeshprc>
+        </div>
+        <div *ngIf="LoadDrawingContent==true" class="tab-pane fade" #tab5 id="tab5" role="tabpanel" aria-labelledby="tab5-tab">
+        <app-drawingprc></app-drawingprc>    
+        </div>
+    </div>
+</div>
+
+
+<!-- <div>
+     Notes: All dimensions and length are in "mm" unless otherwise. Maximum number of various bar items is 26.
+ </div> -->

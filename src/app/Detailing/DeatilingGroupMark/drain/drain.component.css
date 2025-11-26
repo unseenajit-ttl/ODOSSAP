@@ -1,0 +1,65 @@
+.set_footer {
+    width: 70px;
+}
+
+/* .Set-margin {
+    margin-left: 60px;
+    margin-top: 2px;
+    margin-bottom: 10px;
+} */
+
+.startend {
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+    width: 105px;
+}
+.table-borderless tr td{
+  border: none !important;
+}
+.table-borderless{
+  border: none !important;
+}
+
+tfoot tr {
+  position: sticky;
+  background: #c1c1c1 !important;
+  font-weight: 600;
+  font-size: 18px !important;
+}
+.hover-change {
+  background-color: lightgreen; /* Original color */
+  transition: color 0.3s ease; /* Smooth transition */
+}
+
+.hover-change:hover {
+  background-color: #8bcce8; /* Color when hovered */
+}
+
+.table-responsive {
+  overflow-x: auto; /* Allows the table to scroll horizontally */
+}
+
+.sticky-column {
+  position: sticky;
+  right: 0; /* This sticks the column to the right side */
+  z-index: 999; /* Makes sure the column stays on top of other content */
+}
+
+.sticky-column-body {
+  position: sticky;
+  right: 0; /* This sticks the column to the right side */
+  background-color: white; /* Ensures background color stays consistent */
+  z-index: 999; /* Makes sure the column stays on top of other content */
+}
+
+.table-bordered th,
+.table-bordered td {
+  white-space: nowrap; /* Prevents table from wrapping text */
+}
+
+.sticky-footer {
+position: sticky !important;
+right: 0 !important;
+background: #c1c1c1;
+}

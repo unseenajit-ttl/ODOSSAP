@@ -1,0 +1,688 @@
+div {
+  margin: 1px 0 0 0 !important;
+
+}
+
+table thead {
+  position: sticky;
+}
+
+.table-responsive {
+  max-height: 600px;
+}
+
+#inputdropdown {
+  border: 1px solid #ced4da;
+  /* padding-top: 15px; */
+}
+
+#OtherDetails {
+  border: 1px solid #ced4da;
+}
+
+table {
+  max-width: 5000px;
+}
+
+td.resize-column {
+  overflow: auto;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  resize: horizontal;
+}
+
+table td {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 80px;
+  font-size: small;
+}
+
+.slick-gridmenu-icon {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  vertical-align: middle;
+  margin-right: 4px;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+.settingsMenu {
+  padding: 5px;
+  min-height: 132px;
+  resize: vertical;
+  z-index: 100;
+  background-color: #e3e4e7;
+  width: fit-content;
+  height: 400px;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  position: absolute;
+  right: 0;
+}
+
+.settingsMenu table tr {
+  font-size: 13px;
+  flex-wrap: nowrap;
+  display: flex;
+  padding: 2px;
+}
+
+.input-type {
+  height: 25px;
+}
+
+ng-select {
+  height: 25px !important;
+}
+
+.check-contract-red {
+  .ng-select-container {
+    /* white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; */
+    background-color: red !important;
+    /* color: white; */
+  }
+}
+
+.check-contract-yellow {
+  .ng-select-container {
+    /* white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; */
+    background-color: #ffff00 !important;
+    /* color: white; */
+  }
+}
+
+.set-color-red {
+
+  .ng-select.ng-select-single .ng-select-container .ng-value-container,
+  .ng-select.ng-select-single .ng-select-container .ng-value-container .ng-value {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background-color: red;
+    color: white;
+  }
+}
+
+.NumberColor {
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  padding: 0px;
+  background: #f20707;
+  border: 2px solid #666;
+  color: #f8f3f3;
+  text-align: center;
+  font: 14px Arial, sans-serif;
+  font-weight: 400;
+}
+
+.AttachmentNumber {
+  color: red;
+  font-size: larger;
+}
+
+.badge {
+  /* top: -17px;
+  right: -15px; */
+  /* padding: 5px 10px; */
+  padding: 4px 7px;
+  margin-left: 3px;
+  border-radius: 50%;
+  background-color: red;
+  color: white;
+}
+
+table {
+  position: relative;
+  width: 100%;
+  border-radius: 100%;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 12px;
+  box-sizing: border-box;
+}
+
+OnHold {
+  background: lightcoral !important;
+}
+
+.CancelledOrder {
+  background: gray !important;
+}
+
+.example-viewport {
+  /* height: 450px !important; Adjust the height based on your requirement */
+  width: 100%;
+}
+
+.errorMessage {
+  font-size: smaller;
+  color: red;
+}
+
+.selectedRow {
+  background: #7eb9eb !important;
+}
+
+
+/* tr:nth-child(odd) {
+  background: rgba(0, 0, 0, 0.05);
+} */
+.bar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 10px !important;
+  margin: 3px !important;
+  /* margin: 0 -16px 0 16px; */
+  justify-self: flex-end;
+  border-left: 2px solid transparent;
+  border-right: 2px solid transparent;
+  /* background: blueviolet; */
+  background-clip: content-box;
+  cursor: col-resize !important;
+  opacity: 5;
+  z-index: 50 !important;
+  cursor: -webkit-col-resize !important;
+}
+
+.bar:hover,
+.bar:active {
+  cursor: col-resize !important;
+  cursor: -webkit-col-resize !important;
+  opacity: 1;
+}
+
+.settings-menu {
+  color: #003ec4;
+  background: white;
+  border: 1px solid #003ec4;
+}
+
+.settings-menu:hover {
+  color: white;
+  background: #003ec4;
+}
+
+.collapse-menu {
+  color: #003ec4;
+  background: white;
+  border: 1px solid #003ec4;
+}
+
+.collapse-menu:hover {
+  color: white;
+  background: #003ec4;
+}
+
+.new-table thead {
+  position: sticky !important;
+  z-index: 12;
+  background-color: #003ec4 !important;
+}
+
+.new-table tbody {
+  position: sticky !important;
+  z-index: 10;
+}
+
+.new-table tbody td {
+  position: sticky !important;
+  z-index: 10;
+}
+
+.search-head th {
+  background-color: #eeeeee !important;
+  color: black;
+}
+
+table th {
+  background-color: #e2e0e0 !important;
+  color: black;
+}
+
+.FixedColumn {
+  z-index: 20 !important;
+  /* background-color: white !important; */
+  /* opacity: 0.5; */
+}
+
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  width: 300px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.cdkDrag :hover {
+  cursor: col-resize !important;
+}
+
+/* .min-height {
+  height: 100% !important;
+} */
+
+.highlight-bbs {
+  background: #ff0000b0;
+}
+
+.border-less-btn {
+  border: none;
+  background: none;
+}
+
+.color-legends {
+  max-width: 100%;
+}
+
+@media screen and (min-width: 1440px) {
+  .min-height {
+    height: 65vh !important;
+    /* Adjust the height for large screens */
+  }
+
+  .weight-row {
+    margin-top: 110px !important;
+    /* margin-bottom: 10px !important; */
+  }
+}
+
+body {
+  perspective: none !important;
+}
+
+.Order-details-cancel {
+  color: red;
+}
+
+.Order-details-cancel:hover {
+  cursor: pointer;
+}
+
+.details-row-highlight {
+  background-color: rgba(116, 171, 243, 0.61);
+}
+
+.remark-ind-color {
+  background-color: lightcoral !important;
+}
+
+.text-overlap {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.example-viewport {
+  height: 43vh;
+  /* Adjust the height based on your requirement */
+  width: 100%;
+}
+
+.example-item {
+  height: 50px;
+}
+
+/* .table-bordered,
+.table-bordered td {
+  border: 3px solid black !important;
+  border-radius: 0px !important;
+} */
+
+.form-control {
+  display: block;
+  /* width: 100%; */
+  /* height: calc(1.5em + .75rem + 2px); */
+  padding: .375rem .75rem;
+  /* font-size: 1rem; */
+  font-weight: 400;
+  line-height: 1.5;
+  color: black !important;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: .25rem;
+  transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+  height: 25px !important;
+}
+
+:host::ng-deep .ng-select .ng-select-container {
+  color: #333;
+  background-color: #fff;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  min-height: 27px !important;
+  align-items: center;
+}
+
+.form-label {
+  margin-bottom: 0.5rem;
+  margin-top: 2px !important;
+  margin-right: -1px;
+}
+
+::ng-deep .mat-mdc-form-field-flex {
+  display: inline-flex;
+  align-items: baseline;
+  box-sizing: border-box;
+  width: 100%;
+  height: 25px !important;
+}
+
+.mat-mdc-form-field-has-icon-suffix .mat-mdc-text-field-wrapper {
+  padding-right: 0;
+  border: 1px solid #ced4da;
+  height: 31px !important;
+}
+
+:host::ng-deep .ng-select div,
+.ng-select input,
+.ng-select span {
+  box-sizing: border-box;
+  font-size: small !important;
+}
+
+:host::ng-deep .mat-mdc-form-field-subscript-wrapper {
+  box-sizing: border-box;
+  width: 100%;
+  position: relative;
+  display: none;
+}
+
+.Order-Details table {
+  margin: 0px;
+}
+
+.btn-sm {
+  /* margin-top: 8px; */
+  /* padding-left: 9px;
+  padding-right: 9px; */
+  font-size: 0.7rem;
+  line-height: 14px;
+  border-radius: 13px;
+  width: 90px !important;
+  height: 30px !important;
+}
+
+table,
+th,
+td {
+  border: 1px solid #b1abab !important;
+}
+
+cdk-virtual-scroll-viewport {
+  height: 100%;
+
+  table {
+    height: 100%;
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    color: #000000;
+    overflow-x: auto;
+
+    thead tr th {
+      top: 0;
+      max-height: 30px;
+      border-bottom: 1px solid #d0d0d0;
+      padding: 7px 20px 7px 7px;
+      position: sticky;
+      background-color: #ffffff;
+      font-weight: bold;
+      overflow-x: auto;
+    }
+
+    tbody tr td {
+      max-height: 25px;
+      border-bottom: 1px solid #d0d0d0;
+      padding: 0px;
+      overflow-x: auto;
+    }
+  }
+
+  .text-link {
+    text-decoration: underline;
+    color: blue;
+    cursor: pointer;
+  }
+
+  .text-link:hover {
+    color: red;
+  }
+}
+
+.table-responsive {
+  height: 100%;
+
+  table {
+    height: 100%;
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    color: #000000;
+    overflow-x: auto;
+
+    thead tr th {
+      top: 0;
+      max-height: 30px;
+      border-bottom: 1px solid #d0d0d0;
+      padding: 7px 20px 7px 7px;
+      position: sticky;
+      background-color: #ffffff;
+      font-weight: bold;
+      overflow-x: hidden;
+    }
+
+    tbody tr td {
+      max-height: 25px;
+      border-bottom: 1px solid #d0d0d0;
+      padding: 0px;
+      overflow-x: hidden;
+    }
+  }
+
+  .text-link {
+    text-decoration: underline;
+    color: blue;
+    cursor: pointer;
+  }
+
+  .text-link:hover {
+    color: red;
+  }
+}
+
+div label {
+  font-weight: bold;
+  font-size: 14 px !important;
+  margin-bottom: 0px;
+}
+
+
+#buttons {
+  justify-content: end;
+  margin-right: 7px !important;
+}
+
+.FixedColumn {
+  position: sticky;
+  left: 0;
+  z-index: 10;
+  background-color: white;
+  /* or whatever color fits your table */
+}
+
+.table-responsive-custom {
+  overflow-x: inherit !important;
+}
+
+.table tr {
+  font-size: 15px !important;
+  padding-left: 20px;
+}
+
+
+::ng-deep .nav-tabs .nav-link.active,
+.nav-tabs .nav-item.show .nav-link {
+  background-color: #D6E6F3 !important;
+  color: #000 !important;
+  /* border-radius: 12px 12px 0 0; */
+
+  border: 1px solid #0880ae;
+  border-bottom: 0;
+  width: 160px;
+}
+
+
+::ng-deep .nav-tabs .nav-item {
+  margin-bottom: -1px;
+  /* width: 1500px; */
+  text-align: center;
+  border: 1px solid #b7c6c5;
+  font-size: small;
+  font-weight: bold;
+  background-color: #2F71AB !important;
+
+}
+
+::ng-deep .nav-tabs .nav-link {
+  border: 1px solid transparent;
+  /* border-top-left-radius: 0rem;
+    border-top-right-radius: 0rem */
+  width: 170px;
+  color: white !important;
+}
+
+::ng-deep .mat-mdc-text-field-wrapper .mat-mdc-form-field-input-control {
+  height: auto;
+  height: 41px !important;
+}
+
+
+:host ::ng-deep .mat-mdc-form-field-has-icon-suffix .mat-mdc-text-field-wrapper {
+  padding: 0;
+  border: 1px solid #ced4da;
+  height: 34px !important;
+  text-align: center;
+  padding-bottom: 10px;
+  padding-left: 10px;
+}
+
+.table-bordered thead:first-of-type th {
+  background-color: #003ec4 !important;
+  color: black;
+  padding: 10px 0 !important;
+}
+
+td {
+
+  font: 12px Helvetica, Arial, sans-serif;
+}
+
+.Order-Details .table-bordered td {
+  padding: 3px !important;
+  font-weight: bold;
+}
+
+:host ::ng-deep .ng-select .ng-select-container {
+  height: 34px !important;
+}
+
+.form-control {
+  height: 34px !important
+}
+
+::ng-deep .new-table td {
+  padding: 0px !important;
+  height: 25px !important;
+  max-height: 25px !important;
+}
+
+::ng-deep .new-table tr {
+  height: 25px !important;
+  max-height: 25px !important;
+}
+
+.mat-tooltip {
+  display: none !important;
+}
+
+.tableHeading th {
+  overflow: hidden;
+  word-break: normal;
+  overflow-wrap: normal;
+  white-space: normal;
+}
+
+.search-head th input {
+  padding: 3px !important;
+}
+
+::ng-deep .mdc-text-field--no-label:not(.mdc-text-field--textarea) .mat-mdc-form-field-input-control.mdc-text-field__input,
+.mat-mdc-text-field-wrapper .mat-mdc-form-field-input-control {
+  border: none !important;
+}
+
+.tableHeading th span {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  /* Limits to 2 lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  /* Hides overflow */
+  text-overflow: ellipsis;
+  /* Optionally add ellipsis for overflow */
+  word-break: break-word;
+  /* Allows breaking within words */
+  white-space: normal;
+  /* Wraps text */
+  max-height: 40px;
+  /* Adjust depending on font-size and line-height */
+  line-height: 1.2em;
+  /* Set to control the spacing between lines */
+}
+
+.col-md-12 {
+  padding: 0px;
+}
+
+.weight-row {
+  margin-top: 35px !important;
+  margin-bottom: 10px !important;
+}
+
+@media screen and (min-width: 2200px) {
+  .weight-row {
+    margin-top: 50px !important;
+    /* margin-bottom: 10px !important; */
+  }
+}

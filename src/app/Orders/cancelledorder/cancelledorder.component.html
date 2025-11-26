@@ -1,0 +1,269 @@
+<div class="container-fluid">
+  <div class="logo2">
+    <div class="card m-1">
+      <h3 class="card-header d-flex flex-column justify-content-center">
+        <span> <img src="../../../assets/imagesuiux/cancelled.png" style="width: 40px;height: 40px;">
+        <b> Cancelled Orders (取消的订单)</b>
+      </span>
+      </h3>
+      <div class="card-body" style="margin-top:-50px !important;">
+        <div class="filter ">
+          <form [formGroup]="canceledorderForm" (ngSubmit)="onSubmit()">
+            <div class="row mobile-customer-project">
+              <ngb-accordion #acc="ngbAccordion" [activeIds]="['panel1']" class="mobile2"
+                style="padding-top: 14px;">
+                <ngb-panel id="panel1">
+                  <!-- <ng-template ngbPanelTitle>
+                                    <span style="color:#0880ae;"><b>Filters</b></span>
+                                </ng-template> -->
+                  <ng-template ngbPanelContent>
+                    <div class="card-body" style="padding: 0.5%;">
+                      <div class="row">
+                        <div class="col-md-3">
+                          <label class="form-label">Customer</label> <br>
+                          <ng-select formControlName="customer" class="w-auto" (change)="changecustomer($event)">
+                            <ng-option *ngFor="let sList of CustomerList" [value]="sList.CustomerCode">
+                            {{ sList.CustomerName }} ({{sList.CustomerCode}})
+                          </ng-option>
+                          </ng-select>
+                        </div>
+
+                        <div class="col-md-3">
+                          <label class="form-label">Project</label> <br>
+                          <ng-select formControlName="project" [(ngModel)]="SelectedProjectCodes" [closeOnSelect]="false"
+                            class="w-auto" [multiple]="true" (change)="changeproject($event)"
+                            style="max-height: 65px;z-index:5">
+                            <ng-template ng-header-tmp *ngIf="ProjectList.length != 0">
+                              <div style="justify-content: space-between;display: flex;">
+                                <button class="btn btn-link" style="padding:4px;border:0px;margin:0px;"
+                                  (click)="selectAllProject()">Select
+                                  All</button>
+                                <button class="btn btn-link" style="padding:4px;border:0px;margin:0px;"
+                                  (click)="clearAllProject()">Clear
+                                  All</button>
+                              </div>
+                            </ng-template>
+                            <ng-option *ngFor="let sList of ProjectList" [value]="sList.ProjectCode" >
+                              {{ sList.ProjectTitle }}
+                            </ng-option>
+                          </ng-select>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-template>
+                </ngb-panel>
+              </ngb-accordion>
+            </div>
+          </form>
+          <div class="row logo2 customerandprojecthideonweb">
+            <div _ngcontent-auh-c182="" class="col-md-7"><label _ngcontent-auh-c182="" class="form-label"></label><br _ngcontent-auh-c182=""><br><b _ngcontent-auh-c182="">Select All Project button to Include All Optional Projects (选择全部项目按钮至包括全部可选工程项目)</b>
+            </div>
+            <div class="col-md-4 float-right">
+              <label class="form-label"></label> <br>
+              <div class="input-group flex-nowrap " *ngIf="searchResult" style="padding-right: 30px;">
+                <input class="form-control" type="search" placeholder="Search " value="search" id="example-search-input"
+                  name="search" [(ngModel)]="searchText" 
+                  [ngModelOptions]="{standalone: true}">
+                <span class="input-group-append  ms-n5">
+                  <span class="input-group-text ">
+                    <i class="bi bi-search"></i>
+                  </span>
+                </span>
+              </div>
+            </div>
+            <div class="col-md-1 ">
+              <label class="form-label"></label> <br>
+              <div class="input-group flex-nowrap ">
+                <div class="mr-0 d-flex" style="margin-top: -6px;">
+                  <span class=" btn input-group-text ">
+                    <i class="material-icons" style="font-size:20px;" ngbTooltip="Download Excel"
+                      (click)="ExportCancelledOrdersToExcel()">download</i>
+                  </span>
+                  <span class="btn input-group-text" (click)="editColumn = !editColumn" (mouseenter)="HoverSetting=true"
+                    (mouseleave)="HoverSetting=false"><i class="bi bi-gear-fill" style="font-size: medium; z-index: 1"
+                      ngbTooltip="Edit Column"></i></span>
+                  </div>
+              </div>
+
+            </div>
+
+          </div>
+          <div class="setting-menu float-right logo2"
+            [class.mat-elevation-z8]="true" *ngIf="editColumn" (mouseenter)="HoverSetting=true" (mouseleave)="HoverSetting=false">
+            <div class="d-flex heading">
+              <div class="d-flex" style="width: 50%; justify-content: space-between">
+                <label class="fixed-xolumn-head">Fixed Columns: </label>
+                <input class="form-control" type="number" max="7" min="0" [(ngModel)]="fixedColumn"
+                  (change)="UpdateFixedColumns(fixedColumn)" />
+              </div>
+              <button type="button" class="btn-close" aria-label="Close" (click)="editColumn = false"></button>
+            </div>
+            <hr style="margin: 10px" />
+            <div class="d-flex" style="
+                                    justify-content: space-between;
+                                    align-items: flex-end;
+                                    padding-left: 5px;
+                                  ">
+              <span>Visible Columns</span>
+            </div>
+            <div class="d-flex">
+              <table class="table table-bordered mobile2" style="height: fit-content" style="min-width: 0">
+                <tbody>
+                  <tr *ngFor="let headerColumn of splitArray(1,cancelledColumns);">
+                    <td>{{headerColumn.displayName}}</td>
+                    <td><input type="checkbox" [(ngModel)]="headerColumn.isVisible" [checked]="headerColumn.isVisible"
+                        (ngModelChange)="SaveColumnsSetting()"></td>
+                  </tr>
+                </tbody>
+              </table>
+              <table class="table table-bordered mobile2" style="height: fit-content" style="min-width: 0">
+                <tbody>
+                  <tr *ngFor="let headerColumn of splitArray(0,cancelledColumns);">
+                    <td>{{headerColumn.displayName}}</td>
+                    <td><input type="checkbox" [(ngModel)]="headerColumn.isVisible" [checked]="headerColumn.isVisible"
+                        (ngModelChange)="SaveColumnsSetting()"></td>
+                  </tr>
+                </tbody>
+              </table>
+            
+            </div>
+          </div>
+          <div class="col-md-3 float-right" style="display: flex;justify-content:right">
+          </div>
+          <div *ngIf="CancelOrderLoading" style="z-index: 500">
+            <div id="pause" class="d-flex align-items-center justify-content-center">
+              <div id="spinner" class="loader"></div>
+            </div>
+          </div>
+          <div>
+            <!-- <div> -->
+            <div class=" table-responsive table-wrapper-scroll-y my-custom-scrollbar order-table"
+              style="max-height: 409px;height: 409px;">
+              <form [formGroup]="searchForm">
+                <table role="table" class="table new-table" style="max-height: 409px;">
+                  <thead role="rowgroup" id="CancelOrderHeading" [ngStyle]="{'position':'sticky','top': '0px'}">
+                    <tr role="row" cdkDropList cdkDropListOrientation="horizontal" [cdkDropListData]="cancelledColumns"
+                      (cdkDropListDropped)="dropCol($event)">
+                      <ng-container *ngFor="let headerColumn of cancelledColumns;index as headIndex">
+                        <th #thNomVar [style.cursor]="'pointer'"
+                          [style.left]="(headIndex+1) <= fixedColumn ? getRightWidthTest(thNomVar,headIndex) : 'inherit'"
+                          [style.display]="'table-cell'" [class.FixedColumn]="(headIndex+1) <= fixedColumn"
+                          (click)="toggleSortingOrder(headerColumn.field,headerColumn.colName)" *ngIf="headerColumn.isVisible" style="background-color: #003ec4 ; border-radius: 0px;" cdkDrag>
+                          <div class="d-flex" [style.max-width.px]="headerColumn.resizeWidth" style="
+                          align-items: center;
+                          justify-content: space-between;
+                        ">
+                            <span  style="color: white; font-size: medium;" [style.max-width.px]="headerColumn.resizeWidth"> {{headerColumn.displayName}}<br />{{headerColumn.chineseDisplayName}}</span><i
+                              class="bi bi-arrow-up" *ngIf="
+                                                  !isAscending && currentSortingColumn == headerColumn.field"></i><i
+                              class="bi bi-arrow-down" *ngIf="
+                                                  isAscending && currentSortingColumn == headerColumn.field"></i>
+                          </div>
+                          <div [style.width.px]="headerColumn.resizeWidth" *ngIf="isMobile > 768"></div>
+                        </th>
+                      </ng-container>
+                      <th  style="color: white; font-size: medium;border-radius: 0px;">
+                        <div role="columnheader">Action <br>行动</div>
+                      </th>
+                    </tr>
+                  </thead>
+                  <thead id="searchBar" *ngIf="toggleFilters"
+                    [ngStyle]="{'position':'sticky','top.px': getMinHeightIncoming('CancelOrderHeading')}">
+                    <tr>
+                      <ng-container *ngFor="let searchColumn of cancelledColumns;index as j">
+                        <th [style.left]="(j+1) <= fixedColumn ? searchColumn.left+'px !important' : 'inherit'"
+                          [style.display]="'table-cell'" [style.width]="searchColumn.width+ 'px'"
+                          [class.FixedColumn]="(j+1) <= fixedColumn" style="text-align: center;background-color: white !important;"
+                          *ngIf="searchColumn.isVisible && searchColumn.controlName != 'RequiredDate'">
+                          <input class="form-control" formControlName="{{searchColumn.controlName}}" />
+                          <div class="bar" appColumnResize [colName]="searchColumn.controlName" [colIndex]="j"
+                            (widthChangeEvent)="onWidthChange($event)" cdkDrag></div>
+                        </th>
+                        <th class="resize-column" style="text-align: center; background-color: white !important;"
+                        [style.left]="(j+1) <= fixedColumn ? searchColumn.left+'px !important' : 'inherit'"
+                          [style.display]="'table-cell'" [style.width]="searchColumn.width+ 'px'"
+                          [class.FixedColumn]="(j+1) <= fixedColumn"
+                          *ngIf="searchColumn.isVisible && searchColumn.controlName == 'RequiredDate'">
+                          <app-bootsrtap-date-range-picker-for-search [clearInput]="clearInput"
+                            [controlName]="searchColumn.controlName"
+                            (dateRangeSelection)="onGetDateSelected($event)"></app-bootsrtap-date-range-picker-for-search>
+                        </th>
+                      </ng-container>
+                      <th style="background-color: white !important;"><span style="margin:auto; padding:2px;">
+                          <i class="fa fa-refresh" ngbTooltip="Reset" style=" color:red;font-size:20px;"
+                            (click)="Reset_Filter()"></i>
+
+                          &nbsp;
+                          <label (click)="Reset_Filter()">Clear</label>
+                        </span></th>
+                    </tr>
+                  </thead>
+                  <tbody role="rowgroup">
+                    <tr class="no-record" *ngIf="canceledorderarray.length==0">
+                      <td colspan="15" style="text-align: center;">
+                        No Record Found
+                      </td>
+                    </tr>
+                    <ng-container
+                      *ngFor="let item of canceledorderarray |filter:searchText ; index as i">
+                      <tr role="row" [ngClass]="{'highlight': selectedRowIndex === i}" [ngStyle]="{'background-color': giveRowcolor(item)}"(click)="selectRow(item,canceledorderarray,$event)" [class.selected-draft-table]="item.rowSelected"  (click)="changeColor(i)">
+                        <ng-container *ngFor="let showDataColumn of cancelledColumns;index as searchIndex">
+                          <td [style.width]="showDataColumn.width+ 'px !important'"
+                            [style.left]="(searchIndex+1) <= fixedColumn ? showDataColumn.left+'px !important' : 'inherit'"
+                            [style.display]="'table-cell'"
+                            [style.background-color]="(searchIndex+1) <= fixedColumn ? giveRowcolor(item): ''"
+                            [class.FixedColumn]="(searchIndex+1) <= fixedColumn" *ngIf="showDataColumn.isVisible"> {{
+                            item[showDataColumn.colName] }}</td>
+                        </ng-container>
+                        <td role="cell">
+                          <i class="bi bi-eye" ngbTooltip="View" *ngIf="item.OrderSource == 'DIGIOS'" (click)="ViewOrderDetails(item)"
+                            style="font-size:medium;"></i>
+                        </td>
+                      </tr>
+                    </ng-container>
+                  </tbody>
+                </table>
+              </form>
+              <!-- </div> -->
+            </div>
+            <div class="row">
+              <!-- <div class="col-md-9">
+                <div class="d-flex mt-2" style="flex-wrap:wrap">
+                  <ngb-pagination [collectionSize]="canceledorderarray.length" [(page)]="currentPage"
+                    [pageSize]="itemsPerPage" (pageChange)="onPageChange(currentPage); " [maxSize]="2"
+                    [boundaryLinks]="false" *ngIf="searchResult">
+                    <ng-template ngbPaginationPrevious>Prev</ng-template>
+                    <ng-template ngbPaginationNext>Next</ng-template>
+                  </ngb-pagination>
+
+                  <select class="custom-select mr-2 ml-3" style="width: auto" [(ngModel)]="itemsPerPage"
+                    (ngModelChange)="OnPageSizeChange(itemsPerPage);">
+                    <option [ngValue]="5">5 </option>
+                    <option [ngValue]="10">10 </option>
+                    <option [ngValue]="20">20 </option>
+                    <option [ngValue]="50">50 </option>
+                    <option [ngValue]="100">100 </option>
+                  </select>
+                  <span style="margin-top: 5px;">Items per page</span>
+
+                </div>
+              </div> -->
+              <div class="col-md-3 float-right" style="display: flex;justify-content: flex-end;" *ngIf="!disablesubmit">
+                <button class="btn btn-primary btn-sm" type="button" style="width:29%"
+                  [disabled]="disablesubmit">Recover</button>
+              </div>
+
+            </div>
+
+            <div class="row d-flex">
+              <div class="col md-6">
+                <span style="font-weight: bold;"> Total Cancelled Orders : </span>
+                <span >{{(canceledorderarray.length?canceledorderarray.length:0)}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

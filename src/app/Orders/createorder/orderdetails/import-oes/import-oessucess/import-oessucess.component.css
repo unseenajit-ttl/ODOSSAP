@@ -1,0 +1,14 @@
+.modal-header {
+  background: #a5a7ab8c;
+  font-weight: 500;
+  font-size: x-large;
+}
+
+.modal-title {
+  font-size: x-large;
+  font-weight: 500;
+}
+#output {
+  font-size: larger;
+  font-weight: 500;
+}

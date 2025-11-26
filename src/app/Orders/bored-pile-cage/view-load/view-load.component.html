@@ -1,0 +1,58 @@
+<div cdkDrag cdkDragRootElement=".your-custom-dialog-class">
+<div class="modal-header" cdkDragHandle>
+  <h3>System Generated Loads (系统生成的装载)</h3>
+</div>
+<div class="modal-body copy-grid-table">
+  <div *ngIf="isLoading" style="z-index: 500">
+    <div id="pause" class="d-flex align-items-center justify-content-center">
+      <div id="spinner" class="loader"></div>
+    </div>
+  </div>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>S/No</th>
+        <th>Pile Dia</th>
+        <th>Cage Type</th>
+        <th>No of Main Bars</th>
+        <th>Main Bar Shape</th>
+        <th>Cage Length</th>
+        <th>Lap Length</th>
+        <th>Link Dia-Spacing-Length</th>
+        <th>End Length</th>
+        <th>Combination of Cages</th>
+        <th>Weight (MT)</th>
+        <th>Order Qty</th>
+        <th>Load Qty</th>
+        <th>Load S/N</th>
+        <th>Per Set</th>
+        <th>Cage Mark</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let bpc of loadBPCData;index as i">
+        <td>{{i+1}}</td>
+        <td>{{bpc.pile_dia}}</td>
+        <td>{{bpc.pile_type}}</td>
+        <td>{{bpc.main_bar_ct}}</td>
+        <td>{{bpc.main_bar_shape}}</td>
+        <td>{{bpc.cage_length}}</td>
+        <td>{{bpc.lap_length}}</td>
+        <td>{{bpc.spiral_link_spacing}}</td>
+        <td>{{bpc.end_length}}</td>
+        <td>{{bpc.cage_location}}</td>
+        <td>{{bpc.cage_weight}}</td>
+        <td>{{bpc.cage_qty}}</td>
+        <td>{{bpc.load_qty}}</td>
+        <td>{{bpc.load_id}}</td>
+        <td>{{bpc.per_set}}</td>
+        <td>{{bpc.bbs_no}}</td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="dismissModal()">Close</button>
+</div>
+</div>

@@ -1,0 +1,567 @@
+<div class="modal-header">
+  <h4 class="modal-title" *ngIf="mode===''">Add New</h4>
+  <h4 class="modal-title" *ngIf="mode==='edit'">Edit Record</h4>
+  <i class="fa-solid fa-xmark"></i>
+  <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+
+</div>
+<div class="modal-body ">
+  <div class=" container">
+
+    <div class="row">
+      <form [formGroup]="prodcodeForm">
+        <div class="row">
+          <div class="col-md-2">
+            <label class="form-label"> Product Type</label>
+            <ng-select  [selectOnTab]="true"  formControlName="ProductCodeType" [(ngModel)]="selectproductType"
+              (change)=" ChangeProductType($event)">
+              <ng-option *ngFor="let sList of ProductCodeTypeList" [value]="sList.ProductTypeID">
+                {{sList.ProductType}}
+              </ng-option>
+            </ng-select>
+            <span class="text-danger validator-message"
+              *ngIf="isformsubmit && prodcodeForm.controls['ProductCodeType'].invalid && prodcodeForm.controls['ProductCodeType'].errors && prodcodeForm.controls['ProductCodeType'].hasError('required')">*
+              Product type Required. </span>
+
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Product Code</label> <br>
+            <input type="text" formControlName="productcode" placeholder="Product Code" class="form-control"
+              [readOnly]="isReadOnly" />
+            <span class="text-danger validator-message"
+              *ngIf="isformsubmit && prodcodeForm.controls['productcode'].invalid && prodcodeForm.controls['productcode'].errors && prodcodeForm.controls['productcode'].hasError('required')">*
+              Product Code Required. </span>
+
+          </div>
+          <div class="col-md-3">
+            <label class="form-label"> Product Description </label> <br>
+            <input type="text" placeholder="Product Description" formControlName="description" class="form-control" />
+            <span class="text-danger validator-message"
+              *ngIf="isformsubmit && prodcodeForm.controls['description'].invalid && prodcodeForm.controls['description'].errors && prodcodeForm.controls['description'].hasError('required')">*
+              Product Description Required. </span>
+            &nbsp;
+          </div>
+          <div class="col-md-2" *ngIf="selectproductType==7">
+            <label class="form-label">Is RowMaterial</label> <br>
+            <div class=" row custom-control custom-switch" style="padding-left: 52px;">
+              <input type="checkbox" formControlName="isRowMaterial" class="custom-control-input"
+                id="add_IsRowMaterialSwitches" [checked]="is_RowMaterial" 
+                (change)=" is_RowMaterial=!is_RowMaterial; ChangeRowMaterial();">
+              <label class="custom-control-label" for="add_IsRowMaterialSwitches"></label>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <label class="form-label">Status</label> <br>
+            <div class=" row custom-control custom-switch" style="padding-left: 52px;">
+              <input type="checkbox" formControlName="meshstatus" class="custom-control-input" id="meshstatusSwitches"
+                [checked]="isshowstatus" (change)="isshowstatus=!isshowstatus">
+              <label class="custom-control-label" for="meshstatusSwitches"></label>
+            </div>
+          </div>
+
+        </div>
+      </form>
+
+      <!-- Core Cage -->
+      <div *ngIf="selectproductType==15">
+        <form [formGroup]="CORECAGEprodcodeForm">
+          <div class="row border rounded mt-1 pb-3  green-border">
+            <div class="col-md-4">
+              <label class="form-label"> SAP Material</label>
+              <ng-select  [selectOnTab]="true"  formControlName="sapmaterial" [(ngModel)]="selectsap"
+                (change)=" ChangesSAPMAterialCorecage($event)">
+                <ng-option *ngFor="let sList of coresapmaterialList" [value]="sList.MaterialCodeId">
+                  {{sList.MaterialCode}}
+                </ng-option>
+              </ng-select>
+              <span class="text-danger validator-message"
+                *ngIf="isformsubmit && CORECAGEprodcodeForm.controls['sapmaterial'].invalid && CORECAGEprodcodeForm.controls['sapmaterial'].errors && CORECAGEprodcodeForm.controls['sapmaterial'].hasError('required')">*
+                SAP Material Required. </span>
+
+            </div>
+
+            <div class="col-md-3">
+              <label class="form-label">Structure Element</label> <br>
+              <ng-select  [selectOnTab]="true"  formControlName="structureelement" [(ngModel)]="corecageselectedStruct" [readonly]="true"
+                [searchable]="false" [clearable]="false" style="height: auto;">
+                <ng-option *ngFor="let sList of structureList" [value]="sList.StructureElementTypeId">
+                  {{sList.StructureElementType}}
+                </ng-option>
+              </ng-select>
+              <span class="text-danger validator-message"
+                *ngIf="isformsubmit && CORECAGEprodcodeForm.controls['structureelement'].invalid && CORECAGEprodcodeForm.controls['structureelement'].errors && CORECAGEprodcodeForm.controls['structureelement'].hasError('required')">*
+                Structure Element Required. </span>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Weight/Run</label>
+              <input type="text" placeholder="Weight/Sqm " formControlName="Weightsqm" class="form-control" />
+              <span class="text-danger validator-message"
+                *ngIf="isformsubmit && CORECAGEprodcodeForm.controls['Weightsqm'].invalid && CORECAGEprodcodeForm.controls['Weightsqm'].errors && CORECAGEprodcodeForm.controls['Weightsqm'].hasError('required')">*
+                Weight/Sqm Required. </span>
+
+            </div>
+          </div>
+
+        </form>
+      </div>
+      <!-- CAP -->
+      <div *ngIf="selectproductType==4">
+        <form [formGroup]="CABprodcodeForm">
+          <div class="row border rounded mt-1 pb-3  green-border">
+            <div class="col-md-3">
+              <label class="form-label">Grade Type</label> <br>
+
+              <input type="text" formControlName="gradetype" placeholder="Grade Type" class="form-control" list="codes"
+                (change)=" ChangesDiameter($event)">
+              <datalist id="codes">
+                <option *ngFor="let sList of cabgradetypeList" [value]="sList.GradeType">{{sList.GradeType}}
+                </option>
+              </datalist>
+
+
+              <span class="text-danger validator-message"
+                *ngIf="isformsubmit && CABprodcodeForm.controls['gradetype'].invalid && CABprodcodeForm.controls['gradetype'].errors && CABprodcodeForm.controls['gradetype'].hasError('required')">*
+                Grade type Required. </span>
+            </div>
+            <div class=" col-md-3">
+              <label class="form-label">Diameter</label> <br>
+              <ng-select  [selectOnTab]="true"  formControlName="diameter" style="height: auto;" (change)=" ChangesDiameter($event)">
+                <ng-option *ngFor="let sList of Diameterlist" [value]="sList.item_id">
+                  {{sList.item_text}}
+                </ng-option>
+              </ng-select>
+              <span class="text-danger validator-message"
+                *ngIf="isformsubmit && CABprodcodeForm.controls['diameter'].invalid && CABprodcodeForm.controls['diameter'].errors && CABprodcodeForm.controls['diameter'].hasError('required')">*
+                Diameter Required. </span>
+
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">FG SAP Material</label> <br>
+              <ng-select  [selectOnTab]="true"  formControlName="fgmaterial" class="ng-selectcustomer">
+                <ng-option *ngFor="let sList of fgsamaterialList" [value]="sList.MaterialCodeId">
+                  {{sList.MaterialCode}}
+                </ng-option>
+              </ng-select>
+              <span class="text-danger validator-message"
+                *ngIf="isformsubmit && CABprodcodeForm.controls['fgmaterial'].invalid && CABprodcodeForm.controls['fgmaterial'].errors && CABprodcodeForm.controls['fgmaterial'].hasError('required')">*
+                FG SAP Material Required. </span>
+
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">RM SAP Material</label> <br>
+              <ng-select  [selectOnTab]="true"  formControlName="rmmaterial" class="ng-selectcustomer">
+                <ng-option *ngFor="let sList of rmsamaterialList" [value]="sList.MaterialCodeId">
+                  {{sList.MaterialCode}}
+                </ng-option>
+              </ng-select>
+              <span class="text-danger validator-message"
+                *ngIf="isformsubmit && CABprodcodeForm.controls['rmmaterial'].invalid && CABprodcodeForm.controls['rmmaterial'].errors && CABprodcodeForm.controls['rmmaterial'].hasError('required')">*
+                RM SAP Material Required. </span>
+
+
+            </div>
+          </div>
+          <div class="row border rounded mt-1 pb-3  blue-border">
+            <!-- <div class="col-md-3">
+
+              <label for="status" class="form-label">Status </label>
+              <div class=" row custom-control custom-switch m-0" id="status">
+                <input type="checkbox" class="custom-control-input" formControlName="status" id="customSwitches"
+                  [checked]="isshowstatus" (change)="isshowstatus=!isshowstatus">
+                <label class="custom-control-label" for="customSwitches">Active</label>
+              </div>
+
+
+
+            </div> -->
+
+            <div class="col-md-3">
+              <label class="form-label">Coupler</label> <br>
+              <div class=" row custom-control custom-switch m-0" id="couplerswitch">
+                <input type="checkbox" class="custom-control-input" formControlName="coupler" id="couplerSwitches"
+                  [checked]="isshowcupler" (change)="isshowcupler=!isshowcupler; ResetCoupler();">
+                <label class="custom-control-label" for="couplerSwitches">Coupler</label>
+              </div>
+
+
+            </div>
+            <div class="col-md-3">
+
+              <label class="form-label" *ngIf="isshowcupler">Coupler Type</label> <br>
+              <ng-select  [selectOnTab]="true"  *ngIf="isshowcupler" formControlName="couplertype" class="ng-selectcustomer">
+                <ng-option *ngFor="let sList of CouplerTypeList" [value]="sList.item_id">
+                  {{sList.item_text}}
+                </ng-option>
+              </ng-select>
+            </div>
+
+          </div>
+
+        </form>
+      </div>
+      <!-- MESH -->
+      <div *ngIf="selectproductType==7 && is_RowMaterial==false">
+        <form [formGroup]="MESHprodcodeForm">
+          <div class="row border rounded pb-3  green-border">
+            <div class="col" style="min-width:25%">
+              <label class="form-label"> SAP Material</label>
+              <ng-select  [selectOnTab]="true"  formControlName="meshsapmaterial"  [searchable]="true" [clearable]="true"
+                [(ngModel)]="selectMeshsap" (change)="Changesap($event)">
+                <ng-option *ngFor="let sList of MeshSAPMaterialList" [value]="sList.MaterialCodeId">
+                  {{sList.MaterialCode}}
+                  <!-- {{sList.MaterialCodeId}} -->
+
+                </ng-option>
+              </ng-select>
+              <span class="text-danger validator-message"
+                *ngIf="isformsubmit && MESHprodcodeForm.controls['meshsapmaterial'].invalid && MESHprodcodeForm.controls['meshsapmaterial'].errors && MESHprodcodeForm.controls['meshsapmaterial'].hasError('required')">*
+                Sap Material Required. </span>
+            </div>
+            <div class="col" style="min-width:15%">
+              <label class="form-label"> Main Wire Space</label>
+              <input type="text" placeholder="MW Space" formControlName="mwspace"
+                [value]="MESHprodcodeForm.controls['mwspace'].value" class="form-control" />
+              <span class="text-danger validator-message"
+                *ngIf="isformsubmit && MESHprodcodeForm.controls['mwspace'].invalid && MESHprodcodeForm.controls['mwspace'].errors && MESHprodcodeForm.controls['mwspace'].hasError('required')">*
+                Main Wire Space Required. </span>
+            </div>
+            <div class="col" style="min-width:15%">
+              <label class="form-label">Cross Wire Space</label>
+              <input type="text" placeholder="CW Space" formControlName="cwspace" 
+                [value]="this.MESHprodcodeForm.controls['cwspace'].value" class="form-control" />
+              <span class="text-danger validator-message"
+                *ngIf="isformsubmit && MESHprodcodeForm.controls['cwspace'].invalid && MESHprodcodeForm.controls['cwspace'].errors && MESHprodcodeForm.controls['cwspace'].hasError('required')">*
+                Cross Wire Space Required. </span>
+            </div>
+            <div class="col" style="min-width:15%">
+              <label class="form-label">Weight/Sqm</label>
+              <input type="text" placeholder="Weight/Sqm " formControlName="meshWeightsqm" class="form-control"  />
+              <span class="text-danger validator-message"
+                *ngIf="isformsubmit && MESHprodcodeForm.controls['meshWeightsqm'].invalid && MESHprodcodeForm.controls['meshWeightsqm'].errors && MESHprodcodeForm.controls['meshWeightsqm'].hasError('required')">*
+                Weight/Sqm Required. </span>
+
+            </div>
+            <div class="col" style="min-width:15%">
+              <label class="form-label">Structure Element</label>
+              <ng-select  [selectOnTab]="true"  formControlName="meshstructelement" [multiple]="true" [(ngModel)]="selectstruct" 
+                (change)="selectMinmax()">
+                <ng-option *ngFor="let sList of structureList" [value]="sList.StructureElementTypeId">
+                  {{sList.StructureElementType}}
+                </ng-option>
+              </ng-select>
+              <span class="text-danger validator-message"
+                *ngIf="isformsubmit && MESHprodcodeForm.controls['meshstructelement'].invalid && MESHprodcodeForm.controls['meshstructelement'].errors && MESHprodcodeForm.controls['meshstructelement'].hasError('required')">*
+                Structure Element Required. </span>
+            </div>
+            <div class="col" style="min-width:15%">
+              <label class="form-label1">Twin Indication</label>
+              <ng-select  [selectOnTab]="true"  formControlName="twinind" [(ngModel)]="selectedtwin"> 
+                <ng-option *ngFor="let sList of TwinIndList" [value]="sList.AttributeValue">
+                  {{sList.AttributeDesc}}
+                </ng-option>
+              </ng-select>
+              <span class="text-danger validator-message"
+                *ngIf="isformsubmit && MESHprodcodeForm.controls['twinind'].invalid && MESHprodcodeForm.controls['twinind'].errors && MESHprodcodeForm.controls['twinind'].hasError('required')">*
+                Twin Indication Required. </span>
+
+            </div>
+
+
+            
+            <!-- added by vidhya -->
+
+            <div *ngIf="isMinmax">
+              <div class="row">
+                <div class="col-md-2">
+                  <label class="form-label">Min Link</label> <br>
+                  <input type="text" placeholder="Min Link " formControlName="meshminlink" class="form-control" />
+                </div>
+
+                <div class="col-md-2">
+                  <label class="form-label">Max Link</label> <br>
+                  <input type="text" placeholder="Max Link" formControlName="meshmaxlink" class="form-control" />
+                </div>
+              </div>
+
+            </div>
+
+
+          </div>
+
+
+          <div class="row border rounded pb-3 mt-1 yellow-border">
+            <div class="col-md-2">
+              <label class="form-label"> Main Wire Product</label>
+              <ng-select  [selectOnTab]="true"  formControlName="MWproduct" (change)="ChangeMWProduct()" [(ngModel)]="selectedMWproduct">
+                <ng-option *ngFor="let sList of mwprod" [value]="sList.item_id" >
+                  {{sList.item_text}}
+                </ng-option>
+              </ng-select>
+              <span class="text-danger validator-message"
+                *ngIf="isformsubmit && MESHprodcodeForm.controls['MWproduct'].invalid && MESHprodcodeForm.controls['MWproduct'].errors && MESHprodcodeForm.controls['MWproduct'].hasError('required')">*
+                Main Wire Product Required. </span>
+            </div>
+            <div class="col-md-2">
+              <label class="form-label">Wire Material Type</label>
+              <ng-select  [selectOnTab]="true"  formControlName="MWmaterialtype" [(ngModel)]="mwtype" [readonly]="true">
+                <ng-option *ngFor="let sList of MaterialTypeList" [value]="sList.MaterialTypeId">
+                  {{sList.MaterialType}}
+
+                </ng-option>
+              </ng-select>
+              <!-- <span class="text-danger validator-message"
+                *ngIf="isformsubmit && MESHprodcodeForm.controls['MWmaterialtype'].invalid && MESHprodcodeForm.controls['MWmaterialtype'].errors && MESHprodcodeForm.controls['MWmaterialtype'].hasError('required')">*
+                Wire Material Type Required. </span> -->
+
+            </div>
+            <div class="col-md-2">
+              <label class="form-label">Diameter</label> <br>
+              <input type="text" formControlName="MWdia" class="form-control" [readonly]="true"
+                [value]="MESHprodcodeForm.controls['MWdia'].value" />
+              <!-- <span class="text-danger validator-message"
+                *ngIf="isformsubmit && MESHprodcodeForm.controls['MWdia'].invalid && MESHprodcodeForm.controls['MWdia'].errors && MESHprodcodeForm.controls['MWdia'].hasError('required')">*
+                Diameter Required. </span> -->
+            </div>
+            <div class="col-md-2">
+              <label class="form-label">Grade</label> <br>
+              <!-- <input type="text" formControlName="MWgrade" class="form-control" placeholder="Grade " [readonly]="true"
+                [value]="this.MESHprodcodeForm.controls['MWgrade'].value" /> -->
+
+                <ng-select disable='true'  [readonly]="true"  [(ngModel)]="meshMWgrade" formControlName="MWgrade" placeholder="Grade "  >
+                  <ng-option *ngFor="let sList of RowMatrialGradeList" [value]="sList.StandardId">
+                    {{sList.GradeCode}}
+                  </ng-option>
+                </ng-select>
+            </div>
+            
+            
+            <div class="col-md-2">
+              <label class="form-label">Weight/Run</label>
+              <input type="text" formControlName="MWweight" [readonly]="true" class="form-control" [value]="mwwt" placeholder="Weight/Run "/>
+              <!-- <span class="text-danger validator-message"
+                *ngIf="isformsubmit && MESHprodcodeForm.controls['MWweight'].invalid && MESHprodcodeForm.controls['MWweight'].errors && MESHprodcodeForm.controls['MWweight'].hasError('required')">*
+                Weight/Run Required. </span> -->
+            </div>
+            <div class="col-md-2">
+              <!-- <label class="form-label"> Max Bend Len</label>
+              <input type="text" [readOnly]="true" [value]="mwbend" class="form-control" />
+              &nbsp; -->
+            </div>
+
+          </div>
+
+          <div class="row border rounded pb-3 mt-1 red-border">
+            <div class="col-md-2">
+              <label class="form-label"> Cross Wire Product</label>
+              <ng-select  [selectOnTab]="true"  formControlName="CWproduct" [(ngModel)]="selectedCWproduct" (change)="ChangeCWProduct()">
+                <ng-option *ngFor="let sList of cwprod" [value]="sList.item_id">
+                  {{sList.item_text}}
+                </ng-option>
+              </ng-select>
+              <span class="text-danger validator-message"
+                *ngIf="isformsubmit && MESHprodcodeForm.controls['CWproduct'].invalid && MESHprodcodeForm.controls['CWproduct'].errors && MESHprodcodeForm.controls['CWproduct'].hasError('required')">*
+                Cross Wire Product Required. </span>
+            </div>
+            <div class="col-md-2">
+              <label class="form-label">Cross Material Type</label>
+              <ng-container>
+                <ng-select  [selectOnTab]="true" [readonly]="true" formControlName="CWmaterialtype" [(ngModel)]="cwtype" >
+                  <ng-option *ngFor="let sList of MaterialTypeList" [value]="sList.MaterialTypeId">
+                    {{sList.MaterialType}}
+                  </ng-option>
+                </ng-select>
+                <!-- <span class="text-danger validator-message"
+                  *ngIf="isformsubmit && MESHprodcodeForm.controls['CWmaterialtype'].invalid && MESHprodcodeForm.controls['CWmaterialtype'].errors && MESHprodcodeForm.controls['CWmaterialtype'].hasError('required')">*
+                  Cross Material Type Required. </span> -->
+              </ng-container>
+            </div>
+            <div class="col-md-2">
+              <label class="form-label">Diameter</label> <br>
+              <input type="text" formControlName="CWdia" placeholder="Diameter " [readonly]="true" class="form-control"
+                [value]="MESHprodcodeForm.controls['CWdia'].value" />
+              <!-- <span class="text-danger validator-message"
+                *ngIf="isformsubmit && MESHprodcodeForm.controls['CWdia'].invalid && MESHprodcodeForm.controls['CWdia'].errors && MESHprodcodeForm.controls['CWdia'].hasError('required')">*
+                Diameter Required. </span> -->
+            </div>
+            <div class="col-md-2">
+              <label class="form-label">Grade</label> <br>
+              <!-- <input type="text" formControlName="CWgrade" placeholder="Grade " [readonly]="true" class="form-control"
+                [value]="this.MESHprodcodeForm.controls['CWgrade'].value" /> disable='true'  [readonly]="true" -->
+                <ng-select  disable='true'  [readonly]="true"  [(ngModel)]="meshCWgrade" formControlName="CWgrade" placeholder="Grade " >
+                  <ng-option *ngFor="let sList of RowMatrialGradeList" [value]="sList.StandardId">
+                    {{sList.GradeCode}}
+                  </ng-option>
+                </ng-select>
+            </div>
+            <div class="col-md-2">
+              <label class="form-label">Weight/Run</label>
+              <input type="text" formControlName="CWweight" placeholder="Weight/Run " [readonly]="true" class="form-control"
+                [value]="cwwt" />
+              <!-- <span class="text-danger validator-message"
+                *ngIf="isformsubmit && MESHprodcodeForm.controls['CWweight'].invalid && MESHprodcodeForm.controls['CWweight'].errors && MESHprodcodeForm.controls['CWweight'].hasError('required')">*
+                Weight/Run Required. </span> -->
+            </div>
+            <div class="col-md-2">
+              <!-- <label class="form-label"> Max Bend Len</label>
+              <input type="text" placeholder="Conversion Factor" [readOnly]="true" class="form-control"
+                [value]="cwbend" />
+              &nbsp; -->
+            </div>
+          </div>
+
+
+
+        </form>
+      </div>
+      <!-- Accessories -->
+      <div *ngIf="selectproductType==11">
+        <form [formGroup]="AccessoriesForm">
+          <div class="row border rounded mt-1 pb-3  green-border">
+            <div class="col-md-3">
+              <label class="form-label">Grade Type</label> <br>
+              <ng-select  [selectOnTab]="true"  formControlName="acsgradetype" style="height: auto;">
+                <ng-option *ngFor="let sList of ACSgradetypeList" [value]="sList.GradeType">
+                  {{sList.GradeType}}
+                </ng-option>
+              </ng-select>
+
+
+              <span class="text-danger validator-message"
+                *ngIf="isformsubmit && AccessoriesForm.controls['acsgradetype'].invalid && AccessoriesForm.controls['acsgradetype'].errors && AccessoriesForm.controls['acsgradetype'].hasError('required')">*
+                Grade type Required. </span>
+            </div>
+            <div class=" col-md-3">
+              <label class="form-label">Diameter</label> <br>
+              <ng-select  [selectOnTab]="true"  formControlName="acsdiameter" style="height: auto;" (change)=" ChangesACSDiameter($event)">
+                <ng-option *ngFor="let sList of Diameterlist" [value]="sList.item_id">
+                  {{sList.item_text}}
+                </ng-option>
+              </ng-select>
+              <span class="text-danger validator-message"
+                *ngIf="isformsubmit && AccessoriesForm.controls['acsdiameter'].invalid && AccessoriesForm.controls['acsdiameter'].errors && AccessoriesForm.controls['acsdiameter'].hasError('required')">*
+                Diameter Required. </span>
+
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">SAP Material</label> <br>
+              <ng-select  [selectOnTab]="true"  formControlName="acsfgmaterial" class="ng-selectcustomer">
+                <ng-option *ngFor="let sList of acsfgsamaterialList" [value]="sList.MaterialCodeId">
+                  {{sList.MaterialCode}}
+                </ng-option>
+              </ng-select>
+              <span class="text-danger validator-message"
+                *ngIf="isformsubmit && AccessoriesForm.controls['acsfgmaterial'].invalid && AccessoriesForm.controls['acsfgmaterial'].errors && AccessoriesForm.controls['acsfgmaterial'].hasError('required')">*
+              SAP Material Required. </span>
+
+            </div>
+
+            <!-- <div class="col-md-3">
+              <label class="form-label">RM SA Material</label> <br>
+              <ng-select  [selectOnTab]="true"  formControlName="acsrmmaterial" class="ng-selectcustomer">
+                <ng-option *ngFor="let sList of acsfgsamaterialList" [value]="sList.MaterialCodeId">
+                  {{sList.MaterialCode}}
+                </ng-option>
+              </ng-select>
+              <span class="text-danger validator-message"
+                *ngIf="isformsubmit && AccessoriesForm.controls['acsrmmaterial'].invalid && AccessoriesForm.controls['acsrmmaterial'].errors && AccessoriesForm.controls['acsrmmaterial'].hasError('required')">*
+                RM SA Material Required. </span>
+
+
+            </div> -->
+          </div>
+
+
+        </form>
+      </div>
+      <!-- Row Material -->
+      <div *ngIf="is_RowMaterial==true && selectproductType==7">
+        <form [formGroup]="RowMaterialForm">
+          <div class="row border rounded pb-3 mt-1 yellow-border">
+            <div class="col-md-2">
+              <label class="form-label"> SAP Material</label>
+              <ng-select  [selectOnTab]="true"  formControlName="rowsapmaterial" [searchable]="true" [clearable]="true"
+                 >
+                <ng-option *ngFor="let sList of RawSAPMaterialList" [value]="sList.MaterialCodeId">
+                  {{sList.MaterialCode}}
+                  <!-- {{sList.MaterialCodeId}} -->
+
+                </ng-option>
+              </ng-select>
+              <span class="text-danger validator-message"
+                *ngIf="isformsubmit &&RowMaterialForm.controls['meshsapmaterial'].invalid && RowMaterialForm.controls['meshsapmaterial'].errors && RowMaterialForm.controls['meshsapmaterial'].hasError('required')">*
+                Sap Material Required. </span>
+            </div>
+
+            <div class="col-md-2">
+              <label class="form-label">Wire Material Type</label>
+              <ng-select  [selectOnTab]="true"  formControlName="rowMWmaterialtype" (change)=" ChangesRowMaterial($event)">
+                <ng-option *ngFor="let sList of RowMaterialList" [value]="sList.MaterialTypeId">
+                  {{sList.MaterialType}}
+                </ng-option>
+              </ng-select>
+              <span class="text-danger validator-message"
+                *ngIf="isformsubmit && RowMaterialForm.controls['rowMWmaterialtype'].invalid && RowMaterialForm.controls['rowMWmaterialtype'].errors && RowMaterialForm.controls['rowMWmaterialtype'].hasError('required')">*
+                Wire Material Type Required. </span>
+            </div>
+            <div class="col-md-2">
+              <label class="form-label">Diameter</label> <br>
+              <!-- <input type="text" class="form-control" formControlName="rowDiameter" />
+              <span class="text-danger validator-message"
+                *ngIf="isformsubmit && RowMaterialForm.controls['rowDiameter'].invalid && RowMaterialForm.controls['rowDiameter'].errors && RowMaterialForm.controls['rowDiameter'].hasError('required')">*
+                Diameter Required. </span> -->
+                <ng-select  [selectOnTab]="true"  formControlName="rowDiameter" style="height: auto;" >
+                  <ng-option *ngFor="let sList of Diameterlist" [value]="sList.item_id">
+                    {{sList.item_text}}
+                  </ng-option>
+                </ng-select>
+                <span class="text-danger validator-message"
+                *ngIf="isformsubmit && RowMaterialForm.controls['rowDiameter'].invalid && RowMaterialForm.controls['rowDiameter'].errors && RowMaterialForm.controls['rowDiameter'].hasError('required')">*
+                Diameter Required. </span>
+            </div>
+            <div class="col-md-2">
+              <label class="form-label">Material Type ABBR</label> <br>
+              <input type="text" formControlName="rowMaterialTypeAbbr" [(ngModel)]="Materialapprvation"
+                [readOnly]="true" class="form-control" />
+              <span class="text-danger validator-message"
+                *ngIf="isformsubmit && RowMaterialForm.controls['rowMaterialTypeAbbr'].invalid && RowMaterialForm.controls['rowMaterialTypeAbbr'].errors && RowMaterialForm.controls['rowMaterialTypeAbbr'].hasError('required')">*
+                Material Type ABBR Required. </span>
+            </div>
+            <div class="col-md-2">
+              <label class="form-label">Grade</label> <br>
+              <ng-select  [selectOnTab]="true"  [disabled]='true' formControlName="rowgrade">
+                <ng-option *ngFor="let sList of RowMatrialGradeList" [value]="sList.StandardId">
+                  {{sList.GradeCode}}
+                </ng-option>
+              </ng-select>
+              <span class="text-danger validator-message"
+                *ngIf="isformsubmit && RowMaterialForm.controls['rowgrade'].invalid && RowMaterialForm.controls['rowgrade'].errors && RowMaterialForm.controls['rowgrade'].hasError('required')">*
+                Grade Required. </span>
+            </div>
+            <div class="col-md-2">
+              <label class="form-label">Weight/Run</label>
+              <input type="text" formControlName="rowWeightsqm" class="form-control" [value]="mwwt" />
+              <span class="text-danger validator-message"
+                *ngIf="isformsubmit && RowMaterialForm.controls['rowWeightsqm'].invalid && RowMaterialForm.controls['rowWeightsqm'].errors && RowMaterialForm.controls['rowWeightsqm'].hasError('required')">*
+                Weight/Run Required. </span>
+            </div>
+          
+
+          </div>
+        
+
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<div class="modal-footer">
+  <button type="button" (click)="cancel()" class="btn btn-transparent">
+    Cancel
+  </button>
+  <button type="button" (click)="submit()" class="btn btn-primary me-2" [disabled]="disableSubmit">
+    Submit
+  </button>
+</div>

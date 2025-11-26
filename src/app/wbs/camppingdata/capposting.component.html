@@ -1,0 +1,276 @@
+
+<!-- <loading *ngIf="loading">
+</loading> -->
+<div id="pause" class="d-flex align-items-center justify-content-center" *ngIf="loading">
+    <div id="spinner" class="loader"></div>
+</div>
+<div>
+  <div class="modal-header">
+    <h4 class="modal-title" *ngIf="!isaddnew">{{Heading}} Data Entry</h4>
+    <h4 class="modal-title" *ngIf="isaddnew">Add Group Marking from Another Project</h4>
+  
+  
+    <i class="fa-solid fa-xmark"></i>
+    <button type="button" class="btn-close" aria-label="Close" (click)="cancel()"></button>
+  
+  </div>
+  <div class="modal-body">
+  
+    <div class="row">
+      <form [formGroup]="cappostingForm">
+        <div class="container">
+          <div class="row d-flex ">
+            <div class="col-md-2">
+              <label class="form-label"> Block</label> <br>
+              <input type="text" readonly="true" class="form-control form-control-sm" value={{headerInfo[0].VCHWBS1}}>
+        
+              <!-- <label class="form-label"> Customer Name</label> <br>
+              <input type="text" readonly="true" class="form-control form-control-sm" value={{custName}}>
+              <label class="form-label"> Project Description</label> <br>
+              <input type="text" readonly="true" class="form-control form-control-sm" value={{headerInfo[0].DESCRIPTION}}> -->
+              <!-- <label class="form-label"> Structure Element</label> <br>
+              <input type="text" readonly="true" class="form-control form-control-sm" value={{headerInfo[0].VCHSTRUCTUREELEMENTTYPE}}>
+              <label class="form-label"> Copy Form</label> <br>
+              <input type="text" readonly="true" class="form-control form-control-sm" value="DATA NOT FOUND"> -->
+  
+            </div>
+  
+            <div class="col-md-2">
+              <label class="form-label"> Storey</label> <br>
+              <input type="text" readonly="true" class="form-control form-control-sm" value={{headerInfo[0].VCHWBS2}}>
+  
+             
+  
+              <!-- <label class="form-label"> Contract No</label> <br>
+              <input type="text" readonly="true" class="form-control form-control-sm" value="1000234342"> -->
+              <!-- <label class="form-label"> Project No.</label> <br>
+              <input type="text" readonly="true" class="form-control form-control-sm" value='WAIT TO GET LATEST FROM API'> -->
+              <!-- <label class="form-label"> Product Type</label> <br>
+              <input type="text" readonly="true" class="form-control form-control-sm" value={{headerInfo[0].VCHPRODUCTTYPEL1}}>
+              <label class="form-label"> Storey</label> <br>
+              <input type="text" readonly="true" class="form-control form-control-sm" value={{headerInfo[0].VCHWBS2}}> -->
+  
+            </div>
+            <div class="col-md-2">
+              <!-- <label class="form-label"> Block</label> <br>
+              <input type="text" readonly="true" class="form-control form-control-sm" value={{headerInfo[0].VCHWBS1}}>
+              <label class="form-label"> Part</label> <br>
+              <input type="text" readonly="true" class="form-control form-control-sm" value={{headerInfo[0].VCHWBS3}}>
+              <label class="form-label"> Capping Generated</label> <br>
+              <input type="text" readonly="true" class="form-control form-control-sm" value="DATA NOT FOUND"> -->
+              <label class="form-label"> Part</label> <br>
+              <input type="text" readonly="true" class="form-control form-control-sm" value={{headerInfo[0].VCHWBS3}}>
+             
+            </div>
+            <div class="col-md-2">
+              <label class="form-label"> Product Type</label> <br>
+              <input type="text" readonly="true" class="form-control form-control-sm"
+                value={{headerInfo[0].VCHPRODUCTTYPEL1}}>
+            </div>
+            <div class="col-md-2">
+              <label class="form-label"> Structure Element</label> <br>
+              <input type="text" readonly="true" class="form-control form-control-sm"
+                value={{headerInfo[0].VCHSTRUCTUREELEMENTTYPE}}>
+            </div>
+            <div class="col-md-2">
+              <label class="form-label"> {{Heading}} Generated</label> <br>
+              <label class="form-label" [ngStyle]="{'color':CappingGeneratedColor}"> {{CappingGenerated}}</label> <br>
+            </div>
+            <div>
+
+            </div>
+          </div>
+        </div>
+        <br />
+        <br />
+        <form [formGroup]="postingForm">
+          <div class="row">
+            <div class=" table-responsive table-wrapper-scroll-y my-custom-scrollbar">
+              <table class="table m-auto   d-table table-responsive table-striped  table-bordered " [cellPadding]="0"
+                [cellPadding]="5">
+                <thead>
+                  <tr>
+                    <!-- <th class="text-center" style="width: 4%">b/c</th>
+                    <th class="text-center" style="width: 4%">M/c</th> -->
+                    <th class="text-center">Product Code </th>
+                    <th class="text-center" style="width: 8%">Shape Code</th>
+                    <th class="text-center">Width</th>
+                    <th class="text-center">Depth</th>
+                    <th class="text-center">Qty</th>
+                    <th class="text-center">Cross Len</th>
+                    <th class="text-center">Main Len</th>
+                    <th class="text-center" style="width: 7%">MO 1</th>
+                    <th class="text-center" style="width: 7%">MO 2</th>
+                    <th class="text-center" style="width: 7%">CO 1</th>
+                    <th class="text-center" style="width: 7%">CO 2</th>
+                    <th class="text-center" style="width: 8%;">Actions</th>
+                  </tr>
+                </thead>
+  
+  
+                <tbody>
+                  <ng-container *ngFor="let item of capingInfoList  | filter:searchText ; index as i; ">
+                    <tr>
+                      <ng-container>
+                        <!-- <td class="text-center"><input type="checkbox" [disabled]=true [checked]="item.borc" /></td> -->
+                        <!-- <td class="text-center"><input type="checkbox" [disabled]=true [checked]="item.morc" /></td> -->
+                        <td class="text-center" *ngIf="structureElement=='Beam'">{{item.CAPPRODUCT}}</td>
+                        <td class="text-center" *ngIf="structureElement=='Column'">{{item.CLINKPRODUCT}}</td>
+  
+                        <td class="text-center">{{item.SHAPECODE}}</td>
+                        <td class="text-center">{{item.WIDTH}}</td>
+                        <td class="text-center">{{item.DEPTH}}</td>
+                        <!-- <td class="text-center">
+                          {{item.COUNT}}</td> -->
+
+                          <td class="text-center" (dblclick)="onEditNew(item,'COUNT')">
+                            <div *ngIf="item.editFieldName=='COUNT'">
+                              <input type="text" [(ngModel)]="item.COUNT" [ngModelOptions]="{standalone: true}"
+                                (keydown.enter)="item.editFieldName=''" 
+                                class="form-control">
+                            </div>
+                            <div *ngIf="item.editFieldName !=='COUNT'">
+                              {{item.COUNT}}
+                            </div>
+                          </td>
+                        <td class="text-center" style="width: 10%;">{{item.LENGTH}}</td>
+                        <td class="text-center" style="width: 9%;">{{item.MWLENGTH}}</td>
+                        <td class="text-center" style="width: 6%;">{{item.MO1}}</td>
+                        <td class="text-center" style="width: 6%;">{{item.MO2}}</td>
+                        <td class="text-center" style="width: 5%;">{{item.CO1}}</td>
+                        <td class="text-center" style="width: 5%;">{{item.CO2}}</td>
+                        <td class="text-center" style="width: 5%;"><i  *ngIf="item.PMID" class="material-icons" (click)="RouteToBom(item)"
+                            ngbTooltip="View BOM">view_timeline</i>&nbsp;&nbsp;
+                          <i class="bi bi-trash" ngbTooltip="Delete" (click)="DeletePostingInfo(item)"></i>
+                        </td>
+                      </ng-container>
+                    </tr>
+                  </ng-container>
+                </tbody>
+  
+                <tfoot>
+  
+  
+                  <tr *ngFor="let table of newwbs">
+  
+                    <!-- <td>
+                      
+                      <input type="checkbox"  [disabled]=true/>
+                    </td>
+                    <td>
+                      <input type="checkbox"  [disabled]=true/>
+                      
+  
+                    </td> -->
+                    <td style="width: 12%;">
+                      <ng-select [selectOnTab]="true" class="ng-selectcustomer" appendTo="body"
+                        formControlName="productcode" (keyup)="LoadddlCappingProductList($event.target);" (change)="LoaddMO1MO2CO1CO2List()"
+                        style="max-width: 100%;">
+                        <!-- <ng-option *ngIf="loading">
+                          <div style="justify-content: center;display: flex;">
+                            <div class="spinner-border text-secondary" role="status">
+                              <span class="sr-only">Loading...</span>
+                            </div>
+  
+                          </div>
+                        </ng-option> -->
+                        <ng-option *ngFor="let sList of CappingProductList" [value]="sList.INTPRODUCTCODEID">
+                          {{sList.VCHPRODUCTCODE}}
+                        </ng-option>
+                      </ng-select>
+                      <!-- <input class="form-control" maxlength="10" type="text" formControlName="productcode"
+                        style=" height: auto;" /> -->
+                    </td>
+                    <td>
+                      <!-- <input class="form-control" maxlength="10" type="text" formControlName="shapecode"
+                        style=" height: auto;" /> -->
+                      <ng-select  *ngIf="structureElement=='Beam'" [selectOnTab]="true" class="ng-selectcustomer" appendTo="body"
+                        formControlName="shapecode" (keyup)="GetShapeCodeList($event.target)"   style="  max-width: 100%;">
+                        <!-- <ng-option *ngIf="loading">
+                          <div style="justify-content: center;display: flex;">
+                            <div class="spinner-border text-secondary" role="status">
+                              <span class="sr-only">Loading...</span>
+                            </div>
+                          </div>
+                        </ng-option> -->
+                        <ng-option  *ngFor="let sList of shapeCodeList" [value]="sList.chrShapeCode">
+                            {{sList.chrShapeCode}}
+                        </ng-option>
+                      </ng-select>
+                      <ng-select *ngIf="structureElement=='Column'" [selectOnTab]="true" class="ng-selectcustomer" appendTo="body"
+                        formControlName="shapecode" (keyup)="GetShapeCodeList($event.target)" style="width: 70px;">
+                        <!-- <ng-option *ngIf="loading">
+                          <div style="justify-content: center;display: flex;">
+                            <div class="spinner-border text-secondary" role="status">
+                              <span class="sr-only">Loading...</span>
+                            </div>
+                          </div>
+                        </ng-option> -->
+                        <ng-option  *ngFor="let sList of shapeCodeList" [value]="sList.vchShapeCode">
+                            {{sList.vchShapeCode}}
+                        </ng-option>
+                      </ng-select>
+                    </td>
+                    <td>
+                      <input class="form-control" maxlength="10" type="number" formControlName="width"
+                        style=" height: auto;" />
+                    </td>
+                    <td>
+                      <input class="form-control" maxlength="10" type="number" formControlName="depth"
+                        style=" height: auto;" />
+  
+                    </td>
+                    <td class="text-center">
+                      <input class="form-control" maxlength="10" type="number" formControlName="qty"
+                        style=" height: auto;" />
+                    </td>
+                    <td class="text-center">
+                      <input class="form-control" maxlength="10" type="number" formControlName="crosslen"
+                        style=" height: auto;" (keyup)="LoaddMO1MO2CO1CO2List()"/>
+                    </td>
+                    <td class="text-center">
+                      <input class="form-control" maxlength="10" type="number" formControlName="mainlen"
+                        style=" height: auto;" (keyup)="LoaddMO1MO2CO1CO2List()"/>
+                    </td>
+                    <td class="text-center">
+                      <input class="form-control" maxlength="10" type="number" formControlName="mo1"
+                        style=" height: auto;" />
+                    </td>
+                    <td class="text-center">
+                      <input class="form-control" maxlength="10" type="number" formControlName="mo2"
+                        style=" height: auto;" />
+                    </td>
+                    <td class="text-center">
+                      <input class="form-control" maxlength="10" type="number" formControlName="co1"
+                        style=" height: auto;" />
+                    </td>
+                    <td class="text-center">
+                      <input class="form-control" maxlength="10" type="number" formControlName="co2"
+                        style=" height: auto;" />
+                    </td>
+                    <td class="text-center">
+                      <i class="material-icons" (click)="AddNew()" ngbTooltip="Save">save</i> &nbsp;
+                      <i class="material-icons" (click)="AddReset()" ngbTooltip="Reset">cancel</i>
+                    </td>
+                  </tr>
+  
+  
+                </tfoot>
+              </table>
+            </div>
+          </div>
+        </form>
+  
+  
+      </form>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" (click)="cancel()" class="btn btn-transparent">
+      Back to Posting
+    </button>
+    <button type="button" (click)="submitReview()" class="btn btn-primary me-2" [disabled]="disableSubmit">
+      Submit
+    </button>
+  </div>
+</div>

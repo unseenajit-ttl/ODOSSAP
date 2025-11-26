@@ -1,0 +1,31 @@
+export interface cabShapeInsert{
+    
+        SeqNo: number,
+        ShapeId: string,
+        GeometryType: string,
+        CSD_PAR1_CAP: string,
+        CSD_PAR2_CAP: string,
+        CSD_PAR3_CAP: string,
+        CSD_END_POINT_X: number,
+        CSD_END_POINT_Y: number,
+        CSD_TXT_X: number,
+        Name: number,
+        Type: string,
+        Length: number,
+        Angle: number,
+        Length2: number,
+        Match: string,
+        CSD_MATCH_PAR2:string ,
+        CSD_MATCH_PAR3: string,
+        CSD_ARC_DIR:string ,
+        CSD_CRT_BY: string,
+        CSD_CRT_ON: any,
+        CSD_UPD_BY: string,
+        CSD_UPD_ON: any,
+        CSD_HEIGHT_DIST:string,
+        CSD_VIEW: string,
+        Visible: string,
+        CSD_ProdLength: string,
+        CSD_TXT_Y:number
+      
+}

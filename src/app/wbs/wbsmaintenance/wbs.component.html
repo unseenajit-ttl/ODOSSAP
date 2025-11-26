@@ -1,0 +1,626 @@
+<div id="pause" class="d-flex align-items-center justify-content-center" *ngIf="loading">
+    <div id="spinner" class="loader"></div>
+</div>
+<div class="container-fluid">
+    <div class="card m-1">
+        <h3 class="card-header d-flex flex-column justify-content-center align-items-center">
+            <b> WBS Maintenance </b>
+        </h3>
+
+        <div class="card-body">
+            <form [formGroup]="wbsForm">
+                <ngb-accordion #acc="ngbAccordion" title="Filters" activeIds="panel1">
+                    <ngb-panel id="panel1" class="pb-5">
+
+                        <ng-template ngbPanelContent>
+                            <!-- <div class="card-body"> -->
+                            <div class="row  no-gutters" style="padding-bottom: 5px;">
+
+                                <div class="col-md-2">
+                                    <label class="form-label"> Product Type</label> <br>
+
+                                    <ng-select [selectOnTab]="true" [(ngModel)]="producttype_filter"  [ngModelOptions]="{standalone: true}"  [multiple]="true"
+                                        class="ng-selectprodtype" [closeOnSelect]="false" [searchable]="true"
+                                        (change)="Search()">
+                                        <ng-option *ngFor="let sList of producttypeList" [value]="sList.ProductTypeID">
+                                            {{sList.ProductType}}
+                                        </ng-option>
+                                    </ng-select>
+                                </div>
+                                <div class="col-md-1"></div>
+                                <div class="col-md-2">
+                                    <label class="form-label"> WBS Type</label> <br>
+
+                                    <ng-select [selectOnTab]="true" [(ngModel)]="WBSType"  [ngModelOptions]="{standalone: true}"
+                                        class="ng-selectprodtype" [searchable]="true" (change)="ChangeWBSType()"
+                                        >
+                                        <ng-option value=1>
+                                            BSP
+                                        </ng-option>
+                                        <ng-option value=5>
+                                            Drainage
+                                        </ng-option>
+                                    </ng-select>
+                                </div>
+                                <!-- <div class="col-md-1"></div> -->
+                                <div class="col-md-1" style="margin-top:35px">
+
+                                    <span>
+                                        <i class="fa fa-refresh" ngbTooltip="Reset"
+                                            style=" color:#0479d6;font-size:20px;" (click)="onReset()"></i>
+                                    </span>
+                                </div>
+                                <!-- <div class="col-md-1"></div> -->
+                                <div class="col-md-3 float-right">
+                                    <label class="form-label"></label> <br>
+
+                                    <div class="input-group flex-nowrap " style="padding-right: 30px;">
+                                        <input class="form-control" type="search" style="font-weight: bold;" placeholder="Search " value="search"
+                                            id="example-search-input" name="search" [(ngModel)]="searchText"
+                                            (ngModelChange)="Search()" [ngModelOptions]="{standalone: true}">
+                                        <span class="input-group-append  ms-n5">
+                                            <span class="input-group-text ">
+                                                <i class="bi bi-search"></i>
+                                            </span>
+                                        </span>
+                                        <div class="ml-4 mr-3">
+                                            <span class="input-group-text ">
+                                                <i class="material-icons" style="font-size:20px;" ngbTooltip="Download Excel"
+                                                  (click)="downloadTemplate()" >download</i>
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-3 float-right pt-4">
+                                  <button for="file-upload" class="file-label" (click)="openFileSelector()" [class.disabled]="isFileSelectorOpen">
+                                    <i class="material-icons" style="font-size: 25px;" ngbTooltip="Upload Excel">upload</i>
+                                  </button>
+                                  <!-- File input (hidden) -->
+                                  <input
+                                    id="file-upload"
+                                    type="file"
+                                    hidden
+                                    #fileInput
+                                    (change)="onFileChange($event)"
+                                    accept=".xlsx, .xls"
+                                  />
+                                  <!-- Display the selected file name -->
+                                  <span *ngIf="selectedFileName" class="file-info">
+                                    <span class="file-name">Selected File: {{ selectedFileName }}</span>
+                                    <button class="clear-btn" (click)="clearFile()">Clear</button>
+                                    <button class="btn-primary" (click)="submitThroughExcel()" >Submit</button>
+                                  </span>
+
+                            </div>
+
+                            </div>
+
+                            <!-- </div> -->
+                        </ng-template>
+                    </ngb-panel>
+                </ngb-accordion>
+            </form>
+
+            <div *ngIf="searchResult" class="table-responsive table-bordered">
+                <table class="table m-auto   d-table table-responsive   table-bordered " [cellPadding]="0"
+                    [cellPadding]="5">
+                    <thead>
+                        <tr>
+                            <th>
+                                <div class="d-flex">
+                                    <input type="checkbox" [(ngModel)]="masterSelected" (change)="checkUncheckAll()" />
+                                    &nbsp; <i class="bi bi-search" style="margin-top:3px; font-size: 15px;"
+                                        (click)="toggleFilters = !toggleFilters"></i>
+
+                                </div>
+
+                            </th>
+                            <th class="text-center" style=" width:150px;">Block</th>
+                            <th class="text-center" style=" width:100px;">Storey From</th>
+                            <th class="text-center" style=" width:100px;">Storey To </th>
+                            <th class="text-center" style=" width:100px;">Part</th>
+                            <th class="text-center">Product Type</th>
+                            <th class="text-center">Structure</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+
+
+                    <tbody>
+
+                        <tr *ngIf="toggleFilters">
+                            <th></th>
+                            <th><input class="form-control" style="height: auto;font-weight: bold" type="text" id="searchBlock"
+                                    [(ngModel)]="searchBlock" (ngModelChange)="Search()"
+                                    placeholder="Search Block"/>
+                            </th>
+                            <th><input class="form-control" style="width:100px; height: auto;font-weight: bold" type="text"
+                                    [(ngModel)]="searchStoreyfrom" id="searchFrom" (ngModelChange)="Search()"
+                                    placeholder="Search Storey from"/></th>
+                            <th><input class="form-control" style=" width:100px;height: auto;font-weight: bold;" type="text" id="searchTo"
+                                    [(ngModel)]="searchStoreyto" (ngModelChange)="Search()"
+                                    placeholder="Search Storey To"/>
+                            </th>
+                            <th><input class="form-control" style=" width:100px; height:auto;font-weight: bold;" type="text"
+                                    [(ngModel)]="searchPart" id="searchPart" (ngModelChange)="Search()"
+                                    placeholder="Search Part"/> </th>
+                            <th><input class="form-control" style="height: auto;font-weight: bold;" type="text" id="searchProducttype"
+                                    [(ngModel)]="searchProducttype" (ngModelChange)="Search()"
+                                    placeholder="Search Product Type"/>
+                            </th>
+                            <th><input class="form-control" style="height: auto;" type="text" id="searchStructure"
+                                    [(ngModel)]="searchStructure" (ngModelChange)="Search()"
+                                    placeholder="Search Structure" style="font-weight: bold;font-weight: bold;"/>
+                            </th>
+                            <th>
+                              <span>
+                                <i class="fa fa-refresh" ngbTooltip="Reset"
+                                    style=" color:red;font-size:20px;" (click)="resetAllFilters();Search();"></i>
+                              </span> &nbsp;&nbsp;
+                              <span>
+                                <i class="fa fa-repeat" ngbTooltip="Reload"
+                                    style=" color:blue;font-size:20px;" (click)="ngOnInit()"></i>
+                              </span>
+                            </th>
+
+                        </tr>
+
+                        <ng-container
+                            *ngFor="let item of WbsListArray    |slice: pageSize | slice: 0:itemsPerPage |filter:searchText ; index as i; ">
+                            <tr [class.activerowcolor]="enableEditIndex === i">
+
+                                <ng-container *ngIf="enableEditIndex != i">
+                                    <td>
+                                        <div class="d-flex">
+
+                                            <div class="form-check">
+                                                <input type="checkbox" class="form-check-input GetSelectedWbs"
+                                                    id="{{item.intWBSMTNCId}}" [(ngModel)]="item.isSelected"
+                                                    value="{{item.intWBSMTNCId}}"
+                                                    (change)="isAllSelected($event, item)" />
+
+                                                <i *ngIf=" selectedWBSID!==item.intWBSMTNCId "
+                                                    (click)="GetWBSCollapseLevel(item.intWBSMTNCId) ; selectedWBSID=item.intWBSMTNCId; "
+                                                    class="bi-chevron-right"></i>
+                                                <i *ngIf=" item.intWBSMTNCId==selectedWBSID "
+                                                    (click)=" selectedWBSID=null ;selectedStoreyLevelId=null"
+                                                    class="bi-chevron-up"></i>
+                                            </div>
+                                        </div>
+
+                                    </td>
+                                    <td class="text-center" *ngIf="CopyIndex !== i">{{item.Block}}</td>
+                                    <td class="text-center" *ngIf="CopyIndex === i">
+                                        <input class="form-control" [formControl]="copieditem" maxlength="12" />
+                                    </td>
+                                    <td class="text-center" *ngIf="CopyIndex !== i">{{item.StoryFrom}}</td>
+                                    <td class="text-center" *ngIf="CopyIndex === i">
+                                        <input class="form-control" [formControl]="copiedstroyfrom"
+                                            [(ngModel)]="item.StoryFrom" maxlength="10" />
+                                    </td>
+
+                                    <td class="text-center" *ngIf="CopyIndex !== i">{{item.StoryTo}}</td>
+                                    <td class="text-center" *ngIf="CopyIndex === i">
+                                        <input class="form-control" [formControl]="copiedstroyto"
+                                            [(ngModel)]="item.StoryTo" maxlength="10" />
+
+                                    </td>
+
+                                    <td class="text-center" style="width:100px;" *ngIf="CopyIndex !== i">{{item.Part}}
+                                    </td>
+                                    <td class="text-center" style="width:100px;" *ngIf="CopyIndex === i">
+                                        <input class="form-control" [formControl]="copiedpart" [(ngModel)]="item.Part"
+                                            maxlength="12" />
+
+                                    </td>
+                                    <td class="text-center" *ngIf="CopyIndex !== i">{{item.ProductTypeName}}</td>
+                                    <td class="text-center" *ngIf="CopyIndex === i">
+                                        <!-- {{item.prodttype}} -->
+
+                                        <ng-select [selectOnTab]="true" [ngModel]="item.prodttype" [multiple]="true"
+                                            (change)=" ChangeProduct($event,item,CopyIndex)">
+                                            <ng-container *ngFor="let sList of producttypeList">
+                                                <ng-option *ngIf="sList.item_id != item.prodttype"
+                                                    [value]="sList.item_id">
+                                                    {{sList.item_text}}
+                                                </ng-option>
+                                                >
+                                            </ng-container>
+                                        </ng-select>
+                                    </td>
+                                    <td class="text-center" *ngIf="CopyIndex !== i">{{item.StructureTypeName}}</td>
+                                    <td class="text-center" *ngIf="CopyIndex === i">
+                                        <ng-select [selectOnTab]="true" [ngModel]="item.Structure" [multiple]="true"
+                                            (change)=" ChangeStruct($event,item,CopyIndex)">
+                                            <ng-container *ngFor="let sList of structureList">
+                                                <ng-option *ngIf="sList.item_id != item.structure"
+                                                    [value]="sList.item_id">
+                                                    {{sList.item_text}}
+                                                </ng-option>
+                                                >
+                                            </ng-container>
+                                        </ng-select>
+                                    </td>
+                                    <td class="text-center" style="width:200px;"
+                                        *ngIf="enableEditIndex != i && CopyIndex !== i">
+                                        <i class="material-icons" (click)="on_copy(item, i)"
+                                            ngbTooltip="Copy">content_copy</i> &nbsp;
+                                        <i class="material-icons" (click)="is_edit_pressed = true;onEdit(item,i)"
+                                            ngbTooltip="Edit">mode_edit</i>&nbsp;
+                                        <i class="bi bi-trash" ngbTooltip="Delete"
+                                            (click)="delete( i,item.Storey?.length, item)"></i>
+                                    </td>
+                                    <td class="text-center" style="width:200px;" *ngIf="CopyIndex === i">
+                                        <i class="material-icons" (click)="Savecopy(item,i)" ngbTooltip="Save">save</i>
+                                        &nbsp;
+                                        <i class="material-icons" (click)="Copycancel(i)" ngbTooltip="Cancel">cancel</i>
+                                    </td>
+                                </ng-container>
+                                <ng-container *ngIf="enableEditIndex == i">
+                                    <td></td>
+                                    <td><input class="form-control" style=" width: 100px; height: auto;" maxlength="10" (keyup)="item.Block = ReturnUpper(item.Block)"
+                                            [(ngModel)]="item.Block" />
+                                        <div class="text-danger edit-label" *ngIf=" item.Block == ''">*Block
+                                            Required.
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <ng-select [selectOnTab]="true" [(ngModel)]="item.StoryFrom"
+                                            style=" width: 100px; height: auto;"
+                                            (change)="StoreyValidate(item.StoryFrom,item.StoryTo)">
+                                            <ng-option *ngFor="let sList of storeyFromList" [value]="sList.StoreyName">
+                                                {{sList.StoreyName}}
+                                            </ng-option>
+                                        </ng-select>
+                                        <div class="text-danger edit-label"
+                                            *ngIf=" item.StoryFrom == '' || item.StoryFrom == undefined">*StoryFrom
+                                            Required.
+                                        </div>
+
+                                    </td>
+                                    <td>
+                                        <ng-select [selectOnTab]="true" [(ngModel)]="item.StoryTo"
+                                            (change)="item.StoryTo=$event" style=" width: 100px; height: auto;"
+                                            (change)="StoreyValidate(item.StoryFrom,item.StoryTo)">
+                                            <ng-option *ngFor="let sList of storeyToList" [value]="sList.StoreyName">
+                                                {{sList.StoreyName}}
+                                            </ng-option>
+                                        </ng-select>
+                                        <div class="text-danger edit-label"
+                                            *ngIf=" item.StoryTo == ''|| item.StoryTo == undefined">*StoryTo
+                                            Required.
+                                        </div>
+                                    </td>
+                                    <td><input *ngIf="item.WBSTypeId!=5" class="form-control" maxlength="10"  (keyup)="item.Part = ReturnUpper(item.Part)" [(ngModel)]="item.Part" />
+
+                                        <ng-select *ngIf="item.WBSTypeId==5" [selectOnTab]="true" [(ngModel)]="item.Part"  appendTo="body"
+                                        class="ng-selectwbs">
+
+                                   <ng-option *ngFor="let sList of Drain_ProductType"
+                                       [value]="sList.vchDrainType">
+                                       {{sList.vchDrainType}}
+                                   </ng-option>
+                               </ng-select>
+
+                                    </td>
+                                    <td>
+                                        <ng-select [selectOnTab]="true" [(ngModel)]="item.ProductType" [multiple]="true"
+                                            [closeOnSelect]="false" (change)="item.ProductType=$event"
+                                            style=" width: 200px; height: auto;">
+                                            <ng-option *ngFor="let sList of producttypeList"
+                                                [value]="sList.ProductTypeID">
+                                                {{[sList.ProductType]}}
+                                            </ng-option>
+                                        </ng-select>
+                                        <div class="text-danger edit-label" *ngIf=" item.ProductType == ''">*ProductType
+                                            Required.
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <ng-select [selectOnTab]="true" [(ngModel)]="item.Structure" [multiple]="true"
+                                            [closeOnSelect]="false" (change)="item.structure=$event"
+                                            style=" width: 200px; height: auto;">
+                                            <ng-option *ngFor="let sList of structureList"
+                                                [value]="sList.StructureElementTypeId">
+                                                {{sList.StructureElementType}}
+                                            </ng-option>
+                                        </ng-select>
+                                        <div class="text-danger edit-label" *ngIf=" item.Structure == ''">*Structure
+                                            Required.
+                                        </div>
+                                    </td>
+                                    <td class="text-center" style="width:200px;">
+                                        <i class="material-icons" (click)="Update(item,i)" ngbTooltip="Update">save</i>
+                                        &nbsp;
+                                        <i class="material-icons" (click)="Editcancel(item)"
+                                            ngbTooltip="Cancel">cancel</i>
+                                    </td>
+                                </ng-container>
+                            </tr>
+                            <!-- Subarray -->
+                            <ng-container *ngIf=" item.intWBSMTNCId==selectedWBSID &&  WBSCollapseLevellist.length>0">
+                                <tr *ngIf="item.intWBSMTNCId==WBSCollapseLevellist[0].WBSMTNID ">
+                                    <td colspan="8" class="center-align-justify align-items-center">
+                                        <table class="table table w-50 m-auto">
+
+                                            <thead>
+                                                <th></th>
+                                                <th class="text-center">Block</th>
+                                                <th class="text-center">Storey From</th>
+                                                <th class="text-center">Storey To </th>
+                                                <th class="text-center">Part</th>
+                                                <th class="text-center">Product Type</th>
+                                                <th class="text-center">Structure</th>
+                                                <th class="text-center"> Action </th>
+
+
+                                            </thead>
+                                            <tbody>
+                                                <ng-container *ngFor="let row2 of WBSCollapseLevellist;">
+                                                    <tr>
+                                                        <td>
+                                                            <div class="d-flex">
+
+                                                                <i *ngIf="WBSElementsList.length>0 && selectedStoreyLevelId!==row2.StoreyLevelWBSId"
+                                                                    (click)="WBSCollapseLevelClicked(row2.StoreyLevelWBSId); selectedStoreyLevelId = row2.StoreyLevelWBSId;"
+                                                                    class="bi-chevron-right"></i>
+                                                                <i *ngIf="row2.StoreyLevelWBSId==selectedStoreyLevelId "
+                                                                    (click)="WBSCollapseLevelClicked(row2.StoreyLevelWBSId); selectedStoreyLevelId=null;"
+                                                                    class="bi-chevron-up"></i>
+                                                            </div>
+
+                                                        </td>
+                                                        <td   class="text-center">{{row2.WBS1From}}</td>
+                                                        <td *ngIf="item.WBSTypeId!=5" class="text-center">{{row2.WBS2From}}</td>
+                                                        <td *ngIf="item.WBSTypeId!=5" class="text-center">{{row2.WBS2To}}</td>
+                                                        <td *ngIf="item.WBSTypeId!=5" class="text-center">{{row2.WBS3From}}</td>
+
+                                                        <td *ngIf="item.WBSTypeId==5" class="text-center">{{row2.WBS3From}}</td>
+                                                        <td *ngIf="item.WBSTypeId==5" class="text-center">{{row2.WBS3To}}</td>
+                                                        <td *ngIf="item.WBSTypeId==5" class="text-center">{{row2.WBS2From}}</td>
+                                                        <td class="text-center"
+                                                            [class.inactive]="getCollapse_product_code(row2.sitProductTypeId)">
+                                                            {{collapse_product_code}}</td>
+                                                        <td class="text-center"
+                                                            [class.inactive]="getCollapse_structure(row2.StructureElementTypeId)">
+                                                            {{collapse_structure}}</td>
+                                                        <td class="text-center">
+                                                            <!-- *ngIf="row3.isused!==true" -->
+                                                            <i class="bi bi-trash" ngbTooltip="Delete"
+                                                                style="color:red; font-size:15px"
+                                                                (click)="deleteCollapseLevel(item,row2)"></i>
+                                                            <!-- (click)="deletestorey(item,row3,istorey)" -->
+                                                        </td>
+
+
+
+                                                    </tr>
+                                                    <ng-container *ngIf=" isStoreylevel &&  WBSElementsList.length>0">
+                                                        <tr
+                                                            *ngIf="row2.StoreyLevelWBSId==this.selectedStoreyLevelWBSId">
+                                                            <td colspan="8"
+                                                                class="center-align-justify align-items-center">
+                                                                <table class="table table w-50 m-auto">
+
+                                                                    <thead>
+                                                                        <th> Block </th>
+                                                                        <th class="text-center"> Storey </th>
+                                                                        <th class="text-center"> Part </th>
+                                                                        <th class="text-center"> Action </th>
+
+
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <ng-container
+                                                                            *ngFor="let row3 of WBSElementsList;">
+                                                                            <tr
+                                                                                *ngIf="row3.StoreyLevelWBSId==this.selectedStoreyLevelWBSId">
+
+                                                                                <td>{{row3.WBS1}}</td>
+
+                                                                                <td *ngIf="item.WBSTypeId!=5" class="text-center">{{row3.WBS2}}
+                                                                                </td>
+                                                                                <td *ngIf="item.WBSTypeId==5" class="text-center">{{row3.WBS3}}
+                                                                                </td>
+                                                                                <td *ngIf="item.WBSTypeId!=5" class="text-center">{{row3.WBS3}}
+                                                                                </td>
+                                                                                <td *ngIf="item.WBSTypeId==5" class="text-center">{{row3.WBS2}}
+                                                                                </td>
+                                                                                <td class="text-center">
+                                                                                    <!-- *ngIf="row3.isused!==true" -->
+                                                                                    <i class="bi bi-trash"
+                                                                                        ngbTooltip="Delete"
+                                                                                        style="color:red; font-size:15px"
+                                                                                        (click)="deletestorey(item,row3)"></i>
+                                                                                    <!-- (click)="deletestorey(item,row3,istorey)" -->
+                                                                                </td>
+
+
+                                                                            </tr>
+
+
+                                                                        </ng-container>
+                                                                    </tbody>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+
+
+                                                    </ng-container>
+
+                                                </ng-container>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <!-- subarray -->
+
+                            </ng-container>
+
+                        </ng-container>
+
+
+                    </tbody>
+
+                    <tfoot>
+
+
+                        <tr *ngFor="let table of newwbs">
+                            <td style="width: 10px ;"></td>
+                            <td><input class="form-control" maxlength="12" type="text" [(ngModel)]="table.Block"
+                                    (keyup)="table.Block = ReturnUpper(table.Block)" (keyup.enter)="AddNew()" (keypress)="blockComma($event)" />
+                                <div class="text-danger edit-label" *ngIf=" table.Block == '' && isSubmit ">*Block
+                                    Required.
+                                </div>
+                            </td>
+                            <td>
+                                <ng-select [selectOnTab]="true" [(ngModel)]="table.StoryFrom" appendTo="body"
+                                    [searchable]="true" (keyup.enter)="AddNew()" style="width:100px; height: auto;"
+                                    (change)="StoreyValidate(table.StoryFrom, table.StoryTo);" (close)="onSelectedTab(1,$event);">
+                                    <ng-option *ngFor="let sList of storeyFromList" [value]="sList.StoreyName">
+                                        {{sList.StoreyName}}
+                                    </ng-option>
+                                </ng-select>
+                                <div class="text-danger edit-label" *ngIf=" table.StoryFrom == undefined && isSubmit ">
+                                    *StoeryFrom
+                                    Required.
+                                </div>
+
+                            </td>
+                            <td >
+                                <ng-select [selectOnTab]="true" [(ngModel)]="table.StoryTo" appendTo="body"
+                                    [searchable]="true" (keyup.enter)="AddNew()" style=" width:100px; height: auto;"
+                                    (change)="StoreyValidate(table.StoryFrom, table.StoryTo);onSelectedTab(2,$event);" id="wbsChild1" name="wbsChild1">
+                                    <ng-option *ngFor="let sList of storeyToList" [value]="sList.StoreyName">
+                                        {{sList.StoreyName}}
+                                    </ng-option>
+                                </ng-select>
+                                <div class="text-danger edit-label" *ngIf=" table.StoryTo == undefined && isSubmit ">
+                                    *StoeryTo
+                                    Required.
+                                </div>
+                            </td>
+                            <td >
+                                <input *ngIf="WBSType!=5" class="form-control" maxlength="12" [(ngModel)]="table.Part"
+                                    (keyup)="table.Part = ReturnUpper(table.Part)" (keyup.enter)="AddNew()"
+                                    style=" width:100px; height:auto;"  id="wbsChild2" (keypress)="blockComma($event)"/>
+
+                                    <ng-select *ngIf="WBSType==5" [selectOnTab]="true" [(ngModel)]="table.Part"
+
+                                       appendTo="body"
+                                         class="ng-selectwbs" (change)="onSelectedTab(3,$event)" id="wbsChild2">
+
+                                    <ng-option *ngFor="let sList of Drain_ProductType"
+                                        [value]="sList.vchDrainType">
+                                        {{sList.vchDrainType}}
+                                    </ng-option>
+                                </ng-select>
+                            </td>
+                            <td >
+                                <ng-select *ngIf="WBSType!=5 && searchResult"
+                                appendTo="body"
+                                (keydown.tab)="focusNextSelect(nextSelectElement)"
+                                (click)="onSelectClick()"
+                                [selectOnTab]="true"
+                                [searchable]="true"
+                                [multiple]="true"
+                                [(ngModel)]="table.ProductType"
+                                id="wbsChild3"
+                                (keydown)="onKeyDown($event)">
+                         <ng-option *ngFor="let sList of producttypeList" [value]="sList.ProductTypeID">
+                             {{sList.ProductType}}
+                         </ng-option>
+                     </ng-select>
+
+                                <ng-select *ngIf="WBSType==5 && searchResult" id="nextInput" [selectOnTab]="true" appendTo="body" [readonly]="WBSType==5"
+                                [closeOnSelect]="false" [searchable]="true" (click)="onSelectClick()"
+                                [multiple]="true" [(ngModel)]="table.ProductType" id="wbsChild3">
+                                <ng-option *ngFor="let sList of producttypeList" [value]="sList.ProductTypeID">
+                                    {{sList.ProductType}}
+                                </ng-option>
+                            </ng-select>
+
+
+                                <div class="text-danger edit-label" *ngIf=" table.ProductType == '' && isSubmit ">
+                                    *ProductType
+                                    Required.
+                                </div>
+                            </td>
+                            <td >
+                                <ng-select *ngIf="WBSType!=5 "  [selectOnTab]="true" [multiple]="true" [(ngModel)]="table.Structure"
+                                appendTo="body" [closeOnSelect]="false" [searchable]="true"
+                                (click)="onSelectClick()"  #nextSelectElement >
+                                <ng-option *ngFor="let sList of structureList"
+                                    [value]="sList.StructureElementTypeId">
+                                    {{sList.StructureElementType}}
+                                </ng-option>
+                            </ng-select>
+                                <ng-select *ngIf="WBSType==5 " [selectOnTab]="true" [multiple]="true" [(ngModel)]="table.Structure" [readonly]="WBSType==5"
+                                    appendTo="body" [closeOnSelect]="false" [searchable]="true"
+                                    (click)="onSelectClick()" id="wbsChild4">
+                                    <ng-option *ngFor="let sList of structureList"
+                                        [value]="sList.StructureElementTypeId">
+                                        {{sList.StructureElementType}}
+                                    </ng-option>
+                                </ng-select>
+
+
+
+                                <!-- <input #hiddenInput type="text" (keyup.enter)="AddNew()"
+                                    style="opacity: 0; width: 0; height: 0; border: none; outline: none; padding: 0; margin: 0;" /> -->
+                                <div class="text-danger edit-label" *ngIf=" table.Structure == '' && isSubmit ">
+                                    *Structure
+                                    Required.
+                                </div>
+                            </td>
+                            <td class="text-center" style="width:200px;">
+                                <i class="material-icons" (click)="AddNew(); isSubmit = true" ngbTooltip="Save">save</i>
+                                &nbsp;
+                                <i class="material-icons" (click)="AddReset()" ngbTooltip="Reset">cancel</i>
+                            </td>
+
+                        </tr>
+
+
+                    </tfoot>
+                </table>
+            </div>
+
+
+            <div class="row" *ngIf="searchResult">
+                <div class="col d-flex mt-2 ">
+                    <div>
+                        <ngb-pagination [collectionSize]="WbsListArray.length" [pageSize]="itemsPerPage"
+                            [(page)]="currentPage" (pageChange)="onPageChange(currentPage)" [boundaryLinks]="true"
+                            [maxSize]="maxSize">
+                            <ng-template ngbPaginationPrevious>Prev</ng-template>
+                            <ng-template ngbPaginationNext>Next</ng-template>
+                        </ngb-pagination>
+                    </div>
+                    <div>
+                        <select class="custom-select mr-2 ml-3" style="width: auto" [(ngModel)]="itemsPerPage"
+                            (ngModelChange)="OnPageSizeChange(itemsPerPage);">
+                            <option [ngValue]="5">5 </option>
+                            <option [ngValue]="10">10 </option>
+                            <option [ngValue]="20">20 </option>
+                            <option [ngValue]="50">50 </option>
+                            <option [ngValue]="100">100 </option>
+                        </select>
+                        <span>Items per page</span>
+                    </div>
+                </div>
+                <div class="col">
+
+                    <button class="btn btn-primary btn-sm float-right"
+                        style="width:80px;position: relative;top: 3px;right: 39px;" type="button"
+                        (click)="DeleteSelected()">Delete</button>
+                </div>
+            </div>
+            <input #hiddenInput type="text" (keyup.enter)="AddNew()"
+                style="opacity: 0; width: 0; height: 0; border: none; outline: none; padding: 0; margin: 0;" />
+        </div>
+    </div>
+
+</div>

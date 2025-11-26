@@ -1,0 +1,72 @@
+
+   <header class="header">
+    <!-- Primary Navbar-->
+    <nav class="navbar navbar-expand-lg navbar-light py-4 border-bottom border-gray " style="background-color: #3e7dda;">
+      <div class="container d-flex align-items-center justify-content-beween">       
+        <!-- Natsteel  -->       
+          <img src="../../../assets/images/NatSteel_logo_white.png" class="img1" alt="Natseetl">  
+     
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <ul class="list-inline mb-0 d-none d-lg-block">
+          <li class="list-inline-item mr-3">
+            <div class="d-flex"><i class="fa fa-user" aria-hidden="true"></i>
+              <div class="ml-2">
+                <h6 class="text-white text-uppercase mb-0 text-small">Vanita Nikam </h6>
+                <p class="small text-White mb-0"></p>
+              </div>
+            </div>
+          </li>
+          <li class="list-inline-item">
+            <div class="d-flex">
+              <!-- <i class="bi bi-box-arrow-right" aria-label="Logout"></i> -->
+            
+              <!-- <div class="ml-2">
+                <h6 class="text-muted text-uppercase mb-0 text-small">xyz@gmail.com</h6>
+                <p class="small text-gray mb-0">Contact Us For Help</p>
+              </div> -->
+            </div>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <!-- Secondary Navbar                -->
+    <nav class="navbar navbar-expand-lg navbar-light py-0 shadow-sm bg-white">
+      <div class="container">
+        <div class="collapse navbar-collapse py-3 py-lg-0" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active"><a class="nav-link pl-lg-0" href="#">Home <span class="sr-only">(current)</span></a></li>
+                   
+            <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Master</a>
+              <div class="dropdown-menu border-0 shadow-sm" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item text-muted" [routerLink]="['/master/shapegroup']" >Shape Group Master</a>              
+                <a class="dropdown-item text-muted" [routerLink]="['/master/productcode']">Product Code Master</a>
+                <a class="dropdown-item text-muted" [routerLink]="['/master/projectlist']">Project List</a>
+                <a class="dropdown-item text-muted" [routerLink]="['/master/contractlist']">Contract List</a>
+
+                <a class="dropdown-item text-muted" [routerLink]="['/master/cabproductcode']">CAB ProductCode Master</a>
+                <a class="dropdown-item text-muted" [routerLink]="['/master/shapesurcharge']">Shape Surcharge Master</a>
+                <a class="dropdown-item text-muted" [routerLink]="['/master/Corecage']">Core Cage Product Code Master</a>
+
+                <a class="dropdown-item text-muted" [routerLink]="['/master/projectcontractlist']">Project-Contract List</a>
+                <a class="dropdown-item text-muted" [routerLink]="['/master/shapemaster']" >Shape Master</a>
+
+              
+              </div>
+              </li>
+       
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">WBS</a>
+              <div class="dropdown-menu border-0 shadow-sm" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item text-muted" [routerLink]="['/wbs/wbsmaintenace']" >WBS Maintenance</a>
+                <a class="dropdown-item text-muted" href="/wbs/wbsposting">WBS Confirmation</a>
+                <a class="dropdown-item text-muted" href="#">BBS Posting</a></div>
+            </li>
+          </ul>
+          <ul class="navbar-nav ml-auto">
+            <!-- <li class="nav-item"><a class="nav-link px-4 d-inline-block" id="searchToggler" href="#"><i class="fas fa-search text-muted"></i><i class="fas fa-times text-muted d-none"></i></a></li>
+            <li class="nav-item"><a class="nav-link border-left px-4 bg-primary text-white d-inline-block" href="#">Search</a></li> -->
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>

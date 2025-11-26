@@ -1,0 +1,248 @@
+<div id="pause" class="d-flex align-items-center justify-content-center" *ngIf="loading">
+    <div id="spinner" class="loader"></div>
+</div>
+
+<div class="container-fluid">
+    <h3 class="card-header d-flex flex-column justify-content-center align-items-center">
+        <b>Copy BBS</b>
+    </h3>
+    <div class="card m-1">
+
+        <div class="card-body" style="margin-top:-11px !important;">
+            <div class="filter ">
+                <form [formGroup]="CopypostingForm">
+
+                    <div class="card-body ">
+
+                        <div class="row " style="padding-bottom: 5px;">
+
+
+                            <div class="col-md-2">
+                                <label class="form-label">Enter Target Number:</label>
+
+                            </div>
+                            <div class="col-md-3">
+                                <ng-select [selectOnTab]="true" formControlName="Sor" class="w-auto class= autosuggest"
+                                    [searchable]="true" [closeOnSelect]="true" (keyup)="ChangeSor($event.target)" placeholder="Enter min 4 char">
+                                    <ng-option *ngIf="LoadingSor">
+                                        <div style="justify-content: center;display: flex;">
+                                            <div class="spinner-border text-secondary" role="status">
+                                                <span class="sr-only">Loading...</span>
+                                            </div>
+                                        </div>
+                                    </ng-option>
+                                    <ng-option *ngFor="let sList of SORList" [value]="sList.ORD_REQ_NO">
+                                        {{sList.ORD_REQ_NO}}
+                                    </ng-option>
+                                </ng-select>
+                                <span class="text-danger"
+                                    *ngIf=" isformsubmit && CopypostingForm.controls['Sor'].invalid && CopypostingForm.controls['Sor'].errors && CopypostingForm.controls['Sor'].hasError('required')">*
+                                    Select SOR.
+                                </span>
+
+                                <!-- <ng-select [selectOnTab]="true" formControlName="Sor" [multiple]="false"
+                                    class="ng-selectprodtype" [closeOnSelect]="true" [searchable]="true"
+                                    (change)="ChangeSor($event)">
+                                    <ng-option *ngFor="let sList of SORList" [value]="sList.ORD_REQ_NO">
+                                        {{sList.ORD_REQ_NO}}
+                                    </ng-option>
+                                 </ng-select> -->
+
+                            </div>
+
+                            <div class="col-md-4">
+                                <button class="btn btn-primary btn-sm mt-0" type="submit" style="width:35%"
+                                    (click)="showDetails()">Show
+                                    Details</button>
+
+                                <button class="btn btn-primary btn-sm mt-0" type="button" style="width:35%"
+                                    (click)="Reset()">Reset</button>
+
+                            </div>
+                            <div class="col-md-2"></div>
+
+
+
+
+                        </div>
+
+
+
+
+
+                    </div>
+
+                </form>
+
+                <div class="row">
+                    <div class="col-md-9">
+
+                    </div>
+                    <br />
+
+                </div>
+
+                <div class=" table-responsive table-wrapper-scroll-y my-custom-scrollbar">
+
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr style="height:10px">
+                                <th></th>
+                                <th style="text-align:center;vertical-align:top;">SOR No</th>
+                                <th style="text-align:center;vertical-align:top;"> BBS</th>
+                                <th style="text-align:center;vertical-align:top;">Structure Elem</th>
+                                <th style="text-align:center;vertical-align:top;">Product Type</th>
+                                <th style="text-align:center;vertical-align:top;"> WBS1 </th>
+                                <th style="text-align:center;vertical-align:top;"> WBS2 </th>
+                                <th style="text-align:center;vertical-align:top;"> WBS3 </th>
+                                <th style="text-align:center;vertical-align:top;"> Total Weight </th>
+                                <th style="text-align:center;vertical-align:top;"> Total Qty </th>
+                                <th style="text-align:center;vertical-align:top;">Status</th>
+                                <th style="text-align:center;vertical-align:top;">Req Deli Date</th>
+
+                            </tr>
+                        </thead>
+
+
+                        <tbody>
+
+                            <!-- <tr *ngIf="toggleFilters">
+                                <th style="text-align:left;vertical-align:top;" colspan="2"></th>
+                                <th style="text-align:left;vertical-align:top;"><input class="form-control" type="text"
+                                        [(ngModel)]="searchSOR" id="searchBlock" placeholder="Search here"
+                                        (ngModelChange)="searchCABPostListData()" />
+                                </th>
+                                <th style="text-align:left;vertical-align:top;"><input class="form-control" type="text"
+                                        [(ngModel)]="searchBBS" id="searchBlock" placeholder="Search here"
+                                        (ngModelChange)="searchCABPostListData()" />
+                                </th>
+
+                                <th style="text-align:left;vertical-align:top;"><input class="form-control" type="text"
+                                        [(ngModel)]="searchStructure" id="searchFrom" placeholder="Search here"
+                                        (ngModelChange)="searchCABPostListData()" />
+                                </th>
+                                <th style="text-align:left;vertical-align:top;"><input class="form-control" type="text"
+                                        [(ngModel)]="searchProductType" id="searchBlock" placeholder="Search here"
+                                        (ngModelChange)="searchCABPostListData()" />
+                                </th>
+
+                                <th style="text-align:left;vertical-align:top;"><input class="form-control" type="text"
+                                        [(ngModel)]="searchWBS1" id="searchTo" placeholder="Search here"
+                                        (ngModelChange)="searchCABPostListData()" />
+                                </th>
+                                <th style="text-align:left;vertical-align:top;"><input class="form-control" type="text"
+                                        [(ngModel)]="searchWBS2" id="searchPart" placeholder="Search here"
+                                        (ngModelChange)="searchCABPostListData()" />
+                                </th>
+                                <th style="text-align:left;vertical-align:top;"><input class="form-control" type="text"
+                                        [(ngModel)]="searchWBS3" id="searchStructure" placeholder="Search here"
+                                        (ngModelChange)="searchCABPostListData()" />
+                                </th>
+
+                                <th style="text-align:left;vertical-align:top;"><input class="form-control" type="text"
+                                        [(ngModel)]="searchTotWt" id="searchTo" placeholder="Search here"
+                                        (ngModelChange)="searchCABPostListData()" />
+                                </th>
+                                <th style="text-align:left;vertical-align:top;"><input class="form-control" type="text"
+                                        [(ngModel)]="searchTotQty" id="searchPart" placeholder="Search here"
+                                        (ngModelChange)="searchCABPostListData()" />
+                                </th>
+                                <th style="text-align:left;vertical-align:top;"><input class="form-control" type="text"
+                                        [(ngModel)]="searchStatus" id="searchStatus" placeholder="Search here"
+                                        (ngModelChange)="searchCABPostListData()" /></th>
+                                <th style="text-align:left;vertical-align:top;"><input class="form-control" type="text"
+                                        [(ngModel)]="searchReqDelivery" id="searchFrom" placeholder="Search here"
+                                        (ngModelChange)="searchCABPostListData()" />
+                                </th>
+
+
+                            </tr> -->
+
+                            <ng-container *ngFor="let item of copybbsarray   filter:searchText ; index as i;">
+                                <tr>
+                                    <td style="text-align:left;width:2px">
+                                        <input type="checkbox" [(ngModel)]="item.isSelected" [disabled]="item.ReadOnly"
+                                            (click)="item.isSelected=!item.isSelected" />
+                                    </td>
+                                    <td style="text-align:left">{{item.ORD_REQ_NO}}</td>
+                                    <td style="text-align:left">{{item.BBS_NO}}</td>
+                                    <td style="text-align:left">{{item.STRUC_ELEM}}</td>
+                                    <td style="text-align:left">{{item.PROD_TYPE}}</td>
+                                    <td style="text-align:left">{{item.WBS1}}</td>
+                                    <td style="text-align:left">{{item.WBS2}}</td>
+                                    <td style="text-align:left">{{item.WBS3}}</td>
+                                    <td style="text-align:left">{{item.TotalWeight}}</td>
+                                    <td style="text-align:left">{{item.TotalQty}}</td>
+                                    <td style="text-align:left">{{item.WBSSTATUS}}</td>
+                                    <td style="text-align:left">{{item.ReqDate}}</td>
+
+                                </tr>
+
+
+                            </ng-container>
+
+                            <tr *ngIf="copybbsarray.length ==0">
+                                <td colspan="12" style="text-align: center">
+                                    No Records Found
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-2">
+                        <label class="form-label">Copy from BBS:</label>
+
+                    </div>
+                    <div class="col-md-2">
+
+                        <ng-select [selectOnTab]="true" [(ngModel)]="bbstxt" class="w-auto class= autosuggest"
+                                    [searchable]="true" [closeOnSelect]="true" (keyup)="ChangeBBS($event.target)" placeholder="Enter min 4 char">
+                                    <ng-option *ngIf="LoadingSor">
+                                        <div style="justify-content: center;display: flex;">
+                                            <div class="spinner-border text-secondary" role="status">
+                                                <span class="sr-only">Loading...</span>
+                                            </div>
+                                        </div>
+                                    </ng-option>
+                                    <ng-option *ngFor="let sList of BBSList" [value]="sList.BBS_NO">
+                                        {{sList.BBS_NO}}
+                                    </ng-option>
+                                </ng-select>
+                                <!-- <span class="text-danger"
+                                     *ngIf="this.enteredtext.length<4">*
+                                     Please enter at least 4 characters !
+                                </span> -->
+
+                    </div>
+                    <!-- <div class="col-md-1 mt-0">
+                        
+                        
+
+                            <span class="input-group-text ">
+                                <i class="material-icons" style="font-size:20px;"
+                                (click)="LoadBBS()">search</i>
+                            </span>
+
+                        </div>
+                    </div> -->
+                    <div class="col-md-3">
+                        <button class="btn btn-primary btn-sm mt-0" type="button" style="width:40%"
+                            (click)="copybbsclick()">Copy</button>&nbsp;&nbsp;
+
+                    </div>
+
+
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+</div>

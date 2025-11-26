@@ -1,0 +1,68 @@
+.modal-header {
+    background: #cdd4df;
+    font-size: x-large;
+  }
+  
+  .sub-heading {
+    font-size: large;
+    font-weight: 500;
+    padding-bottom: 5px;
+  }
+  
+  .name-field {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    padding-bottom: 5px;
+  }
+  
+  .input-field {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+  }
+  
+  .custom-icon {
+    font-size: x-large;
+  }
+  
+  .custom-icon:hover {
+    color: #003ec4;
+  }
+  
+  ul {
+  border: 1px solid #ccc;
+  max-height: 100px;
+  overflow-y: auto;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  z-index: 99999;
+  position: absolute;
+  background: white;
+  width: 70%;
+  
+  }
+  
+  li {
+  padding: 8px;
+  cursor: pointer;
+  }
+  
+  li:hover {
+  background-color: #eee;
+  }
+  
+  .modal-body {
+    max-height: 300px; /* Adjust height as needed */
+    overflow-y: auto;  /* Enable scrolling when content exceeds max-height */
+  }
+  
+  .modal-footer {
+    position: sticky;
+    bottom: 0;
+    background: white;
+    z-index: 1050;
+    padding: 10px;
+    border-top: 1px solid #ddd; /* Optional: Adds a separation */
+  }

@@ -1,0 +1,47 @@
+
+// .breadcrumbs-block {
+//   background-color: $black10;
+//   .breadcrumb {
+//     margin-top: 0;
+//     font-size: 1em;
+//     background-color: $black10;
+//     li {
+//       a {
+//         color: $blueD80;
+//         &:focus {
+//           color: $blueD100;
+//           text-decoration: underline;
+//         }
+//       }
+//     }
+//     li:last-child {
+//       a {
+//         color: $black60;
+//         cursor: default;
+//         &:hover {
+//           text-decoration: none;
+//         }
+//       }
+//     }
+//     li:last-child::after {
+//       content: '';
+//     }
+//   }
+// }
+
+// .breadcrumb {
+//   background-color: transparent;
+//   font-size: 1.25em;
+//   li:last-child {
+//     a {
+//       cursor: default;
+
+//       &:hover {
+//         text-decoration: none;
+//       }
+//     }
+//   }
+//   li:last-child::after {
+//     content: '';
+//   }
+// }

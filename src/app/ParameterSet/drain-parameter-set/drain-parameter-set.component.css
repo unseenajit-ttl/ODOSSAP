@@ -1,0 +1,234 @@
+ion-icon {
+    color: blue;
+  }
+  /* FOR FIXING POSITION OF HEADER AND FOOTER */
+  thead th,
+  tfoot tr {
+    position: sticky;
+  }
+  
+  thead th {
+    top: 0
+  }
+  
+  tfoot tr {
+    bottom: 0
+  }
+  
+  tbody tr:first-of-type td {
+    padding-top:  10px;
+  }
+  
+  tbody tr:last-of-type td {
+    padding-bottom: 10px;
+  }
+  /* END */
+  
+  .accordion-button.collapsed {
+    background: blue
+  }
+  
+  .accordion-button.collapsed::after {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+  }
+  
+  .accordion-button {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    font-size: 0.8rem;
+    color: var(--bs-accordion-btn-color);
+    text-align: left;
+    background-color: var(--bs-accordion-btn-bg);
+    border: 0;
+    border-radius: 0;
+    overflow-anchor: none;
+    transition: var(--bs-accordion-transition);
+  }
+  
+  
+  
+  table {
+    width: 100%;
+  }
+  
+  .mat-mdc-table .mdc-data-table__row:nth-child(odd) {
+    background-color: #e6e6e6;
+  }
+  
+  /* .mat-mdc-table .mdc-data-table__row :nth-child(even){
+  background-color: #ffffff;
+  }
+  
+  
+  .mat-mdc-table .mdc-data-table__row :nth-child(odd){
+  background-color: #e6e6e6;
+  } */
+  
+  
+  
+  
+  
+  .ng-selectcustomer {
+    width: 385px;
+  }
+  
+  .ng-selectwbs {
+    width: 100px;
+ 
+  }
+  
+  .colbutton {
+    flex-basis: 0;
+    flex-grow: 1;
+    max-width: 100%;
+    padding: 5px;
+    padding-left: 10px;
+  }
+  
+  .custom-switch {
+    padding-left: 9rem;
+    /* padding-top: 50px; */
+  }
+  
+  .custom-control-label {
+    position: relative;
+    padding-left: 5px;
+    margin-bottom: 0;
+    vertical-align: top;
+  }
+  
+  
+  
+  /* html, body { height: 100%; padding: 0; margin: 0; }
+  div { width: 50%; height: 50%; float: left; }
+  #div1 { background: #DDD; }
+  #div2 { background: #AAA; }
+  #div3 { background: #777; }
+  #div4 { background: #444; } */
+  
+  
+  .div1 {
+    text-align: center;
+    font-size: 30px;
+    color: white;
+    padding: 10px;
+    display: flex;
+    /* align-items: center; */
+    /* justify-content: center; */
+    height: 300px;
+    width: 50%;
+    /* padding-top:50px; */
+  }
+  
+  .one {
+  
+    float: left;
+    border-style: solid;
+    border-color: powderblue;
+  }
+  
+  .two {
+  
+    float: left;
+    border-style: solid;
+    border-color: powderblue;
+  }
+  
+  .three {
+  
+    float: left;
+    border-style: solid;
+    border-color: powderblue
+  }
+  
+  .four {
+  
+    float: left;
+    border-style: solid;
+    border-color: powderblue
+  }
+  
+  
+  .my-custom-scrollbar1 {
+    position: relative;
+    max-height: 231px px;
+    overflow: auto;
+  }
+  
+  .card_pad {
+    padding-top: 10px;
+  
+  }
+  
+  .card {
+    position: relative;
+    height: 100% !important;
+  
+  }
+  
+  .card-body {
+    padding: 7px !important;
+  }
+  
+  .card-footer {
+    padding: 0px !important;
+  }
+  
+  /* ngb-pagination ::pagination {
+    --bs-pagination-padding-x: 0.5rem !important;
+    --bs-pagination-padding-y: 0.25rem !important;
+    --bs-pagination-font-size: 0.8rem !important;
+  } */
+  
+  
+  ngb-pagination ::ng-deep a {
+    /* color: black !important; */
+    padding: 0.4rem !important;
+    font-size: 0.8rem !important;
+  }
+  
+  .custom-select {
+    display: inline-block;
+    width: 100%;
+    height: calc(1em + 1rem + 1px);
+    padding: 0.3rem 1.75rem 0.375rem 0.75rem;
+    font-size: 0.8rem;
+    font-weight: 300;
+    line-height: 1.5;
+    color: #495057;
+  }
+  
+  /* ngb-pagination ::ng-deep .page-item.active .page-link {
+    border-color: black;
+    background-color: lightgrey;
+    padding: 0.25rem !important;
+  }
+  
+  ngb-pagination ::ng-deep .page-item.active .page-link:focus, .page-link:not(:disabled):not(.disabled):active:focus {
+    box-shadow: 0 0 0 0.1rem dimgrey;  
+    padding: 0.25rem !important;
+  }
+  
+  ngb-pagination ::ng-deep .page-link:not(:disabled):not(.disabled):active:focus {
+    box-shadow: 0 0 0 0.1rem dimgrey;
+    padding: 0.25rem !important;
+  } */
+  tfoot {
+    position: inherit;
+  }
+  .table-scroll {
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  .custom-table th:nth-child(1),
+.custom-table td:nth-child(1) {
+    width: 10%;
+}
+.column-width {
+  width: 3000%; /* Adjust the width as needed */
+}
+body {
+  position: relative;
+}

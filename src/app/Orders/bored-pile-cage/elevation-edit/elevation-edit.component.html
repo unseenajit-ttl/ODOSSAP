@@ -1,0 +1,80 @@
+
+
+<div cdkDrag cdkDragRootElement=".your-custom-dialog-class">
+  <div class="modal-header" cdkDragHandle>
+    <span id="ui-id-2" class="ui-dialog-title">View Drawings</span>
+    <button type="button" class="close" (click)="dismissModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row p-3">
+      <div class="col-md-6 col-12">
+        <table class="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Rings at Start:</td>
+              <td><input type="number"  id="rings_start" name="rings_start" [(ngModel)]="this.data.rings_start" (change)="updateNewFields();updateDrawings();" /></td>
+            </tr>
+            <tr>
+              <td>No of Stiffener Ring:</td>
+              <td><input type="number"  id="no_of_sr" name="no_of_sr" [(ngModel)]="this.data.no_of_sr" (change)="updateNewFields();updateDrawings();"/></td>
+            </tr>
+            <ng-container *ngFor="let row of tableData; let i = index">
+              <tr *ngIf="i < this.data.no_of_sr">
+                <td>{{ row.name }}</td>
+                <td>
+                  <input
+                    #inputRef
+                    type="number"
+                    name="{{ row.name }}"
+                    [value]="row.val"
+                    (change)="updateValue($event, i, row.field,inputRef)"
+                  />
+                </td>
+              </tr>
+              <tr *ngIf="i === 0">
+               <td>Last Stiffener Ring Location:</td>
+              <td>
+                <input type="number"  id="last_location" name="last_location" [(ngModel)]="this.data.last_location" (change)="updateNewFields();updateDrawings();"/>
+              </td>
+              </tr>
+            </ng-container>
+            <tr>
+              <td>
+                Lap Start
+              </td>
+              <td >
+                <input type="number" name="lminTop" id="i" [(ngModel)]="this.data.lminTop"  (blur)="updateDrawings()">
+                <!-- <input type="number" name="lminTop" id="i" [(ngModel)]="this.data.lminTop" > -->
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Lap End
+              </td>
+              <td >
+                <input type="number" name="lminEnd" id="i" [(ngModel)]="this.data.lminEnd"  (blur)="updateDrawings()">
+                <!-- <input type="number" name="lminEnd" id="i" [(ngModel)]="this.data.lminEnd" > -->
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-md-6 col-12"><canvas class="mt-2" width="700" height="210" #canvasElevView></canvas></div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="ui-dialog-buttonset">
+      <button class="btn btn-primary" (click)="updateDrawings()">Preview (预览)</button>
+      <button class="btn btn-success" (click)="updateData()">Save (关闭)</button>
+      <button class="btn btn-secondary" (click)="dismissModal()">Close (关闭)</button>
+    </div>
+  </div>
+</div>

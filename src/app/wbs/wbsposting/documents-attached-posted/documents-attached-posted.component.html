@@ -1,0 +1,79 @@
+<div cdkDrag cdkDragRootElement=".your-custom-dialog-class">
+  <div class="movable-container">
+    <div class="container-fluid">
+      <div class="card m-1">
+        <div class="mainHeading" cdkDragHandle>
+          <span>Documents Attached (文档附件)</span>
+        </div>
+        <div *ngIf="ProcessOrderLoading" style="z-index: 500">
+          <div id="pause" class="d-flex align-items-center justify-content-center">
+            <div id="spinner" class="loader"></div>
+          </div>
+        </div>
+        <div>
+          <div class="table-responsive table-wrapper-scroll-y my-custom-scrollbar">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>Select<br />(选项)</th>
+                  <th>SNo.<br />(序号)</th>
+                  <th>Document No<br />(文档编号)</th>
+                  <th>Revision<br />(版本号)</th>
+                  <th>File Name<br />(文件名)</th>
+                  <th>Uploaded Date<br />(上传日期)</th>
+                  <th>Uploaded By<br />(上传者)</th>
+                  <!-- <th>Approve<br />(上传者)</th> -->
+                  <th>Comments Detailer<br />(上传者)</th>
+                  <th>Comments Customer<br />(上传者)</th>
+                  <!-- <th>Action</th> -->
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container>
+                  <tr *ngFor="let item of AttachmentList; index as i">
+                    <td>
+                      <input type="checkbox" [(ngModel)]="item.isSelected"
+                        (ngModelChange)="AttachmentListSelect(item,item.isSelected)" [checked]="item.isSelected" />
+                    </td>
+                    <td>{{item.DrawingID}}</td>
+                    <td>{{ item.DrawingNo }}</td>
+                    <td>{{ item.Revision }}</td>
+                    <td>{{ item.FileName }}</td>
+                    <td>{{ item.UpdatedDate }}</td>
+                    <td>{{ item.UpdatedBy }}</td>
+                    <!-- <td><input type="checkbox" [(ngModel)]="item.Approved_Status"></td> -->
+                    <td *ngIf="!inputUser";>{{ item.Comments_User }}</td>
+                    <td *ngIf="inputUser"><input type="textarea" [(ngModel)]="item.Remarks"></td>
+                    <td *ngIf="!inputCustomer">{{ item.Comment_Customer }}</td>
+                    <td *ngIf="inputCustomer"><input type="textarea" [(ngModel)]="item.Remarks"></td>
+                    <!-- <td><button type="submit" class="btn btn-success"> Approve </button></td> -->
+                  </tr>
+
+                </ng-container>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="footer">
+          <button type="button" class="btn btn-primary me-2" (click)="openPDFPopup()">
+            Save (浏览文档)
+          </button>
+          <button type="button" class="btn btn-primary me-2" (click)="openPDFPopup()">
+            View (浏览文档)
+          </button>
+          <button type="button" class="btn btn-primary me-2" (click)="Download_Selected()">
+            Download (下载文档)
+          </button>
+
+          <!-- <button type="button" class="btn btn-primary me-2" (click)="Download_All()">
+        Download All (下载全部文档)
+      </button> -->
+          <button class="btn btn-primary me-2" (click)="Download_All()">Download All (下载所有文档)</button>
+          <button type="button" class="btn btn-primary me-2" (click)="activeModal.dismiss('Cross click')">
+            Close (关闭)
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

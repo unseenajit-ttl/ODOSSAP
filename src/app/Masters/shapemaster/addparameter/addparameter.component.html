@@ -1,0 +1,112 @@
+<div class="modal-header" >
+    <h4 class="modal-title">Add Parameter</h4>
+    <i class="fa-solid fa-xmark"></i>
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+ 
+</div>
+<div class="modal-body " >
+    <div class="row">
+        <form [formGroup]="addparameterForm" >            
+            <div class="container"> 
+                  <div class="row">
+                    <div class="col">
+                        <label class="form-label">Parameter Name</label> <br>
+                        <input type="text" formControlName="parametername" class="form-control"/>
+                    </div>
+
+                    <div class="col">
+                        <label class="form-label">Paramater Sequence</label>
+                        <input type="text" class="form-control" formControlName="parametersequence"/>
+                    </div>
+
+                    <div class="col">
+                        <label class="form-label"> MW Shape</label> <br>
+                        <input type="text" class="form-control" formControlName="mwshape"/>   
+                    </div>
+                  </div>
+                  
+                  <div class="row">
+
+                    
+                    <div class="col">
+                        <label class="form-label"> CW Shape</label> <br>
+                        <input type="text" class="form-control" formControlName="cwshape"/>   
+                    </div>
+                    
+
+                    <div class=" col">
+                      <label for="bendingtype" class="form-label " >Wire Type</label><br>
+                      <input type="text" class="form-control" formControlName="wiretype">
+                    </div>
+                    
+                    <div class=" col">
+                      <label for="couplertype" class="form-label">Angle Type</label><br>
+                      <input type="text" class="form-control" formControlName="angletype">
+
+                    </div>
+                  </div>
+            
+                  <div class="row">
+                       <div class=" col">
+                         <label for="couplertype" class="form-label">Angle Dir</label><br>
+                          <input type="text" class="form-control" formControlName="angledir">
+                        </div>
+
+                        <div class="col">
+                          <label for="couplertype" class="form-label">Bend Seq1</label><br>
+                           <input type="text" class="form-control" formControlName="bendseq1">
+
+                        </div>
+
+                  <div class="col">
+                    <label for="couplertype" class="form-label">Bend Seq2</label><br>
+                      <input type="text" class="form-control" formControlName="bendseq2">
+
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <label for="couplertype" class="form-label">Critical Indicator</label><br>
+                    <input type="text" class="form-control" formControlName="criticalindicator">
+                  </div>
+                  <div class="col">
+                    <label class="form-label">Min Length</label> <br>
+                    <input type="text" class="form-control" formControlName="minlength">
+   
+                  </div>
+                  <div class="col">
+                    <label class="form-label">Max Length</label> <br>
+                    <input type="text" class="form-control" formControlName="maxlength">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <label class="form-label"> Constant Value</label><br>
+                    <input type="text" class="form-control" formControlName="constantvalue">
+
+                  </div>
+                  <div class="col">
+                    
+                  </div>
+                  <div class="col">
+
+                  </div>
+                </div>
+               
+            </div>
+        </form>
+    </div>
+</div>
+<div class="modal-footer" >
+ <button type="button" (click)="cancel()" class="btn btn-secondary">
+   Cancel
+    </button>
+    <button
+      type="button"
+      (click)="submitReview()"
+      class="btn btn-primary me-2"
+      [disabled]="disableSubmit"
+    >
+      Submit
+    </button>
+  </div>

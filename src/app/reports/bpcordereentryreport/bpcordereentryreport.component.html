@@ -1,0 +1,185 @@
+<div id="pause" class="d-flex align-items-center justify-content-center" *ngIf="loading">
+    <div id="spinner" class="loader"></div>
+</div>
+
+
+<div class="container-fluid">
+    <h3 class="card-header d-flex flex-column justify-content-center align-items-center">
+        <b>BPC Order Entry Report</b>
+    </h3>
+    <div class="card m-1">
+
+        <div class="card-body">
+            <div class="card-body mt-3">
+
+                <fieldset style="background-color:#e5e8b3 ;">
+
+                    <div class="row">
+                        <form [formGroup]="BPCReportForm">
+                            <div class="row ">
+
+
+                                <div class="col-md-3">
+                                    <label class="required-label" style="padding-right:5px;">* </label>
+                                    <label class="form-label"><b>Date From</b></label>
+                                    <input type="date" class="form-control" formControlName="FromDate"
+                                        [(ngModel)]="From_Date">
+                                </div>
+
+                                <div class="col-md-3">
+                                    <label class="required-label" style="padding-right:5px;">* </label>
+                                    <label class="form-label"><b>Date To</b></label>
+                                    <input type="date" class="form-control" formControlName="ToDate"
+                                        [(ngModel)]="To_Date">
+
+                                </div>
+
+                                <div class="col-md-2">
+                                    <label class="form-label"> </label>
+                                    <div class="d-flex" style="justify-content: flex-end;">
+                                        <button class="btn btn-primary btn-sm" type="button" (click)="viewReport()">View
+                                            Report
+                                        </button>
+
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-1">
+                                    <label class="form-label"></label> <br />
+                                    <div class="input-group flex-nowrap">
+
+                                        <span class="input-group-text ">
+                                            <i class="material-icons" style="font-size:20px;"
+                                                ngbTooltip="Download Excel" (click)="downloadFile()">download</i>
+                                        </span>
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </form>
+
+                       
+                    </div>
+                </fieldset><br>
+
+
+                <!-- Grid Section -->
+
+                <ng-container *ngIf="showIframe">
+                    <div class="table-responsive table-wrapper-scroll-y my-custom-scrollbar" style="padding: 0; margin:0">
+                        <table class="table  table-bordered" style="width: 250%;" id="BPCReportlist">
+                            <thead>
+                                <tr>
+                                					
+                                    <th class="w-125px">OrderNumber</th>
+                                    <th class="w-125px">JobID</th>
+                                    <th style="width: 300px;">Customer Name</th>
+                                    <th class="w-125px">CustomerCode</th>
+                                    <th style="width: 300px;">Project Name</th>
+                                    <th class="w-125px">ProjectCode</th>
+                                    <th class="w-125px">CageQty</th>
+                                    <th class="w-125px">CageWeight</th>
+                                    <th class="w-125px">PileType</th>
+                                    <th class="w-125px">PileDia</th>
+                                    <th class="w-125px">CageDia</th>
+                                    <th class="w-125px">MainBarType</th>
+                                    <th class="w-125px">MBCount</th>
+                                    <th class="w-125px">MainBarShape</th>
+                                    <th class="w-125px">MainBarGrade</th>
+                                    <th class="w-125px">MainBardia</th>
+                                    <th class="w-125px">CageLength</th>
+                                    <th class="w-125px">SpiralLinkType</th>
+                                    <th class="w-125px">SpiralLinkGrade</th>
+                                    <th class="w-125px">SpiralLinkDia</th>
+                                    <th class="w-125px">SpiralLinkSpacing</th>
+                                    <th class="w-125px">LapLength</th>
+                                    <th class="w-125px">EndLength</th>
+                                    <th class="w-125px">CageLocation</th>
+                                    <th class="w-125px">UpdateBy</th>
+                                    <th class="w-125px">UpdateDate</th>
+                                    <th class="w-125px">TotalWeight</th>
+                                    <th class="w-125px">OrderStatus</th>
+
+                                    
+
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <tr style="background-color:#abe7eb;"
+                                    *ngFor="let item of BPCReportList| slice: pageSize | slice: 0:itemsPerPage; index as i">
+                                    <td>{{item.OrderNumber}}</td>
+                                    <td>{{item.JobID}}</td>
+                                    <td [width]="200">{{item.Customer_Name}}</td>
+                                    <td>{{item.CustomerCode}}</td>
+                                    <td>{{item.Project_Name}}</td>
+                                    <td>{{item.ProjectCode}}</td>
+                                    <td>{{item.cage_qty}}</td>
+                                    <td>{{item.cage_weight}}</td>
+                                    <td>{{item.pile_type}}</td>
+                                    <td>{{item.pile_dia}}</td>
+                                    <td>{{item.cage_dia}}</td>
+                                    <td>{{item.main_bar_type}}</td>
+                                    <td>{{item.MB_Count}}</td>
+                                    <td>{{item.main_bar_shape}}</td>
+                                    <td>{{item.main_bar_grade}}</td>
+                                    <td>{{item.main_bar_dia}}</td>
+                                    <td>{{item.cage_length}}</td>
+                                    <td>{{item.spiral_link_type}}</td>
+                                    <td>{{item.spiral_link_grade}}</td>
+                                    <td>{{item.spiral_link_dia}}</td>
+                                    <td>{{item.spiral_link_spacing}}</td>
+                                    <td>{{item.lap_length}}</td>
+                                    <td>{{item.end_length}}</td>
+                                    <td>{{item.cage_location}}</td>
+                                    <td>{{item.UpdateBy}}</td>
+                                    <td>{{item.UpdateDate}}</td>
+                                    <td>{{item.TotalWeight}}</td>
+                                    <td>{{item.OrderStatus}}</td>
+                                    
+
+                                </tr>
+
+                                <tr *ngIf="BPCReportList.length==0">
+                                    <td colspan="31">
+                                        No Records Found
+                                    </td>
+
+
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+                    </div>
+
+                    <div class="d-flex mt-2">
+                        <ngb-pagination [collectionSize]="BPCReportList.length" [(page)]="currentPage"
+                            [pageSize]="itemsPerPage" (pageChange)="onPageChange(currentPage)" [boundaryLinks]="false"
+                            [maxSize]="maxSize" *ngIf="searchResult">
+                            <ng-template ngbPaginationPrevious>Prev</ng-template>
+                            <ng-template ngbPaginationNext>Next</ng-template>
+                        </ngb-pagination>
+
+                        <select class="custom-select mr-2 ml-3" style="width: auto" [(ngModel)]="itemsPerPage"
+                            (ngModelChange)="OnPageSizeChange(itemsPerPage);">
+                            <option [ngValue]="5">5 </option>
+                            <option [ngValue]="10">10 </option>
+                            <option [ngValue]="20">20 </option>
+                            <option [ngValue]="50">50 </option>
+                            <option [ngValue]="100">100 </option>
+                        </select>
+                        <span style="margin-top: 5px;">Items per page</span>
+                    </div>
+
+
+                </ng-container>
+
+
+
+            </div>
+        </div>
+    </div>

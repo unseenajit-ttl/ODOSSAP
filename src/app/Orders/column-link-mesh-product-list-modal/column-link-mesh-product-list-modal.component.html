@@ -1,0 +1,78 @@
+<div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">{{StructureElement}} Link Mesh Product List (柱链接网产品列表)</h4>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-12">
+        <table class="table table-hover table-bordered w-100">
+          <thead style="width: fit-content;background-color: #dee2e6;font-size: 11px;">
+            <tr>
+              <td>
+                <span>S/N</span> <br>
+                <span>
+                  序列号
+                </span>
+              </td>
+              <td>
+                <span>Product Code</span> <br>
+                <span>
+                  产品代码
+                </span>
+              </td>
+              <td>
+                <span>Diameter</span> <br>
+                <span>
+                  直径
+                </span>
+              </td>
+              <td>
+                <span>MW Spacing</span> <br>
+                <span>
+                  间距
+                </span>
+              </td>
+              <td>
+                <span>CW Spacing</span> <br>
+                <span>
+                  载线直径
+                </span>
+              </td>
+              <td>
+                <span>Carrier Wire Diameter</span> <br>
+                <span>
+                  载线直径
+                </span>
+              </td>
+              <td>
+                <span>Kg/m^2</span> <br>
+                <span>
+                  公斤/米^2
+                </span>
+              </td>
+            </tr>
+          </thead>
+          <tbody style="width: fit-content">
+            <tr *ngFor="let product of products;index as i;" (click)="productClicked(product)">
+              <td>{{i+1}}</td>
+              <td>{{product.ProductCode}}</td>
+              <td>{{product.ProdMWDia}}</td>
+              <td>{{product.ProdMWSpacing}}</td>
+              <td>{{product.ProdCWSpacing}}</td>
+              <td>{{product.ProdCWDia}}</td>
+              <td>{{product.ProdMass}}</td>
+            </tr>
+          </tbody>
+  
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="row">
+      <div class="col-md-12">
+        <button class="btn btn-secondary">Select (选择)</button>
+        <button class="btn btn-secondary" (click)="activeModal.dismiss('Cross click')">Close (关闭)</button>
+      </div>
+    </div>
+  </div>
+  

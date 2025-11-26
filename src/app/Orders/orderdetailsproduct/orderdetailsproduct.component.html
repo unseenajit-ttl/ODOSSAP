@@ -1,0 +1,60 @@
+<div class="modal-header">
+    <h4 class="modal-title">Order Details for Product CAB</h4>
+    <i class="fa-solid fa-xmark"></i>
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+
+</div>
+
+<div class="modal-header">
+    <h4>Coupler Type: No Coupler</h4>
+    <i class="fa-solid fa-xmark"></i>
+
+
+</div>
+<div class="modal-body ">
+
+    <div class="row">
+        <form>
+            <div class="container">
+                <div class=" table-responsive table-wrapper-scroll-y my-custom-scrollbar">
+
+                    <table class="table  table-bordered">
+                        <thead>
+                            <tr>
+                                <th style="text-align: left;"> SNo </th>
+                                <th style="text-align: left;"> Structure Element </th>
+                                <th style="text-align: left;"> BBS No</th>
+                                <th style="text-align: left;"> BBS Description</th>
+                                <th style="text-align: left;"> CAB Weight(KG)</th>
+                                <th style="text-align: left;"> SB Weight(KG)</th>
+                                <th style="text-align: left;"> Total Weight(KG)</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            <tr *ngFor="let item of CabOrderDetails; index as i">
+                               
+                                <td>1</td>
+                                <td>
+                                    {{item.BBSStrucElem}}</td>
+                                <td>
+                                    {{item.BBSNo}}</td>
+                                <td>{{item.BBSDesc}}
+                                </td>
+                                <td>
+                                    {{item.BBSOrderCABWT}}</td>
+                                <td>
+                                    {{item.BBSOrderSTDWT}}</td>
+                                <td>
+                                    {{item.BBSTotalWT}}</td>
+
+                            </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,128 @@
+
+<div id="mydiv">
+  <div>
+<div class="modal-header">
+  <h4 class="modal-title" *ngIf="wbs1==null">Add New</h4>
+  <h4 class="modal-title" *ngIf="wbs1!=null">Edit WBS</h4>
+  <i class="fa-solid fa-xmark"></i>
+  <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+
+</div>
+<div class="modal-body ">
+
+  <div class="row">
+    <!-- <form [formGroup]="wbscreateForm"> -->
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4">
+            <label class="form-label">Enter WBS3 Extension</label> <br>
+            <input type="text" id="WBS3" placeholder="Part" [(ngModel)]="wbsextension" (click)="WBS3Input()" (keypress)="blockComma($event)" class="form-control" value="{{wbsextension | uppercase}}" [maxlength]="maxlength"/> &nbsp;
+          </div>
+         
+          <div class="col-md-4">
+            <label class="form-label">Storey From</label> <br>
+            <!-- <ng-select [selectOnTab]="true" [(ngModel)]="StoryFrom"
+                                            
+                                            (change)="StoreyValidate(StoryFrom,StoryTo)">
+                                            <ng-option *ngFor="let sList of storeyFromList" [value]="sList.StoreyName">
+                                                {{sList.StoreyName}}
+                                            </ng-option>
+                                        </ng-select> -->
+           <input type="text" [(ngModel)]="StoreyFrom" placeholder="storeyfrom" class="form-control" readonly/>
+           
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Storey To</label> <br>
+            <!-- <ng-select [selectOnTab]="true" [(ngModel)]="StoryTo"
+                                           
+                                            (change)="StoreyValidate(StoryFrom,StoryTo)">
+                                            <ng-option *ngFor="let sList of storeyToList" [value]="sList.StoreyName">
+                                                {{sList.StoreyName}}
+                                            </ng-option>
+                                        </ng-select> -->
+          <input type="text" [(ngModel)]="StoreyTo" placeholder="Storey margin-top" class="form-control" readonly/>
+           
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <label class="form-label">Block</label> <br>
+            <input type="text" [(ngModel)]="wbs1" placeholder="Block" class="form-control" value="{{wbs1}}" readonly/>
+           
+          </div>
+         
+          <!-- <div class="col-md-4">
+            <label class="form-label">Structure</label> <br>
+            <ng-select [selectOnTab]="true" [(ngModel)]="Structure" [multiple]="true"
+                                            (change)=" ChangeStruct($event)" style=" height: auto;">
+                                            <ng-container *ngFor="let sList of structureList">
+                                                <ng-option 
+                                                    [value]="sList.StructureElementTypeId">
+                                                    {{sList.StructureElementType}}
+                                                </ng-option>
+                                                
+                                            </ng-container>
+                                        </ng-select>
+          </div>
+           -->
+           <div class="col-md-4">
+            <label class="form-label">Structure</label> <br>
+            <ng-select [selectOnTab]="true" [(ngModel)]="Structure"
+            [multiple]="true"
+                                            (change)=" ChangeStruct($event)" style=" height: auto;">
+                                            <ng-container *ngFor="let sList of StructureElementArray">
+                                                <ng-option 
+                                                    [value]="sList.key">
+                                                    {{sList.value}}
+                                                </ng-option>
+                                                
+                                            </ng-container>
+                                        </ng-select>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">ProductType</label> <br>
+            <ng-select [selectOnTab]="true" [(ngModel)]="ProductType" [multiple]="true"
+            
+                                            [closeOnSelect]="false" (change)="ProductType=$event"
+                                            >
+                                            <ng-option *ngFor="let sList of ProductTypeArray"
+                                                [value]="sList.key">
+                                                {{[sList.value]}}
+                                            </ng-option>
+                                        </ng-select>
+          </div>
+          <!-- <div class="col-md-4">
+            <label class="form-label">ProductType</label> <br>
+            <ng-select [selectOnTab]="true" [(ngModel)]="ProductType" [multiple]="true"
+                                            [closeOnSelect]="false" (change)="ProductType=$event"
+                                            >
+                                            <ng-option *ngFor="let sList of producttypeList"
+                                                [value]="sList.ProductTypeID">
+                                                {{[sList.ProductType]}}
+                                            </ng-option>
+                                        </ng-select>
+          </div> -->
+          
+          <div class="col">
+           
+        </div>
+         
+
+        </div>
+
+
+      </div>
+    <!-- </form> -->
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" (click)="cancel()" class="btn btn-transparent">
+    Cancel
+  </button>
+  <button type="button" (click)="submitReview()" class="btn btn-primary me-2" [disabled]="disableSubmit">
+    Submit
+  </button>
+</div>
+</div>
+</div>
+

@@ -1,0 +1,6 @@
+:host ::ng-deep .slick-headerrow{
+  display: none;
+}
+:host ::ng-deep .slickgrid-container {
+  height: 50vh !important;
+}

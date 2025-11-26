@@ -1,0 +1,386 @@
+<div id="pause" class="d-flex align-items-center justify-content-center" *ngIf="loading">
+    <div id="spinner" class="loader"></div>
+</div>
+
+<div class="container-fluid">
+    <div class="card m-1">
+        <h3 class="card-header d-flex flex-column justify-content-center align-items-center">
+            <b> Role Management </b>
+        </h3>
+        <div class="card-body" style="margin-top:-11px !important;">
+            <form [formGroup]="RoleMasterForm">
+                <div class="row">
+
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <label class="form-label">Role</label> <br>
+                                <ng-select formControlName="role" class="ng-selectcustomer" [(ngModel)]="SelectedRole"
+                                    (change)="ChangeRole($event)">
+                                    <ng-option *ngFor="let sList of rolelist" [value]="sList.RoleId">
+                                        {{sList.RoleName}}
+                                    </ng-option>
+                                </ng-select>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label class="form-label"> Remark</label> <br>
+                                <input type="text" class="form-control" placeholder="Remark"
+                                    formControlName="roleremark" />
+
+                            </div>
+
+                            <div class="col-md-2">
+                                <label class="form-label"> </label><br>
+                                <div class=" row custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="roleactive"
+                                        [(ngModel)]="toggleValue" [ngModelOptions]="{standalone: true}">
+                                    <label class="custom-control-label" for="roleactive">Active</label><br>
+
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-4">
+                                <div class="d-flex" style="Padding-top:16px;">
+                                    <br>
+                                    <button class="btn btn-primary btn-sm" (click)="OnSave()">Save</button>
+                                    <button class="btn btn-primary btn-sm" type="reset"
+                                        (click)="onReset()">Reset</button>
+
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+
+
+                </div>
+
+            </form>
+            <div class="row">
+                <div class="col-md-8">
+                    <button class="btn btn-md btn-outline-primary" type="button" ngbTooltip="Add New Employee"
+                        (click)="open()">
+                        <i class="fa fa-plus"></i>
+                    </button>
+                </div>
+                <div class="col-md-4 float-right">
+
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Search" value="search"
+                            id="example-search-input" name="search" [(ngModel)]="searchText"
+                            [ngModelOptions]="{standalone: true}">
+                        <div class="input-group-append">
+                            <button class="btn btn-secondary" type="button"
+                                style="height: 38px;margin-top: 0px;margin-left:-2px;"> <i
+                                    class="fa fa-search"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+
+
+            <div class="row table-responsive">
+
+
+                <table class="table" style="background-color: #cecbff">
+                    <thead>
+                        <tr>
+
+                            <th style="width: 10px ;">
+                                <i class="bi bi-search" style="margin-top:3px; font-size: 15px;"
+                                    (click)="toggleFilters = !toggleFilters"></i>
+
+                            </th>
+                            <th class="w-125px">Employee Name</th>
+                            <th class="w-125px">Login ID</th>
+                            <th class="w-125px">Email ID</th>
+                            <th class="w-100px">Actions</th>
+                        </tr>
+                    </thead>
+                    <thead>
+                        <tr *ngIf="toggleFilters">
+                            <th style="width: 10px ;"></th>
+                
+                            <th><input type="text" [(ngModel)]="searchName" placeholder="Search here"
+                                    (keyup)="searchUserData()"/>
+                            </th>
+                            <th><input type="text" [(ngModel)]="searchLoginId" placeholder="Search here"
+                                    (keyup)="searchUserData()" />
+                            </th>
+                            <th><input type="text" [(ngModel)]="searchMailID" placeholder="Search here"
+                                    (keyup)="searchUserData()" />
+                            </th>
+                            <th></th>
+
+                        </tr>
+                    </thead>
+
+
+                    <tbody>
+
+                        <ng-container *ngFor="let item of employeelist   ; index as i ">
+                            <tr>
+                                <!-- <td style="text-align:left;width:2px">
+                                                <i *ngIf="!item.isExpand" (click)="GetPageAccessByRoleId(item)"
+                                                    class="bi-chevron-right"></i>
+                                                <i *ngIf="item.isExpand" (click)="item.isExpand = !item.isExpand"
+                                                    class="bi-chevron-up"></i>
+            
+                                            </td> -->
+                                <td></td>
+                                <td>{{item.UserName}}</td>
+                                <td>{{item.LoginName}}</td>
+                                <td>{{item.EmailId}}</td>
+                                <td><i class="material-icons" ngbTooltip="Edit" (click)="Edit(item)">mode_edit</i>
+                                    <i class="bi bi-trash3-fill" ngbTooltip="Delete"
+                                        style="color: red; cursor: pointer;"
+                                        (click)="openConfirmationDialog(item.UserId)"></i>&nbsp;
+                                </td>
+
+                            </tr>
+                            <!-- <tr *ngIf="item.isExpand">
+                                            <td colspan="5" class="center-align-justify align-items-center">
+                                                <table class="table table-sm" style="width:40%;">
+                                                    <thead class="bg-primary text-white">
+                                                        <tr>
+                                                            <th colspan="2" class="text-center"><span>Forms</span></th>
+                                                        </tr>
+                                                    </thead>
+            
+                                                    <tbody>
+                                                        <ng-container *ngFor="let row2 of item.pages">
+                                                            <tr>
+                                                                <td>{{row2.PageName}}</td>
+                                                            </tr>
+                                                        </ng-container>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr> -->
+
+                        </ng-container>
+
+
+                        <span class="ml-3" *ngIf="!searchResult">No Record Found</span>
+
+
+
+                    </tbody>
+                </table>
+
+
+
+
+            </div>
+            <hr>
+            <div class="panel">
+                <div class="panel-header" (click)="showPageDetails()">
+                    <h3 style="text-align:center;color: red;"><b>Page Access For Role
+                        </b><span [ngClass]="{'arrow-up': isExpand, 'arrow-down': !isExpand}"></span>
+                    </h3>
+                </div>
+                <div class="panel-content" [hidden]="!isExpand">
+
+                    <div class="row table-responsive" style="padding-left: 240px;padding-right: 120px">
+
+
+                        <table class="table" style="background-color:#e4deaf;">
+                            <thead>
+                                <tr>
+
+                                    <th class="w-125px">Page Name</th>
+                                    <th class="w-125px">Read</th>
+                                    <th class="w-125px">Write</th>
+                                    <th class="w-100px">Approve</th>
+                                    <th class="w-100px"></th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr *ngFor="let item of pagesList; index as i">
+                                    <ng-container *ngIf="enableEditIndex != i">
+
+                                        <td>{{item.PageName}}</td>
+                                        <td>{{item.HasReadAccess}}</td>
+                                        <td>{{item.HasWriteAccess}}</td>
+                                        <td>{{item.HasApproveAccess}}</td>
+                                        <td class="text-center">
+                                            <i class="material-icons" (click)="EditPrevilage(item, i)"
+                                                ngbTooltip="Edit">mode_edit</i>&nbsp;
+
+                                        </td>
+
+                                    </ng-container>
+                                    <ng-container *ngIf="enableEditIndex == i">
+
+                                        <td>{{item.PageName}}</td>
+                                        <td>
+
+                                            <ng-select [selectOnTab]="true" appendTo="body"
+                                                [(ngModel)]="item.HasReadAccess" [ngModelOptions]="{standalone: true}"
+                                                class="ng-selectwbs">
+
+                                                <ng-option *ngFor="let sList of accessList" [value]="sList.value">
+                                                    {{sList.viewval}}
+                                                </ng-option>
+                                            </ng-select>
+
+                                        </td>
+
+                                        <td>
+
+                                            <ng-select [selectOnTab]="true" appendTo="body"
+                                                [(ngModel)]="item.HasWriteAccess" [ngModelOptions]="{standalone: true}"
+                                                class="ng-selectwbs">
+
+                                                <ng-option *ngFor="let sList of accessList" [value]="sList.value">
+                                                    {{sList.viewval}}
+                                                </ng-option>
+                                            </ng-select>
+
+                                        </td>
+                                        <td>
+
+                                            <ng-select [selectOnTab]="true" appendTo="body"
+                                                [(ngModel)]="item.HasApproveAccess"
+                                                [ngModelOptions]="{standalone: true}" class="ng-selectwbs">
+
+                                                <ng-option *ngFor="let sList of accessList" [value]="sList.value">
+                                                    {{sList.viewval}}
+                                                </ng-option>
+                                            </ng-select>
+
+                                        </td>
+                                        <td class="text-center" style="width:200px;">
+                                            <i class="material-icons" (click)="SavePrevilage(item)"
+                                                ngbTooltip="Update">save</i>
+                                            &nbsp;
+                                            <i class="material-icons" (click)="EditPrevilageCancle()"
+                                                ngbTooltip="Cancel">cancel</i>
+                                        </td>
+
+                                    </ng-container>
+                                </tr>
+                            </tbody>
+
+                        </table>
+
+
+
+                    </div>
+
+
+
+                </div>
+            </div>
+
+            <!-- <ngb-accordion #acc="ngbAccordion" title="pageAccess">>
+                <ngb-panel>
+                    <ng-template ngbPanelTitle>
+                        <span style="color:red;"><b>PAGE ACCESS</b></span>
+                    </ng-template>
+                    <ng-template ngbPanelContent>
+                        
+
+                        <div class="row table-responsive" style="padding-left: 240px;padding-right: 120px;">
+
+
+                            <table class="table   table-striped table-bordered">
+                                <thead>
+                                    <tr>
+
+                                        <th class="w-125px">Page Name</th>
+                                        <th class="w-125px">Read</th>
+                                        <th class="w-125px">Write</th>
+                                        <th class="w-100px">Approve</th>
+                                        <th class="w-100px"></th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <tr *ngFor="let item of pagesList; index as i">
+                                        <ng-container *ngIf="enableEditIndex != i">
+
+                                            <td>{{item.PageName}}</td>
+                                            <td>{{item.HasReadAccess}}</td>
+                                            <td>{{item.HasWriteAccess}}</td>
+                                            <td>{{item.HasApproveAccess}}</td>
+                                            <td class="text-center">
+                                                <i class="material-icons" (click)="EditPrevilage(item, i)"
+                                                    ngbTooltip="Edit">mode_edit</i>&nbsp;
+
+                                            </td>
+
+                                        </ng-container>
+                                        <ng-container *ngIf="enableEditIndex == i">
+
+                                            <td>{{item.PageName}}</td>
+                                            <td>
+
+                                                <ng-select [selectOnTab]="true" appendTo="body"
+                                                    [(ngModel)]="item.HasReadAccess"
+                                                    [ngModelOptions]="{standalone: true}" class="ng-selectwbs">
+
+                                                    <ng-option *ngFor="let sList of accessList" [value]="sList.value">
+                                                        {{sList.viewval}}
+                                                    </ng-option>
+                                                </ng-select>
+
+                                            </td>
+
+                                            <td>
+
+                                                <ng-select [selectOnTab]="true" appendTo="body"
+                                                    [(ngModel)]="item.HasWriteAccess"
+                                                    [ngModelOptions]="{standalone: true}" class="ng-selectwbs">
+
+                                                    <ng-option *ngFor="let sList of accessList" [value]="sList.value">
+                                                        {{sList.viewval}}
+                                                    </ng-option>
+                                                </ng-select>
+
+                                            </td>
+                                            <td>
+
+                                                <ng-select [selectOnTab]="true" appendTo="body"
+                                                    [(ngModel)]="item.HasApproveAccess"
+                                                    [ngModelOptions]="{standalone: true}" class="ng-selectwbs">
+
+                                                    <ng-option *ngFor="let sList of accessList" [value]="sList.value">
+                                                        {{sList.viewval}}
+                                                    </ng-option>
+                                                </ng-select>
+
+                                            </td>
+                                            <td class="text-center" style="width:200px;">
+                                                <i class="material-icons" (click)="SavePrevilage(item)"
+                                                    ngbTooltip="Update">save</i>
+                                                &nbsp;
+                                                <i class="material-icons" (click)="EditPrevilageCancle()"
+                                                    ngbTooltip="Cancel">cancel</i>
+                                            </td>
+
+                                        </ng-container>
+                                    </tr>
+                                </tbody>
+
+                            </table>
+
+
+
+                        </div>
+
+
+                    </ng-template>
+                </ngb-panel>
+            </ngb-accordion> -->
+
+        </div>
+    </div>
+</div>

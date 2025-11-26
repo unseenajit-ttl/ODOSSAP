@@ -1,0 +1,287 @@
+<div *ngIf="loading" style="z-index: 500">
+
+  <div id="pause" class="d-flex align-items-center justify-content-center">
+
+      <div id="spinner" class="loader"></div>
+
+  </div>
+
+</div>
+
+
+<div class="container-fluid">
+  <h3 class="card-header d-flex flex-column justify-content-center align-items-center">
+    <b>COPY WBS</b>
+</h3>
+  <div class="card m-1">
+
+
+
+    <div class="card-body">
+      <div class="card-body mt-3">
+
+        <fieldset>
+          <legend>Source</legend>
+
+          <div class="row">
+            <form [formGroup]="Source">
+              <div class="row ">
+                <div class="col-md-4">
+                  <label class="form-label">Customer : </label>
+                  <ng-select [selectOnTab]="true" formControlName="customer" class="w-auto"
+                    (change)="changecustomer($event,'S');">
+                    <ng-option *ngIf="LoadingCustomerName">
+                      <div style="justify-content: center;display: flex;">
+                        <div class="spinner-border text-secondary" role="status">
+                          <span class="sr-only">Loading...</span>
+                        </div>
+                      </div>
+                    </ng-option>
+                    <ng-option *ngFor="let sList of Customerlist" [value]="sList.CustomerNo">
+                      {{sList.Customername}}
+                    </ng-option>
+                  </ng-select>
+                  <span class="text-danger"
+                    *ngIf=" isformsubmit && Source.controls['customer'].invalid && Source.controls['customer'].errors && Source.controls['customer'].hasError('required')">*
+                    Customer Required. </span>
+
+                </div>
+
+
+                <div class="col-md-4">
+                  <label class="form-label">Project</label>
+                  <ng-select [selectOnTab]="true" formControlName="project" class="w-auto" 
+                    (change)="changeproject($event,'S');">
+                    <ng-option *ngFor="let sList of projectList_source" [value]="sList.ProjectCode">
+                      {{sList.Description}}
+                    </ng-option>
+                  </ng-select>
+                  <span class="text-danger"
+                    *ngIf=" isformsubmit && Source.controls['project'].invalid && Source.controls['project'].errors && Source.controls['project'].hasError('required')">*
+                    Project Required. </span>
+
+                </div>
+
+
+
+              </div>
+
+
+              <div class="row mt-2">
+
+                <div class="col-md-2">
+                  <label class="form-label">Product Type</label>
+                  <ng-select [selectOnTab]="true" formControlName="producttype" class="ng-selectcustomer" (change)="changeProd($event)">
+                    <ng-option *ngFor="let sList of ProductCodeTypeList" [value]="sList.ProductTypeID">
+                      {{sList.ProductType}}
+                    </ng-option>
+                  </ng-select>
+                  <span class="text-danger"
+                    *ngIf=" isformsubmit && Source.controls['producttype'].invalid && Source.controls['producttype'].errors && Source.controls['producttype'].hasError('required')">*
+                    ProductType Required. </span>
+
+                </div>
+                <div class="col-md-2">
+                  <label class="form-label">Structure Element</label>
+                  <ng-select [selectOnTab]="true" formControlName="structureelement" class="ng-selectcustomer"  (change)="changestructureElement($event)" >
+                    <ng-option *ngFor="let sList of structureList" [value]="sList.StructureElementTypeId">
+                      {{sList.StructureElementType}}
+                    </ng-option>
+                  </ng-select>
+                  <span class="text-danger"
+                    *ngIf=" isformsubmit && Source.controls['structureelement'].invalid && Source.controls['structureelement'].errors && Source.controls['structureelement'].hasError('required')">*
+                    Structure Element Required. </span>
+
+                </div>
+
+                <div class="col-md-2">
+                  <label class="form-label">Block</label>
+                  <ng-select class="w-auto" formControlName="wbs1" (change)="changewbs1Source($event,'S')">
+                    <ng-option *ngFor="let sList of WBS1dropList_source" [value]="sList.WBS1">
+                      {{sList.WBS1}}
+                    </ng-option>
+                  </ng-select>
+                  <span class="text-danger"
+                    *ngIf=" isformsubmit && Source.controls['wbs1'].invalid && Source.controls['wbs1'].errors && Source.controls['wbs1'].hasError('required')">*
+                    Block Required. </span>
+
+                </div>
+
+                <div class="col-md-2">
+                  <label class="form-label">Stoery</label>
+                  <ng-select [selectOnTab]="true" formControlName="wbs2" (change)="changewbs2($event,'S')">
+                    <ng-option *ngFor="let sList of WBS2dropList_Source" [value]="sList.WBS2">
+                      {{sList.WBS2}}
+                    </ng-option>
+                  </ng-select>
+                  <span class="text-danger"
+                    *ngIf=" isformsubmit && Source.controls['wbs2'].invalid && Source.controls['wbs2'].errors && Source.controls['wbs2'].hasError('required')">*
+                    Stoery Required. </span>
+
+                </div>
+                <div class="col-md-2">
+                  <label for=""> Part</label>
+                  <ng-select formControlName="wbs3" class="w-auto" (change)="changeWBS3($event,'S')">
+                    <ng-option *ngFor="let sList of WBS3dropList_Source" [value]="sList.WBS3">
+                      {{sList.WBS3}}
+                    </ng-option>
+                  </ng-select>
+                  <span class="text-danger"
+                    *ngIf=" isformsubmit && Source.controls['wbs3'].invalid && Source.controls['wbs3'].errors && Source.controls['wbs3'].hasError('required')">*
+                    Part Required. </span>
+
+                </div>
+
+              </div>
+              <br>
+
+            </form>
+          </div>
+        </fieldset>
+      </div>
+
+
+
+      <div class="card-body mt-3">
+
+        <fieldset>
+          <legend>Destination</legend>
+          <div class="row ">
+            <form [formGroup]="Destination">
+              <div class="row ">
+                <div class="col-md-4">
+                  <label class="form-label">Customer </label>
+                  <ng-select [selectOnTab]="true" formControlName="customer" class="w-auto"
+                    (change)="changecustomer($event,'D');">
+                    <ng-option *ngIf="LoadingCustomerName">
+                      <div style="justify-content: center;display: flex;">
+                        <div class="spinner-border text-secondary" role="status">
+                          <span class="sr-only">Loading...</span>
+                        </div>
+                      </div>
+                    </ng-option>
+                    <ng-option *ngFor="let sList of Customerlist" [value]="sList.CustomerNo">
+                      {{sList.Customername}}
+                    </ng-option>
+                  </ng-select>
+                  <span class="text-danger"
+                    *ngIf=" isformsubmit && Destination.controls['customer'].invalid && Destination.controls['customer'].errors && Destination.controls['customer'].hasError('required')">*
+                    Customer Required. </span>
+
+                </div>
+
+
+                <div class="col-md-4">
+                  <label class="form-label">Project</label>
+                  <ng-select [selectOnTab]="true" formControlName="project" class="w-auto"
+                    (change)="changeproject($event,'D');">
+                    <ng-option *ngFor="let sList of projectList_destination" [value]="sList.ProjectCode">
+                      {{sList.Description}}
+                    </ng-option>
+                  </ng-select>
+                  <span class="text-danger"
+                    *ngIf=" isformsubmit && Destination.controls['project'].invalid && Destination.controls['project'].errors && Destination.controls['project'].hasError('required')">*
+                    Project Required. </span>
+
+                </div>
+
+
+
+              </div>  
+              <div class="row mt-2 ">
+                <div class="col-md-2">
+                  <label class="form-label">Product Type</label>
+                  <ng-select [selectOnTab]="true" formControlName="producttype" class="ng-selectcustomer" [readonly]="true">
+                    <ng-option *ngFor="let sList of ProductCodeTypeList" [value]="sList.ProductTypeID">
+                      {{sList.ProductType}}
+                    </ng-option>
+                  </ng-select>
+                  <span class="text-danger"
+                    *ngIf=" isformsubmit && Destination.controls['producttype'].invalid && Destination.controls['producttype'].errors && Destination.controls['producttype'].hasError('required')">*
+                    ProductType Required. </span>
+
+                </div>
+              
+                <div class="col-md-2">
+                  <label class="form-label">Structure Element</label>
+                  <ng-select [selectOnTab]="true" formControlName="structureelement" class="ng-selectcustomer" [readonly]="true">
+                    <ng-option *ngFor="let sList of structureList" [value]="sList.StructureElementTypeId">
+                      {{sList.StructureElementType}}
+                    </ng-option>
+                  </ng-select>
+                  <span class="text-danger"
+                    *ngIf=" isformsubmit && Destination.controls['structureelement'].invalid && Destination.controls['structureelement'].errors && Destination.controls['structureelement'].hasError('required')">*
+                    Structure Element Required. </span>
+
+                </div>
+                
+                <div class="col-md-2">
+                  <label class="form-label">Block</label>
+                  <ng-select class="w-auto" formControlName="wbs1" (change)="changeBlock_destination($event)">
+                    <ng-option *ngFor="let sList of WBS1dropList_destination" [value]="sList.WBS1" >
+                      {{sList.WBS1}}
+                    </ng-option>
+                  </ng-select>
+                  <span class="text-danger"
+                    *ngIf=" isformsubmit && Destination.controls['wbs1'].invalid && Destination.controls['wbs1'].errors && Destination.controls['wbs1'].hasError('required')">*
+                    Block Required. </span>
+
+                </div>
+               
+               
+                
+                <div class="col-md-2">
+                  <label class="form-label">Stoery From</label>
+                  <ng-select [selectOnTab]="true" formControlName="stoeryfrom"  (change)="changeStoery_destination($event)" >
+                    <ng-option *ngFor="let sList of WBS2dropList_Destination" [value]="sList.WBS2">
+                      {{sList.WBS2}}
+                    </ng-option>
+                  </ng-select>
+                  <span class="text-danger"
+                    *ngIf=" isformsubmit && Destination.controls['stoeryfrom'].invalid && Destination.controls['stoeryfrom'].errors && Destination.controls['stoeryfrom'].hasError('required')">*
+                    Stoery Required. </span>
+
+                </div>
+                <div class="col-md-2">
+                  <label class="form-label">Storey To </label>
+                  <ng-select [selectOnTab]="true" formControlName="stoeryto" (change)="changeStoery_destination($event)">
+                    <ng-option *ngFor="let sList of WBS2dropList_Destination" [value]="sList.WBS2">
+                      {{sList.WBS2}}
+                    </ng-option>
+                  </ng-select>
+                  <span class="text-danger"
+                    *ngIf=" isformsubmit && Destination.controls['stoeryto'].invalid && Destination.controls['stoeryto'].errors && Destination.controls['stoeryto'].hasError('required')">*
+                    Project Required. </span>
+
+                </div>
+                <div class="col-md-2">
+                  <label for=""> Part</label>
+                  <ng-select formControlName="wbs3" class="w-auto" (change)="changeWBS3($event,'D')">
+                    <ng-option *ngFor="let sList of WBS3dropList_Destination" [value]="sList.WBS3">
+                      {{sList.WBS3}}
+                    </ng-option>
+                  </ng-select>
+                  <span class="text-danger"
+                    *ngIf=" isformsubmit && Source.controls['wbs3'].invalid && Source.controls['wbs3'].errors && Source.controls['wbs3'].hasError('required')">*
+                    Part Required. </span>
+
+                </div>
+              </div>
+              <br>
+
+
+            </form>
+          </div>
+        </fieldset>
+
+      </div>
+      <div>
+        <div class="d-flex" style="justify-content: flex-end;">
+          <button  class="btn btn-primary btn-sm"  type="button" (click)="onCopy()" [disabled]="(flag_D || flag_S)">Copy</button>
+          <button class="btn btn-primary btn-sm" (click)="reset()" type="button">Cancel</button>
+        </div>
+      </div>
+
+
+    </div>
+  </div>

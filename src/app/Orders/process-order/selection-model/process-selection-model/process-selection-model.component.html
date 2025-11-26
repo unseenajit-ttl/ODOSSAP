@@ -1,0 +1,21 @@
+<div>
+    <div class="select-header">
+        <span>Change Selection Model</span>
+    </div>
+    <div class="select-body">
+        <mat-radio-group aria-label="Select an option" [(ngModel)]="selectedValue">
+            <mat-radio-button value="1">Row Selection</mat-radio-button>
+            <mat-radio-button value="2">Cell Selection</mat-radio-button>
+          </mat-radio-group>
+    </div>
+    <div class="select-footer">
+        <button type="button" class="btn btn-primary me-2" style="height: 40px;"
+            (click)="Update()">
+            Update
+        </button>
+        <button type="button" class="btn btn-primary me-2" style="height: 40px;"
+            (click)="Close()">
+            Close
+        </button>
+    </div>
+</div>

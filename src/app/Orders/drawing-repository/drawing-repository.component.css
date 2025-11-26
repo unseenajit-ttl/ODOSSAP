@@ -1,0 +1,898 @@
+
+    /* hover style just for information */
+    label:hover:before {
+      border: 2px solid #4778d9 !important;
+    }
+
+    .right-align {
+      text-align: right;
+    }
+
+    .center-align {
+      text-align: center;
+    }
+
+    .left-align {
+      text-align: left;
+    }
+
+    #drawing_grid {
+      margin: 0px;
+      border: solid 1px gray;
+      width: 100%;
+      background: white;
+      font: 14px Helvetica, Arial, sans-serif;
+      margin-right: 0px;
+      margin-left: 0px;
+    }
+
+    #drawing_wbs {
+      margin: 0px;
+      border: solid 1px gray;
+      width: 100%;
+      background: white;
+      font: 13px Helvetica, Arial, sans-serif;
+      margin-right: 0px;
+      margin-left: 0px;
+    }
+
+    .slick-header-columns,
+    .slick-headerrow-columns {
+      /* position: relative;*/
+      white-space: pre-wrap !important;
+      /*Chnaged from Nowrap*/
+      cursor: default;
+      overflow: hidden;
+      height: 55px !important;
+      /*Added by zbc*/
+      color: #ffffff;
+    }
+
+    .slick-header-column.ui-state-default {
+      height: 100%;
+      color: #000000;
+      font-weight: normal !important;
+      background: #eee;
+      text-align: center;
+      /*background: #3d7ddb;*/
+    }
+
+    .grid-text-size {
+      color: #000000 !important;
+      font-weight: bold;
+    }
+
+    .slick-header>.slick-header-columns>.slick-header-column {
+      -webkit-box-sizing: content-box;
+      -moz-box-sizing: content-box;
+      box-sizing: content-box;
+    }
+
+    .dropzone {
+      background: gray;
+      border: black dashed 3px;
+      width: 100%;
+      height: 140px;
+      padding: 5px;
+      text-align: center;
+      color: black;
+      border: dashed 1px red;
+      background-color: lightblue;
+    }
+
+    .slick-column-name {
+      font-weight: normal !important;
+    }
+
+    .center-align {
+      text-align: center;
+    }
+
+    .smallproduct-form4 {
+      display: inline-block;
+      width: calc(100% - 60px);
+      padding: 0px;
+      vertical-align: middle;
+    }
+
+    .smallproduct-form4 .field {
+      padding: 0px;
+      margin: 0px;
+      background: #fff;
+    }
+
+    .smallproduct-form4 .field .input1 {
+      display: inline-block;
+      width: calc((100% - 20px) / 4);
+      min-width: 100px;
+      max-width: 200px;
+      color: #3D7DDB;
+    }
+
+    .smallproduct-form4 .field .input2 {
+      display: inline-block;
+      width: calc((100% - 20px) / 4);
+      min-width: 100px;
+      max-width: 200px;
+      color: #3D7DDB;
+    }
+
+    .smallproduct-form4 .field .input3 {
+      display: inline-block;
+      width: calc((100% - 20px) / 4);
+      min-width: 100px;
+      max-width: 200px;
+      color: #3D7DDB;
+    }
+
+    .smallproduct-form4 .field .input4 {
+      display: inline-block;
+      width: calc((100% - 20px) / 4);
+      min-width: 100px;
+      max-width: 200px;
+      color: #3D7DDB;
+    }
+
+    .smallproduct-form5 {
+      display: inline-block;
+      width: calc(100% - 90px);
+      padding: 0px;
+      vertical-align: middle;
+    }
+
+    .smallproduct-form5 .field {
+      padding: 0px;
+      margin: 0px;
+      background: #fff;
+    }
+
+    .smallproduct-form5 .field .input1 {
+      display: inline-block;
+      width: calc((100% - 30px) / 5);
+      min-width: 100px;
+      max-width: 200px;
+      color: #3D7DDB;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .smallproduct-form5 .field .input2 {
+      display: inline-block;
+      width: calc((100% - 30px) / 5);
+      min-width: 100px;
+      max-width: 200px;
+      color: #3D7DDB;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .smallproduct-form5 .field .input3 {
+      display: inline-block;
+      width: calc((100% - 30px) / 5);
+      min-width: 100px;
+      max-width: 200px;
+      color: #3D7DDB;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .smallproduct-form5 .field .input4 {
+      display: inline-block;
+      width: calc((100% - 30px) / 5);
+      min-width: 100px;
+      max-width: 200px;
+      color: #3D7DDB;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .smallproduct-form5 .field .input5 {
+      display: inline-block;
+      width: calc((100% - 30px) / 5);
+      min-width: 100px;
+      max-width: 200px;
+      color: #3D7DDB;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .upload-form {
+      padding: 1px;
+      font-size: 12px;
+    }
+
+    .upload-form .field {
+      padding: 1px;
+      margin: 1px;
+      background: #eee;
+    }
+
+    .upload-form .field .label1 {
+      display: inline-block;
+      width: 150px;
+      margin-left: 2px;
+      text-align: right;
+      color: black;
+      min-width: 40px;
+      font-weight: 500;
+    }
+
+    .upload-form .field .input1 {
+      display: inline-block;
+      width: calc((100% - 150px - 160px - 110px - 85px - 85px - 60px) * 0.2);
+      margin-left: 2px;
+      text-align: left;
+      color: black;
+      min-width: 40px;
+      font-weight: 500;
+    }
+
+    .upload-form .field .label2 {
+      display: inline-block;
+      width: 160px;
+      margin-left: 2px;
+      text-align: right;
+      color: black;
+      min-width: 40px;
+      font-weight: 500;
+    }
+
+    .upload-form .field .input2 {
+      display: inline-block;
+      width: calc((100% - 150px - 160px - 110px - 85px - 85px - 60px) * 0.2);
+      margin-left: 2px;
+      text-align: left;
+      color: black;
+      min-width: 40px;
+      font-weight: 500;
+    }
+
+    .upload-form .field .label3 {
+      display: inline-block;
+      width: 110px;
+      margin-left: 2px;
+      text-align: right;
+      color: black;
+      min-width: 40px;
+      font-weight: 500;
+    }
+
+    .upload-form .field .input3 {
+      display: inline-block;
+      width: calc((100% - 150px - 160px - 110px - 85px - 85px - 60px) * 0.2);
+      margin-left: 2px;
+      text-align: left;
+      color: black;
+      min-width: 40px;
+      font-weight: 500;
+    }
+
+    .upload-form .field .label4 {
+      display: inline-block;
+      width: 85px;
+      margin-left: 2px;
+      text-align: right;
+      color: black;
+      min-width: 40px;
+      font-weight: 500;
+    }
+
+    .upload-form .field .input4 {
+      display: inline-block;
+      width: calc((100% - 150px - 160px - 110px - 85px - 85px - 60px) * 0.2);
+      margin-left: 2px;
+      text-align: left;
+      color: black;
+      min-width: 40px;
+      font-weight: 500;
+    }
+
+    .upload-form .field .label5 {
+      display: inline-block;
+      width: 85px;
+      margin-left: 2px;
+      text-align: right;
+      color: black;
+      min-width: 40px;
+      font-weight: 500;
+    }
+
+    .upload-form .field .input5 {
+      display: inline-block;
+      width: calc((100% - 150px - 160px - 110px - 85px - 85px - 60px) * 0.2);
+      margin-left: 2px;
+      text-align: left;
+      color: black;
+      min-width: 40px;
+      font-weight: 500;
+    }
+
+
+    .user-form2 {
+      padding: 1px;
+      font-size: 12px;
+    }
+
+    .user-form2 .field {
+      padding: 1px;
+      margin: 1px;
+      background: #eee;
+    }
+
+    .user-form2 .field .label1 {
+      display: inline-block;
+      width: calc((100% - 700px - 10px));
+      margin-left: 2px;
+      text-align: right;
+      color: black;
+      min-width: 40px;
+      font-weight: 500;
+    }
+
+
+    .user-form2 .field .label2 {
+      display: inline-block;
+      width: 700px;
+      margin-left: 2px;
+      text-align: right;
+      color: black;
+      min-width: 40px;
+      font-weight: 500;
+    }
+
+    .assign-form2 {
+      padding: 1px;
+      font-size: 12px;
+
+    }
+
+    .assign-form2 .field {
+      padding: 1px;
+      margin: 1px;
+      background: #eee;
+      display: flex;
+    }
+
+    .assign-form2 .field .label1 {
+      display: inline-block;
+      width: 150px;
+      /* margin-left: 2px; */
+      text-align: left;
+      color: black;
+      min-width: 20px !important;
+      font-weight: 500;
+    }
+
+    .assign-form2 .field .input1 {
+      display: inline-block;
+      width: auto;
+      min-width: 10px;
+      text-align: left;
+    }
+
+    .assign-form2 .field .input1 input {
+      display: inline-block;
+      width: 100%;
+    }
+
+    .upload-form2 {
+      padding: 1px;
+      font-size: 12px;
+    }
+
+    .upload-form2 .field {
+      padding: 1px;
+      margin: 1px;
+      background: #eee;
+    }
+
+    .upload-form2 .field .label1 {
+      display: inline-block;
+      width: 205px;
+      margin-left: 2px;
+      text-align: right;
+      color: black;
+      min-width: 10px;
+      font-weight: 500;
+    }
+
+    .upload-form2 .field .input1 {
+      display: inline-block;
+      width: calc(100% - 205px - 10px);
+      min-width: 10px;
+      text-align: left;
+      font-weight: 500;
+    }
+
+    .upload-form2 .field .input1 input {
+      display: inline-block;
+      font-weight: 500;
+    }
+
+    .user-form3 {
+      padding: 1px;
+    }
+
+    .user-form3 .field {
+      padding: 1px;
+      margin: 1px;
+      background: #eee;
+    }
+
+    .user-form3 .field .input1 {
+      display: inline-block;
+      width: 75px;
+    }
+
+    .user-form3 .field .input1 input {
+      display: inline-block;
+      width: 100%;
+    }
+
+    .user-form3 .field .label2 {
+      display: inline-block;
+      width: 105px;
+      margin-left: 2px;
+      text-align: right;
+      color: black;
+      min-width: 40px;
+      font-weight: 500;
+    }
+
+    .user-form3 .field .input2 {
+      display: inline-block;
+      width: 150px;
+      min-width: 40px
+    }
+
+    .user-form3 .field .input2 input {
+      display: inline-block;
+      width: 100%;
+    }
+
+    .user-form3 .field .label3 {
+      display: inline-block;
+      width: 100px;
+      margin-left: 2px;
+      text-align: right;
+      color: black;
+      min-width: 40px;
+      font-weight: 500;
+    }
+
+    .user-form3 .field .input3 {
+      display: inline-block;
+      width: calc((100% - 105px - 90px - 90px - 85px - 165px - 40px - 100px - 150px - 95px) * 0.2);
+      min-width: 40px
+    }
+
+    .user-form3 .field .input3 input {
+      display: inline-block;
+      width: 100%;
+    }
+
+    .user-form3 .field .label4 {
+      display: inline-block;
+      width: 165px;
+      margin-left: 2px;
+      text-align: right;
+      color: black;
+      min-width: 40px;
+      font-weight: 500;
+    }
+
+    .user-form3 .field .input4 {
+      display: inline-block;
+      width: calc((100% - 105px - 90px - 90px - 85px - 165px - 40px - 100px - 150px - 95px) * 0.2);
+      min-width: 40px
+    }
+
+    .user-form3 .field .input4 input {
+      display: inline-block;
+      width: 100%;
+    }
+
+    .user-form3 .field .label5 {
+      display: inline-block;
+      width: 85px;
+      margin-left: 2px;
+      text-align: right;
+      color: black;
+      min-width: 40px;
+      font-weight: 500;
+    }
+
+    .user-form3 .field .input5 {
+      display: inline-block;
+      width: calc((100% - 105px - 90px - 90px - 85px - 165px - 40px - 100px - 150px - 95px) * 0.2);
+      min-width: 40px;
+    }
+
+    .user-form3 .field .input5 select {
+      display: inline-block;
+      width: 100%;
+    }
+
+    .user-form3 .field .label6 {
+      display: inline-block;
+      width: 90px;
+      margin-left: 2px;
+      text-align: right;
+      color: black;
+      min-width: 40px;
+      font-weight: 500;
+    }
+
+    .user-form3 .field .input6 {
+      display: inline-block;
+      width: calc((100% - 105px - 90px - 90px - 85px - 165px - 40px - 100px - 150px - 95px) * 0.2);
+      min-width: 40px;
+    }
+
+    .user-form3 .field .input6 select {
+      display: inline-block;
+      width: 100%;
+    }
+
+    .user-form3 .field .label7 {
+      display: inline-block;
+      width: 90px;
+      margin-left: 2px;
+      text-align: right;
+      color: black;
+      min-width: 40px;
+      font-weight: 500;
+    }
+
+    .user-form3 .field .input7 {
+      display: inline-block;
+      width: calc((100% - 105px - 90px - 90px - 85px - 165px - 40px - 100px - 150px - 95px) * 0.2);
+      min-width: 40px;
+    }
+
+    .user-form3 .field .input7 select {
+      display: inline-block;
+      width: 100%;
+    }
+
+
+    .user-se1 {
+      padding: 1px;
+    }
+
+    .user-se1 .field {
+      padding: 1px;
+      margin: 1px;
+      background: #eee;
+    }
+
+    .user-se1 .field .label1 {
+      display: inline-block;
+      width: calc((100% - 32px) / 6);
+      margin-left: 2px;
+      text-align: center;
+      vertical-align: middle;
+      color: black;
+      min-width: 150px;
+      max-width: 200px;
+      border: none;
+    }
+
+    .user-se1 .field .label1 .input1 {
+      display: inline-block;
+      width: 150px;
+      margin-left: 2px;
+      padding-bottom: 1px;
+      text-align: center;
+      vertical-align: middle;
+      color: black;
+      min-width: 40px;
+      /*border: solid;
+                    border-width: 1px;
+                    border-radius: 15px;*/
+    }
+
+    .user-se1 .field .label2 {
+      display: inline-block;
+      width: calc((100% - 32px) / 6);
+      margin-left: 2px;
+      text-align: center;
+      vertical-align: middle;
+      color: black;
+      min-width: 150px;
+      max-width: 200px;
+      border: none;
+    }
+
+    .user-se1 .field .label2 .input2 {
+      display: inline-block;
+      width: 150px;
+      margin-left: 2px;
+      text-align: center;
+      vertical-align: middle;
+      color: black;
+      min-width: 150px;
+      max-width: 200px;
+      /*border: solid;
+                    border-width: 1px;
+                    border-radius: 15px;*/
+    }
+
+    .user-se1 .field .label3 {
+      display: inline-block;
+      width: calc((100% - 32px) / 6);
+      margin-left: 2px;
+      text-align: center;
+      vertical-align: middle;
+      color: black;
+      min-width: 150px;
+      max-width: 200px;
+      border: none;
+    }
+
+    .user-se1 .field .label3 .input3 {
+      display: inline-block;
+      width: 150px;
+      margin-left: 2px;
+      text-align: center;
+      vertical-align: middle;
+      color: black;
+      min-width: 40px;
+      max-width: 200px;
+      /*border: solid;
+                    border-width: 1px;
+                    border-radius: 15px;*/
+    }
+
+    .user-se1 .field .label4 {
+      display: inline-block;
+      width: calc((100% - 32px) / 6);
+      margin-left: 2px;
+      text-align: center;
+      vertical-align: middle;
+      color: black;
+      min-width: 150px;
+      max-width: 200px;
+      border: none;
+    }
+
+    .user-se1 .field .label4 .input4 {
+      display: inline-block;
+      width: 150px;
+      margin-left: 2px;
+      text-align: center;
+      vertical-align: middle;
+      color: black;
+      min-width: 40px;
+      max-width: 200px;
+      /*border: solid;
+                    border-width: 1px;
+                    border-radius: 15px;*/
+    }
+
+    .user-se1 .field .label5 {
+      display: inline-block;
+      width: calc((100% - 32px) / 6);
+      margin-left: 2px;
+      text-align: center;
+      vertical-align: middle;
+      color: black;
+      min-width: 150px;
+      max-width: 200px;
+      border: none;
+    }
+
+    .user-se1 .field .label5 .input5 {
+      display: inline-block;
+      width: 150px;
+      margin-left: 2px;
+      text-align: center;
+      vertical-align: middle;
+      color: black;
+      min-width: 40px;
+      max-width: 200px;
+      /*border: solid;
+                    border-width: 1px;
+                    border-radius: 15px;*/
+    }
+
+    .user-se1 .field .label6 {
+      display: inline-block;
+      width: calc((100% - 32px) / 6);
+      margin-left: 2px;
+      text-align: center;
+      vertical-align: middle;
+      color: black;
+      min-width: 150px;
+      max-width: 200px;
+      border: none;
+    }
+
+    .user-se1 .field .label6 .input6 {
+      display: inline-block;
+      width: 150px;
+      margin-left: 2px;
+      text-align: center;
+      vertical-align: middle;
+      color: black;
+      min-width: 40px;
+      max-width: 200px;
+      /*border: solid;
+                    border-width: 1px;
+                    border-radius: 15px;*/
+    }
+
+    .drawing-function {
+      width: 100%;
+      float: left;
+      box-sizing: border-box;
+      text-align: center;
+      margin: 0 0 0 0;
+    }
+
+    .dwg-btn {
+      width: 12%;
+      float: none;
+      cursor: pointer;
+      box-sizing: border-box;
+      background-color: #0479d6;
+      border-radius: 20px;
+      color: #fff;
+      /*color: #fff;
+      */font-size: 15px;
+      font-weight: 700;
+      padding: 7px 0;
+      border: 1px solid #002F43;
+      -webkit-border-radius: 20px;
+      -moz-border-radius: 20px;
+      -ms-border-radius: 20px;
+      -o-border-radius: 20px;
+}
+
+    .dwg-btn:hover:enabled {
+      background-color: #80de96;
+      border: 1px solid #80de96;
+      color: #002F43;
+    }
+
+    .dwg-btn-a {
+      color: #002F43;
+      padding: 8px 30px 10px;
+      background-color: #fff;
+      border-radius: 19px;
+      cursor: pointer;
+      font-size: 15px;
+      line-height: 16px;
+      font-weight: 900;
+      border: 1px solid #002F43;
+      margin: 0px 0 10px 10px;
+      display: inline-block;
+    }
+
+    #exTab3 .nav-pills>li>a {
+      border-radius: 10px 10px 0 0;
+    }
+
+    #exTab3 .tab-content {
+      color: black;
+      background-color: #428bca;
+      padding: 2px 2px;
+      height: inherit;
+    }
+
+    #exTab3 .nav-pills>li>a:hover {
+      border-radius: 10px 10px 0 0;
+      background-color: #a8dcdd !important;
+      border: medium none;
+      /*color: #fff;*/
+    }
+
+    iframe {
+      border: 1px solid #000 !important;
+      overflow: scroll !important;
+    }
+
+    .listitem-non {
+      background-color: #ffffff !important;
+    }
+
+    .listitem-assigned {
+      background-color: #b4f8fa !important;
+    }
+
+    .listitemWBS-non {
+      background-color: #ffffff !important;
+    }
+
+    .listitemWBS-released {
+      background-color: #8bde9f !important;
+    }
+    .border-less tr,td{
+      border: 0px !important;
+    }
+    .border-less{
+      width: 100% !important;
+    }
+    ::ng-deep .gridPane{
+      width: auto !important;
+      max-height: 70vh !important;
+    }
+    ::ng-deep .slickgrid-container{
+      width: auto !important;
+      max-height: 70vh !important;
+    }
+    table .ng-select {
+      position: relative;
+      display: block;
+      box-sizing: border-box;
+      width: 110px !important;
+    }
+  ::ng-deep .slickgrid-container .grid-canvas .highlight-row .slick-cell{
+    background-color: beige !important;
+  }
+
+  .new-table tr:hover{
+    background: none;
+  }
+  .new-table tr{
+    border: none;
+  }
+  @media only screen and (min-width: 2048px) {
+    #iframeHolder{
+      height: 500px !important;
+    }
+    iframe{
+      height: 500px !important;
+    }
+    table .ng-select {
+      position: relative;
+      display: block;
+      box-sizing: border-box;
+      width: 200px !important;
+    }
+  }
+  @media only screen and (max-width: 2048px) {
+    #iframeHolder{
+      height: 300px !important;
+    }
+    iframe{
+      height: 300px !important;
+    }
+  }
+  :host ::ng-deep span.ng-clear-wrapper {
+    display: none !important;
+  }
+  /* .assign-form2 ng-select{
+    width: 200px;
+  } */
+  tr:hover{
+    background: none;
+  }
+  :host ::ng-deep .slick-grid-menu-button{
+    display: none !important;
+  }
+  .iframe-loader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 20px;
+    z-index: 1000; /* Make sure it's on top */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.ibox-content{
+  position: relative;
+}
+::ng-deep .row-highlight {
+  background-color: #b4f8fa !important;/* Highlight color */
+}
+.listitemWBS-released {
+  background-color: #8bde9f !important;
+}

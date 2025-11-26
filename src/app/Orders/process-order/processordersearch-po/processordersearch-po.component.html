@@ -1,0 +1,517 @@
+<div cdkDrag cdkDragRootElement=".your-custom-dialog-class">
+  <div class="modal-header" cdkDragHandle>
+    <h4 class="modal-title" style="font-weight: bold;">PO Search</h4>
+    <i class="fa-solid fa-xmark"></i>
+    <!-- <input type="checkbox" class="btn-close" /> -->
+  </div>
+
+  <div class="modal-body">
+    <div class="row">
+      <div class="container">
+        <div class="row d-flex" style="margin-top: 4px;">
+          <div class="col-md-2">
+            <label class="form-label">PO Number</label>
+          </div>
+          <div class="col-md-4">
+            <input type="text" [(ngModel)]="SearchData.PONo" class="form-control" (input)="onInputChange()" (blur)="onBlur()" />
+            <ul *ngIf="filteredSuggestions.length > 0">
+              <li *ngFor="let suggestion of filteredSuggestions" (click)="selectSuggestion('PONo',suggestion)">
+                {{ suggestion }}
+              </li>
+            </ul>
+          </div>
+
+          <div class="col-md-2">
+            <label class="form-label">BBS Number</label>
+          </div>
+          <div class="col-md-4">
+            <input type="text" [(ngModel)]="SearchData.BBSNo" class="form-control" (input)="onBBSNoChange()" (blur)="onBlur()" />
+            <ul *ngIf="filteredSuggestionsBBSNo.length > 0">
+              <li *ngFor="let suggestion of filteredSuggestionsBBSNo" (click)="selectSuggestion('BBSNo',suggestion)">
+                {{ suggestion }}
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="row d-flex" style="margin-top: 4px;">
+          <div class="col-md-2">
+            <label class="form-label">Orig. Req Date Fr</label>
+          </div>
+          <div class="col-md-4">
+            <!-- <input type="text" [(ngModel)]="SearchData.OrigReqDateFrom" class="form-control" /> -->
+            <div class="input-group">
+              <input readonly class="form-control" placeholder="yyyy-mm-dd" ngbDatepicker #dp="ngbDatepicker"
+                [(ngModel)]="SearchData.OrigReqDateFrom" [dayTemplate]="origReqDateFrom" outsideDays="hidden"
+                [minDate]="{year: 1900, month: 1, day: 1}" [firstDayOfWeek]="7">
+              <button class="btn btn-sm btn-outline-secondary bi bi-x-lg m-0" (click)="SearchData.OrigReqDateFrom = ''"
+                type="button"></button>
+              <button class="btn btn-sm btn-outline-secondary bi bi-calendar3 m-0" (click)="dp.toggle()"
+                type="button"></button>
+            </div>
+
+            <ng-template #origReqDateFrom let-date="date" let-currentMonth="currentMonth" let-selected="selected"
+              let-disabled="disabled" let-focused="focused">
+              <span class="custom-day" [class.highlighted-date]="shouldHighlightDate(date) || isWeekend(date)"
+                [class.focused]="focused" [class.bg-primary]="selected" [class.text-white]="selected">{{ date.day
+                }}</span>
+            </ng-template>
+            <!-- <mat-form-field style="display: contents">
+            <input matInput  [matDatepicker]="picker1" style="
+            height: 37px !important;
+            border: 0 !important;
+          " [(ngModel)]="SearchData.OrigReqDateFrom"/>
+            <mat-datepicker-toggle matIconSuffix [for]="picker1" style="padding-top: 15px !important">
+            </mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+          </mat-form-field> -->
+          </div>
+
+          <div class="col-md-2">
+            <label class="form-label">Orig. Req Date To</label>
+          </div>
+          <div class="col-md-4">
+            <!-- <mat-form-field style="display: contents">
+            <input matInput  [matDatepicker]="picker2" style="
+            height: 37px !important;
+            border: 0 !important;
+          " [(ngModel)]="SearchData.OrigReqDateTo"/>
+            <mat-datepicker-toggle matIconSuffix [for]="picker2" style="padding-top: 15px !important">
+            </mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+          </mat-form-field> -->
+            <div class="input-group">
+              <input readonly class="form-control" placeholder="yyyy-mm-dd" ngbDatepicker #dp1="ngbDatepicker"
+                [(ngModel)]="SearchData.OrigReqDateTo" [dayTemplate]="origReqDateTo" outsideDays="hidden"
+                [minDate]="{year: 1900, month: 1, day: 1}" [firstDayOfWeek]="7" (click)="SearchData.OrigReqDateTo = ''">
+              <button class="btn btn-sm btn-outline-secondary bi bi-x-lg m-0" (click)="SearchData.OrigReqDateTo = ''"
+                type="button"></button>
+              <button class="btn btn-sm btn-outline-secondary bi bi-calendar3 m-0" (click)="dp1.toggle()"
+                type="button"></button>
+            </div>
+
+            <ng-template #origReqDateTo let-date="date" let-currentMonth="currentMonth" let-selected="selected"
+              let-disabled="disabled" let-focused="focused">
+              <span class="custom-day" [class.highlighted-date]="shouldHighlightDate(date)|| isWeekend(date)"
+                [class.focused]="focused" [class.bg-primary]="selected" [class.text-white]="selected">{{ date.day
+                }}</span>
+            </ng-template>
+          </div>
+        </div>
+        <div class="row d-flex" style="margin-top: 4px;">
+          <div class="col-md-2">
+            <label class="form-label">Revised Req Date Fr</label>
+          </div>
+          <div class="col-md-4">
+            <!-- <mat-form-field style="display: contents;z-index: 100;">
+            <input matInput  [matDatepicker]="picker44" style="
+            height: 37px !important;
+            border: 0 !important;
+          " [(ngModel)]="SearchData.RequiredDateFrom"/>
+            <mat-datepicker-toggle matIconSuffix [for]="picker44" style="padding-top: 15px !important">
+            </mat-datepicker-toggle>
+            <mat-datepicker #picker44></mat-datepicker>
+          </mat-form-field> -->
+            <div class="input-group">
+              <input readonly class="form-control" placeholder="yyyy-mm-dd" ngbDatepicker #dp2="ngbDatepicker"
+                [(ngModel)]="SearchData.RequiredDateFrom" [dayTemplate]="requiredDateFrom" outsideDays="hidden"
+                [minDate]="{year: 1900, month: 1, day: 1}" [firstDayOfWeek]="7"
+                (click)="SearchData.RequiredDateFrom = ''">
+              <button class="btn btn-sm btn-outline-secondary bi bi-x-lg m-0" (click)="SearchData.RequiredDateFrom = ''"
+                type="button"></button>
+              <button class="btn btn-sm btn-outline-secondary bi bi-calendar3 m-0" (click)="dp2.toggle()"
+                type="button"></button>
+            </div>
+
+            <ng-template #requiredDateFrom let-date="date" let-currentMonth="currentMonth" let-selected="selected"
+              let-disabled="disabled" let-focused="focused">
+              <span class="custom-day" [class.highlighted-date]="shouldHighlightDate(date)|| isWeekend(date)"
+                [class.focused]="focused" [class.bg-primary]="selected" [class.text-white]="selected">{{ date.day
+                }}</span>
+            </ng-template>
+          </div>
+
+          <div class="col-md-2">
+            <label class="form-label">Revised Req Date To</label>
+          </div>
+          <div class="col-md-4">
+            <!-- <mat-form-field style="display: contents">
+            <input matInput  [matDatepicker]="picker4" style="
+            height: 37px !important;
+            border: 0 !important;
+          " [(ngModel)]="SearchData.RequiredDateTo"/>
+            <mat-datepicker-toggle matIconSuffix [for]="picker4" style="padding-top: 15px !important">
+            </mat-datepicker-toggle>
+            <mat-datepicker #picker4></mat-datepicker>
+          </mat-form-field> -->
+            <div class="input-group">
+              <input readonly class="form-control" placeholder="yyyy-mm-dd" ngbDatepicker #dp3="ngbDatepicker"
+                [(ngModel)]="SearchData.RequiredDateTo" [dayTemplate]="requiredDateTo" outsideDays="hidden"
+                [minDate]="{year: 1900, month: 1, day: 1}" [firstDayOfWeek]="7"
+                (click)="SearchData.RequiredDateTo = ''">
+              <button class="btn btn-sm btn-outline-secondary bi bi-x-lg m-0" (click)="SearchData.RequiredDateTo = ''"
+                type="button"></button>
+              <button class="btn btn-sm btn-outline-secondary bi bi-calendar3 m-0" (click)="dp3.toggle()"
+                type="button"></button>
+            </div>
+
+            <ng-template #requiredDateTo let-date="date" let-currentMonth="currentMonth" let-selected="selected"
+              let-disabled="disabled" let-focused="focused">
+              <span class="custom-day" [class.highlighted-date]="shouldHighlightDate(date)" [class.focused]="focused"
+                [class.bg-primary]="selected" [class.text-white]="selected">{{ date.day
+                }}</span>
+            </ng-template>
+          </div>
+        </div>
+        <div class="row d-flex" style="margin-top: 4px;">
+          <div class="col-md-2">
+            <label class="form-label">Conf. Deliv Date Fr</label>
+          </div>
+          <div class="col-md-4">
+            <!-- <mat-form-field style="display: contents">
+            <input matInput  [matDatepicker]="picker5" style="
+            height: 37px !important;
+            border: 0 !important;
+          " [(ngModel)]="SearchData.CDelDateFrom"/>
+            <mat-datepicker-toggle matIconSuffix [for]="picker5" style="padding-top: 15px !important">
+            </mat-datepicker-toggle>
+            <mat-datepicker #picker5></mat-datepicker>
+          </mat-form-field> -->
+            <div class="input-group">
+              <input readonly class="form-control" placeholder="yyyy-mm-dd" ngbDatepicker #dp4="ngbDatepicker"
+                [(ngModel)]="SearchData.CDelDateFrom" [dayTemplate]="cDelDateFrom" outsideDays="hidden"
+                [minDate]="{year: 1900, month: 1, day: 1}" [firstDayOfWeek]="7" (click)="SearchData.CDelDateFrom = ''">
+              <button class="btn btn-sm btn-outline-secondary bi bi-x-lg m-0" (click)="SearchData.CDelDateFrom = ''"
+                type="button"></button>
+              <button class="btn btn-sm btn-outline-secondary bi bi-calendar3 m-0" (click)="dp4.toggle()"
+                type="button"></button>
+            </div>
+
+            <ng-template #cDelDateFrom let-date="date" let-currentMonth="currentMonth" let-selected="selected"
+              let-disabled="disabled" let-focused="focused">
+              <span class="custom-day" [class.highlighted-date]="shouldHighlightDate(date)|| isWeekend(date)"
+                [class.focused]="focused" [class.bg-primary]="selected" [class.text-white]="selected">{{ date.day
+                }}</span>
+            </ng-template>
+          </div>
+
+          <div class="col-md-2">
+            <label class="form-label">Conf. Deliv Date Fr</label>
+          </div>
+          <div class="col-md-4">
+            <!-- <mat-form-field style="display: contents">
+            <input matInput  [matDatepicker]="picker6" style="
+            height: 37px !important;
+            border: 0 !important;
+          " [(ngModel)]="SearchData.CDelDateTo"/>
+            <mat-datepicker-toggle matIconSuffix [for]="picker6" style="padding-top: 15px !important">
+            </mat-datepicker-toggle>
+            <mat-datepicker #picker6></mat-datepicker>
+          </mat-form-field> -->
+            <div class="input-group">
+              <input readonly class="form-control" placeholder="yyyy-mm-dd" ngbDatepicker #dp5="ngbDatepicker"
+                [(ngModel)]="SearchData.CDelDateTo" [dayTemplate]="cDelDateTo" outsideDays="hidden"
+                [minDate]="{year: 1900, month: 1, day: 1}" [firstDayOfWeek]="7" (click)="SearchData.CDelDateTo = ''">
+              <button class="btn btn-sm btn-outline-secondary bi bi-x-lg m-0" (click)="SearchData.CDelDateTo = ''"
+                type="button"></button>
+              <button class="btn btn-sm btn-outline-secondary bi bi-calendar3 m-0" (click)="dp5.toggle()"
+                type="button"></button>
+            </div>
+
+            <ng-template #cDelDateTo let-date="date" let-currentMonth="currentMonth" let-selected="selected"
+              let-disabled="disabled" let-focused="focused">
+              <span class="custom-day" [class.highlighted-date]="shouldHighlightDate(date)|| isWeekend(date)"
+                [class.focused]="focused" [class.bg-primary]="selected" [class.text-white]="selected">{{ date.day
+                }}</span>
+            </ng-template>
+          </div>
+        </div>
+        <div class="row d-flex" style="margin-top: 4px;">
+          <div class="col-md-2">
+            <label class="form-label">PO Date From</label>
+          </div>
+          <div class="col-md-4">
+            <!-- <mat-form-field style="display: contents">
+            <input matInput  [matDatepicker]="picker7" style="
+            height: 37px !important;
+            border: 0 !important;
+          " [(ngModel)]="SearchData.PODateFrom"/>]
+            <mat-datepicker-toggle matIconSuffix [for]="picker7" style="padding-top: 15px !important">
+            </mat-datepicker-toggle>
+            <mat-datepicker #picker7></mat-datepicker>
+          </mat-form-field> -->
+            <div class="input-group">
+              <input readonly class="form-control" placeholder="yyyy-mm-dd" ngbDatepicker #dp6="ngbDatepicker"
+                [(ngModel)]="SearchData.PODateFrom" [dayTemplate]="pODateFrom" outsideDays="hidden"
+                [minDate]="{year: 1900, month: 1, day: 1}" [firstDayOfWeek]="7" (click)="SearchData.PODateFrom = ''">
+              <button class="btn btn-sm btn-outline-secondary bi bi-x-lg m-0" (click)="SearchData.PODateFrom = ''"
+                type="button"></button>
+              <button class="btn btn-sm btn-outline-secondary bi bi-calendar3 m-0" (click)="dp6.toggle()"
+                type="button"></button>
+            </div>
+
+            <ng-template #pODateFrom let-date="date" let-currentMonth="currentMonth" let-selected="selected"
+              let-disabled="disabled" let-focused="focused">
+              <span class="custom-day" [class.highlighted-date]="shouldHighlightDate(date)|| isWeekend(date)"
+                [class.focused]="focused" [class.bg-primary]="selected" [class.text-white]="selected">{{ date.day
+                }}</span>
+            </ng-template>
+          </div>
+
+          <div class="col-md-2">
+            <label class="form-label">PO Date To</label>
+          </div>
+          <div class="col-md-4">
+            <!-- <mat-form-field style="display: contents">
+            <input matInput  [matDatepicker]="picker8" style="
+            height: 37px !important;
+            border: 0 !important;
+          " [(ngModel)]="SearchData.PODateTo"/>
+            <mat-datepicker-toggle matIconSuffix [for]="picker8" style="padding-top: 15px !important">
+            </mat-datepicker-toggle>
+            <mat-datepicker #picker8></mat-datepicker>
+          </mat-form-field> -->
+            <div class="input-group">
+              <input readonly class="form-control" placeholder="yyyy-mm-dd" ngbDatepicker #dp7="ngbDatepicker"
+                [(ngModel)]="SearchData.PODateTo" [dayTemplate]="pODateTo" outsideDays="hidden"
+                [minDate]="{year: 1900, month: 1, day: 1}" [firstDayOfWeek]="7" (click)="SearchData.PODateTo = ''">
+              <button class="btn btn-sm btn-outline-secondary bi bi-x-lg m-0" (click)="SearchData.PODateTo = ''"
+                type="button"></button>
+              <button class="btn btn-sm btn-outline-secondary bi bi-calendar3 m-0" (click)="dp7.toggle()"
+                type="button"></button>
+            </div>
+
+            <ng-template #pODateTo let-date="date" let-currentMonth="currentMonth" let-selected="selected"
+              let-disabled="disabled" let-focused="focused">
+              <span class="custom-day" [class.highlighted-date]="shouldHighlightDate(date)|| isWeekend(date)"
+                [class.focused]="focused" [class.bg-primary]="selected" [class.text-white]="selected">{{ date.day
+                }}</span>
+            </ng-template>
+          </div>
+        </div>
+
+        <div class="row d-flex" style="margin-top: 4px;">
+          <div class="col-md-2">
+            <label class="form-label">Customer</label>
+          </div>
+          <div class="col-md-4">
+            <ng-select [selectOnTab]="true" [(ngModel)]="SearchData.CustomerName" class="w-auto"
+              (change)="GetProjectSelectList()" (input)="filterCustomerList($event)">
+              <ng-option *ngFor="let item of FilteredCustomerList" [value]="item.Value">{{item.Text}}</ng-option>
+            </ng-select>
+          </div>
+          <div class="col-md-2">
+            <label class="form-label">Project</label>
+            <span>(<input type="checkbox" [(ngModel)]="AllProjects" (ngModelChange)="GetAllProject()">All)</span>
+          </div>
+          <div class="col-md-4">
+            <ng-select [multiple]="true" [(ngModel)]="SearchData.ProjectTitle" [selectOnTab]="true" class="w-auto">
+              <ng-option *ngFor="let item of ProjectCodeList" [value]="item.ProjectCode"> {{item.ProjectTitle}}
+              </ng-option>
+            </ng-select>
+          </div>
+        </div>
+        <div class="row d-flex" style="margin-top: 4px;">
+          <div class="col-md-2">
+            <label class="form-label">WBS1</label>
+          </div>
+          <div class="col-md-4">
+            <input type="text" [(ngModel)]="SearchData.WBS1" class="form-control" (input)="onWBS1change()" (blur)="onBlur()" />
+            <ul *ngIf="filteredSuggestionsWBS1.length > 0">
+              <li *ngFor="let suggestion of filteredSuggestionsWBS1" (click)="selectSuggestion('WBS1',suggestion)">
+                {{ suggestion }}
+              </li>
+            </ul>
+          </div>
+
+          <div class="col-md-2">
+            <label class="form-label">WBS2</label>
+          </div>
+          <div class="col-md-4">
+            <input type="text" [(ngModel)]="SearchData.WBS2" class="form-control" (input)="onWBS2change()" (blur)="onBlur()" />
+            <ul *ngIf="filteredSuggestionsWBS2.length > 0">
+              <li *ngFor="let suggestion of filteredSuggestionsWBS2" (click)="selectSuggestion('WBS2',suggestion)">
+                {{ suggestion }}
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="row d-flex" style="margin-top: 4px;">
+          <div class="col-md-2">
+            <label class="form-label">WBS3</label>
+          </div>
+          <div class="col-md-4">
+            <input type="text" [(ngModel)]="SearchData.WBS3" class="form-control" (input)="onWBS3change()" (blur)="onBlur()" />
+            <ul *ngIf="filteredSuggestionsWBS3.length > 0">
+              <li *ngFor="let suggestion of filteredSuggestionsWBS3" (click)="selectSuggestion('WBS3',suggestion)">
+                {{ suggestion }}
+              </li>
+            </ul>
+          </div>
+
+          <div class="col-md-2">
+            <label class="form-label">Product Type</label>
+          </div>
+          <div class="col-md-4">
+            <ng-select [multiple]="true" [(ngModel)]="SearchData.ProductType" [selectOnTab]="true" class="w-auto">
+              <ng-option value="CAB">CAB</ng-option>
+              <ng-option value="STANDARD-BAR">Standard Bar</ng-option>
+              <ng-option value="CUT-TO-SIZE-MESH">Cut-To-Size Mesh</ng-option>
+              <ng-option value="STIRRUP-LINK-MESH">Stirrup Link Mesh</ng-option>
+              <ng-option value="COLUMN-LINK-MESH">Column Link Mesh</ng-option>
+              <ng-option value="STANDARD-MESH">Standard Mesh</ng-option>
+              <ng-option value="PRE-CAGE">Pre-Cage</ng-option>
+              <ng-option value="CORE-CAGE">Core-Cage</ng-option>
+              <ng-option value="BPC">Bored Pile Cage</ng-option>
+              <ng-option value="COIL">Coil Products</ng-option>
+              <ng-option value="ACS">Pre-Cut Wires</ng-option>
+              <ng-option value="COUPLER">Coupler</ng-option>
+              <ng-option value="CARPET">Carpet</ng-option>
+
+            </ng-select>
+          </div>
+        </div>
+        <div class="row d-flex" style="margin-top: 4px;">
+          <div class="col-md-2">
+            <label class="form-label">Project In-Charge</label>
+          </div>
+          <div class="col-md-4">
+            <ng-select [multiple]="true" [(ngModel)]="SearchData.ProjectPIC" [selectOnTab]="true" class="w-auto">
+              <ng-option *ngFor="let item of ProjectInchargeList; index as i" [value]="item">{{item}}</ng-option>
+            </ng-select>
+          </div>
+
+          <div class="col-md-2">
+            <label class="form-label">Account Manager</label>
+          </div>
+          <div class="col-md-4">
+            <ng-select [multiple]="true" [(ngModel)]="SearchData.SalesPIC" [selectOnTab]="true" class="w-auto">
+              <ng-option *ngFor="let item of AccountManagerList; index as i" [value]="item">{{item}}</ng-option>
+            </ng-select>
+          </div>
+        </div>
+        <div class="row d-flex" style="margin-top: 4px;">
+          <div class="col-md-2">
+            <label class="form-label">Detailing In-Charge</label>
+          </div>
+          <div class="col-md-4">
+            <ng-select [multiple]="true" [(ngModel)]="SearchData.DetailingPIC" [selectOnTab]="true" class="w-auto">
+              <ng-option *ngFor="let item of DetaillingInchargeList; index as i" [value]="item">{{item}}</ng-option>
+            </ng-select>
+          </div>
+
+          <div class="col-md-2">
+            <label class="form-label">SAP Sales Order No</label>
+          </div>
+          <div class="col-md-4">
+            <input type="text" [(ngModel)]="SearchData.SONo" class="form-control" (input)="onSONoChange()" (blur)="onBlur()" />
+            <ul *ngIf="filteredSuggestionsSAPSalesOrderNO.length > 0">
+              <li *ngFor="let suggestion of filteredSuggestionsSAPSalesOrderNO"
+                (click)="selectSuggestion('SONo',suggestion)">
+                {{ suggestion }}
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="row d-flex" style="margin-top: 4px;">
+          <div class="col-md-2">
+            <label class="form-label">Internal Series No</label>
+          </div>
+          <div class="col-md-4">
+            <input type="text" [(ngModel)]="SearchData.SOR" class="form-control" (input)="onSORChange()" (blur)="onBlur()" />
+            <ul *ngIf="filteredSuggestionsSOR.length > 0">
+              <li *ngFor="let suggestion of filteredSuggestionsSOR" (click)="selectSuggestion('SOR',suggestion)">
+                {{ suggestion }}
+              </li>
+            </ul>
+          </div>
+
+          <div class="col-md-2">
+            <label class="form-label">Weighing Ticket No.</label>
+          </div>
+          <div class="col-md-4">
+            <input type="text" [(ngModel)]="SearchData.WTNo" class="form-control" (input)="onWTNoChange()" (blur)="onBlur()" />
+            <ul *ngIf="filteredSuggestionsWeightTicketNo.length > 0">
+              <li *ngFor="let suggestion of filteredSuggestionsWeightTicketNo"
+                (click)="selectSuggestion('WTNo',suggestion)">
+                {{ suggestion }}
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="row d-flex" style="margin-top: 4px;">
+          <div class="col-md-2">
+            <label class="form-label">Load No</label>
+          </div>
+          <div class="col-md-4">
+            <input type="text" [(ngModel)]="SearchData.LoadNo" class="form-control" (input)="onLoadNoChange()" (blur)="onBlur()" />
+            <ul *ngIf="filteredSuggestionsLoadNo.length > 0">
+              <li *ngFor="let suggestion of filteredSuggestionsLoadNo" (click)="selectSuggestion('LoadNo',suggestion)">
+                {{ suggestion }}
+              </li>
+            </ul>
+          </div>
+
+          <div class="col-md-2">
+            <label class="form-label">DO No.</label>
+          </div>
+          <div class="col-md-4">
+            <input type="text" [(ngModel)]="SearchData.DONo" class="form-control" (input)="onDONoChange()" (blur)="onBlur()" />
+            <ul *ngIf="filteredSuggestionsDONo.length > 0">
+              <li *ngFor="let suggestion of filteredSuggestionsDONo" (click)="selectSuggestion('DONo',suggestion)">
+                {{ suggestion }}
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="row d-flex" style="margin-top: 4px;">
+          <div class="col-md-2">
+            <label class="form-label">Invoice No</label>
+          </div>
+          <div class="col-md-4">
+            <input type="text" [(ngModel)]="SearchData.InvNo" class="form-control" (input)="onInvNoChange()" (blur)="onBlur()" />
+            <ul *ngIf="filteredSuggestionsInvoiceNo.length > 0">
+              <li *ngFor="let suggestion of filteredSuggestionsInvoiceNo"
+                (click)="selectSuggestion('InvNo',suggestion)">
+                {{ suggestion }}
+              </li>
+            </ul>
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label">(Search range:###~###)</label>
+          </div>
+
+        </div>
+        <!-- //uncomment below code when cr deploy -->
+        <div class="row d-flex" style="margin-top: 4px;">
+          <div class="col-md-2">
+            <label class="form-label">Vehicle Type</label>
+          </div>
+          <div class="col-md-4">
+            <ng-select [selectOnTab]="true" class="w-auto" [(ngModel)]="SearchData.VehicleType"
+            style="font-weight:700 !important;">
+            <ng-option value="HC" style="font-weight:700 !important;">HC Haip Crane</ng-option>
+            <ng-option value="LB40" style="font-weight:700 !important;">LB40 40ft Low Bed</ng-option>
+            <ng-option value="LBE" style="font-weight:700 !important;">LBE Low Bed Escoted</ng-option>
+            <ng-option value="SC" style="font-weight:700 !important;">SC Self Collection</ng-option>
+            <ng-option value="TR40/24" style="font-weight:700 !important;">TR40/24 40ft 24mt Trailer</ng-option>
+          </ng-select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary me-2" style="height: 40px;" (click)="Search();saveInput();">
+      Search
+    </button>
+    <button type="button" class="btn btn-primary me-2" style="height: 40px;" (click)="Clear()">
+      Clear
+    </button>
+    <button type="button" class="btn btn-primary me-2" style="height: 40px;"
+      (click)="close()">
+      Close
+    </button>
+  </div>
+</div>

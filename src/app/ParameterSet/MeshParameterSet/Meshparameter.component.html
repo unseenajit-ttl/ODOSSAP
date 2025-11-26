@@ -1,0 +1,1266 @@
+<div class="container-fluid">
+    <div class="card m-1">
+        <div class="card-body" style="height: 500px;">
+            <div class="filter ">
+                <form [formGroup]="MeshparameterForm">
+                    <ngb-accordion #acc="ngbAccordion" title="Filters" activeIds="panel1">
+                        <ngb-panel id="panel1" class="pb-5">
+                            <ng-template ngbPanelContent>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label class="form-label ">Parameter Set</label> <br>
+                                            <div class=" d-flex">
+                                                <div>
+                                                    <ng-select [selectOnTab]="true" formControlName="paramterset"
+                                                        [(ngModel)]="selectparameter" class="ng-selectwbs"
+                                                        (change)="selectparameter=$event; Changeparam($event);">
+
+                                                        <ng-option *ngFor="let sList of ParameterSetList"
+                                                            [value]="sList.ParameterSet">
+                                                            {{sList.ParameterSet}}
+                                                        </ng-option>
+                                                    </ng-select>
+                                                    <span class="text-danger validator-message"
+                                                        *ngIf="(isaddnewMesh || isaddnewColumn || isaddnewBeam) && isaddnew && MeshparameterForm.controls['paramterset'].invalid && MeshparameterForm.controls['paramterset'].errors && MeshparameterForm.controls['paramterset'].hasError('required')">*
+                                                        Parameter Required. </span>
+                                                </div>
+
+                                                &nbsp;
+                                                <i class="material-icons" ngbTooltip="Add New Parameter Set"
+                                                    (click)="AddParameter()">add_circle</i>&nbsp;&nbsp;
+                                                    <i class="bi bi-trash" style="font-size:24px;color: red;"
+                                                                     
+                                                    (click)="DeleteParameter()"         ngbTooltip="Delete"></i>
+                                            </div>
+                                        </div>
+                                        <!-- <div class="col-md-1" style="    position: relative;
+                                        top: 33px;
+                                        right: 112px;">
+                                            <i class="bi bi-trash" style="font-size:20px;color: red;"
+                                                                     
+                                                               (click)="DeleteParameter()"         ngbTooltip="Delete"></i>
+                                        </div> -->
+                                    
+
+                                    </div>
+
+                                </div>
+                            </ng-template>
+                        </ngb-panel>
+
+                    </ngb-accordion>
+                </form>
+            </div>
+            <br>
+            <div>
+                <tabset>
+                    <!-- {{selectedType}} -->
+                    <tab heading="Mesh" style="background:#fff;" (selectTab)="onTabSelect('MSH')">
+
+
+                        <div class="row">
+                            <!-- <div class="col-md-2">
+                                <div class="row" style="    margin-top: 63px;
+                                margin-left: 14px;">
+
+                                    <div class="col-md-2">
+                                        <label for="TransportMode" style="width: 112px;">Transport Mode : </label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <ng-select [selectOnTab]="true" id="TransportMode" style="margin-left: 86px;"
+                                            [(ngModel)]="TransportModeForMesh" class="ng-selectwbs">
+
+                                            <ng-option *ngFor="let sList of TransportModeList"
+                                                [value]="sList.tntTransportModeId">
+                                                {{sList.vchTransportMode}}
+                                            </ng-option>
+                                        </ng-select>
+                                    </div>
+                                </div>
+                            </div> -->
+
+                            <div class="col-md-3">
+                                <label class="form-label" style="margin-left: 85px; font:bold;">Transport Mode </label> <br>
+                                <div class=" d-flex">
+                                    <div>
+                                        <ng-select [selectOnTab]="true" id="TransportMode" style="margin-left: 86px;" (change)="Update_TransportMode()"
+                                            [(ngModel)]="TransportModeForMesh" class="ng-selectwbs">
+
+                                            <ng-option *ngFor="let sList of TransportModeList"
+                                                [value]="sList.tntTransportModeId">
+                                                {{sList.vchTransportMode}}
+                                            </ng-option>
+                                        </ng-select>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <!---------------MAIN WIRE/CROSS WIRE---------------->
+                            <div class="col-md-7 card_pad d-flex" style="justify-content: center;
+                            position: relative;
+                            right: 75px;
+                        ">
+                                <div class="card" style="max-height: 10;">
+                                    <div class="card-header" style="text-align: center;">
+                                        <b>MAIN WIRE/CROSS WIRE</b>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class=" table-responsive table-wrapper-scroll-y my-custom-scrollbar1"
+                                            style="max-height:300px">
+                                            <table class="table m-auto  d-table table-responsive  table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-center">Product Code</th>
+                                                        <th class="text-center">MW Lap</th>
+                                                        <th class="text-center">CW Lap</th>
+                                                        <th class="text-center w-25">Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <ng-container
+                                                        *ngFor="let item of MeshList |slice: pageSize | slice: 0:itemsPerPage; index as i; ">
+                                                        <tr [class.activerowcolor]="editMesh == false">
+                                                            <ng-container *ngIf="enableMeshEditIndex != i">
+                                                                <td>{{item.ProductCode}}</td>
+                                                                <td>{{item.MwLap}}</td>
+                                                                <td>{{item.CwLap}}</td>
+                                                                <td class="text-center">
+                                                                    <i class="material-icons"
+                                                                        (click)="onEditMesh(item, i)"
+                                                                        ngbTooltip="Edit">mode_edit</i>&nbsp;
+                                                                    <i class="bi bi-trash" style="font-size:15px;"
+                                                                        (click)="DeleteMeshList(item.MeshLapId)"
+                                                                        ngbTooltip="Delete"></i>
+                                                                </td>
+                                                            </ng-container>
+                                                            <ng-container *ngIf="enableMeshEditIndex == i">
+                                                                <td>
+                                                                    <ng-select [selectOnTab]="true"
+                                                                        [(ngModel)]="item.ProductCodeId" appendTo="body"
+                                                                        class="ng-selectwbs custom-dropdown">
+                                                                        <ng-option *ngFor="let sList of ProductCodeList"
+                                                                            [value]="sList.INTPRODUCTCODEID">
+                                                                            {{sList.VCHPRODUCTCODE}}
+                                                                        </ng-option>
+                                                                    </ng-select>
+                                                                    <span class="text-danger validator-message"
+                                                                        *ngIf="isupdateMesh &&  (item.ProductCodeId==undefined)">*
+                                                                        Product Code Required. </span>
+                                                                </td>
+                                                                <td>
+                                                                    <input type="number" class="form-control"
+                                                                        [(ngModel)]="item.MwLap"
+                                                                        (keydown.enter)="Update_Mesh(item,i)"
+                                                                        style=" height: auto;" />
+                                                                    <span class="text-danger validator-message"
+                                                                        *ngIf="isupdateMesh &&  (item.MwLap==undefined)">*
+                                                                        MWlap Required. </span>
+
+                                                                </td>
+                                                                <td>
+                                                                    <input type="number" class="form-control"
+                                                                        [(ngModel)]="item.CwLap"
+                                                                        (keydown.enter)="Update_Mesh(item,i)"
+                                                                        style=" height: auto;" />
+                                                                    <span class="text-danger validator-message"
+                                                                        *ngIf="isupdateMesh &&  (item.CwLap==undefined)">*
+                                                                        CWlap Required. </span>
+                                                                </td>
+
+                                                                <td class="text-center" style="width:200px;">
+                                                                    <i class="material-icons"
+                                                                        (click)="Update_Mesh(item,i)"
+                                                                        ngbTooltip="Update">save</i>
+                                                                    &nbsp;
+                                                                    <i class="material-icons"
+                                                                        (click)="Editcancel(item,i)"
+                                                                        ngbTooltip="Cancel">cancel</i>
+                                                                </td>
+                                                            </ng-container>
+
+
+                                                        </tr>
+                                                    </ng-container>
+
+
+                                                </tbody>
+                                                <tfoot>
+                                                    <tr *ngFor="let table of newmwcw">
+
+                                                        <td>
+                                                            <ng-select [selectOnTab]="true"
+                                                                [(ngModel)]="table.productcode" appendTo="body"
+                                                                class="ng-selectwbs custom-dropdown">
+                                                                <!-- <ng-option *ngIf="ProductCodeList.length == 0">SELECT A PROJECT</ng-option> -->
+                                                                <ng-option *ngFor="let sList of ProductCodeList"
+                                                                    [value]="sList.INTPRODUCTCODEID">
+                                                                    {{sList.VCHPRODUCTCODE}}
+                                                                </ng-option>
+                                                            </ng-select>
+                                                            <span class="text-danger validator-message"
+                                                                *ngIf="isaddnewMesh &&  (table.productcode==undefined)">*
+                                                                Product Code Required. </span>
+                                                        </td>
+                                                        <td><input class="form-control" maxlength="10" type="number"
+                                                                [(ngModel)]="table.mwlap"
+                                                                (keydown.enter)="AddMeshMwCw()" />
+                                                            <span class="text-danger validator-message"
+                                                                *ngIf="isaddnewMesh &&  (table.mwlap==undefined)">*
+                                                                MWlap Required. </span>
+                                                        </td>
+                                                        <td>
+                                                            <input class="form-control" maxlength="10" type="number"
+                                                                [(ngModel)]="table.cwlap"
+                                                                (keydown.enter)="AddMeshMwCw()" />
+                                                            <span class="text-danger validator-message"
+                                                                *ngIf="isaddnewMesh &&  (table.cwlap==undefined)">*
+                                                                CWlap Required. </span>
+                                                        </td>
+
+                                                        <td class="text-center">
+                                                            <i class="material-icons" (click)="AddMeshMwCw()"
+                                                                ngbTooltip="Save">save</i>
+                                                            &nbsp;
+                                                            <i class="fa fa-refresh text-center" ngbTooltip="Reset"
+                                                                style=" color:red;font-size:20px;"
+                                                                (click)="resetMeshValue()"></i>
+                                                        </td>
+
+                                                    </tr>
+
+
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <div class="d-flex ">
+                                            <ngb-pagination [collectionSize]="MeshList.length" [pageSize]="itemsPerPage"
+                                                [(page)]="currentPage" (pageChange)="onPageChange(currentPage)"
+                                                [boundaryLinks]="true" [maxSize]="maxSize">
+                                                <ng-template ngbPaginationPrevious>Prev</ng-template>
+                                                <ng-template ngbPaginationNext>Next</ng-template>
+                                            </ngb-pagination>
+
+                                            <select class="custom-select mr-2 ml-3" style="width: auto"
+                                                [(ngModel)]="itemsPerPage"
+                                                (ngModelChange)="OnPageSizeChange(itemsPerPage);">
+                                                <option [ngValue]="5">5 </option>
+                                                <option [ngValue]="10">10 </option>
+                                                <option [ngValue]="20">20 </option>
+                                            </select>
+                                            <span style="margin-top: 5px;">Items per page</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+<div class="col-md-2">
+
+</div>
+                        </div>
+                    </tab>
+                    <tab heading="Column" style="background:#fff" (selectTab)="onTabSelect('column')">
+                        <div class="row" style="margin-top: 10px;">
+                            <!---------------PARAMETER SET---------------->
+                            <div class="col card_pad flex  align-items-stretch" style="padding-top:0px;">
+                                <div class="card">
+
+
+
+                                    <div class="card-header" style="text-align: center;">
+                                        <b>PARAMETER</b>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-2 card_pad d-flex align-items-stretch">
+
+                                        </div>
+                                        <div class="col-sm-8 card_pad d-flex align-items-stretch">
+                                            <div class="card" style="max-height: 10;">
+                                                <div class="card-body">
+                                                    <table
+                                                        class="table  d-block d-md-table table-responsive  table-bordered ">
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="text-center card-text" style="width:230px">
+                                                                    Top Cover
+                                                                </th>
+                                                                <th class="text-center card-text" style="width:230px">
+                                                                    Bottom Cover</th>
+                                                                <th class="text-center card-text" style="width:230px">
+                                                                    Left Cover
+                                                                </th>
+                                                                <th class="text-center card-text" style="width:270px">
+                                                                    Right Cover
+                                                                </th>
+
+                                                                <th class="text-center card-text" style="width:270px">
+                                                                    Transport Mode
+                                                                </th>
+
+                                                                <th class="text-center card-text" style="width:270px">
+                                                                    Actions
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <ng-container
+                                                                *ngFor="let item of ColumnList |slice: column_pageSize | slice: 0:column_itemperPage; index as i; ">
+                                                                <tr>
+                                                                    <ng-container *ngIf="enableColumnEditIndex != i">
+                                                                        <td>
+                                                                            {{item.TopCover}}
+                                                                        </td>
+                                                                        <td>
+                                                                            {{item.BottomCover}}
+                                                                        </td>
+                                                                        <td>
+                                                                            {{item.LeftCover}}
+                                                                        </td>
+                                                                        <td>
+                                                                            {{item.RightCover}}
+                                                                        </td>
+
+                                                                        <td>
+                                                                            <ng-select [selectOnTab]="true"
+                                                                                [disabled]="true"
+                                                                                [(ngModel)]="item.TNTTRANSPORTMODEID"
+                                                                                class="ng-selectwbs">
+
+
+                                                                                <ng-option
+                                                                                    *ngFor="let sList of TransportModeList"
+                                                                                    [value]="sList.tntTransportModeId">
+                                                                                    {{sList.vchTransportMode}}
+                                                                                </ng-option>
+                                                                            </ng-select>
+
+                                                                        </td>
+
+                                                                        <td class="text-center">
+                                                                            <i class="material-icons"
+                                                                                (click)="onEditColumn(item, i)"
+                                                                                ngbTooltip="Edit">mode_edit</i>&nbsp;
+                                                                            <!-- <i class="bi bi-trash"
+                                                                                style="font-size:15px;"
+                                                                                ngbTooltip="Delete"></i> -->
+
+                                                                        </td>
+                                                                    </ng-container>
+                                                                    <ng-container *ngIf="enableColumnEditIndex == i">
+                                                                        <td>
+                                                                            <input type="number" class="form-control"
+                                                                                [(ngModel)]="item.TopCover"
+                                                                                (keydown.enter)="Update_Column(item,i)"
+                                                                                style=" height: auto;" />
+                                                                            <span class="text-danger validator-message"
+                                                                                *ngIf="isupdateColumn &&  (item.TopCover==undefined)">*
+                                                                                TopCover Required. </span>
+
+
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type="number" class="form-control"
+                                                                                [(ngModel)]="item.BottomCover"
+                                                                                (keydown.enter)="Update_Column(item,i)"
+                                                                                style=" height: auto;" />
+                                                                            <span class="text-danger validator-message"
+                                                                                *ngIf="isupdateColumn &&  (item.BottomCover==undefined)">*
+                                                                                BottomCover Required. </span>
+
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type="number" class="form-control"
+                                                                                [(ngModel)]="item.LeftCover"
+                                                                                (keydown.enter)="Update_Column(item,i)"
+                                                                                style=" height: auto;" />
+                                                                            <span class="text-danger validator-message"
+                                                                                *ngIf="isupdateColumn &&  (item.LeftCover==undefined)">*
+                                                                                LeftCover Required. </span>
+
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type="number" class="form-control"
+                                                                                [(ngModel)]="item.RightCover"
+                                                                                (keydown.enter)="Update_Column(item,i)"
+                                                                                style=" height: auto;" />
+                                                                            <span class="text-danger validator-message"
+                                                                                *ngIf="isupdateColumn &&  (item.RightCover==undefined)">*
+                                                                                RightCover Required. </span>
+
+                                                                        </td>
+
+                                                                        <td>
+                                                                            <ng-select [selectOnTab]="true"
+                                                                                [(ngModel)]="item.TNTTRANSPORTMODEID"
+                                                                                class="ng-selectwbs">
+
+                                                                                <ng-option
+                                                                                    *ngFor="let sList of TransportModeList"
+                                                                                    [value]="sList.tntTransportModeId">
+                                                                                    {{sList.vchTransportMode}}
+                                                                                </ng-option>
+                                                                            </ng-select>
+
+                                                                        </td>
+                                                                        <td class="text-center" style="width:200px;">
+                                                                            <i class="material-icons"
+                                                                                (click)="Update_Column(item,i)"
+                                                                                ngbTooltip="Update">save</i>
+                                                                            &nbsp;
+                                                                            <i class="material-icons"
+                                                                                (click)="Editcancel(item,i)"
+                                                                                ngbTooltip="Cancel">cancel</i>
+                                                                        </td>
+
+                                                                    </ng-container>
+                                                                </tr>
+                                                            </ng-container>
+
+                                                            <!-- Add blank row when no paramater select -->
+                                                            <ng-container *ngIf="selectparameter==null">
+                                                                <tr>
+                                                                    <td colspan="7">
+                                                                        No Parameter select
+                                                                    </td>
+                                                                </tr>
+                                                            </ng-container>
+                                                        </tbody>
+
+                                                    </table>
+
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-2 card_pad d-flex align-items-stretch">
+
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col card_pad d-flex " style="justify-content:center">
+                                <div class="card">
+                                    <div class="card-header" style="text-align: center;">
+                                        <b>C-link/link</b>
+                                    </div>
+                                    <div class="card-body">
+
+                                        <div class=" table-responsive table-wrapper-scroll-y my-custom-scrollbar1"
+                                            style="max-height: 260px;">
+                                            <table
+                                                class="table  w-100 d-block d-md-table  table-responsive  table-bordered ">
+                                                <thead>
+
+                                                    <tr>
+                                                        <th class="text-center">Diameter</th>
+                                                        <th class="text-center">C-Link Leg</th>
+                                                        <th class="text-center">Leg</th>
+                                                        <th class="text-center">Actions</th>
+                                                    </tr>
+                                                </thead>
+
+                                                <tbody>
+                                                    <tr
+                                                        *ngFor="let item of ClinkList |slice: clink_pageSize | slice: 0:clink_itemperPage; index as i; ">
+                                                        <ng-container *ngIf="enableClinkEditIndex != i">
+                                                            <td>
+                                                                {{item.Diameter}}
+                                                            </td>
+
+                                                            <td>
+                                                                {{item.CWLength}}
+                                                            </td>
+                                                            <td>
+                                                                {{item.Leg}}
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <i class="material-icons" (click)="onEditClink(item, i)"
+                                                                    ngbTooltip="Edit">mode_edit</i>&nbsp;
+                                                                <i class="bi bi-trash" style="font-size:15px;"
+                                                                    (click)="DeleteColumnClinklist(item.ParamCageId)"
+                                                                    ngbTooltip="Delete"></i>
+                                                            </td>
+                                                        </ng-container>
+                                                        <ng-container *ngIf="enableClinkEditIndex == i">
+                                                            <td>
+                                                                <ng-select [selectOnTab]="true" appendTo="body"
+                                                                    [searchable]="true" [(ngModel)]="item.Diameter"
+                                                                    class="ng-selectwbs custom-dropdown">
+                                                                    <ng-option *ngFor="let sList of Diameterlist"
+                                                                        [value]="sList.item_id">
+                                                                        {{sList.item_text}}
+                                                                    </ng-option>
+                                                                </ng-select>
+                                                                <span class="text-danger validator-message"
+                                                                    *ngIf="isupdateColumn &&  (item.Diameter==undefined)">*
+                                                                    Diameter Required. </span>
+
+
+                                                            </td>
+
+                                                            <td>
+                                                                <input type="number" class="form-control"
+                                                                    [(ngModel)]="item.CWLength"
+                                                                    (keydown.enter)="Update_Clink(item,i)"
+                                                                    style=" height: auto;" />
+                                                                <span class="text-danger validator-message"
+                                                                    *ngIf="isupdateColumn &&  (item.CWLength==undefined)">*
+                                                                    CW Length Required. </span>
+
+                                                            </td>
+                                                            <td>
+                                                                <input type="number" class="form-control"
+                                                                    (keydown.enter)="Update_Clink(item,i)"
+                                                                    [(ngModel)]="item.Leg" style=" height: auto;" />
+                                                                <span class="text-danger validator-message"
+                                                                    *ngIf="isupdateColumn &&  (item.Leg==undefined)">*
+                                                                    Leg Required. </span>
+
+                                                            </td>
+                                                            <td class="text-center" style="width:200px;">
+                                                                <i class="material-icons" (click)="Update_Clink(item,i)"
+                                                                    ngbTooltip="Update">save</i>
+                                                                &nbsp;
+                                                                <i class="material-icons" (click)="Editcancel(item,i)"
+                                                                    ngbTooltip="Cancel">cancel</i>
+                                                            </td>
+
+
+                                                        </ng-container>
+                                                    </tr>
+                                                </tbody>
+
+                                                <tfoot>
+
+
+                                                    <tr *ngFor="let table of newclink">
+
+                                                        <td>
+                                                            <ng-select [selectOnTab]="true" appendTo="body"
+                                                                [searchable]="true" [(ngModel)]="table.diameter"
+                                                                class="ng-selectwbs custom-dropdown">
+                                                                <ng-option *ngFor="let sList of Diameterlist"
+                                                                    [value]="sList.item_id">
+                                                                    {{sList.item_text}}
+                                                                </ng-option>
+                                                            </ng-select>
+                                                            <span class="text-danger validator-message"
+                                                                *ngIf="isaddnewColumn &&  (table.diameter==undefined)">*
+                                                                Diameter Required. </span>
+                                                        </td>
+
+                                                        <td>
+                                                            <input class="form-control" maxlength="10" type="number"
+                                                                [(ngModel)]="table.cwlength"
+                                                                (keydown.enter)="AddNew()" />
+                                                            <span class="text-danger validator-message"
+                                                                *ngIf="isaddnewColumn &&  (table.cwlength==undefined)">*
+                                                                C-Link Leg Required. </span>
+                                                        </td>
+                                                        <td><input class="form-control" maxlength="10" type="number"
+                                                                [(ngModel)]="table.leg" (keydown.enter)="AddNew()" />
+                                                            <span class="text-danger validator-message"
+                                                                *ngIf="isaddnewColumn &&  (table.leg==undefined)">*
+                                                                Leg Required. </span>
+                                                        </td>
+
+                                                        <td class="text-center">
+                                                            <i class="material-icons" (click)="AddNew()"
+                                                                ngbTooltip="Save">save</i>
+                                                            &nbsp;
+                                                            <i class="fa fa-refresh text-center" ngbTooltip="Reset"
+                                                                style=" color:red;font-size:20px;"
+                                                                (click)="resetClinkValue()"></i>
+                                                        </td>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+
+                                    </div>
+                                    <div class="card-footer">
+                                        <div class="d-flex">
+                                            <ngb-pagination [collectionSize]="ClinkList.length"
+                                                [(page)]="clink_currentPage" [pageSize]="clink_itemperPage"
+                                                (pageChange)="onPageChange_Clink(clink_currentPage)"
+                                                [boundaryLinks]="false">
+                                                <ng-template ngbPaginationPrevious>Prev</ng-template>
+                                                <ng-template ngbPaginationNext>Next</ng-template>
+                                            </ngb-pagination>
+
+                                            <select class="custom-select mr-2 ml-3" style="width: auto"
+                                                [(ngModel)]="clink_itemperPage"
+                                                (ngModelChange)="OnPageSizeChange_Clink(clink_itemperPage);">
+                                                <option [ngValue]="5">5 </option>
+                                                <option [ngValue]="10">10 </option>
+                                                <option [ngValue]="20">20 </option>
+                                            </select>
+                                            <span style="margin-top: 5px;">Items per page</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </tab>
+                    <tab heading="Beam" style="background:#fff" (selectTab)="onTabSelect('beam')">
+                        <div class="row" style="margin-top: 10px;">
+                            <!---------------PARAMETER SET---------------->
+                            <div class="col card_pad flex  align-items-stretch" style="padding-top:0px;">
+                                <div class="card">
+
+
+
+                                    <div class="card-header" style="text-align: center;">
+                                        <b>PARAMETER</b>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-2 card_pad d-flex align-items-stretch">
+
+                                        </div>
+                                        <div class="col-sm-8 card_pad d-flex align-items-stretch">
+                                            <div class="card" style="max-height: 10;">
+                                                <div class="card-body">
+
+                                                    <table
+                                                        class="table  d-block d-md-table table-responsive  table-bordered ">
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="text-center card-text" style="width:235px">
+                                                                    Top Cover
+                                                                </th>
+                                                                <th class="text-center card-text" style="width:235px">
+                                                                    Bottom
+                                                                    Cover</th>
+                                                                <th class="text-center card-text" style="width:235px">
+                                                                    Left Cover
+                                                                </th>
+                                                                <th class="text-center card-text" style="width:235px">
+                                                                    Right Cover
+                                                                </th>
+                                                                <th class="text-center card-text" style="width:235px">
+                                                                    Leg
+                                                                </th>
+                                                                <th class="text-center card-text" style="width:235px">
+                                                                    Hook
+                                                                </th>
+                                                                <th class="text-center card-text" style="width:235px">
+                                                                    Transport Mode
+                                                                </th>
+
+                                                                <th class="text-center card-text" style="width:235px">
+                                                                    Actions
+                                                                </th>
+
+
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <ng-container
+                                                                *ngFor="let item of BeamList |slice: beam_pageSize | slice: 0:beam_itemperPage;; index as i; ">
+
+                                                                <tr>
+                                                                    <ng-container *ngIf="enableBeamEditIndex != i">
+
+                                                                        <td>
+                                                                            {{item.TopCover}}
+                                                                        </td>
+                                                                        <td>
+                                                                            {{item.BottomCover}}
+                                                                        </td>
+                                                                        <td>
+                                                                            {{item.LeftCover}}
+                                                                        </td>
+                                                                        <td>
+                                                                            {{item.RightCover}}
+                                                                        </td>
+                                                                        <td>
+                                                                            {{item.Leg}}
+                                                                        </td>
+                                                                        <td>
+                                                                            {{item.Hook}}
+                                                                        </td>
+                                                                        <td>
+                                                                            <ng-select [selectOnTab]="true"
+                                                                                [disabled]="true"
+                                                                                [(ngModel)]="item.tntTransportModeId"
+                                                                                class="ng-selectwbs">
+
+
+                                                                                <ng-option
+                                                                                    *ngFor="let sList of TransportModeList"
+                                                                                    [value]="sList.tntTransportModeId">
+                                                                                    {{sList.vchTransportMode}}
+                                                                                </ng-option>
+                                                                            </ng-select>
+
+                                                                        </td>
+                                                                        <td class="text-center">
+                                                                            <i class="material-icons"
+                                                                                (click)="onEditBeam(item, i)"
+                                                                                ngbTooltip="Edit">mode_edit</i>&nbsp;
+                                                                            <!-- <i class="bi bi-trash"
+                                                                                style="font-size:15px;"
+                                                                                ngbTooltip="Delete"></i> -->
+                                                                        </td>
+                                                                    </ng-container>
+                                                                    <ng-container *ngIf="enableBeamEditIndex == i">
+                                                                        <td>
+                                                                            <input type="number" class="form-control"
+                                                                                [(ngModel)]="item.TopCover"
+                                                                                (keydown.enter)="Update_Beam(item,i)"
+                                                                                style=" height: auto;" />
+                                                                            <span class="text-danger validator-message"
+                                                                                *ngIf="isupdateBeam &&  (item.TopCover==undefined)">*
+                                                                                TopCover Required. </span>
+
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type="number" class="form-control"
+                                                                                [(ngModel)]="item.BottomCover"
+                                                                                (keydown.enter)="Update_Beam(item,i)"
+                                                                                style=" height: auto;" />
+                                                                            <span class="text-danger validator-message"
+                                                                                *ngIf="isupdateBeam &&  (item.BottomCover==undefined)">*
+                                                                                BottomCover Required. </span>
+
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type="number" class="form-control"
+                                                                                [(ngModel)]="item.LeftCover"
+                                                                                (keydown.enter)="Update_Beam(item,i)"
+                                                                                style=" height: auto;" />
+                                                                            <span class="text-danger validator-message"
+                                                                                *ngIf="isupdateBeam &&  (item.LeftCover==undefined)">*
+                                                                                LeftCover Required. </span>
+
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type="number" class="form-control"
+                                                                                [(ngModel)]="item.RightCover"
+                                                                                (keydown.enter)="Update_Beam(item,i)"
+                                                                                style=" height: auto;" />
+
+                                                                            <span class="text-danger validator-message"
+                                                                                *ngIf="isupdateBeam &&  (item.RightCover==undefined)">*
+                                                                                RightCover Required. </span>
+
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type="number" class="form-control"
+                                                                                [(ngModel)]="item.Leg"
+                                                                                (keydown.enter)="Update_Beam(item,i)"
+                                                                                style=" height: auto;" />
+                                                                            <span class="text-danger validator-message"
+                                                                                *ngIf="isupdateBeam &&  (item.Leg==undefined)">*
+                                                                                Leg Required. </span>
+
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type="number" class="form-control"
+                                                                                [(ngModel)]="item.Hook"
+                                                                                (keydown.enter)="Update_Beam(item,i)"
+                                                                                style=" height: auto;" />
+
+                                                                            <span class="text-danger validator-message"
+                                                                                *ngIf="isupdateBeam &&  (item.Hook==undefined)">*
+                                                                                Hook Required. </span>
+
+                                                                        </td>
+
+                                                                        <td>
+                                                                            <ng-select [selectOnTab]="true"
+                                                                                [(ngModel)]="item.tntTransportModeId"
+                                                                                class="ng-selectwbs">
+
+
+                                                                                <ng-option
+                                                                                    *ngFor="let sList of TransportModeList"
+                                                                                    [value]="sList.tntTransportModeId">
+                                                                                    {{sList.vchTransportMode}}
+                                                                                </ng-option>
+                                                                            </ng-select>
+
+                                                                        </td>
+                                                                        <td class="text-center" style="width:200px;">
+                                                                            <i class="material-icons"
+                                                                                (click)="Update_Beam(item,i)"
+                                                                                ngbTooltip="Update">save</i>
+                                                                            &nbsp;
+                                                                            <i class="material-icons"
+                                                                                (click)="Editcancel(item,i)"
+                                                                                ngbTooltip="Cancel">cancel</i>
+                                                                        </td>
+
+                                                                    </ng-container>
+                                                                </tr>
+
+                                                            </ng-container>
+
+                                                            <!-- Add blank row when no paramater select -->
+                                                            <ng-container *ngIf="selectparameter==null">
+                                                                <tr>
+                                                                    <td colspan="7">
+                                                                        No Parameter select
+                                                                    </td>
+
+
+                                                                </tr>
+                                                            </ng-container>
+
+
+                                                        </tbody>
+
+
+                                                    </table>
+
+                                                    <!-- <div class="d-flex">
+                                                        <ngb-pagination [collectionSize]="BeamList.length"
+                                                            [(page)]="beam_currentPage" [pageSize]="beam_itemperPage"
+                                                            (pageChange)="onPageChange_Beam(beam_currentPage)"
+                                                            [boundaryLinks]="false">
+                                                            <ng-template ngbPaginationPrevious>Prev</ng-template>
+                                                            <ng-template ngbPaginationNext>Next</ng-template>
+                                                        </ngb-pagination>
+
+                                                        <select class="custom-select mr-2 ml-3" style="width: auto"
+                                                            [(ngModel)]="beam_itemperPage"
+                                                            (ngModelChange)="OnPageSizeChange_Beam(beam_itemperPage);">
+                                                            <option [ngValue]="5">5 </option>
+                                                            <option [ngValue]="10">10 </option>
+                                                            <option [ngValue]="20">20 </option>
+                                                        </select>
+                                                        <span style="margin-top: 5px;">Items per page</span>
+                                                    </div> -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-2 card_pad d-flex align-items-stretch">
+
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class=" col-md-2 custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" [disabled]="is_standarddisable"
+                                    id="status" [checked]="isshowstatus"
+                                    (change)="isshowstatus=!isshowstatus ; ChangeStandard()">
+                                <label class="custom-control-label" for="status">Standard</label>
+
+                            </div>
+                            <div class="col-md-8">
+                                <div class="col card_pad d-flex" style="justify-content:center">
+                                    <div class="card">
+                                        <div class="card-header" style="text-align: center;">
+                                            <b>CAPPING</b>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class=" table-responsive table-wrapper-scroll-y my-custom-scrollbar1"
+                                                style="max-height: 200px;">
+                                                <table class="table m-auto   d-table table-responsive  table-bordered ">
+                                                    <thead>
+                                                        <tr>
+                                                            <th *ngIf="isshowstatus" class="text-center"
+                                                                style="width:170px">Caping Product
+                                                            </th>
+                                                            <th class="text-center" style="width:170px">Beam Diameter
+                                                            </th>
+                                                            <th class="text-center" style="width:120px">Leg</th>
+                                                            <!-- <th class="text-center" style="width:120px">Hook</th> -->
+
+                                                            <th *ngIf="isshowstatus" class="text-center"
+                                                                style="width:170px">CW length</th>
+                                                            <th class="text-center w-25" style="width:170px">Actions
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <ng-container
+                                                            *ngFor="let item of CappingList |slice: capping_pageSize | slice: 0:capping_itemperPage; index as i; ">
+                                                            <tr>
+                                                                <ng-container *ngIf="enableCappingEditIndex != i">
+                                                                    <td *ngIf="isshowstatus">{{item.ProductCode}}</td>
+                                                                    <td>
+                                                                        {{item.Diameter}}
+                                                                    </td>
+                                                                    <td>
+                                                                        {{item.Leg}}
+                                                                    </td>
+                                                                    <!-- <td>
+                                                                        {{item.Hook}}
+                                                                    </td> -->
+
+                                                                    <td *ngIf="isshowstatus">
+                                                                        {{item.CWLength}}
+                                                                    </td>
+                                                                    <td>
+                                                                        <i class="material-icons"
+                                                                            (click)="onEditCapping(item, i)"
+                                                                            ngbTooltip="Edit">mode_edit</i>&nbsp;
+                                                                        <i class="bi bi-trash" style="font-size:15px;"
+                                                                            (click)="DeleteBeamCappinglist(item.TNTPARAMCAGEID)"
+                                                                            ngbTooltip="Delete"></i>
+                                                                    </td>
+                                                                </ng-container>
+                                                                <ng-container *ngIf="enableCappingEditIndex == i">
+                                                                    <td *ngIf="isshowstatus">
+                                                                        <ng-select [selectOnTab]="true"
+                                                                            class="ng-selectcustomer" appendTo="body"
+                                                                            [(ngModel)]="item.ProductCodeId"
+                                                                            (keyup)="LoadddlCappingProductList($event.target)"
+                                                                            (change)="changeCapingProductddlTable(item.ProductCode,i)"
+                                                                            style="width:120px;">
+
+                                                                            <ng-option
+                                                                                *ngFor="let sList of CappingProductList"
+                                                                                [value]="sList.INTPRODUCTCODEID">
+                                                                                {{sList.VCHPRODUCTCODE}}
+                                                                            </ng-option>
+                                                                        </ng-select>
+
+                                                                        <span class="text-danger validator-message"
+                                                                            *ngIf="isupdateBeam &&  (item.ProductCodeId==undefined)">*
+                                                                            Capping Product Required. </span>
+
+                                                                    </td>
+
+                                                                    <td>
+                                                                        <input type="number" class="form-control"
+                                                                            [(ngModel)]="item.Diameter"
+                                                                            (keydown.enter)="Update_Capping(item,i)"
+                                                                            style=" height: auto;" />
+                                                                        <span class="text-danger validator-message"
+                                                                            *ngIf="isupdateBeam &&  (item.Diameter==undefined)">*
+                                                                            Diameter Required. </span>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="number" class="form-control"
+                                                                            [(ngModel)]="item.Leg"
+                                                                            (keydown.enter)="Update_Capping(item,i)"
+                                                                            style=" height: auto;" />
+                                                                        <span class="text-danger validator-message"
+                                                                            *ngIf="isupdateBeam &&  (item.Leg==undefined)">*
+                                                                            Leg Required. </span>
+                                                                    </td>
+                                                                    <!-- <td>
+                                                                        <input type="number" class="form-control"
+                                                                            [(ngModel)]="item.Hook"
+                                                                            (keydown.enter)="Update_Capping(item,i)"
+                                                                            style=" height: auto;" />
+                                                                        <span class="text-danger validator-message"
+                                                                            *ngIf="isupdateBeam &&  (item.Hook==undefined)">*
+                                                                            Hook Required. </span>
+                                                                    </td> -->
+                                                                    <td *ngIf="isshowstatus">
+                                                                        <input type="number" class="form-control"
+                                                                            [(ngModel)]="item.CWLength"
+                                                                            (keydown.enter)="Update_Capping(item,i)"
+                                                                            style=" height: auto;"
+                                                                            [disabled]="isshowstatus" />
+                                                                        <span class="text-danger validator-message"
+                                                                            *ngIf="isupdateBeam &&  (item.CWLength==undefined)">*
+                                                                            CWLength Required. </span>
+                                                                    </td>
+                                                                    <td class="text-center" style="width:200px;">
+                                                                        <i class="material-icons"
+                                                                            (click)="Update_Capping(item,i)"
+                                                                            ngbTooltip="Update">save</i>
+                                                                        &nbsp;
+                                                                        <i class="material-icons"
+                                                                            (click)="Editcancel(item,i)"
+                                                                            ngbTooltip="Cancel">cancel</i>
+                                                                    </td>
+                                                                </ng-container>
+                                                            </tr>
+                                                        </ng-container>
+
+
+                                                    </tbody>
+
+                                                    <tfoot>
+
+                                                        <tr *ngFor="let table of newcapping">
+                                                            <td *ngIf="isshowstatus">
+                                                                <ng-select [selectOnTab]="true"
+                                                                    class="ng-selectcustomer" appendTo="body"
+                                                                    [(ngModel)]="table.Caping_Product"
+                                                                    (keyup)="LoadddlCappingProductList($event.target)"
+                                                                    (change)="changeCapingProduct(table.Caping_Product)"
+                                                                    style="width:150px;">
+
+                                                                    <ng-option *ngFor="let sList of CappingProductList"
+                                                                        [value]="sList.INTPRODUCTCODEID">
+                                                                        {{sList.VCHPRODUCTCODE}}
+                                                                    </ng-option>
+                                                                </ng-select>
+                                                                <span class="text-danger validator-message"
+                                                                    *ngIf="isaddnewBeam &&  (table.Caping_Product==undefined)">*
+                                                                    Caping Product Required. </span>
+                                                            </td>
+                                                            <td>
+                                                                <input class="form-control" maxlength="10" type="number"
+                                                                    [(ngModel)]="table.beamdiameter"
+                                                                    (keydown.enter)="AddCappingNew()"
+                                                                    style="max-width: 170px" />
+                                                                <span class="text-danger validator-message"
+                                                                    *ngIf="isaddnewBeam &&  (table.beamdiameter==undefined)">*
+                                                                    beamdiameter Required. </span>
+                                                            </td>
+                                                            <td><input class="form-control" maxlength="10" type="number"
+                                                                    (keydown.enter)="AddCappingNew()"
+                                                                    [(ngModel)]="table.leg" style="max-width: 170px" />
+                                                                <span class="text-danger validator-message"
+                                                                    *ngIf="isaddnewBeam &&  (table.leg==undefined)">*
+                                                                    leg Required. </span>
+                                                            </td>
+                                                            <!-- <td>
+                                                                <input class="form-control" maxlength="10" type="number"
+                                                                    (keydown.enter)="AddCappingNew()"
+                                                                    [(ngModel)]="table.hook" style="max-width: 170px" />
+                                                                <span class="text-danger validator-message"
+                                                                    *ngIf="isaddnewBeam &&  (table.hook==undefined)">*
+                                                                    hook Required. </span>
+                                                            </td> -->
+
+                                                            <td *ngIf="isshowstatus">
+                                                                <input class="form-control" maxlength="10" type="text"
+                                                                    [(ngModel)]="table.CW_Length" style="width:120px"
+                                                                    (keydown.enter)="AddCappingNew()"
+                                                                    [disabled]="isshowstatus" />
+                                                                <span class="text-danger validator-message"
+                                                                    *ngIf="isaddnewBeam &&  (table.CW_Length==undefined)">*
+                                                                    CW_Length Required. </span>
+                                                            </td>
+
+                                                            <td class="text-center" style="width: 120px;">
+                                                                <i class="material-icons" (click)="AddCappingNew()"
+                                                                    ngbTooltip="Save">save</i>
+                                                                &nbsp;
+                                                                <i class="fa fa-refresh text-center" ngbTooltip="Reset"
+                                                                    style=" color:red;font-size:20px;"
+                                                                    (click)="resetCappingValue()"></i>
+                                                            </td>
+
+                                                        </tr>
+
+
+                                                    </tfoot>
+                                                </table>
+
+                                            </div>
+
+                                        </div>
+                                        <div class="card-footer">
+                                            <div class="d-flex">
+                                                <ngb-pagination [collectionSize]="CappingList.length"
+                                                    [(page)]="capping_currentPage" [pageSize]="capping_itemperPage"
+                                                    (pageChange)="onPageChange_Capping(capping_currentPage)"
+                                                    [boundaryLinks]="false">
+                                                    <ng-template ngbPaginationPrevious>Prev</ng-template>
+                                                    <ng-template ngbPaginationNext>Next</ng-template>
+                                                </ngb-pagination>
+
+                                                <select class="custom-select mr-2 ml-3" style="width: auto"
+                                                    [(ngModel)]="capping_itemperPage"
+                                                    (ngModelChange)="OnPageSizeChange_Capping(capping_itemperPage);">
+                                                    <option [ngValue]="5">5 </option>
+                                                    <option [ngValue]="10">10 </option>
+                                                    <option [ngValue]="20">20 </option>
+                                                </select>
+                                                <span style="margin-top: 5px;">Items per page</span>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+
+                            </div>
+                        </div>
+                    </tab>
+                    <tab heading="Wall" style="background:#fff;" (selectTab)="onTabSelect('Wall')">
+                        <div class="row">
+                            <!---------------MAIN WIRE/CROSS WIRE---------------->
+                            <div class="col card_pad d-flex" style="justify-content:center">
+                                <div class="card" style="max-height: 10;">
+                                    <div class="card-header" style="text-align: center;">
+                                        <b>MAIN WIRE/CROSS WIRE</b>
+                                    </div>
+                                    <div class="card-body">
+
+                                        <div class=" table-responsive table-wrapper-scroll-y my-custom-scrollbar1"
+                                            style="max-height:300px">
+                                            <table class="table m-auto  d-table table-responsive  table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-center">Product Code</th>
+                                                        <th class="text-center">MW Lap</th>
+                                                        <th class="text-center">CW Lap</th>
+                                                        <th class="text-center w-25">Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <ng-container
+                                                        *ngFor="let item of WallList |slice: wall_pageSize | slice: 0:wall_itemperPage; index as i; ">
+                                                        <tr [class.activerowcolor]="editMesh == false">
+                                                            <ng-container *ngIf="enableMeshEditIndex != i">
+                                                                <td>{{item.ProductCode}}</td>
+                                                                <td>{{item.MwLap}}</td>
+                                                                <td>{{item.CwLap}}</td>
+                                                                <td class="text-center">
+                                                                    <i class="material-icons"
+                                                                        (click)="onEditMesh(item, i)"
+                                                                        ngbTooltip="Edit">mode_edit</i>&nbsp;
+                                                                    <i class="bi bi-trash" style="font-size:15px;"
+                                                                        (click)="DeleteWallList(item.MeshLapId)"
+                                                                        ngbTooltip="Delete"></i>
+                                                                </td>
+                                                            </ng-container>
+                                                            <ng-container *ngIf="enableMeshEditIndex == i">
+                                                                <td>
+                                                                    <ng-select [selectOnTab]="true"
+                                                                        [(ngModel)]="item.ProductCodeId" appendTo="body"
+                                                                        class="ng-selectwbs custom-dropdown">
+                                                                        <ng-option *ngFor="let sList of ProductCodeList"
+                                                                            [value]="sList.INTPRODUCTCODEID">
+                                                                            {{sList.VCHPRODUCTCODE}}
+                                                                        </ng-option>
+                                                                    </ng-select>
+                                                                    <span class="text-danger validator-message"
+                                                                        *ngIf="isupdateMesh &&  (item.ProductCodeId==undefined)">*
+                                                                        Product Code Required. </span>
+                                                                </td>
+                                                                <td>
+                                                                    <input type="number" class="form-control"
+                                                                        [(ngModel)]="item.MwLap"
+                                                                        (keydown.enter)="Update_Wall(item,i)"
+                                                                        style=" height: auto;" />
+                                                                    <span class="text-danger validator-message"
+                                                                        *ngIf="isupdateMesh &&  (item.MwLap==undefined)">*
+                                                                        MWlap Required. </span>
+
+                                                                </td>
+                                                                <td>
+                                                                    <input type="number" class="form-control"
+                                                                        [(ngModel)]="item.CwLap"
+                                                                        (keydown.enter)="Update_Wall(item,i)"
+                                                                        style=" height: auto;" />
+                                                                    <span class="text-danger validator-message"
+                                                                        *ngIf="isupdateMesh &&  (item.CwLap==undefined)">*
+                                                                        CWlap Required. </span>
+                                                                </td>
+                                                                <td class="text-center" style="width:200px;">
+                                                                    <i class="material-icons"
+                                                                        (click)="Update_Wall(item,i)"
+                                                                        ngbTooltip="Update">save</i>
+                                                                    &nbsp;
+                                                                    <i class="material-icons"
+                                                                        (click)="Editcancel(item,i)"
+                                                                        ngbTooltip="Cancel">cancel</i>
+                                                                </td>
+                                                            </ng-container>
+                                                        </tr>
+                                                    </ng-container>
+                                                </tbody>
+                                                <tfoot>
+                                                    <tr *ngFor="let table of newmwcw">
+                                                        <td>
+                                                            <ng-select [selectOnTab]="true"
+                                                                [(ngModel)]="table.productcode" appendTo="body"
+                                                                class="ng-selectwbs custom-dropdown">
+                                                                <!-- <ng-option *ngIf="ProductCodeList.length == 0">SELECT A PROJECT</ng-option> -->
+                                                                <ng-option *ngFor="let sList of ProductCodeList"
+                                                                    [value]="sList.INTPRODUCTCODEID">
+                                                                    {{sList.VCHPRODUCTCODE}}
+                                                                </ng-option>
+                                                            </ng-select>
+                                                            <span class="text-danger validator-message"
+                                                                *ngIf="isaddnewMesh &&  (table.productcode==undefined)">*
+                                                                Product Code Required. </span>
+                                                        </td>
+                                                        <td><input class="form-control" maxlength="10" type="number"
+                                                                [(ngModel)]="table.mwlap"
+                                                                (keydown.enter)="AddWallMwCw()" />
+                                                            <span class="text-danger validator-message"
+                                                                *ngIf="isaddnewMesh &&  (table.mwlap==undefined)">*
+                                                                MWlap Required. </span>
+                                                        </td>
+                                                        <td>
+                                                            <input class="form-control" maxlength="10" type="number"
+                                                                [(ngModel)]="table.cwlap"
+                                                                (keydown.enter)="AddWallMwCw()" />
+                                                            <span class="text-danger validator-message"
+                                                                *ngIf="isaddnewMesh &&  (table.cwlap==undefined)">*
+                                                                CWlap Required. </span>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <i class="material-icons" (click)="AddWallMwCw()"
+                                                                ngbTooltip="Save">save</i>
+                                                            &nbsp;
+                                                            <i class="fa fa-refresh text-center" ngbTooltip="Reset"
+                                                                style=" color:red;font-size:20px;"
+                                                                (click)="resetWallValue()"></i>
+                                                        </td>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <div class="d-flex ">
+                                            <!-- <ngb-pagination [collectionSize]="WallList.length" [pageSize]="itemsPerPage"
+                                                [(page)]="currentPage" (pageChange)="onPageChange(currentPage)"
+                                                [boundaryLinks]="true" [maxSize]="maxSize">
+                                                <ng-template ngbPaginationPrevious>Prev</ng-template>
+                                                <ng-template ngbPaginationNext>Next</ng-template>
+                                            </ngb-pagination>
+
+                                            <select class="custom-select mr-2 ml-3" style="width: auto"
+                                                [(ngModel)]="itemsPerPage"
+                                                (ngModelChange)="OnPageSizeChange(itemsPerPage);">
+                                                <option [ngValue]="1">1 </option>
+                                                <option [ngValue]="5">5 </option>
+                                                <option [ngValue]="10">10 </option>
+                                                <option [ngValue]="20">20 </option>
+                                            </select> -->
+
+                                            <ngb-pagination [collectionSize]="WallList.length"
+                                                    [(page)]="wall_currentPage" [pageSize]="wall_itemperPage"
+                                                    (pageChange)="onPageChange_wall(wall_currentPage)"
+                                                    [boundaryLinks]="false">
+                                                    <ng-template ngbPaginationPrevious>Prev</ng-template>
+                                                    <ng-template ngbPaginationNext>Next</ng-template>
+                                            </ngb-pagination>
+
+                                            <select class="custom-select mr-2 ml-3" style="width: auto"
+                                                [(ngModel)]="wall_itemperPage"
+                                                (ngModelChange)="OnPageSizeChange_wall(wall_itemperPage);">
+                                                <option [ngValue]="1">1 </option>
+                                                <option [ngValue]="5">5 </option>
+                                                <option [ngValue]="10">10 </option>
+                                                <option [ngValue]="20">20 </option>
+                                            </select>
+                                            <span style="margin-top: 5px;">Items per page</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </tab>
+                </tabset>
+            </div>
+        </div>
+    </div>
+</div>

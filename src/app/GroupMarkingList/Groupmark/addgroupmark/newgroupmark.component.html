@@ -1,0 +1,56 @@
+<div class="modal-header">
+  <h4 class="modal-title" >Add New</h4>
+ 
+  <i class="fa-solid fa-xmark"></i>
+  <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+
+</div>
+<div class="modal-body ">
+
+  <div class="row">
+    <form [formGroup]="groupmarkForm">
+      <div class="container">
+        <div class="row d-flex ">
+          <div class="col">
+            <label class="form-label">Group Marking</label> <br>
+            <div class="d-flex ">
+            <input type="text" formControlName="groupmark"  placeholder="Group Marking"
+              class="form-control ng-selectcustomer" />
+           </div>            
+          </div>
+          <div class="col">
+          <label class="form-label">Parameter Set </label> <br>
+          <ng-select formControlName="paramterset" >
+              <ng-option *ngFor="let sList of parameterList"
+                  [value]="sList.value">
+                  {{sList.text}}
+              </ng-option>
+          </ng-select>
+          </div>
+        
+          <div class="col">
+            <label class="form-label">Version</label> <br>
+            <input type="text" formControlName="Version" placeholder="Version"  value="0" class="form-control" />
+          </div>
+        
+
+          <div class="col">
+            <label class="form-label">Remark</label> <br>
+            <input type="text" placeholder="Remark" formControlName="remark" class="form-control" /> &nbsp;
+          </div>       
+
+        </div>
+      </div>
+
+
+    </form>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" (click)="cancel()" class="btn btn-transparent">
+    Cancel
+  </button>
+  <button type="button" (click)="submitReview()" class="btn btn-primary me-2" [disabled]="disableSubmit">
+    Submit
+  </button>
+</div>

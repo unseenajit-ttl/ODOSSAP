@@ -1,0 +1,184 @@
+<div cdkDrag cdkDragRootElement=".your-custom-dialog-class">
+    <div class="movable-container">
+        <div class="container-fluid">
+            <div class="card m-1">
+
+                <div class="mainHeading" cdkDragHandle>
+                    <span>Documents Attached(文档附件)</span>
+                </div>
+                <div *ngIf="DocumentLoading" style="z-index: 500">
+                    <div id="pause" class="d-flex align-items-center justify-content-center">
+                        <div id="spinner" class="loader"></div>
+                    </div>
+                </div>
+                <div class="modal-header">
+                    <h4>Existing Documents(已上传的文档)</h4>
+                    <i class="fa-solid fa-xmark"></i>
+                </div>
+
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th style="text-align: left;"> Select<br>(选项) </th>
+                                <th style="text-align: left;"> S/No.<br />(序号) </th>
+                                <th style="text-align: left;"> Document No<br />(文档编号)</th>
+                                <th style="text-align: left;"> Revision<br />(版本号)</th>
+                                <th style="text-align: left;"> Remarks<br />(备注)</th>
+                                <th style="text-align: left;"> File Name<br />(文件名)</th>
+                                <th style="text-align: left;"> Uploaded Date<br />(上传日期)</th>
+                                <th style="text-align: left;"> Updated By<br />(上传者)</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of ListofDocuments; index as i">
+                                <td> <input type="checkbox" [(ngModel)]="item.isSelected"
+                                        (ngModelChange)="SelectDocument(item)" [checked]="item.isSelected"></td>
+                                <td>{{item.DrawingID}}</td>
+                                <td>{{item.DrawingNo}}</td>
+                                <td>{{item.Revision}}</td>
+                                <td>{{item.Remarks}}</td>
+                                <td>{{item.FileName}}</td>
+                                <td>{{UpdateDateFormat(item.UpdatedDate)}}</td>
+                                <td>{{item.UpdatedBy}}</td>
+
+                            </tr>
+                        </tbody>
+                        <!-- <thead *ngIf="toggleFilters">
+                            <tr>
+                                <th></th>
+                                <th><input class="form-control" type="text" id="searchBlock" [(ngModel)]="Sno"
+                                         placeholder="Search here" /></th>
+                                <th><input class="form-control" type="text" id="searchFrom"
+                                        placeholder="Search here" [(ngModel)]="WBS1"
+                                         />
+                                </th>
+                                <th><input class="form-control" type="text" id="searchTo" placeholder="Search here"
+                                        [(ngModel)]="WBS2"  />
+                                </th>
+                                <th><input class="form-control" type="text" id="searchPart"
+                                        placeholder="Search here" [(ngModel)]="WBS3"
+                                         />
+                                </th>
+                                <th><input class="form-control" type="text" id="searchStructure"
+                                        placeholder="Search here" [(ngModel)]="StructureEle"
+                                         /></th>
+                                <th><input class="form-control" type="text" id="searchBlock"
+                                        placeholder="Search here" [(ngModel)]="ProductType"
+                                         /></th>
+                                <th><input class="form-control" type="text" id="searchFrom"
+                                        placeholder="Search here" [(ngModel)]="PONo"
+                                         />
+                                </th>
+                              
+                
+                                <th style="max-width:160px;">
+                                    <mat-form-field appearance="outline"
+                                        style="background-color:white;height: 32px;width: 100% !important;border-radius: 5px;">
+                                        <mat-date-range-input [rangePicker]="picker" placeholder="Search here"
+                                            [formGroup]="UpdatedateRange" (change)="dateChange($event.target)">
+                                            <input matStartDate matInput placeholder="Start date" #dateRangeStart
+                                                [(ngModel)]="start"
+                                                (dateChange)="updatedateRangeChange(dateRangeStart, dateRangeEnd);">
+                                            <input matEndDate matInput placeholder="End date" #dateRangeEnd
+                                                [(ngModel)]="end"
+                                                (dateChange)="updatedateRangeChange(dateRangeStart, dateRangeEnd);">
+                                        </mat-date-range-input>
+                                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                        <mat-date-range-picker #picker></mat-date-range-picker>
+                                    </mat-form-field>
+                
+                                </th>
+                                <th style="max-width:160px;">
+                                    <mat-form-field appearance="outline"
+                                        style="background-color:white;height: 32px;width: 100% !important;border-radius: 5px;">
+                                        <mat-date-range-input [rangePicker]="picker1" placeholder="Search here" [formGroup]="ReqdateRange"
+                                            (change)="dateChange($event.target)">
+                                            <input matStartDate matInput placeholder="Start date" #dateRangeStart [(ngModel)]="start1"
+                                                (dateChange)="reqdateRangeChange(dateRangeStart, dateRangeEnd);">
+                                            <input matEndDate matInput placeholder="End date" #dateRangeEnd [(ngModel)]="end1"
+                                                (dateChange)="reqdateRangeChange(dateRangeStart, dateRangeEnd);">
+                                        </mat-date-range-input>
+                                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                        <mat-date-range-picker #picker1 ></mat-date-range-picker>
+                                    </mat-form-field>
+                
+                                </th>
+                                <th><input class="form-control" type="text" id="searchBlock"
+                                        placeholder="Search here" [(ngModel)]="Tonnage"
+                                         /></th>
+                                <th>
+                
+                                </th>
+                                <th><span style="margin:auto; padding:2px">
+                                        <i class="fa fa-refresh" ngbTooltip="Reset"
+                                            style=" color:red;font-size:20px;" (click)="Reset_Filter()"></i>
+                
+                
+                                    </span></th>
+                
+                
+                            </tr>
+                        </thead> -->
+
+
+                    </table>
+
+                <h4>Upload New or Modified Document (上传新或修改的文档)</h4>
+                <i class="fa-solid fa-xmark"></i>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <label class="form-label">Document File (文件)</label> <br>
+                        <input type="file" multiple="multiple" name="pdfData" id="pdfData"
+                            style="width:100%;max-width:100%" />
+
+                    </div>
+                    <br>
+                    <div class="col-md-6">
+                        <label class="form-label">Document No(文档编号)</label> <br>
+                        <input type="text" id="Doc" [(ngModel)]="DocumentNo" placeholder="Document No"
+                            (click)="DocInput()" class="form-control" />
+
+                    </div>
+                    <br>
+                    <div class="col-md-12">
+                        <label class="form-label">Remarks(备注)</label> <br>
+                        <textarea type="text" id="Remark" [(ngModel)]="Remarks" placeholder="Remarks"
+                            (click)="RemarkInput()" class="form-control">
+                        </textarea>
+                    </div>
+
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary me-2" style="height: 40px;" (click)="Upload()"
+                        [disabled]="disableUpload()">
+                        Upload (上传文档)
+                    </button>
+                    <button type="button" class="btn btn-primary me-2" style="height: 40px;" (click)="View()"
+                        [disabled]="disabledownload()">
+                        View (浏览文档)
+                        <!-- <a style="color: aliceblue;" [href]="getDownloadView()" target="_blank">View (浏览文档)</a> -->
+                    </button>
+                    <button type="button" class="btn btn-primary me-2" style="height: 40px;"
+                        (click)="Download_Selected()" [disabled]="disabledownload()">
+                        Download (下载文档)
+                    </button>
+                    <button type="button" class="btn btn-primary me-2" style="height: 40px;" (click)="Modify_button()"
+                        [disabled]="disableSubmit()">
+                        Modify (修改文档)
+                    </button>
+                    <button type="button" class="btn btn-primary me-2" style="height: 40px;" (click)="Remove_button()"
+                        [disabled]="disableSubmit()">
+                        Remove (删除文档)
+                    </button>
+                    <button type="button" class="btn btn-primary me-2" style="height: 40px;" (click)="Close()">
+                        Close (关闭)
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

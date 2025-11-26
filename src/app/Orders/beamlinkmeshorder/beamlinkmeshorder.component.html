@@ -1,0 +1,287 @@
+<!-- <div class="Row" style="margin-left: 20px; margin-top: 10px; font-size: medium;">
+   <h4>Beam Stirrup Link Mesh (梁箍铁网)</h4>
+</div> -->
+<div class="Row" style="margin-left: 20px; margin-top: 10px; font-size: medium">
+    <a  href="javaScript:; " (click)="goBack()" >
+      <i class="fa fa-arrow-left arrow-left" aria-hidden="true"></i>
+      Back to order summary
+    </a>
+  </div>
+<div class="container-fluid" style="min-height: 445px!important">
+    <div class="card m-1">
+        <div class="d-flex">
+            <div class=" table-responsive table-wrapper-scroll-y my-custom-scrollbar">
+
+                <table class="table  table-bordered">
+                    <thead>
+                        <tr>
+                            <th>ID <br>序号</th>
+                            <th>Mark <br> 编码</th>
+                            <th>Product <br> 产品型号</th>
+                            <th>Width <br> 铁笼宽(mm)</th>
+                            <th>Depth <br> </th>
+                            <th>Cage Slope (铁笼斜坡)</th>
+                            <th>Total Links<br>链节数量</th>
+                            <th>Span (铁笼长)</th>
+                            <th>MESH Qty<br>>件数</th>
+                            <th>Capping<br>铁笼盖</th>
+                            <th>Capping Product<br>盖型号"</th>
+                            <th>Shape<br>图形码</th>
+                            <th >A</th>
+                            <th >B</th>
+                            <th >C</th>
+                            <th >D</th>
+                            <th >E</th>
+                            <th >P</th>
+                            <th >Q</th>
+                            <th>Hook<br>勾宽(mm)</th>
+                            <th>Leg<br>脚长(mm)</th>
+                            <th>Weight<br>重量(kg)</th>
+                            <th>Main Wire Length<br>主筋长(mm)</th>
+                            <th>Main Wire BOM<br>主筋子件</th>
+                            <th>Cross Wire BOM<br>副筋子件</th>
+                            <th>Remarks<br>备注</th>
+                            <!-- <th style="min-width: 80px;">Action</th>  26--> 
+                        </tr>
+                    </thead>
+                    <tbody id="body">
+                        <ng-container *ngFor="let item of bbsOrderTable; index as i">
+                            <tr *ngIf="editIndex!=i" (click)="getRowData(item, i)">
+                                <td [style.background-color]="i === selectedRowIndex ? selectedBackgroundColor : ''" style="white-space: nowrap;">{{ i + 1 }}</td>
+                                <td [style.background-color]="i === selectedRowIndex ? selectedBackgroundColor : ''" style="white-space: nowrap;">{{item.MeshMark}}</td>
+                                <td [style.background-color]="i === selectedRowIndex ? selectedBackgroundColor : ''" style="white-space: nowrap;">{{item.MeshProduct}}</td>
+                                <td [style.background-color]="i === selectedRowIndex ? selectedBackgroundColor : ''" style="white-space: nowrap;">{{item.MeshWidth}}</td>
+                                <td [style.background-color]="i === selectedRowIndex ? selectedBackgroundColor : ''" style="white-space: nowrap;">{{item.MeshDepth}}</td>
+                                <td [style.background-color]="i === selectedRowIndex ? selectedBackgroundColor : ''" style="white-space: nowrap;">{{item.MeshSlope}}</td>
+                                <td [style.background-color]="i === selectedRowIndex ? selectedBackgroundColor : ''" style="white-space: nowrap;">{{item.MeshTotalLinks}}</td>
+                                <td [style.background-color]="i === selectedRowIndex ? selectedBackgroundColor : ''" style="white-space: nowrap;">{{item.MeshSpan}}</td>
+                                <td [style.background-color]="i === selectedRowIndex ? selectedBackgroundColor : ''" style="white-space: nowrap;">{{item.MeshMemberQty}}</td>
+                                <td [style.background-color]="i === selectedRowIndex ? selectedBackgroundColor : ''" style="white-space: nowrap;" *ngIf="item.MeshCapping">✔</td>
+                                <td [style.background-color]="i === selectedRowIndex ? selectedBackgroundColor : ''" style="white-space: nowrap;" *ngIf="!item.MeshCapping"></td>
+                                <td [style.background-color]="i === selectedRowIndex ? selectedBackgroundColor : ''" style="white-space: nowrap;">{{item.MeshCPProduct}}</td>
+                                <td [style.background-color]="i === selectedRowIndex ? selectedBackgroundColor : ''" style="white-space: nowrap;">{{item.MeshShapeCode}}</td>
+                                <td [style.background-color]="i === selectedRowIndex ? selectedBackgroundColor : ''" style="white-space: nowrap;">{{item.A}}</td>
+                                <td [style.background-color]="i === selectedRowIndex ? selectedBackgroundColor : ''" style="white-space: nowrap;">{{item.B}}</td>
+                                <td [style.background-color]="i === selectedRowIndex ? selectedBackgroundColor : ''" style="white-space: nowrap;">{{item.C}}</td>
+                                <td [style.background-color]="i === selectedRowIndex ? selectedBackgroundColor : ''" style="white-space: nowrap;">{{item.D}}</td>
+                                <td [style.background-color]="i === selectedRowIndex ? selectedBackgroundColor : ''" style="white-space: nowrap;">{{item.E}}</td>
+                                <td [style.background-color]="i === selectedRowIndex ? selectedBackgroundColor : ''" style="white-space: nowrap;">{{item.P}}</td>
+                                <td [style.background-color]="i === selectedRowIndex ? selectedBackgroundColor : ''" style="white-space: nowrap;">{{item.Q}}</td>
+                                <td [style.background-color]="i === selectedRowIndex ? selectedBackgroundColor : ''" style="white-space: nowrap;">{{item.HOOK}}</td>
+                                <td [style.background-color]="i === selectedRowIndex ? selectedBackgroundColor : ''" style="white-space: nowrap;">{{item.LEG}}</td>
+                                <td [style.background-color]="i === selectedRowIndex ? selectedBackgroundColor : ''" style="white-space: nowrap;">{{item.MeshTotalWT}}</td>
+                                <td [style.background-color]="i === selectedRowIndex ? selectedBackgroundColor : ''" style="white-space: nowrap;">{{item.MWLength}}</td>
+                                <td [style.background-color]="i === selectedRowIndex ? selectedBackgroundColor : ''" style="white-space: nowrap;">{{item.MWBOM}}</td>
+                                <td [style.background-color]="i === selectedRowIndex ? selectedBackgroundColor : ''" style="white-space: nowrap;">{{item.CWBOM}}</td>
+                                <td [style.background-color]="i === selectedRowIndex ? selectedBackgroundColor : ''" style="white-space: nowrap;">
+                                    {{item.Remarks}} 
+                                </td>
+                                <!-- <td style="text-align: center;"><i (click)="editIndex=i" class="bi bi-pencil-square"></i></td> -->
+                            </tr>
+
+                            <!-- <tr *ngIf="editIndex==i">
+                                
+                                <td></td>
+                                <td><input type="checkbox"></td>
+                                <td><input class="form-control w-auto" type="text" [(ngModel)]="item.ElementMark"
+                                        style="max-width:85px"></td>
+                                <td><input class="form-control w-auto" type="text" [(ngModel)]="item.Mark"></td>
+                                <td><input class="form-control" type="text" [(ngModel)]="item.Type"></td>
+                                <td>
+                                    <ng-select class="w-auto" appendTo="body" [(ngModel)]="item.Size">
+                                        <ng-option> 1</ng-option>
+                                        <ng-option> 3</ng-option>
+                                        <ng-option> 2</ng-option>
+                                    </ng-select>
+                                </td>
+                                <td><input type="checkbox" (ngModelChange)="onQtyChange()"></td>
+                                <td><input class="form-control" type="text" [(ngModel)]="item.Memberqty"
+                                        (ngModelChange)="onQtyChange()"></td>
+                                <td><input class="form-control" type="text" [(ngModel)]="item.Eachqty"
+                                        (ngModelChange)="onQtyChange()"></td>
+                                <td><input class="form-control" type="text" [(ngModel)]="item.Totalqty" readonly>
+                                </td>
+                                <td>
+                                    <ng-select class="w-auto" appendTo="body" [(ngModel)]="item.Shapecode">
+                                        <ng-option> 1</ng-option>
+                                        <ng-option> 3</ng-option>
+                                        <ng-option> 2</ng-option>
+                                    </ng-select>
+                                </td>
+                                <td><input class="form-control" type="text" [(ngModel)]="item.A"
+                                        (ngModelChange)="onLengthChange()"></td>
+                                <td><input class="form-control" type="text" [(ngModel)]="item.B"
+                                        (ngModelChange)="onLengthChange()"></td>
+                                <td><input class="form-control" type="text" [(ngModel)]="item.C"
+                                        (ngModelChange)="onLengthChange()"></td>
+                                <td><input class="form-control" type="text" [(ngModel)]="item.D"
+                                        (ngModelChange)="onLengthChange()"></td>
+                                <td><input class="form-control" type="text" [(ngModel)]="item.E"></td>
+                                <td><input class="form-control" type="text" [(ngModel)]="item.F"></td>
+                                <td><input class="form-control" type="text" [(ngModel)]="item.G"></td>
+                                <td><input class="form-control" type="text" [(ngModel)]="item.PinSize" readonly>
+                                </td>
+                                <td><input class="form-control" type="text" [(ngModel)]="item.Length" readonly>
+                                </td>
+                                <td><input class="form-control" type="text" [(ngModel)]="item.Weight"></td>
+                                <td><input class="form-control" type="text" [(ngModel)]="item.Remarks"
+                                        style="min-width: 120px;"></td>
+                                <td><i (click)="updateData()">A</i></td>
+                            </tr> -->
+                        </ng-container>
+                    </tbody>
+                    
+                </table>
+
+                <!-- <div>
+                    <label style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Colour Legend: </label>
+                    <label [class.item-split]="true" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-right: 10px;">Mesh will be splitted</label>
+                    <label [class.item-combine]="true" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Mesh will be combined</label>
+                  </div> -->
+                  
+                  
+                <!-- <span><i class="bi bi-plus-circle" ngbTooltip="Add Row"></i></span> -->
+            </div>
+            <button id="slideshowButton" (click)="showSideTable = !showSideTable">
+                <span *ngIf="showSideTable"><i class="bi bi-caret-right-fill"></i></span>
+                <span *ngIf="!showSideTable"><i class="bi bi-caret-left-fill"></i></span>
+
+            </button>
+
+            <div *ngIf="showSideTable" style="background-color: #e9ecef;font-size: smaller;min-width: 275px;">
+                <fieldset #firstBox>
+                    <div class="container2" [hidden]="showshapecode">
+                        <img class="img-responsive" [src]="'../../../assets/images/Shapes/'+ Imagename +''" alt="image"  style="position: relative ; left: 0px;">
+                     </div>
+                     <div class="container2">
+                        <img class="img-responsive" [src]="'../../../assets/images/'+ StaticImagename +''" alt="image" style="position: relative ; left: 0px;">
+                     </div>
+                </fieldset>
+                <fieldset #firstBox>
+                    <div>
+                        <div class="d-flex"
+                            style="align-items: center;max-height: 25px;padding: 5px;justify-content: space-between;">
+                            <label class="form-label">Diameter (直径):</label>&nbsp;
+                            <label class="form-label">{{Diameter}}</label>
+                        </div>
+                        <div class="d-flex"
+                            style="align-items: center;max-height: 25px;padding: 5px;justify-content: space-between;">
+                            <label class="form-label">Spacing (间距):</label>&nbsp;
+                            <label class="form-label">{{Spacing}}</label>
+                        </div>
+                        <div class="d-flex"
+                            style="align-items: center;max-height: 25px;padding: 5px;justify-content: space-between;">
+                            <label class="form-label">Carrier Wire Dia (链接筋直径):</label>&nbsp;
+                            <label class="form-label">{{CarrierWireDia}}</label>
+                        </div>
+                        <div class="d-flex"
+                            style="align-items: center;max-height: 25px;padding: 5px;justify-content: space-between;">
+                            <label class="form-label">Mass(kg/m<sup>2</sup>) (密度):</label>&nbsp;
+                            <label class="form-label">{{Mass}}</label>
+                        </div>
+                        <div class="d-flex"
+                            style="align-items: center;max-height: 25px;padding: 5px;justify-content: space-between;">
+                            <label class="form-label">Total Weight (总重量):</label>&nbsp;
+                            <label class="form-label">{{TotalWeight.toFixed(3)}}</label>
+                        </div>
+                        
+                        <!-- <div class="d-flex"
+                            style="align-items: center;max-height: 25px;padding: 5px;justify-content: space-between;">
+                            <label class="form-label">Total Bar Qty:</label>&nbsp;
+                            <label class="form-label">0</label>
+                        </div> -->
+                    </div>
+                </fieldset>
+                <fieldset id="secondBox">
+                    <!-- <legend style="font-size:medium">Shape Finder</legend> -->
+                    <div style="margin-top: 5px;"> 
+                        <!-- <div class="d-flex" style="align-items: center;padding: 2px;justify-content: space-between;">
+                            <label class="form-label">Category: </label>&nbsp;
+                            <ng-select class="w-auto" style="min-width: 160px;">
+                                <ng-option *ngFor="let sList of shapeCodeList" [value]="sList.shapeCategory">
+                                    {{sList.shapeCategory}}</ng-option>
+                            </ng-select>
+                        </div> -->
+                        <div class="d-flex" style="align-items: center;padding: 2px; justify-content: center;">
+                            <!-- <label class="form-label">Shape List:</label>&nbsp; -->
+                            <button class="btn btn-primary btn-sm" type="button" (click)="ShowShapeList()">Show Shape List</button>
+                        </div>
+                        <div class="d-flex" style="align-items: center;padding: 2px;justify-content: center;">
+                            <!-- <label class="form-label">New Shape: </label>&nbsp; -->
+                            <button class="btn btn-primary btn-sm" type="button" (click)="ShowProductList()">Show Product List</button>
+                        </div>
+                        <div class="d-flex" style="align-items: center;padding: 2px;justify-content: center;">
+                            <!-- <label class="form-label">Bending Limit: </label>&nbsp; -->
+                            <button class="btn btn-primary btn-sm" type="button" (click)="DownloadShapeList()">Download Shape List</button>
+                        </div>
+                        <div class="d-flex" style="align-items: center;padding: 2px;justify-content: center;">
+                            <!-- <label class="form-label">Checking: </label>&nbsp; -->
+                            <button class="btn btn-primary btn-sm" type="button" (click)="DownloadProductList()">Download Product-List</button>
+                        </div>
+                        <!-- <div class="d-flex" style="align-items: center;padding: 2px;justify-content: space-between;">
+                            <label class="form-label">Find: </label>&nbsp;
+                            <button class="btn btn-primary btn-sm" type="button">Discrepancy Rpt.</button>
+                        </div> -->
+                    </div>
+                </fieldset>
+
+            </div>
+        </div>
+    </div>
+    <div>
+        <label style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Colour Legend: </label>
+        <label [class.item-split]="true" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-right: 10px;">Mesh will be splitted</label>
+        <label [class.item-combine]="true" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Mesh will be combined</label>
+      </div>
+</div>
+<!-- <div>
+    Notes: All dimensions and length are in "mm" unless otherwise. Maximum number of various bar items is 26.
+</div> -->
+<!-- app.component.html -->
+<!-- <div class="image-row">
+    <ng-container *ngFor="let image of images">
+      <img [src]="'../../../assets/images/Shapes/' + image + '.png'" alt="Image">
+    </ng-container>
+  </div> -->
+  <!-- <div class="container">
+    <div class="row">
+      <ng-container *ngFor="let image of images; let i = index">
+        <div class="col-2">
+          <img [src]="'../../../assets/images/Shapes/' + image + '.png'" alt="Image" class="image-with-border">
+        </div>
+        Start a new row after every 5 images
+        <div class="w-100 d-none d-md-block" *ngIf="(i + 1) % 5 === 0"></div>
+      </ng-container>
+    </div>
+  </div>
+   -->
+  
+  <!-- your-component.component.html -->
+  <!-- <div *ngFor="let row of imageRows" class="row">
+    <div *ngFor="let imageUrl of row" class="col">
+      <div class="image-box" style="border: 2px solid #000;">
+        <img [src]="'../../../assets/images/Shapes/' + imageUrl + '.png'" alt="Image">
+      </div>
+    </div>
+  </div> -->
+  <!-- <table>
+    <tr *ngFor="let rowIndex of [0, 1, 2, 3, 4]; let i = index" class="image-row">
+      <td *ngFor="let cellIndex of [0, 1, 2, 3, 4]; let j = index" class="image-cell">
+        <ng-container *ngIf="imageRows[i * 5 + cellIndex]">
+          <img [src]="'../../../assets/images/' + imageRows[i * 5 + cellIndex] + '.png'" alt="Image">
+        </ng-container>
+      </td>
+    </tr>
+  </table> -->
+  
+  <!-- <div class="image-gallery">
+    <div class="image-row">
+      <div class="image-box" *ngFor="let image of images">
+        <img [src]="'../../../assets/images/Shapes/' + image + '.png'" alt="Image">
+      </div>
+    </div>
+  </div> -->
+  
+  
+  
+  

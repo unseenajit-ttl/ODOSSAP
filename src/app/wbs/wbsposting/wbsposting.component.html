@@ -1,0 +1,594 @@
+<!-- <loading *ngIf="loading">
+</loading> -->
+<div id="pause" class="d-flex align-items-center justify-content-center" *ngIf="loading">
+    <div id="spinner" class="loader"></div>
+</div>
+
+<div class="container-fluid">
+    <div class="card m-1">
+        <!-- <h3 class="card-header d-flex flex-column justify-content-center align-items-center">
+            <b>WBS Posting</b>
+        </h3> -->
+        <div class="card-body" style="margin-top:-11px !important;">
+            <div class="filter ">
+              <form [formGroup]="wbspostingForm">
+                <ngb-accordion #acc="ngbAccordion" title="Filters" activeIds="panel1">
+                    <ngb-panel id="panel1" class="pb-5">
+                        <!-- <ng-template ngbPanelTitle>
+                                <span style="color:#0880ae;"><b>Filters</b></span>
+                            </ng-template> -->
+                        <ng-template ngbPanelContent>
+                            <!-- <div class="card-body"> -->
+                              <table class="accord-table">
+                                <tbody>
+                                  <tr>
+                                    <td class="selected-td">
+                                      <label class=""> Product Type</label> <br>
+                                      <ng-select formControlName="producttype"
+                                          [(ngModel)]="selectedProductTypeID" [multiple]="true"
+                                          (change)="changeProductType()" class="ng-selectcustomer">
+                                          <ng-option *ngIf="SelectedProjectID == undefined">
+                                              <span class="sr-only">*Select a Customer</span>
+                                          </ng-option>
+                                          <ng-option *ngFor="let sList of producttypeList"
+                                              [value]="sList.ProductTypeID">
+                                              {{sList.ProductType}}
+                                          </ng-option>
+                                      </ng-select>
+                                    </td>
+                                    <td class="selected-td">
+                                      <label >Structure Element</label> <br>
+                                      <ng-select  [multiple]="true"   [(ngModel)]="structureElement" [ngModelOptions]="{standalone: true}" (change)=" searchWbsPostListData()" class="ng-selectcustomer">
+                                        <ng-option *ngFor="let sList of structureList" [value]="sList.StructureElementType">
+                                          {{sList.StructureElementType}}
+                                        </ng-option>
+                                      </ng-select>
+                                    </td>
+                                    <td class="selected-td">
+                                      <label class=""> Status </label> <br>
+                                      <ng-select formControlName="status"
+                                          [(ngModel)]="selectedStatusID" [multiple]="true"
+                                          (change)="changeStatusType($event)" class="ng-selectcustomer">
+                                          <ng-option *ngFor="let sList of statusList" [value]="sList.statusId">
+                                              {{sList.status}}
+                                          </ng-option>
+                                      </ng-select>
+                                    </td>
+                                    <td>
+                                      <div class="p-2" style="margin-top:35px">
+                                        <span style="margin-top:35px">
+                                            <i class="fa fa-refresh" ngbTooltip="Reset"
+                                                style=" color:#0479d6;font-size:20px;" (click)="onReset()"></i>
+                                        </span>
+                                    </div>
+                                    </td>
+                                    <td colspan="2">
+                                      <div style="margin-top:10px">
+                                        <label class="">  </label> <br>
+                                          <div class="input-group flex-nowrap ">
+                                              <input class="form-control" type="search" placeholder="Search "
+                                                  value="search" id="example-search-input" name="search"
+                                                  [(ngModel)]="searchText" [ngModelOptions]="{standalone: true}">
+                                              <span class="input-group-append  ms-n5">
+                                                  <span class="input-group-text ">
+                                                      <i class="bi bi-search"></i>
+                                                  </span>
+                                              </span>
+
+                                          </div>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+
+                            <br>
+                            <div class="row no-gutters wbsfilter">
+
+                                <!-- <div class="colbutton ml-5">
+
+                                    <div class=" row custom-control custom-switch">
+                                        <input type="checkbox" class="custom-control-input"
+                                            formControlName="Created" id="CreatedSwitches" [checked]="iscreated"
+                                            (change)="changestatus(this.iscreated=!this.iscreated,false,false,false)">
+                                        <label class="custom-control-label"  style="font-weight: bold;"
+                                            for="CreatedSwitches">Created</label>
+                                    </div>
+                                </div>
+                                <div class="colbutton">
+                                    <div class=" row custom-control custom-switch">
+                                        <input type="checkbox" class="custom-control-input"
+                                            formControlName="detailing" id="detailingSwitches"
+                                            [checked]="isdetailing"
+                                            (change)="changestatus(false,this.isdetailing=!this.isdetailing,false,false)">
+                                        <label class="custom-control-label"
+                                             style="color:#9F9F9F; font-weight: bold;" for="detailingSwitches">Under
+                                            Detailing</label>
+                                    </div>
+                                </div>
+                                <div class="colbutton">
+                                    <div class=" row custom-control custom-switch">
+                                        <input type="checkbox" class="custom-control-input" formControlName="posted"
+                                            id="postedSwitches" [checked]="isposted"
+                                            (change)="changestatus(false,false,this.isposted=!this.isposted,false)">
+                                        <label class="custom-control-label"
+                                             style="color:#6AB200; font-weight: bold;"
+                                            for="postedSwitches">Posted</label>
+                                    </div>
+                                </div>
+                                <div class="colbutton">
+                                    <div class=" row custom-control custom-switch">
+                                        <input type="checkbox" class="custom-control-input"
+                                            formControlName="released" id="releasedSwitches" [checked]="isreleased"
+                                            (change)="changestatus(false,false,false,this.isreleased=!this.isreleased)">
+                                        <label class="custom-control-label"
+                                             style="color:#00A589; font-weight: bold;"
+                                            for="releasedSwitches">Released</label>
+                                    </div>
+                                </div> -->
+
+                                <div class="col"></div>
+
+                                <div class="colbutton"></div>
+
+                                <div class="col"></div>
+
+                            </div>
+
+
+                            <!-- </div> -->
+                        </ng-template>
+                    </ngb-panel>
+                </ngb-accordion>
+            </form>
+
+                <div class="row">
+                    <div class="col-md-9">
+                        <!-- <button hidden="true" class="btn btn-md btn-outline-primary" ngbTooltip="Add WBS Element"
+                            tooltipClass="my-custom-class" type="button" (click)="this.open()"><i
+                                class="fa fa-plus"></i></button> -->
+                    </div>
+                    <br />
+
+                </div>
+
+                <div class=" table-responsive table-wrapper-scroll-y my-custom-scrollbar" style="height: 49vh;">
+
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr style="height:10px">
+                                <th style="text-align:left;vertical-align:top;width: 4% !important;" colspan="2">
+                                    <div class="d-flex" style="justify-content: center;">
+                                        <!-- <input type="checkbox" [(ngModel)]="masterSelected"
+                                            (change)="checkUncheckAll()" /> -->
+                                        <i class="bi bi-search" style="margin-top:3px; font-size: 15px;"
+                                            (click)="toggleFilters = !toggleFilters"></i>
+                                    </div>
+                                </th>
+                                <th   resizable  style="text-align:left;vertical-align:top;width: 6% !important;"> SOR </th>
+                                <th   resizable style="text-align:left;vertical-align:top;width: 8% !important;">Req Delivery </th>
+                                <th   resizable style="text-align:left;vertical-align:top;width: 6% !important;"> WBS1 </th>
+                                <th   resizable style="text-align:left;vertical-align:top;width: 6% !important;"> WBS2 </th>
+                                <th   resizable style="text-align:left;vertical-align:top;width: 6% !important;"> WBS3 </th>
+                                <th   resizable style="text-align:left;vertical-align:top;width: 4% !important;">Product Type</th>
+                                <th   resizable style="text-align:left;vertical-align:top;width: 4% !important;">Structure</th>
+                                <th   resizable style="text-align:left;vertical-align:top;width: 4% !important;"> TotWt </th>
+                                <th   resizable style="text-align:left;vertical-align:top;width: 4% !important;"> TotQty </th>
+                                <th   resizable  style="text-align:left;vertical-align:top;width: 12% !important;"> PostedBy </th>
+                                <th   resizable  style="text-align:left;vertical-align:top;width: 12% !important;"> ReleaseBy </th>
+                                <th   resizable style="text-align:left;vertical-align:top;width: 5% !important;">Actions</th>
+                                <th   resizable style="text-align:left;vertical-align:top;width: 6% !important;"> BBS </th>
+                                <th   resizable style="text-align:left;vertical-align:top;width: 6% !important;"> BBSDesc </th>
+                                <th   resizable style="text-align:left;vertical-align:top;width: 6% !important;"> Drawing Approval Status </th>
+                                <!-- <th   resizable style="text-align:left;vertical-align:top;width: 6% !important;"> Drawing Approval Status </th> -->
+
+
+                                <!-- <th   resizable style="text-align:left;vertical-align:top;width: 6% !important;"> Approve </th> -->
+
+
+
+                            </tr>
+                        </thead>
+
+
+                        <tbody>
+
+                            <tr *ngIf="toggleFilters">
+                                <th style="text-align:left;vertical-align:top;" colspan="2">
+                                    <input type="checkbox" id="selectAll" [checked]="selectAllCheck" [value]="selectAllCheck"
+                                        [(ngModel)]="selectAllCheck" (change)="ToggleSelectAll($event)">
+                                </th>
+                                <!-- <th style="text-align:left;vertical-align:top;" colspan="2"></th> -->
+                                <th style="text-align:left;vertical-align:top;"><input class="form-control" type="text"
+                                        [(ngModel)]="searchSOR" id="searchBlock" placeholder="Search here"
+                                        (keyup)="searchWbsPostListData()" /></th>
+                                <th style="text-align:left;vertical-align:top;"><input class="form-control" type="text"
+                                        [(ngModel)]="searchReqDelivery" id="searchFrom" placeholder="Search here"
+                                        (keyup)="searchWbsPostListData()" />
+                                </th>
+                                <th style="text-align:left;vertical-align:top;">
+                                    <!-- <input class="form-control" type="text"
+                                        [(ngModel)]="searchWBS1" id="searchTo" placeholder="Search here"
+                                        (keyup)="searchWbsPostListData()" /> -->
+                                        <ng-select  appendTo="body"
+                                            [(ngModel)]="selectedWbs1" [multiple]="true"
+                                            (change)="filterwbs($event)">
+                                            <ng-option>
+                                                <span class="sr-only">*Select WBS1</span>
+                                            </ng-option>
+                                            <ng-option *ngFor="let sList of distinctNamesWBS1"
+                                                [value]="sList.label">
+                                                {{sList.label}}
+                                            </ng-option>
+                                        </ng-select>
+                                </th>
+                                <th style="text-align:left;vertical-align:top;">
+                                <ng-select  appendTo="body"
+                                            [(ngModel)]="selectedWbs2" [multiple]="true"
+                                            (change)="filterwbs($event)">
+                                            <ng-option>
+                                                <span class="sr-only">*Select WBS2</span>
+                                            </ng-option>
+                                            <ng-option *ngFor="let sList of distinctNamesWBS2"
+                                                [value]="sList.label">
+                                                {{sList.label}}
+                                            </ng-option>
+                                        </ng-select>
+                                    </th>
+                                <!-- <th style="text-align:left;vertical-align:top;"><input class="form-control" type="text"
+                                        [(ngModel)]="searchWBS2" id="searchPart" placeholder="Search here"
+                                        (ngModelChange)="searchWbsPostListData()" />
+                                </th> -->
+                                <th style="text-align:left;vertical-align:top;">
+                                    <!-- <input class="form-control" type="text"
+                                        [(ngModel)]="searchWBS3" id="searchStructure" placeholder="Search here"
+                                        (keyup)="searchWbsPostListData()" /> -->
+                                        <ng-select  appendTo="body"
+                                            [(ngModel)]="selectedWbs3" [multiple]="true"
+                                            (change)="filterwbs($event)">
+                                            <ng-option>
+                                                <span class="sr-only">*Select WBS3</span>
+                                            </ng-option>
+                                            <ng-option *ngFor="let sList of distinctNamesWBS3"
+                                                [value]="sList.label">
+                                                {{sList.label}}
+                                            </ng-option>
+                                        </ng-select>
+                                    </th>
+
+                                <th style="text-align:left;vertical-align:top;"><input class="form-control" type="text"
+                                        [(ngModel)]="searchProductType" id="searchBlock" placeholder="Search here"
+                                        (ngModelChange)="searchWbsPostListData()" style="font-weight: bold;"/></th>
+                                <th style="text-align:left;vertical-align:top;">
+                                    <!-- <input class="form-control" type="text"
+                                        [(ngModel)]="searchStructure" id="searchFrom" placeholder="Search here"
+                                        (keyup)="searchWbsPostListData()" /> -->
+
+                                        <ng-select  [multiple]="true"  [(ngModel)]="searchStructure" [ngModelOptions]="{standalone: true}" (change)=" searchWbsPostListData()"  >
+                                            <ng-option *ngFor="let sList of structureList" [value]="sList.StructureElementType">
+                                              {{sList.StructureElementType}}
+                                            </ng-option>
+                                          </ng-select>
+                                </th>
+                                <th style="text-align:left;vertical-align:top;"><input class="form-control" type="text"
+                                        [(ngModel)]="searchTotWt" id="searchTo" placeholder="Search here"
+                                        (keyup)="searchWbsPostListData()" style="font-weight: bold;"/>
+                                </th>
+                                <th style="text-align:left;vertical-align:top;"><input class="form-control" type="text"
+                                        [(ngModel)]="searchTotQty" id="searchPart" placeholder="Search here"
+                                        (keyup)="searchWbsPostListData()" style="font-weight: bold;"/>
+                                </th>
+
+                                <th style="text-align:left;vertical-align:top;"><input class="form-control" type="text"
+                                        [(ngModel)]="searchPostedBy" id="searchStructure" placeholder="Search here"
+                                        (keyup)="searchWbsPostListData()" style="font-weight: bold;"/></th>
+                                <th style="text-align:left;vertical-align:top;"><input class="form-control" type="text"
+                                        [(ngModel)]="searchReleasedBy" id="searchFrom" placeholder="Search here"
+                                        (keyup)="searchWbsPostListData()" />
+                                </th>
+                                <th>
+                                  <span>
+                                    <i class="fa fa-refresh" ngbTooltip="Reset"
+                                        style=" color:red;font-size:20px;" (click)="resetAllFilters();searchWbsPostListData();"></i>
+                                  </span> &nbsp;&nbsp;
+                                  <span>
+                                    <i class="fa fa-repeat" ngbTooltip="Reload"
+                                        style=" color:blue;font-size:20px;" (click)="ngOnInit()"></i>
+                                  </span>
+                                </th>
+                                <th style="text-align:left;vertical-align:top;"><input class="form-control" type="text"
+                                    [(ngModel)]="searchBBS" id="searchBlock" placeholder="Search here"
+                                    (keyup)="searchWbsPostListData()" style="font-weight: bold;"/></th>
+                            <th style="text-align:left;vertical-align:top;"><input class="form-control" type="text"
+                                    [(ngModel)]="searchBBSDesc" id="searchFrom" placeholder="Search here"
+                                    (keyup)="searchWbsPostListData()" style="font-weight: bold;"/>
+                            </th>
+                        <th></th>    
+                        <th></th>    
+
+                        </tr>
+
+
+                            <ng-container
+                                *ngFor="let item of wbspostingarray  |slice: pageSize | slice: 0:itemsPerPage | filter:searchText ; index as i;">
+                                <tr [ngStyle]="{'background-color':giveRowcolor(item)}">
+                                    <!-- <td style="text-align:left;">
+                                        <input type="checkbox" [(ngModel)]="item.isSelected" [checked]="item.isSelected" [disabled]="item.ReadOnly"  [ngModelOptions]="{standalone: true}"
+                                           (change)="selectAllChange(item.isSelected);multipleSelect(item)" />
+                                    </td> -->
+                                    <td style="text-align:left;">
+                                        <input type="checkbox" [(ngModel)]="item.isSelected" [checked]="item.isSelected" [disabled]="item.ReadOnly"
+                                            [ngModelOptions]="{standalone: true}" (change)="UpdateSelection(item.isSelected)" />
+                                    </td>
+                                    <td style="text-align:left;width:2px">
+                                        <i *ngIf="!item.isExpand" (click)="getGroupMarkingTable(item)"
+                                            class="bi-chevron-right"></i>
+                                        <i *ngIf="item.isExpand" (click)="item.isExpand = !item.isExpand"
+                                            class="bi-chevron-up"></i>
+
+
+                                    </td>
+                                    <td style="text-align:left">{{item.ORD_REQ_NO}}</td>
+                                    <td style="text-align:left">{{item.ReqDate}}</td>
+                                    <td style="text-align:left">{{item.VCHWBS1}}</td>
+                                    <td style="text-align:left">{{item.VCHWBS2}}</td>
+                                    <td style="text-align:left">{{item.VCHWBS3}}</td>
+                                    <td style="text-align:left">{{item.ProductType}}</td>
+                                    <td style="text-align:left">{{item.StructureElement}}</td>
+                                    <td style="text-align:left">{{item.TOTALWEIGHT}}</td>
+                                    <td style="text-align:left">{{item.TOTALQTY}}</td>
+
+                                    <td class="posted-released"  style="text-align:left"  ><i *ngIf="item.DATPOSTEDDATE!=null" class="bi bi-calendar" style="font-size:15px" [ngbTooltip]="item.DATPOSTEDDATE"></i>{{item.POSTEDBY}} </td>
+                                    <td  class="posted-released" style="text-align:left;font-size: small;"><i *ngIf="item.DATRELEASEDDATE!=null" class="bi bi-calendar" style="font-size:15px" [ngbTooltip]="item.DATRELEASEDDATE"></i>{{item.INTRELEASEBY}}  </td>
+                                    <td style="text-align:left">
+                                        <span *ngIf="item.TNTSTATUSID == 6 || item.TNTSTATUSID == 11">
+                                          <i class="material-icons" ngbTooltip="Add Group Mark"  (click)="open(item)">add_card</i>&nbsp;
+                                        </span>
+                                        <span *ngIf="item.TNTSTATUSID == 3 || item.TNTSTATUSID == 12  " (click)="showPostingReport(item)">
+                                          <i class="bi bi-file-earmark-arrow-up" ngbTooltip="Posting Report"></i>&nbsp;
+                                        </span>
+                                        <span *ngIf="item.TNTSTATUSID == 3 || item.TNTSTATUSID == 12 " (click)="showPostedReport(item)">
+                                          <i class="bi bi-file-earmark-check" ngbTooltip="Posted Report"></i>&nbsp;
+                                        </span>
+                                        <!-- <span *ngIf="item.IsPreCast">
+                                          <i (click)="NavigateToPrecast(item)" class="bi bi-box-arrow-up-right" title="go to precast"> </i>&nbsp;
+                                        </span> -->
+                                        <!-- <i class="bi bi-eye" ngbTooltip="View Docs Attached" (click)="viewDocuments(item,$event)"></i>&nbsp; -->
+                                        <i class="bi bi-paperclip" ngbTooltip="Docs Attached" (click)="openDocument(item)"></i>&nbsp;
+                                        <!-- <a style="color:White ; text-decoration: underline;"
+                                            *ngIf="item.TNTSTATUSID == 3 || item.TNTSTATUSID == 12">Posting Report</a><br>
+                                        &nbsp; <a style="color:White ; text-decoration: underline;"
+                                            *ngIf="item.TNTSTATUSID == 3 || item.TNTSTATUSID == 12">Posted Report</a> -->
+                                        &nbsp;
+                                    </td>
+                                    <td style="text-align:left">{{item.VCHBBSNO}}</td>
+                                    <td style="text-align:left">{{item.BBS_DESC}}</td>
+                                    <!-- <td *ngIf="item.IsApproved==0" style="color:red">
+                                        Rejected
+                                    </td>
+                                    <td *ngIf="item.IsApproved==1" style="color:green">
+                                        Accepted
+                                    </td>
+                                    <td *ngIf="item.DrawingStatus==null" >
+                                        Pending
+                                    </td> -->
+
+                                           <!-- <td *ngIf="item.IsApproved==0" style="color:red">
+                                        Rejected
+                                    </td>
+                                    <td *ngIf="item.IsApproved==1" style="color:green">
+                                        Accepted
+                                    </td>
+                                    <td *ngIf="item.DrawingStatus==null " >
+                                        Pending
+                                    </td> -->
+                                    <!-- <td *ngIf="item.DrawingStatus=='Submitted'" style="color:grey">
+                                        Submitted
+                                    </td>
+                                    <td *ngIf="item.DrawingStatus=='Approved'" style="color:green">
+                                        Accepted
+                                    </td>
+                                    <td *ngIf="item.DrawingStatus==null " >
+                                        Not Submitted
+                                    </td> -->
+                                    <td [ngSwitch]="item.DrawingStatus">
+                                        <span *ngSwitchCase="'Approved'" style="color: green;"> Approved</span>
+                                        <span *ngSwitchCase="'Rejected'" style="color: red;"> Rejected</span>
+                                        <span *ngSwitchCase="'Submitted'" style="color: orange;">⏳ Submitted</span>
+                                        <span *ngSwitchCase="null" style="color: gray;">Not Submitted</span>
+                                        <span *ngSwitchCase="'Reviewed'" style="color: blue;">⏳ Reviewed</span>
+
+                                      </td>
+
+
+                                </tr>
+                                <tr *ngIf="item.isExpand">
+                                    <!-- <form [formGroup]="wbsgroupMarkingForm"> -->
+
+                                    <td style="text-align:left" colspan="18"
+                                        class="center-align-justify align-items-center">
+                                        <table class="table table w-50 p-3 m-auto " style="max-height: 13vh !important;">
+                                            <thead class="bg-secondary text-white">
+                                                <tr>
+                                                    <th style="text-align:left;vertical-align:top;" colspan="5"
+                                                        class="text-center"><span>Group Marking</span></th>
+                                                </tr>
+                                            </thead>
+                                            <thead>
+                                                <th style="text-align:left;vertical-align:top;width:20%">Group Marking
+                                                </th>
+                                                <th style="text-align:left;vertical-align:top;width:20%">Revision </th>
+                                                <th style="text-align:left;vertical-align:top;width:20%">Posted Qty</th>
+                                                <th style="text-align:left;vertical-align:top;width:25%">Remark </th>
+                                                <th style="text-align:left;vertical-align:top;width:15%"
+                                                    *ngIf="item.TNTSTATUSID == 6 || item.TNTSTATUSID == 11">Action </th>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngIf="groupMarkLoading && (selectedGroupmarkItem==item)">
+                                                    <td colspan="5">
+                                                        <div style="justify-content: center;display: flex;">
+                                                            <div class="spinner-border text-secondary" role="status">
+                                                                <span class="sr-only">Loading...</span>
+                                                            </div>
+
+                                                        </div>
+                                                        <!-- <div class="loader"></div> -->
+                                                    </td>
+                                                </tr>
+                                                <tr *ngIf="!groupMarkLoading && item.Groupmarkinglist.length==0">
+                                                    <td colspan="5" style="text-align: center;">
+                                                        NO RECORDS FOUND
+                                                    </td>
+                                                </tr>
+                                                <tr *ngFor="let row2 of item.Groupmarkinglist;  index as isgroupmark;">
+                                                    <ng-container *ngIf="enableEditIndex != isgroupmark">
+                                                        <td style="text-align:left">{{row2.vchSMGroupMarkingName}}
+                                                        </td>
+                                                        <td style="text-align:left">
+                                                            {{row2.tntSMGroupRevNo}}</td>
+                                                        <td style="text-align:left">
+                                                            {{row2.intSMProductQty}}</td>
+                                                        <td style="text-align:left">{{row2.vchSMRemarks}}</td>
+                                                        <td style="text-align:left"
+                                                            *ngIf="item.TNTSTATUSID == 6 || item.TNTSTATUSID == 11">
+                                                            <i class="material-icons" ngbTooltip="Edit"
+                                                                (click)=" onEdit(row2, isgroupmark)">mode_edit</i>&nbsp;
+                                                            <i class="bi bi-trash" *ngIf="row2.isused!==true"
+                                                                ngbTooltip="Delete" style="color:red; font-size:15px"
+                                                                (click)="deletegroupmark(item,row2,isgroupmark)"></i>
+                                                        </td>
+                                                    </ng-container>
+                                                    <ng-container *ngIf="enableEditIndex == isgroupmark">
+
+
+                                                        <td>{{row2.vchSMGroupMarkingName}}</td>
+                                                        <td>{{row2.tntSMGroupRevNo}}</td>
+                                                        <!-- <td>{{row2.Qty}}</td> -->
+                                                        <td>
+                                                            <input type="number" class="form-control"
+                                                                [(ngModel)]="groupMarkingQty" style=" height: auto;" />
+                                                            <div class="text-danger edit-label" style="width: 100px;"
+                                                                *ngIf=" row2.intSMProductQty == undefined">*Qty
+                                                                Required. </div>
+                                                        </td>
+                                                        <!-- <td>{{row2.Remark}}</td> -->
+                                                        <td>
+                                                            <input type="text" class="form-control"
+                                                                [(ngModel)]="groupMarkingRemark"
+                                                                style=" height: auto;" />
+                                                        </td>
+                                                        <td>
+                                                            <i class="material-icons"
+                                                                (click)="Update(row2, isgroupmark, i)"
+                                                                ngbTooltip="Update">save</i>
+                                                            &nbsp;
+                                                            <i class="bi bi-trash"
+                                                                (click)="deletegroupmark(item,item.Groupmarkinglist,isgroupmark)"
+                                                                ngbTooltip="Deletes"
+                                                                style="color:red; font-size:15px"></i>
+
+                                                        </td>
+
+
+                                                    </ng-container>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                    <!-- </form> -->
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="d-flex mt-2">
+                            <ngb-pagination [collectionSize]="wbspostingarray.length" [(page)]="currentPage"
+                                [pageSize]="itemsPerPage" (pageChange)="onPageChange(currentPage)"
+                                [boundaryLinks]="false" [maxSize]="maxSize" *ngIf="searchResult">
+                                <ng-template ngbPaginationPrevious>Prev</ng-template>
+                                <ng-template ngbPaginationNext>Next</ng-template>
+                            </ngb-pagination>
+
+                            <select class="custom-select mr-2 ml-3" style="width: auto" [(ngModel)]="itemsPerPage"
+                                (ngModelChange)="OnPageSizeChange(itemsPerPage);">
+                                <option [ngValue]="5">5 </option>
+                                <option [ngValue]="10">10 </option>
+                                <option [ngValue]="20">20 </option>
+                                <option [ngValue]="50">50 </option>
+                                <option [ngValue]="100">100 </option>
+                            </select>
+                            <span style="margin-top: 5px;">Items per page</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3 float-right  d-flex ml-5">
+
+                        <div class=" row custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="CapingSwitches"
+                                [checked]="iscapping" (change)="iscapping=!iscapping">
+                            <label class="custom-control-label" for="CapingSwitches"> Caping /Clink</label>
+                        </div>
+                        &nbsp;&nbsp;
+                        <div class=" row custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="ModularSwitches" [(ngModel)]="IsModular">
+                            <label class="custom-control-label" for="ModularSwitches"> Modular</label>
+                        </div>
+
+                        <!-- <button class="btn btn-primary btn-sm" type="button">Posting Report</button>
+                            <button class="btn btn-primary btn-sm" type="button">Posted Report</button>
+                    -->
+                    </div>
+                    <!-- <div class="col-md-3 float-right">
+                        <button class="btn btn-primary btn-sm" type="button" style="width:29%" (click)="Posting()">Post</button>
+                        <button class="btn btn-primary btn-sm" type="button" style="width:29%" (click)="Unposting()">Un-Post</button>
+                        <button class="btn btn-primary btn-sm" type="button" style="width:29%" (click)="Release()">Release</button>
+                    </div> -->
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+ 
+                    </div>
+                    <div class="col-md-6 d-flex justify-content-end">
+                        <button class="btn btn-primary btn-sm" (click)="drawingReport()">
+                             Report <i class="bi bi-file-earmark-arrow-up" ngbTooltip="Drawing Status Report"></i>
+                        </button>
+           
+                        <button class="btn btn-primary btn-sm" type="button"
+                            (click)="Posting()">Post</button>
+                        <button class="btn btn-primary btn-sm" type="button"
+                            (click)="Unposting()">Un-Post</button>
+                        <button class="btn btn-primary btn-sm" type="button"
+                            (click)="Release()">Release</button>
+                        <!-- <button class="btn btn-primary btn-sm" type="button" style="width:29%" (click)="openDialog()">Open</button> -->
+                    </div>
+                </div>
+ 
+                <div class="row">
+                    <div class="col-md-8">
+                    </div>
+                    <div class="col-md-4">
+                        <div class="row d-flex">
+
+                            <div #buttons style="text-align: end; display: contents">
+                                <p class="legends" style="background-color: #fffd88"> Posted </p>
+                                &nbsp;
+
+                                <p class="legends" style="background-color: #ADEDAD">Released</p>
+                                &nbsp;
+                                <p class="legends" style="background-color: #8debfb">Under Detailing </p>
+                                &nbsp;
+                                <p class="legends" style="background-color: #ffffff">Created </p>
+                                &nbsp;
+
+                                <app-square color="green" label="Green Square"></app-square>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

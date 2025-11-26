@@ -1,0 +1,182 @@
+<!-- 12 dropdowns need to change for auto-complete -->
+<div class="container-fluid">
+  <div class="logo4">
+    <div class="card m-1">
+      <h3 class="card-header mb-1 pb-0">
+        <div class="row">
+          <!-- <a (click)="backToSummary()" style="color: blue;cursor: pointer;" class="col-md-4">
+            <i class="fa fa-arrow-left arrow-left" aria-hidden="true"></i>
+            Back to order summary (返回订单汇总)
+          </a> -->
+          <b class="col-md-7">Bored Pile Cage Details (钻孔桩铁笼)</b>
+          <div class="col-md-5 d-flex">
+            <label for="concrete_cover">Concrete Cover (混凝土保护层):</label>&nbsp;
+            <select class="form-select w-50" name="concrete_cover" [(ngModel)]="concreteCover"
+              id="concrete_cover">
+              <option value="30">30</option>
+              <option value="35">35</option>
+              <option value="40">40</option>
+              <option value="45">45</option>
+              <option value="50">50</option>
+              <option value="55">55</option>
+              <option value="60">60</option>
+              <option value="65">65</option>
+              <option value="70">70</option>
+              <option value="75">75</option>
+              <option value="80">80</option>
+              <option value="85">85</option>
+              <option value="90">90</option>
+              <option value="95">95</option>
+              <option value="100">100</option>
+            </select>
+          </div>
+        </div>
+      </h3>
+      <div class="card-body mt-0 pt-0">
+        <input type="hidden" id="JobIDBK" value="" />
+        <input type="hidden" id="OrderNo" value="" />
+        <input type="hidden" id="order_status" value="Created" />
+        <input type="hidden" id="po_number_save" value="" />
+        <input type="hidden" id="proj_wbs1" value="" />
+        <input type="hidden" id="proj_wbs2" value="" />
+        <input type="hidden" id="proj_wbs3" value="" />
+        <input type="hidden" id="pile_category" value="BPC" />
+        <input type="hidden" name="po_number" id="po_number" value="">
+        <div class="row mt-0">
+          <div class="col-12 p-0" style="overflow-x: auto;">
+            <table border="1" width="100%">
+              <tr>
+                <td width="301"><canvas class="mt-5" width="300" height="210" #canvasPlanView></canvas></td>
+                <td width="701"><canvas class="mt-2" width="700" height="210" #canvasElevView></canvas></td>
+                <td [width]="lastStaticTableWidth">
+                  <div class="p-0" style="overflow: auto;position: relative;width:{{lastStaticTableWidth}}px;">
+                    <table class="tabel table-striped" height="210">
+                      <thead>
+                        <tr>
+                          <th ngbTooltip="Serial Number (序列号)">ID <br> 序号</th>
+                          <th ngbTooltip="Bar Mark (铁代号)">Mark <br> 铁代号</th>
+                          <th
+                            ngbTooltip="Bar Type (R-Round Bar, T-Grade 500 Deformed Bar, H-Euro Standard, X-Grade 600) (铁型号 R-圆钢, T-500号螺纹钢, H-欧洲标准, X-600号螺纹钢)">
+                            Type <br> 型号</th>
+                          <th ngbTooltip="Bar Diameter (直径)">Size <br> 直径</th>
+                          <th ngbTooltip="Total Bars Qty (总数量)">Qty <br> 总数</th>
+                          <th ngbTooltip="Shape Code (图形代码)">Shape Code <br> 图形码</th>
+                          <th ngbTooltip="Bending Parameter A (参数 A)">A</th>
+                          <th ngbTooltip="Bending Parameter B (参数 B)">B</th>
+                          <th ngbTooltip="Bending Parameter C (参数 C)">C</th>
+                          <th ngbTooltip="Bending Parameter D (参数 D)">D</th>
+                          <th ngbTooltip="Bending Parameter E (参数 E)">E</th>
+                          <th ngbTooltip="Bar Length (铁长度)">Length <br> 长度</th>
+                          <th ngbTooltip="Total Bars Weight (总重量)">Weight <br> 重量(kg)</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let dataRebar of rebarData">
+                          <td>{{dataRebar.BarID}}</td>
+                          <td>{{dataRebar.BarMark}}</td>
+                          <td>{{dataRebar.BarType}}</td>
+                          <td>{{dataRebar.BarSize}}</td>
+                          <td>{{dataRebar.BarTotalQty}}</td>
+                          <td>{{dataRebar.BarShapeCode}}</td>
+                          <td>{{dataRebar.A}}</td>
+                          <td>{{dataRebar.B}}</td>
+                          <td>{{dataRebar.C}}</td>
+                          <td>{{dataRebar.D}}</td>
+                          <td>{{dataRebar.E}}</td>
+                          <td>{{dataRebar.BarLength}}</td>
+                          <td>{{dataRebar.BarWeight}}</td>
+                          <td>{{dataRebar.Remarks}}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <div id="corner-triangle" (click)="isBomActive = !isBomActive;bpc_bom_switch();">
+                      <div class="corner-triangle-text text-capitalize">
+                        <a>
+                          <span class="corner-triangle-firstline" id="bpc_bom_label">Bar&nbsp;Details</span>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td width="71" style="font-family:arial;font-size:10px;color:black;">
+                  Cages per load (Trailer)
+                  <div id="cage_load" style="width:70px;">
+                      <table border="1" width="100%" style="font-family:arial;font-size:10px;color:black;">
+                          <tr style="background-color:#cccccc"><td align="center">Dia</td><td align="center">Qty</td></tr>
+                          <tr><td align="center">500</td><td align="center">25</td></tr>
+                          <tr><td align="center">600</td><td align="center">20</td></tr>
+                          <tr><td align="center">700</td><td align="center">12</td></tr>
+                          <tr><td align="center">800</td><td align="center">10</td></tr>
+                          <tr><td align="center">900</td><td align="center">7</td></tr>
+                          <tr><td align="center">1000</td><td align="center">6</td></tr>
+                          <tr><td align="center">1100</td><td align="center">5</td></tr>
+                          <tr><td align="center">1200</td><td align="center">4</td></tr>
+                          <tr><td align="center">1300 - 1800</td><td align="center">3</td></tr>
+                          <tr><td align="center">>=1900</td><td align="center">1</td></tr>
+                      </table>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <div class="col-12 m-0 p-0">
+            <ngb-accordion #acc="ngbAccordion" [activeIds]="['panel1']" style="margin-bottom: 5px">
+              <ngb-panel id="panel1">
+                <ng-template ngbPanelContent>
+                  <div class="card-body  m-1 p-2" style="background-color: #dee2e6">
+                    <div class="row">
+                      <div class="col-md-2">
+                        <span class="header-bpc">Bored Pile Cage Library</span>
+                      </div>
+                      <div class="col-md-1"></div>
+                      <div class="col-md-2">
+                        <!-- <div class="form-check form-switch">
+                          <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault"
+                            [(ngModel)]="isBPCEditable" (ngModelChange)="checkIsEditable($event)" />
+                          <label class="form-check-label" for="flexSwitchCheckDefault">Edit Library (编辑笼库)</label>
+                        </div> -->
+                      </div>
+                      <div class="col-md-1"></div>
+                      <div class="col-md-2">
+                        <input class="form-control" type="number" placeholder="Pile Diameter" name="search_pile_dia"
+                          [(ngModel)]="search_pile_dia" (ngModelChange)="searchData('PILEDIA',search_pile_dia)" />
+                      </div>
+                      <div class="col-md-2">
+                        <input class="form-control" type="number" placeholder="Main Bar Diameter"
+                          name="search_main_bar_dia" [(ngModel)]="search_main_bar_dia"
+                          (ngModelChange)="searchData('BARDIA',search_main_bar_dia)" />
+                      </div>
+                      <div class="col-md-2">
+                        <input class="form-control" placeholder="Main Bar Qty" name="search_main_bar_qty" type="number"
+                          [(ngModel)]="search_main_bar_qty"
+                          (ngModelChange)="searchData('BARQTY',search_main_bar_qty)" />
+                      </div>
+                      <div class="col-md-1"></div>
+                    </div>
+                  </div>
+                </ng-template>
+              </ngb-panel>
+            </ngb-accordion>
+          </div>
+          <div class="col-12 mt-2" style="border: solid 1px gray; resize:both; overflow:auto;" id="demo-container">
+            <angular-slickgrid gridId="grid2" [columnDefinitions]="templateColumns" [gridOptions]="gridOptions"
+              [dataset]="dataset"
+              (onAngularGridCreated)="angularGridReady($event)" [ngClass]="isScrollable ? 'add_scroll' : ''"></angular-slickgrid>
+          </div>
+          <div class="col-12 mt-3">
+            <div style="background-color: #fff;float: right;text-align: right; width:100%;">
+              <button id="order_save" class="btn btn-primary" type="button" (click)="libSave();">Save (保存)</button>
+              <button id="order_print_lib" class="btn btn-secondary" type="button" (click)="libPrint();">Print BPC
+                Report (铁笼报告)</button>
+              <button id="order_clone" class="btn btn-secondary" type="button" (click)="libCopy();">Copy From
+                (拷贝)</button>
+              <button id="order_config" class="btn btn-secondary" type="button" (click)="libConfig();">Configure
+                (设置)</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

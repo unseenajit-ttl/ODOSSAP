@@ -1,0 +1,480 @@
+ion-icon {
+  color: blue;
+}
+
+.accordion-button.collapsed {
+  background: blue
+}
+
+.accordion-button.collapsed::after {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+}
+.accordion-button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  font-size: 0.8rem;
+  color: var(--bs-accordion-btn-color);
+  text-align: left;
+  background-color: var(--bs-accordion-btn-bg);
+  border: 0;
+  border-radius: 0;
+  overflow-anchor: none;
+  transition: var(--bs-accordion-transition);
+}
+
+.my-custom-scrollbar {
+  position: relative;
+  overflow: auto;
+}
+
+
+
+.mat-mdc-table .mdc-data-table__row:nth-child(odd) {
+background-color: #e6e6e6;
+}
+/* .mat-mdc-table .mdc-data-table__row :nth-child(even){
+background-color: #ffffff;
+}
+
+
+.mat-mdc-table .mdc-data-table__row :nth-child(odd){
+background-color: #e6e6e6;
+} */
+
+
+
+
+
+.ng-selectcustomer {
+width: 240px;
+}
+
+.ng-selectwbs{
+width: 240px;
+}
+
+.colbutton {
+flex-basis: 0;
+flex-grow: 1;
+max-width: 100%;
+padding: 2px;
+padding-left: -10px;
+}
+
+.custom-switch {
+padding-left: 3rem;
+padding-top: 7px;
+}
+.custom-control-label {
+position: relative;
+padding-left: 5px;
+margin-bottom: 0;
+vertical-align: top;
+}
+
+
+
+
+
+/* .custom-control-input:checked~.custom-control-label::before {
+  color: #fff;
+  border-color: #6AB200;
+  background-color: #6AB200;
+} */
+
+
+
+.darkrowcolor {
+color: white;
+
+}
+.wbsfilter{
+padding-left: 10px;
+}
+
+.my-custom-scrollbar{
+max-height: none;
+}
+/* thead tr {
+position: sticky !important;
+top: 0;
+background-color: #f2f2f2;
+} */
+.legends{
+border-color: black;
+border-style: double;
+padding: 4px
+}
+.table-borderless tr td{
+border: none !important;
+}
+.table-borderless{
+border: none !important;
+}
+tbody tr:first-child {
+  /* position: relative;  */
+}
+
+
+/* ::ng-deep  .table-bordered td, .table-bordered th{
+max-height: 40px;
+white-space: nowrap;
+} */
+.accord-table{
+border: none;
+padding: 2px !important;
+}
+.accord-table td{
+border: none;
+}
+.accord-table td:hover{
+background: none;
+}
+.accord-table tr:hover{
+background: none;
+}
+table tr td i {
+font-size: 16px;
+}
+table td {
+  height: 33px;
+  font-size: medium;
+  text-align: left !important;
+}
+
+/* .custom-control-label:before{
+background-color:red;
+}
+.custom-checkbox .custom-control-input:checked~.custom-control-label::before{
+background-color:black;
+} */
+
+
+/* th {
+max-height: 40px !important ;
+} */
+/* @media screen and (min-width: 1800px) {
+.table-responsive[_ngcontent-fof-c183] table[_ngcontent-fof-c183] {
+    height: 150px !important;
+}
+} */
+
+::ng-deep .ng-dropdown-panel{
+min-width: 100px !important;
+}
+
+.form-control{
+padding: 0;
+}
+
+/* .table-bordered, .table-bordered td, .table-bordered th {
+border: 1px solid #000000  !important;
+padding: 5;
+/* margin: 5px; */
+ */
+
+
+.disabled-icon {
+  opacity: 0.3;  /* Fades out the disabled button */
+  pointer-events: none;  /* Prevents click */
+  cursor: default; /* Changes cursor to default */
+}
+
+.bi-sort-up, .bi-sort-down {
+  color: rgb(190, 186, 186);  /* Default faded color */
+  margin-left: 2px;
+  transition: color 0.3s;
+}
+
+.active-sort {
+  color: black !important; /* Highlight active sort direction */
+}
+
+ :host ::ng-deep  thead {
+  position: sticky;
+  top: 0;
+  background-color: #003ec4 ;
+
+}
+
+table {
+ 
+  border-spacing: 0;
+  width: 100%;
+}
+.new-table{
+ border-collapse: separate !important;
+}
+.accordion-body{
+  margin-bottom: 2rem !important;
+}
+.logo3 .desktop3 td {
+  /* max-width: 150px;
+  min-width: 115px; */
+  border: 1px solid #bcb7b7 !important;
+}
+/*
+:host ::ng-deep .ng-select .ng-dropdown-panel {
+  z-index: 99 !important;
+} */
+
+.new-table thead {
+  position: sticky !important;
+  z-index: 12;
+  background-color: #003ec4 !important;
+}
+
+.new-table tbody {
+  position: sticky !important;
+  z-index: 10;
+}
+
+.new-table tbody td {
+  position: sticky !important;
+  z-index: 10;
+}
+/* .new-table tbody td {
+  position: sticky !important;
+  z-index: 10;
+  border-radius: 0px !important;
+} */
+
+
+.mat-mdc-form-field-type-mat-date-range-input .mat-mdc-form-field-infix {
+  width: 90px;
+}
+/* styles.css or component scss */
+:host ::ng-deep thead.custom-row th {
+  background-color: #003ec4b3 !important;
+  color: white; /* text color */
+  text-align: center;
+  vertical-align: middle;
+  padding: 5px 8px;
+   z-index: 12;
+}
+
+thead.custom-row th:first-child {
+  text-align: left; /* for the search icon column */
+}
+#thNomVar{
+  background-color: #003ec4b3;
+}
+.FixedColumn {
+  z-index: 20 !important;
+  background-color: white !important;
+
+  /* position: sticky !important; */
+
+
+}
+
+/* Add border only to the last fixed column */
+.FixedColumn.last-fixed,
+thead th.last-fixed {
+  border-right: 1px solid #e0e0e0 !important;
+}
+/* Prevent overlapping table cell borders */
+/* td:not(.FixedColumn) {
+  border-left: none !important;
+} */
+
+/* Optional: subtle top/bottom borders for readability */
+td, th {
+  border-bottom: 1px solid #eee;
+  border-left: none !important;
+}
+.setting-menu {
+  position: absolute;
+  z-index: 9999;
+  background-color: #dee2e6;
+  width: 32%;
+  right: 50px;
+  font-weight: 570;
+  border-radius: 10px 0 0 10px;
+  font-weight: 570;
+}
+
+.setting-menu table td {
+  font-size: small;
+  border: 1px solid #c8cdd3 !important;
+}
+
+.fixed-xolumn-head {
+  margin: auto;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.setting-menu .heading {
+  justify-content: space-between;
+  align-items: flex-end;
+  padding-left: 5px;
+  padding-top: 2px;
+}
+.setting-menu .heading input {
+  width: 40%;
+  border: 1px solid #dee2e6 !important;
+  border-radius: 3px;
+  padding: 6px 12px;
+}
+
+.setting-menu .heading button {
+  margin: auto 0;
+  font-size: 1rem;
+}
+.setting-menu span {
+  font-size: 1rem;
+}
+.no-record:hover {
+  background-color: white !important;
+}
+.bar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 5px !important;
+  margin: 3px !important;
+  justify-self: flex-end;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  background-clip: content-box;
+  cursor: col-resize !important;
+  z-index: 50 !important;
+  cursor: -webkit-col-resize !important;
+}
+.cdkDrag :hover {
+  cursor: col-resize;
+}
+  .bar:hover {
+    background: rgba(255, 255, 255, 0.3);
+  }
+
+.table thead th.main-header {
+    background-color: #003ec4 !important; /* blue background */
+    color: white !important;
+
+}
+/* table.new-table {
+  table-layout: fixed;
+  width: 100%;
+} */
+/* .new-table {
+  border-collapse: separate !important;
+} */
+/* .new-table thead {
+  position: sticky !important;
+  z-index: 50 !important;
+  background-color: #003ec4 !important;
+} */
+::ng-deep .mat-date-range-picker-content {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+::ng-deep .md-drppicker {
+  z-index: 1000 !important;
+  display: block !important;
+}
+#searchBar th input {
+  padding: 0px;
+}
+#searchBar th {
+  height: 33px;
+  vertical-align: middle !important;
+}
+.btn {
+  --bs-btn-hover-border-color: #0a0a0a;
+}
+
+.mat-mdc-form-field-subscript-wrapper {
+  height: 0 !important;
+}
+
+.mdc-text-field--outlined .mdc-notched-outline {
+  z-index: 0;
+  background-color: white;
+}
+.highlight {
+  background-color: beige !important;
+  /* Highlight color */
+}
+@media only screen and (max-width: 900px),
+  (min-device-width: 900px) and (max-device-width: 1024px) {
+  .mobile-customer-project {
+    display: block !important;
+  }
+}
+
+@media only screen and (max-width: 1024px) {
+  td{
+    min-width: max-content !important;
+    max-width: none !important;
+  }
+}
+
+.bs-datepicker,
+.bs-daterangepicker {
+  background: #fff !important;
+  z-index: 2000 !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+/* Ensure the container that holds the popup is above sticky headers */
+.bs-datepicker-container,
+.bs-daterangepicker-container {
+  z-index: 2050 !important;
+  position: absolute !important;
+  opacity: 1 !important;
+}
+
+/* If the calendar is still faint, override possible inherited transparency */
+.bs-datepicker-body,
+.bs-daterangepicker-body {
+  background-color: #ffffff !important;
+  opacity: 1 !important;
+}
+thead #searchBar th {
+  background-color: white !important;
+  z-index: 1001;
+  position: relative;
+}
+.col-test-1 {
+  background: #003ec4 !important;
+  color: white;
+   position: sticky;
+}
+table td {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 10px;
+}
+
+table th {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+table th span {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+::ng-deep ng-select  .ng-dropdown-panel .ng-dropdown-panel-items {
+    position: fixed !important;
+    /* z-index: 99 !important; */
+    width: 12% !important;
+}
+table td,
+table th {
+  font-size: medium;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+  border: 1px solid #bcb7b7 !important;
+}

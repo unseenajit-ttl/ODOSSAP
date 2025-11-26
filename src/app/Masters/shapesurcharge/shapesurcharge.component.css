@@ -1,0 +1,25 @@
+.my-small-btn {
+
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+.fa-refresh:before {
+    position: relative;
+    right: 43px
+}
+
+
+.ng-selectcustomer {
+    font-weight: lighter;
+    font-style: normal;
+}
+.edit-label {
+
+    font-size: xx-small;
+
+    text-align: start;
+
+    width: 100px;
+
+}

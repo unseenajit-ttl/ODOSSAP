@@ -1,0 +1,46 @@
+.container-fluid {
+  padding: 0;
+}
+.Header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: x-large;
+  padding: 10px 5px;
+  background: #e6e6e6;
+}
+
+.subHeading {
+  font-size: large;
+  padding: 8px;
+  border-bottom: 1px solid #e6e6e6;
+  background: #eeeeee;
+}
+
+.Body {
+  padding: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  overflow: auto;
+  max-height: 500px;
+  
+}
+
+#shape_category_list{
+  padding: 10px;
+  display: flex;
+  flex-wrap: wrap; 
+}
+
+.img-selected {
+  background: #42e44299;
+}
+
+.img-box {
+  display: grid;
+  border: 1px solid #686868;
+}
+
+.Shapecode-text {
+  font-size: x-large;
+}

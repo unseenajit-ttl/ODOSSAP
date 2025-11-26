@@ -1,0 +1,16 @@
+<div cdkDrag cdkDragRootElement=".your-custom-dialog-class">
+    <div class="modal-header" cdkDragHandle>
+        <span class="modal-title">Invalid Token</span>
+    </div>
+
+    <div class="modal-body">
+        <div style="text-align: center;">
+            <h1>You are not Authorized to access the application. Please login through UMP.</h1>
+            <button id="HomeButton" class="btn btn-primary" (click)="OpenHome()">
+                <i class="bi bi-house-door-fill"></i>
+                &nbsp;
+                Home
+            </button>
+        </div>
+    </div>
+</div>

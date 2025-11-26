@@ -1,0 +1,294 @@
+<div  cdkDragRootElement=".your-custom-dialog-class" cdkDrag cdkDragRootElement=".modal-content">
+  <div class="modal-header" cdkDragHandle>
+  <div class="row w-100">
+    
+    <!-- LEFT SIDE HEADER -->
+    <div class="col-7 d-flex align-items-center">
+       <h4 class="modal-title" *ngIf="!isaddnew">Add Group Marking</h4>
+       <h4 class="modal-title" *ngIf="isaddnew">Add Group Marking from Another Project</h4>
+       
+    </div>
+
+    <!-- RIGHT SIDE HEADER -->
+    <div class="col-5 d-flex justify-content-between align-items-center" *ngIf="selectedItem.IsPreCast">
+      <h4 class="modal-title ">Precast Data Entry</h4>
+       <button type="button" class="close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button> 
+        <!-- <button type="button" class="btn-close" (click)="showPrecast = false"></button>
+        -->
+     </div>
+
+  </div>
+</div>
+
+
+  <div class="modal-body">
+    <div class="d-flex" style="gap: 10px;" >
+       <!-- Group Marking -->
+      <div *ngIf="showGroupMarking"
+         [ngClass]="{'col-md-7 border-end pe-3': selectedItem.IsPreCast, 'col-12': !selectedItem.IsPreCast}">
+       
+        <form [formGroup]="wbscreateForm">
+         
+            <div class="container">
+        <div class="row" *ngIf="isaddnew">
+
+          <div class="col-md-4">
+            <label class="form-label">Customer</label> <br>
+            <ng-select formControlName="customer" class="ng-selectcustomer" (change)="changecustomer($event)">
+              <ng-option *ngIf="loading">
+                <div style="justify-content: center;display: flex;">
+                  <div class="spinner-border text-secondary" role="status">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                </div>
+              </ng-option>
+              <ng-option *ngFor="let sList of customerList" [value]="sList.CustomerNo">
+                {{sList.Customername}}
+              </ng-option>
+            </ng-select>
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label">Project</label> <br>
+            <ng-select formControlName="project" class="ng-selectcustomer" (change)="changeproject($event)">
+              <ng-option *ngFor="let sList of projectList" [value]="sList.ProjectId">
+                {{sList.Description}}
+              </ng-option>
+            </ng-select>
+          </div>
+
+          <div class="col-md-2">
+            <label class="form-label"> Product Type</label> <br>
+            <ng-select formControlName="projecttype" [ngModel]="prodttype" [readonly]="true">
+              <ng-option *ngFor="let sList of producttypeList" [value]="sList.ProductTypeID">
+                {{sList.ProductType}}
+              </ng-option>
+            </ng-select>
+          </div>
+          <div class="col-md-2">
+            <label class="form-label">Str Element</label> <br>
+            <ng-select formControlName="StructureElement" [ngModel]="structure" [readonly]="true">
+              <ng-option *ngFor="let sList of structureList" [value]="sList.StructureElementTypeId">
+                {{sList.StructureElementType}}
+              </ng-option>
+            </ng-select>
+          </div>
+        </div>
+        <br>
+        <div class="d-flex" *ngIf="ShowPrecast">
+          <!-- <button type="submit" class="btn btn-primary ms-auto" (click)="importPrecast()" title="Import from precast"> Import </button> -->
+          <!-- <i class="bi bi-arrow-down-square icon-large ms-auto" (click)="importPrecast()" title="Import from precast">
+          </i> -->
+
+        </div>
+        <div class="row d-flex ">
+          <div class="col-md-3">
+            <label class="form-label">Group Marking</label> <br>
+            <div class="d-flex ">
+              <div>
+                <ng-select formControlName="groupmark" #groupmarkSelect placeholder="Select Group Mark"
+                  class="ng-selectcustomer" (change)="changegroupmark($event)">
+                  <ng-option *ngIf="loading">
+                    <div style="justify-content: center;display: flex;">
+                      <div class="spinner-border text-secondary" role="status">
+                        <span class="sr-only">Loading...</span>
+                      </div>
+                    </div>
+                  </ng-option>
+                  <ng-option *ngFor="let sList of groupmarkList" [value]="sList.intGroupMarkId">
+                    {{sList.vchGroupMarkingName}}
+                  </ng-option>
+                </ng-select> &nbsp;
+                <span class="text-danger"
+                  *ngIf=" formsubmit && wbscreateForm.controls['groupmark'].invalid && wbscreateForm.controls['groupmark'].errors && wbscreateForm.controls['groupmark'].hasError('required')">*
+                  Groupmark Required </span>
+
+              </div>
+
+            </div>
+          </div>
+
+          <div class="col-md-1">
+            <i class="material-icons" style="    position: relative;
+              top: 34px;
+              left: 10px;" *ngIf="!isaddnew" (click)="addnew()" ngbTooltip="Add Other">add_circle</i>
+          </div>
+
+          <div class="col-md-2">
+            <label class="form-label">Post Quantity</label> <br>
+            <input type="text" id="postedQuantity" formControlName="postqty" placeholder="Quantity"
+              class="form-control" />
+
+            <span class="text-danger"
+              *ngIf=" formsubmit && wbscreateForm.controls['postqty'].invalid && wbscreateForm.controls['postqty'].errors && wbscreateForm.controls['postqty'].hasError('required')">*
+              Qty Required </span>
+
+          </div>
+
+          <div class="col-md-2">
+            <label class="form-label">Rev</label> <br>
+            <input type="text" formControlName="rev" placeholder="Rev" class="form-control" [readonly]="true" />
+
+
+          </div>
+
+
+
+          <div class="col-md-3 ">
+            <label class="form-label">Remark</label> <br>
+
+            <textarea class="form-control" placeholder="Remark" formControlName="remark" rows="1"></textarea> &nbsp;
+          </div>
+          <div class="col-md-1 mt-4">
+            <button class="btn btn-primary btn-sm" type="submit" (click)="Savegroupmark()">Save</button>
+          </div>
+
+
+        </div>
+
+        <div class="row">
+          <table class="table  table-bordered w-50 m-auto table-responsive d-table table-striped">
+            <caption>
+              <div style="display: flex;
+                  justify-content: flex-end;">
+              <span style="display:flex;width:16px;height:16px;background-color:#94DBB9;margin-right:6px;border:1px solid #000;"></span>
+              <p><strong>Added  from Precast</strong></p> 
+            </div>
+            </caption>
+            <thead class="bg-secondary text-white">
+              <tr>
+                <th colspan="5" class="text-center"><span>Group Marking</span></th>
+              </tr>
+            </thead>
+            <thead>
+              <th> Group Marking </th>
+              <th>Revision </th>
+              <th> Posted Qty </th>
+              <th> Remark </th>
+              <th> Action </th>
+
+            </thead>
+            <tbody>
+              <tr *ngFor="let row2 of Groupmarkinglist;  index as isgroupmark;" [ngStyle]="{'background-color':giveRowcolorNew(row2)}">
+                <ng-container *ngIf="enableEditIndex != isgroupmark">
+
+
+                  <td>{{row2.GroupMark}}</td>
+                  <td>{{row2.Rev}}</td>
+                  <td>{{row2.Qty}}</td>
+                  <td>{{row2.Remark}}</td>
+                  <td *ngIf="row2.isaddedNew===true">
+                    <i class="material-icons" ngbTooltip="Edit" (click)="onEdit(row2,isgroupmark)">mode_edit</i>&nbsp;
+                    <i class="bi bi-trash" (click)="deletegroupmark(Groupmarkinglist,isgroupmark)" ngbTooltip="Deleted"
+                      style="color:red; font-size:15px"></i>
+                  </td>
+                  <td *ngIf="row2.isaddedNew===false">
+
+                  </td>
+
+
+                </ng-container>
+                <ng-container *ngIf="enableEditIndex == isgroupmark">
+
+
+                  <td>{{row2.GroupMark}}</td>
+                  <td>{{row2.Rev}}</td>
+                  <!-- <td>{{row2.Qty}}</td> -->
+                  <td>
+                    <input type="number" class="form-control" formControlName="qty"
+                      (keydown.enter)="Update(row2, isgroupmark)" style=" height: auto; width: 80px;" />
+                    <div class="text-danger edit-label" style="width: 100px;" *ngIf=" row2.Qty == undefined">*Qty
+                      Required. </div>
+                  </td>
+                  <!-- <td>{{row2.Remark}}</td> -->
+                  <td>
+                    <input type="text" class="form-control" formControlName="remarks"
+                      (keydown.enter)="Update(row2, isgroupmark)" style=" height: auto; width:65px;" />
+                  </td>
+                  <td>
+                    <i class="material-icons" (click)="Update(row2, isgroupmark)" ngbTooltip="Update">save</i>
+                    &nbsp;
+                    <i class="bi bi-trash" (click)="deletegroupmark(Groupmarkinglist,isgroupmark)" ngbTooltip="Deletes"
+                      style="color:red; font-size:15px"></i>
+                  </td>
+
+
+                </ng-container>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+        </form>
+      </div>
+      <!-- Precast -->
+      <div  *ngIf="selectedItem.IsPreCast"
+         [ngClass]="{'col-md-5 ps-3': showGroupMarking, 'col-12': !showGroupMarking}">
+          <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
+        <!-- <h4 class="modal-title">PRC Data Entry</h4>
+        <button type="button" class="btn-close" (click)="showPrecast = false"></button> -->
+      </div>
+      
+        <table class="table table-bordered table-hover my-table">
+          <caption>
+            <span style="display:inline-block;width:12px;height:12px;background-color:#F08080;margin-right:6px;border:1px solid #000;"></span>
+            Component Marking not matching with existing Groupmarks
+          </caption>
+          <thead>
+            <tr>
+              <th>Sr.No</th>
+              <th>Component Marking</th>
+              <th>Block</th>
+              <th>Level</th>
+              <th>Qty</th>
+              <th>Remark</th>
+              <th>Page No.</th>
+            </tr>
+          </thead>
+           <tbody>
+                    <tr *ngFor="let item of PrecastArray; index as i" [ngStyle]="{'background-color':giveRowcolor(item)}">
+                         <td>{{ i + 1 }}</td>
+                         <td>{{ item.ComponentMarking }}</td>
+                         <td>{{ item.Block }}</td>
+                         <td>{{ item.Level }}</td>
+                         <td>{{ item.Qty }}</td>
+                         <td>{{ item.Remark }}</td>
+                         <td>{{item.PageNo}}</td>
+                    </tr>
+                </tbody>
+        </table>
+
+        <ngb-pagination [collectionSize]="PrecastArray.length"
+                        [(page)]="currentPage"
+                        [pageSize]="itemsPerPage"
+                        (pageChange)="onPageChange(currentPage)">
+        </ngb-pagination>
+      </div>
+
+     
+`
+    </div>
+  </div>
+
+  <!-- <div class="modal-footer">
+  
+     <button class="btn btn-primary" type="button" (click)="submitReview(true)"  [disabled]="isDisablePost"> Post</button>
+     <button class="btn btn-primary" type="button" (click)="submitReview(false)" [disabled]="disableSubmit">Submit</button>
+    <button type="button" class="btn btn-primary" (click)="downloadReport()">Download Report</button>
+    <button type="button" (click)="cancel()" class="btn btn-transparent"> Cancel</button>
+   
+  </div> -->
+ <div class="modal-footer d-flex justify-content-between w-100">
+  <div>
+    <button class="btn btn-primary me-2" type="button" (click)="submitReview(true)" [disabled]="isDisablePost">  Post</button>
+    <button class="btn btn-primary" type="button" (click)="submitReview(false)" [disabled]="disableSubmit"> Submit </button>
+  </div>
+ <div >
+    <button *ngIf="selectedItem.IsPreCast" type="button" class="btn btn-primary" (click)="downloadReport()"> Print  Report</button>
+    <button type="button" (click)="cancel()" class="btn btn-transparent"> Cancel</button>
+ </div>
+</div>
+</div>

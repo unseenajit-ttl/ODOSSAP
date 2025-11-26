@@ -1,0 +1,98 @@
+<div id="mydiv" cdkDrag cdkDragRootElement=".your-custom-dialog-class" style="height: 410px;">
+  <div class="modal-header" cdkDragHandle>
+    <span class="modal-title">Send Notification</span>
+    <i class="fa-solid fa-xmark"></i>
+    <!-- <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button> -->
+  </div>
+
+  <div class="modal-body">
+    <!-- LOADER -->
+    <div *ngIf="NotificationLoading" style="z-index: 500;opacity:1">
+      <div id="pause" class="d-flex align-items-center justify-content-center">
+        <div id="spinner" class="loader"></div>
+      </div>
+    </div>
+    <div class="row sub-heading">
+      <span>Send Email To: </span>
+    </div>
+    <div class="row">
+      <div class="row">
+        <div class="col-md-3 name-field" *ngFor="let item of emailList; index as i">
+          <input class="form-control" readonly [value]="item">&nbsp;&nbsp;
+          <i class="bi bi-x-circle custom-icon" (click)="RemoveEmail(item)" ngbTooltip="Remove Email"></i>
+        </div>
+      </div>
+    </div>
+        <div class="row sub-heading">
+      <span>CC: </span>
+    </div>
+     <div class="row">
+      <div class="row">
+        <div class="col-md-3 name-field"  *ngFor="let item of CCList; index as i">
+          <input class="form-control" readonly  [value]="item">&nbsp;&nbsp;
+          <i class="bi bi-x-circle custom-icon"   (click)="RemoveCC(item)"     ngbTooltip="Remove Email"></i>
+        </div>
+      </div>
+    </div>
+    
+    <br>
+    <div class="row sub-heading">
+      <span>Select Email Id: </span>
+    </div>
+    <div class="row">
+      <div class="input-field clickable-div">
+        <input class="form-control" (click)="showFilterSuggestion=true" [(ngModel)]="imputEmailTo"
+          (keydown.enter)="AddEmail(imputEmailTo)" (input)="onInputChange()">&nbsp;&nbsp;
+        <i class="bi bi-plus-circle-fill custom-icon" (click)="AddEmail(imputEmailTo)" ngbTooltip="Add Email"></i>
+      </div>
+    </div>
+    <ul *ngIf="showFilterSuggestion">
+      <li *ngFor="let suggestion of filteredSuggestions" (click)="selectSuggestion(suggestion)">
+        {{ suggestion }}
+      </li>
+    </ul>
+    <br>
+    <div class="row">
+    
+      <div class="col-md-12 position-relative">
+        <label class="form-label">
+          <strong>Customer Remarks</strong>
+        </label> <br>
+      
+        <div class="d-flex align-items-center position-relative">
+          <!-- Textarea with Counter on Right -->
+          <textarea type="text" id="Remark" [(ngModel)]="Remarks" placeholder="Remarks" 
+            (click)="RemarkInput()"
+            class="form-control"
+            maxlength="100"
+            [class.is-invalid]="gStatus === false && !Remarks">
+          </textarea>
+      
+          <!-- Character Counter on Right -->
+          <span class="position-absolute text-muted small" style="right: 10px; bottom: 10px;">
+            {{ Remarks?.length || 0 }}/100
+          </span>
+        </div>
+      
+        <!-- Validation Message on Left -->
+        <div *ngIf="gStatus === false && !Remarks" class="text-danger mt-1">
+          Please enter remarks before submitting the Rejection!
+        </div>
+      </div>
+      
+      
+      
+    </div>
+  </div>
+  <div class="modal-footer">
+
+    <button type="button" class="btn btn-primary me-2" style="height: 40px" (click)="SendNotificationtoDetailer()"
+      [disabled]="gStatus === false && (!Remarks || Remarks.trim() === '')">
+      Send (发送)
+    </button>
+    <button type="button" class="btn btn-primary me-2" style="height: 40px"
+      (click)="activeModal.dismiss('Cross click')">
+      Close (关闭)
+    </button>
+  </div>
+</div>

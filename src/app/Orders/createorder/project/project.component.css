@@ -1,0 +1,130 @@
+/* carousel-custom.css */
+
+/* Style the carousel controls */
+.carousel-indicators {
+  margin: 0 40%;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  display: inline-block;
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='black' viewBox='0 0 8 8'%3E%3Cpath d='M5.25 0.53l-4 4c-0.18 0.18-0.18 0.48 0 0.66l4 4c0.18 0.18 0.48 0.18 0.66 0s0.18-0.48 0-0.66l-3.47-3.47h6.81c0.28 0 0.5-0.22 0.5-0.5s-0.22-0.5-0.5-0.5h-6.81l3.47-3.47c0.18-0.18 0.18-0.48 0-0.66-0.18-0.18-0.48-0.18-0.66 0z' /%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.carousel-control-prev-icon {
+  left: -30px;
+}
+
+.carousel-control-next-icon {
+  right: -30px;
+  transform: translateY(-50%) rotate(180deg);
+  fill: red;
+  /* Change the fill color to red */
+}
+
+.carousel-control-next {
+  height: fit-content;
+  background: red;
+  position: absolute;
+  /* top: 0px; */
+  right: 0;
+  top: 50%;
+}
+
+.carousel-control-prev {
+  height: fit-content;
+  background: red;
+  position: absolute;
+  /* top: 0px; */
+  left: 0;
+  top: 50%;
+}
+
+.spanInfoIcon {
+  border: 1px solid #686868;
+  border-radius: 50%;
+  display: flex;
+  height: 20px;
+  width: 20px;
+  justify-content: center;
+  font-weight: 700;
+}
+
+.subHeading {
+  font-weight: bold;
+  size: h3;
+  font-size: smaller;
+}
+
+.change-color {
+  background: #bdffbd;
+}
+
+td {
+  padding: 3px !important;
+}
+
+.table-responsive>.table-bordered {
+  border: 0;
+  padding: 0px;
+  margin: 0px;
+}
+
+/* Change the background color of selected options in the dropdown */
+:host ::ng-deep ng-select .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected {
+  background-color: #ddd !important;
+  /* Green background for selected options */
+}
+
+
+:host ::ng-deep ng-select .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected.ng-option-marked {
+  background-color: #003ec4 !important;
+  /* Green background for selected options */
+}
+
+
+.green-steel {
+  font-size: 12px;
+  font-weight: 600;
+  padding-left: 30px;
+  display: flex;
+
+  .Green-Steel-input {
+    padding: 0;
+
+    input {
+      margin: 0;
+    }
+  }
+}
+.green-steel-sub {
+  display: flex;
+  padding: 0px 25px;
+  margin: auto 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.green-steel table {
+  
+  td{
+    min-width: 5rem;
+    border: 1px solid #ccccccc2;
+  }
+}
+.Green-Steel-input :checked {
+  background-color: #0dfd1f;
+  border-color: #0dfd1f;
+}
+
+.green-steel-dropdown{
+  width: 180px;
+  height: 35px;
+  margin-top: 0.5rem;
+}

@@ -1,0 +1,1115 @@
+<div class="container-fluid">
+    <div class="card m-1">
+        <div class="card-body" style="height: 500px;">
+            <div class="filter ">
+                <form [formGroup]="MeshparameterForm">
+                    <ngb-accordion #acc="ngbAccordion" title="Filters" activeIds="panel1">
+                        <ngb-panel id="panel1" class="pb-5">
+                            <ng-template ngbPanelContent>
+                                <div class="card-body">
+                                    <div class="row">                                       
+                                        <div class="col-md-3">
+                                            <label class="form-label ">Parameter Set</label> <br>
+                                            <div class=" d-flex">
+                                                <div>
+                                                    <ng-select [selectOnTab]="true" 
+                                                        [(ngModel)]="tntParameterSet" [ngModelOptions]="{standalone: true}" class="ng-selectwbs" (change)="onChangeParameterList()"
+                                                       >
+                                                      
+                                                        <ng-option *ngFor="let sList of ParameterSetList"
+                                                            [value]="sList.tntParamSetNumber">
+                                                            {{sList.intParameterSet}}
+                                                        </ng-option>
+                                                    </ng-select>
+                                                  
+                                                </div>
+                                                &nbsp;
+                                                <i class="material-icons" ngbTooltip="Add New Parameter Set" (click)="AddNewParameter()"
+                                                    >add_circle</i>
+
+                                               
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </ng-template>
+                        </ngb-panel>
+
+                    </ngb-accordion>
+                </form>
+            </div>
+            <br>
+            <div>
+                <div class="row" style="margin-top: 10px;">
+                    <!---------------PARAMETER SET---------------->
+                    <div class="col card_pad flex  align-items-stretch" style="padding-top:0px;">
+                        <div class="card">
+
+
+
+                            <div class="card-header" style="text-align: center;">
+                                <b>PARAMETER</b>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-2 card_pad d-flex align-items-stretch">
+
+                                </div>
+                                <div class="col-sm-8 card_pad d-flex align-items-stretch">
+                                    <div class="card" style="max-height: 10;">
+                                        <div class="card-body">
+                                            <table
+                                                class="table  d-block d-md-table table-responsive table-striped  table-bordered ">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-center card-text" style="width:230px">
+                                                            Top Cover
+                                                        </th>
+                                                        <th class="text-center card-text" style="width:230px">
+                                                            Bottom Cover</th>
+                                                        <th class="text-center card-text" style="width:230px">
+                                                            Inner  Cover
+                                                        </th>
+                                                        <th class="text-center card-text" style="width:270px">
+                                                            Outer Cover
+                                                        </th>
+                                                        <th class="text-center card-text" style="width:270px">
+                                                            Actions
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <ng-container
+                                                        *ngFor="let item of Top_Parameters |slice: column_pageSize | slice: 0:column_itemperPage; index as i; ">
+                                                        <tr>
+                                                            <ng-container *ngIf="enableParameterEditIndex ===false">
+                                                                <td>
+                                                                    {{item.top_Cover}}
+                                                                </td>
+                                                                <td>
+                                                                    {{item.bottom_Cover}}
+                                                                </td>
+                                                                <td>
+                                                                    {{item.inner_Cover}}
+                                                                </td>
+                                                                <td>
+                                                                    {{item.outer_Cover}}
+                                                                </td>
+                                                                <td class="text-center">
+                                                                    <i class="material-icons" (click)="OnEditParam()"
+                                                                       
+                                                                        ngbTooltip="Edit">mode_edit</i>&nbsp;
+                                                                    <!-- <i class="bi bi-trash"
+                                                                        style="font-size:15px;"
+                                                                        ngbTooltip="Delete"></i> -->
+                                                                </td>
+                                                            </ng-container>
+                                                            <ng-container *ngIf="enableParameterEditIndex ===true">
+                                                                <td>
+                                                                    <input type="number" class="form-control"
+                                                                        [(ngModel)]="item.top_Cover"
+                                                                        style=" height: auto;" />
+
+
+                                                                </td>
+                                                                <td>
+                                                                    <input type="number" class="form-control"
+                                                                        [(ngModel)]="item.bottom_Cover"
+                                                                        style=" height: auto;" />
+
+                                                                </td>
+                                                                <td>
+                                                                    <input type="number" class="form-control"
+                                                                        [(ngModel)]="item.inner_Cover"
+                                                                        style=" height: auto;" />
+
+                                                                </td>
+                                                                <td>
+                                                                    <input type="number" class="form-control"
+                                                                        [(ngModel)]="item.outer_Cover"
+                                                                        style=" height: auto;" />
+
+                                                                </td>
+                                                                <td class="text-center" style="width:200px;">
+                                                                    <i class="material-icons" (click)="OnSave(item)"
+                                                                        
+                                                                        ngbTooltip="Update">save</i>
+                                                                    &nbsp;
+                                                                    <i class="material-icons"
+                                                                       
+                                                                        ngbTooltip="Cancel">cancel</i>
+                                                                </td>
+
+                                                            </ng-container>
+                                                        </tr>
+                                                    </ng-container>
+
+                                                    <!-- Add blank row when no paramater select -->
+                                                    
+                                                </tbody>
+
+                                            </table>
+                                         
+
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2 card_pad d-flex align-items-stretch">
+
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+                <tabset>
+                    <!-- {{selectedType}} -->
+                  
+                
+                    <tab heading="Drain Depth" style="background:#fff">
+                       
+                        <div class="row">
+                            <div class="col card_pad d-flex " style="justify-content:center">
+                                <div class="card">
+                                   
+                                    <div class="card-body">
+
+                                        <div class=" table-responsive table-wrapper-scroll-y my-custom-scrollbar1"
+                                            style="max-height: 260px;">
+                                            <table
+                                                class="table  w-100 d-block d-md-table  table-responsive table-striped  table-bordered ">
+                                                <thead>
+
+                                                    <tr>
+                                                        <th class="text-center">Actions</th>
+                                                        <th class="text-center">Width</th>
+                                                        <th class="text-center">Type</th>
+                                                        <th class="text-center">Adjust</th>
+                                                        <th class="text-center">Channel	</th>
+                                                        <th class="text-center">Slab Thick</th>
+                                                        <th class="text-center">Max Depth 1</th>
+                                                        <th class="text-center">Max Depth 2</th>
+                                                        <th class="text-center">Max Depth 3</th>
+                                                        <th class="text-center">Max Depth 4	</th>
+                                                        <th class="text-center">Max Depth 5	</th>
+                                                     
+                                                    </tr>
+                                                </thead>
+
+                                                <tbody>
+                                                    <tr
+                                                        *ngFor="let item of Drain_Depth |slice: drain_pageSize | slice: 0:drain_itemsPerPage; index as i; ">
+                                                        <ng-container *ngIf="enableDepthIndex != i">
+                                                           
+                                                            <td class="text-center">
+                                                                <i class="material-icons"
+                                                                    (click)="onEditDepth(item, i)"
+                                                                    ngbTooltip="Edit">mode_edit</i>&nbsp;
+                                                                <i class="bi bi-trash"
+                                                                    style="font-size:15px;" (click)="Delete_Depth(item)"
+                                                                    ngbTooltip="Delete"></i>
+                                                            </td>
+                                                            <td>
+                                                                {{item.sitDrainWidth}}
+                                                            </td>
+                                                            <td>
+                                                                {{item.vchDrainType}}
+                                                            </td>
+                                                            <td>
+                                                                {{item.sitAdjust}}
+                                                            </td>
+                                                            <td>
+                                                                {{item.sitChannel}}
+                                                            </td>
+                                                            <td>
+                                                                {{item.sitSlabThickness}}
+                                                            </td>
+                                                            <td>
+                                                                {{item.sitMaxDepth1}}
+                                                            </td>
+                                                            <td>
+                                                                {{item.sitMaxDepth2}}
+                                                            </td>
+                                                            <td>
+                                                                {{item.sitMaxDepth3}}
+                                                            </td>
+                                                            <td>
+                                                                {{item.sitMaxDepth4}}
+                                                            </td>
+
+                                                            <td>
+                                                                {{item.sitMaxDepth5}}
+                                                            </td>
+                                                        </ng-container>
+
+                                                         <ng-container *ngIf="enableDepthIndex == i">
+                                                            <td class="text-center" style="width:200px;">
+                                                                            <i class="material-icons" (click)="fn_addDrainDepth(item,'E')" 
+                                                                               
+                                                                                ngbTooltip="Update">save</i>
+                                                                            &nbsp;
+                                                                            <i class="material-icons" (click)="Editcancel_Depth()"
+                                                                                
+                                                                                ngbTooltip="Cancel">cancel</i>
+                                                                        </td>
+                                                           
+                                                            <td>
+                                                                <input type="number" class="form-control" (keydown.enter)="fn_addDrainDepth(item,'E')"
+                                                                    [(ngModel)]="item.sitDrainWidth" style=" height: auto;" />
+
+                                                            </td>
+                                                            <td>
+
+                                                                <ng-select [selectOnTab]="true"  (keydown.enter)="fn_addDrainDepth(item,'E')"  appendTo="body"
+                                                                [(ngModel)]="item.sitDrainTypeId" class="ng-selectwbs">
+                                                              
+                                                                <ng-option *ngFor="let sList of Drain_ProductType"
+                                                                    [value]="sList.sitDrainTypeId">
+                                                                    {{sList.vchDrainType}}
+                                                                </ng-option>
+                                                            </ng-select>
+
+
+                                                            </td>
+                                                            <td>
+                                                                <input type="number" class="form-control" (keydown.enter)="fn_addDrainDepth(item,'E')"
+                                                                    [(ngModel)]="item.sitAdjust"
+                                                                    style=" height: auto;" />
+
+                                                            </td>
+                                                            <td>
+                                                                <input type="number" class="form-control" (keydown.enter)="fn_addDrainDepth(item,'E')"
+                                                                    [(ngModel)]="item.sitChannel"
+                                                                    style=" height: auto;" />
+
+                                                            </td>
+                                                           
+                                                            <td>
+                                                                <input type="number" class="form-control" (keydown.enter)="fn_addDrainDepth(item,'E')"
+                                                                    [(ngModel)]="item.sitSlabThickness"
+                                                                    style=" height: auto;" />
+
+                                                            </td>
+                                                            <td>
+                                                                <input type="number" class="form-control" (keydown.enter)="fn_addDrainDepth(item,'E')"
+                                                                    [(ngModel)]="item.sitMaxDepth1"
+                                                                    style=" height: auto;" />
+
+                                                            </td>
+                                                           
+                                                            <td>
+                                                                <input type="number" class="form-control" (keydown.enter)="fn_addDrainDepth(item,'E')"
+                                                                    [(ngModel)]="item.sitMaxDepth2"
+                                                                    style=" height: auto;" />
+
+                                                            </td>
+                                                           
+                                                            <td>
+                                                                <input type="number" class="form-control" (keydown.enter)="fn_addDrainDepth(item,'E')"
+                                                                    [(ngModel)]="item.sitMaxDepth3"
+                                                                    style=" height: auto;" />
+
+                                                            </td>
+                                                           
+                                                            <td>
+                                                                <input type="number" class="form-control" (keydown.enter)="fn_addDrainDepth(item,'E')"
+                                                                    [(ngModel)]="item.sitMaxDepth4"
+                                                                    style=" height: auto;" />
+
+                                                            </td>
+                                                           
+                                                            <td>
+                                                                <input type="number" class="form-control" (keydown.enter)="fn_addDrainDepth(item,'E')"
+                                                                    [(ngModel)]="item.sitMaxDepth5"
+                                                                    style=" height: auto;" />
+
+                                                            </td>
+                                                           
+                                                           
+
+                                                           
+
+
+                                                        </ng-container> 
+                                                    
+                                                    </tr>
+                                                </tbody>
+
+                                                <tfoot>
+                                                    <tr *ngFor="let table of add_drain_depth">
+                                                        <td class="text-center">
+                                                            <i class="material-icons" (click)="isaddnewDrain=true;fn_addDrainDepth(table,'S')"
+                                                                ngbTooltip="Save">save</i>
+                                                            &nbsp;
+                                                            <i class="fa fa-refresh text-center" ngbTooltip="Reset"
+                                                                style=" color:red;font-size:20px;" 
+                                                               ></i>
+                                                        </td>
+                                                      
+                                                        <td><input class="form-control" maxlength="10" type="number" (keydown.enter)="fn_addDrainDepth(table,'S')"
+                                                                [(ngModel)]="table.sitDrainWidth" />
+                                                            <span class="text-danger validator-message"
+                                                                *ngIf="isaddnewDrain &&  (table.sitDrainWidth==undefined)">*
+                                                                Width Required. </span>
+                                                        </td>
+                                                        <td> <ng-select [selectOnTab]="true"  (keydown.enter)="fn_addDrainDepth(table,'S')" appendTo="body"
+                                                            [(ngModel)]="table.sitDrainTypeId" class="ng-selectwbs">
+                                                          
+                                                            <ng-option *ngFor="let sList of Drain_ProductType"
+                                                                [value]="sList.sitDrainTypeId">
+                                                                {{sList.vchDrainType}}
+                                                            </ng-option>
+                                                        </ng-select>
+                                                        <span class="text-danger validator-message"
+                                                            *ngIf="isaddnewDrain &&  (table.sitDrainTypeId==undefined)">*
+                                                            Type Required. </span>
+                                                    </td>
+                                                    <td><input class="form-control" maxlength="10" type="number" (keydown.enter)="fn_addDrainDepth(table,'S')"
+                                                        [(ngModel)]="table.sitAdjust" />
+                                                    <span class="text-danger validator-message"
+                                                        *ngIf="isaddnewDrain &&  (table.sitAdjust==undefined)">*
+                                                        Adjust Required. </span>
+                                                </td>
+                                                <td><input class="form-control" maxlength="10" type="number" (keydown.enter)="fn_addDrainDepth(table,'S')"
+                                                    [(ngModel)]="table.sitChannel" />
+                                                <span class="text-danger validator-message"
+                                                    *ngIf="isaddnewDrain &&  (table.sitChannel==undefined)">*
+                                                    Channel Required. </span>
+                                            </td>
+                                            <td><input class="form-control" maxlength="10" type="number" (keydown.enter)="fn_addDrainDepth(table,'S')"
+                                                [(ngModel)]="table.sitSlabThickness" />
+                                            <span class="text-danger validator-message"
+                                                *ngIf="isaddnewDrain &&  (table.sitSlabThickness==undefined)">*
+                                                Slab Thick Required. </span>
+                                        </td>
+                                        <td><input #sitMaxDepth1 class="form-control" maxlength="10" type="number" (keydown.enter)="fn_addDrainDepth(table,'S')"
+                                            [(ngModel)]="table.sitMaxDepth1" />
+                                        <span class="text-danger validator-message"
+                                            *ngIf="isaddnewDrain &&  (table.sitMaxDepth1==undefined)">*
+                                            Max Depth 1	 Required. </span>
+                                    </td>
+                                    <td><input #sitMaxDepth2 class="form-control" maxlength="10" type="number" (keydown.enter)="fn_addDrainDepth(table,'S')"
+                                        [(ngModel)]="table.sitMaxDepth2" />
+                                    <span class="text-danger validator-message"
+                                        *ngIf="isaddnewDrain &&  (table.sitMaxDepth2==undefined)">*
+                                        Max Depth 2	 Required. </span>
+                                </td>
+                                <td><input #sitMaxDepth3 class="form-control" maxlength="10" type="number" (keydown.enter)="fn_addDrainDepth(table,'S')"
+                                    [(ngModel)]="table.sitMaxDepth3" />
+                                <span class="text-danger validator-message"
+                                    *ngIf="isaddnewDrain &&  (table.sitMaxDepth3==undefined)">*
+                                    Max Depth 3	 Required. </span>
+                            </td>
+                            <td><input #sitMaxDepth4 class="form-control" maxlength="10" type="number" (keydown.enter)="fn_addDrainDepth(table,'S')"
+                                [(ngModel)]="table.sitMaxDepth4" />
+                            <span class="text-danger validator-message"
+                                *ngIf="isaddnewDrain &&  (table.sitMaxDepth4==undefined)">*
+                                Max Depth 4	 Required. </span>
+                        </td>
+                        <td><input  #sitMaxDepth4 class="form-control" maxlength="10" type="number" (keydown.enter)="fn_addDrainDepth(table,'S')"
+                            [(ngModel)]="table.sitMaxDepth5" />
+                        <span class="text-danger validator-message"
+                            *ngIf="isaddnewDrain &&  (table.sitMaxDepth5==undefined)">*
+                            Max Depth 5 Required. </span>
+                    </td>
+                                                       
+
+                                                      
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+
+                                    </div>
+                                  <div class="d-flex">
+                                    <div>
+                                        <ngb-pagination [collectionSize]="Drain_Depth.length" [(page)]="drain_currentPage"
+                                            [pageSize]="drain_itemsPerPage" (pageChange)="onPageChange_drain(drain_currentPage)" [maxSize]="5"
+                                            [boundaryLinks]="true">
+                                            <ng-template ngbPaginationPrevious>Prev</ng-template>
+                                            <ng-template ngbPaginationNext>Next</ng-template>
+                                        </ngb-pagination>
+                                    </div>
+                                    <div>
+                                        <select class="custom-select mr-2 ml-3" style="width: auto" [(ngModel)]="drain_itemsPerPage"
+                                            (ngModelChange)="OnPageSizeChange_drain(drain_itemsPerPage)">
+                                            <option [ngValue]="5">5 </option>
+                                            <option [ngValue]="10">10 </option>
+                                            <option [ngValue]="50">50 </option>
+                                            <option [ngValue]="100">100 </option>
+                                        </select>
+                                        <span>Items per page</span>
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                    </tab>
+                    <tab heading="Drain Lapping" style="background:#fff">
+                    
+                        <div class="row">
+                            <div class="col card_pad d-flex " style="justify-content:center">
+                                <div class="card">
+                                    
+                                    <div class="card-body">
+
+                                        <div class=" table-responsive table-wrapper-scroll-y my-custom-scrollbar1"
+                                            style="max-height: 260px;">
+                                            <table
+                                                class="table  w-100 d-block d-md-table  table-responsive table-striped  table-bordered ">
+                                                <thead>
+
+                                                    <tr>
+                                                        <th class="text-center">Actions</th>
+                                                        <th class="text-center">Product	</th>
+                                                        <th class="text-center">Lapping</th>
+                                                       
+                                                    </tr>
+                                                </thead>
+
+                                                <tbody>
+                                                    <tr
+                                                        *ngFor="let item of Drain_Lap |slice: drain_pageSize | slice: 0:lap_itemsPerPage; index as i; ">
+                                                        <ng-container *ngIf="enableLapIndex != i">
+                                                            <td class="text-center">
+                                                                <i class="material-icons"
+                                                                    (click)="onEditLapping(item, i)"
+                                                                    ngbTooltip="Edit">mode_edit</i>&nbsp;
+                                                                <i class="bi bi-trash"
+                                                                    style="font-size:15px;" (click)="Delete_Lap(item)"
+                                                                    ngbTooltip="Delete"></i>
+                                                            </td>
+
+                                                            <td>
+                                                                {{item.vchProductCode}}
+                                                            </td>
+                                                            <td>
+                                                                {{item.sitLap}}
+                                                            </td>
+                                                          
+                                                        </ng-container>
+                                                        <ng-container *ngIf="enableLapIndex == i">
+                                                            <td class="text-center" style="width:200px;">
+                                                                            <i class="material-icons" (click)="onUpdate_Lap(item)" 
+                                                                               
+                                                                                ngbTooltip="Update">save</i>
+                                                                            &nbsp;
+                                                                            <i class="material-icons" (click)="Editcancel_Lap()"
+                                                                                
+                                                                                ngbTooltip="Cancel">cancel</i>
+                                                                        </td>
+
+                                                            <td>
+
+                                                                <ng-select [selectOnTab]="true" (keydown.enter)="onUpdate_Lap(item)"  appendTo="body"
+                                                                [(ngModel)]="item.intProductCodeId" class="ng-selectwbs"
+                                                                 >
+                                                              
+                                                                <ng-option *ngFor="let sList of ProductCode" 
+                                                                    [value]="sList.intProductCodeId">
+                                                                    {{sList.vchProductCode}}
+                                                                </ng-option>
+                                                            </ng-select>
+
+                                                            </td>
+                                                            <td>
+                                                                <input type="number" class="form-control" (keydown.enter)="onUpdate_Lap(item)"
+                                                                    [(ngModel)]="item.sitLap" style=" height: auto;" />
+
+                                                            </td>
+                                                         
+                                                           
+
+
+                                                        </ng-container>
+                                                    </tr>
+                                                </tbody>
+
+                                                <tfoot>
+
+
+                                                    <tr *ngFor="let item of add_Drain_Lap">
+
+                                                        <td class="text-center">
+                                                            <i class="material-icons" (click)="onSave_Lap(item)"
+                                                                ngbTooltip="Save">save</i>
+                                                            &nbsp;
+                                                            <i class="fa fa-refresh text-center" ngbTooltip="Reset"
+                                                                style=" color:red;font-size:20px;"
+                                                                ></i>
+                                                        </td>
+                                                      
+                                                        <td> <ng-select [selectOnTab]="true"  (keydown.enter)="onSave_Lap(item)" appendTo="body"
+                                                            [(ngModel)]="item.intProductCodeId" class="ng-selectwbs"
+                                                             >
+                                                          
+                                                            <ng-option *ngFor="let sList of ProductCode"
+                                                                [value]="sList.intProductCodeId">
+                                                                {{sList.vchProductCode}}
+                                                            </ng-option>
+                                                        </ng-select>
+                                                            <span class="text-danger validator-message"
+                                                                *ngIf="isaddnewLap &&  (item.intProductCodeId==undefined)">*
+                                                                Product Code Required. </span>
+                                                        </td>
+                                                        <td>
+                                                            <input class="form-control" maxlength="10" type="number" (keydown.enter)="onSave_Lap(item)"
+                                                                [(ngModel)]="item.sitLap" />
+                                                            <span class="text-danger validator-message"
+                                                                *ngIf="isaddnewLap &&  (item.sitLap==undefined)">*
+                                                               Lap Required. </span>
+                                                        </td>
+
+                                                      
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+
+                                    </div>
+                                    <div class="d-flex">
+                                    <div>
+                                        <ngb-pagination [collectionSize]="Drain_Lap.length" [(page)]="lap_currentPage"
+                                            [pageSize]="lap_itemsPerPage" (pageChange)="onPageChange_drain(lap_currentPage)" [maxSize]="5"
+                                            [boundaryLinks]="true">
+                                            <ng-template ngbPaginationPrevious>Prev</ng-template>
+                                            <ng-template ngbPaginationNext>Next</ng-template>
+                                        </ngb-pagination>
+                                    </div>
+                                    <div>
+                                        <select class="custom-select mr-2 ml-3" style="width: auto" [(ngModel)]="lap_currentPage"
+                                            (ngModelChange)="OnPageSizeChange_drain(lap_currentPage)">
+                                            <option [ngValue]=5>5 </option>
+                                            <option [ngValue]=10>10 </option>
+                                            <option [ngValue]=20>20 </option>
+                                            <option [ngValue]=50>50 </option>
+                                            <option [ngValue]=100>100 </option>
+                                        </select>
+                                        <span>Items per page</span>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </tab>
+                    <tab heading="Drain WM" style="background:#fff">
+                      
+                        <div class="row">
+                            <div class="col card_pad d-flex " style="justify-content:center">
+                                <div class="card">
+                                   
+                                    <div class="card-body">
+
+                                        <div class=" table-responsive table-wrapper-scroll-y my-custom-scrollbar1 table-scroll"  
+                                            style="max-height: 260px;">
+                                            <table
+                                                class="table  w-10 d-block d-md-table  table-responsive table-striped custom-table  table-bordered ">
+                                                <thead>
+
+                                                    <tr>
+                                                        <th class="text-center w-125px " >Action</th>
+                                                        <th class="text-center w-125px " >Width</th>
+                                                        <th class="text-center ">Drain Type</th>
+                                                        <th class="text-center ">Max Depth</th>
+                                                        <th class="text-center">Drain Layer	</th>
+                                                        <th class="text-center">Product	</th>
+                                                        <th class="text-center">Shape</th>                                                        
+                                                        <th class="text-center">Pre-defined</th>
+                                                        <th class="text-center">Qty</th>
+                                                        <th class="text-center">Left Wall Thick	</th>
+                                                        <th class="text-center">Left Wall Factor</th>
+                                                        <th class="text-center">Right Wall Thick</th>
+                                                        <th class="text-center">Right Wall Factor</th>
+                                                        <th class="text-center">Base Thick	</th>
+                                                     
+                                                    </tr>
+                                                </thead>
+
+                                                <tbody>
+                                                    <tr
+                                                        *ngFor="let item of Drain_WM |slice: WM_pageSize | slice: 0:WM_itemsPerPage; index as i; ">
+                                                        <ng-container *ngIf="enableWMIndex != i">
+                                                            
+                                                            <td class="text-center">
+                                                                <i class="material-icons" (click)="onEditWM(item,i)"
+                                                                    ngbTooltip="Edit">mode_edit</i>&nbsp;
+                                                                <i class="bi bi-trash" style="font-size:15px;" (click)="Delete_WM(item)"
+                                                                    
+                                                                    ngbTooltip="Delete"></i>
+                                                            </td>
+                                                            <td>
+                                                                {{item.sitDrainWidth}}
+                                                            </td>
+                                                            <td>
+                                                                {{item.vchDrainType}}
+                                                            </td>
+                                                            <td>
+                                                                {{item.sitMaxDepth}}
+                                                            </td>
+                                                            <td>
+                                                                {{item.vchDrainLayer}}
+                                                            </td>
+                                                            <td>
+                                                                
+                                                                {{item.vchProductCode}}
+                                                            </td>
+                                                            <td>
+                                                                <div *ngIf="item.intShapeId===11 || item.intShapeId===10">{{item.chrShapeCode}} A:{{item.intParamA}}</div>
+                                                                <div *ngIf="!(item.intShapeId===11 || item.intShapeId===10)">{{item.chrShapeCode}}</div>
+
+                                                                
+                                                                
+                                                            </td>
+                                                            <td>
+                                                                <div class=" row custom-control custom-switch" style="margin:auto; padding-left: 4rem;">
+
+                                                                    <input type="checkbox" [(ngModel)]="item.bitPreDefined" class="custom-control-input"  [value]="item.bitPreDefined" [disabled]="true" 
+                                                                    id="Pre-defined">
+                                    
+                                                                    <label class="custom-control-label"  (click)="preDefined(item)"  for="Pre-defined"></label>
+                                    
+                                                                </div>
+                                                                
+                                                            </td>
+                                                            <td>
+                                                                {{item.intQty}}
+                                                            </td>
+                                                            <td>
+                                                                {{item.numLeftWallThickness}}
+                                                            </td>
+                                                            <td>
+                                                                {{item.numLeftWallFactor}}
+                                                            </td>
+                                                            <td>
+                                                                {{item.numRightWallThickness}}
+                                                            </td>
+                                                            <td>
+                                                                {{item.numRightWallFactor}}
+                                                            </td>
+                                                            <td>
+                                                                {{item.numBaseThickness}}
+                                                            </td>
+                                                          
+                                                        </ng-container>
+                                                         <ng-container *ngIf="enableWMIndex == i">
+                                                            <td class="text-center" style="width:200px;">
+                                                                <i class="material-icons" (click)="on_updateWM(item)"
+                                                                   
+                                                                    ngbTooltip="Update">save</i>
+                                                                &nbsp;
+                                                                <i class="material-icons"  (click)="Editcancel_WM()"
+                                                                    
+                                                                    ngbTooltip="Cancel">cancel</i>
+                                                            </td>
+                                                            <td>
+                                                                <ng-select [selectOnTab]="true" (change)="loadDrainWM_MaxDepth($event)"  appendTo="body" 
+                                                                [(ngModel)]="item.sitDrainWidth" class="ng-selectwbs"
+                                                               >
+                                                              
+                                                                <ng-option *ngFor="let sList of Drain_WM_width"
+                                                                    [value]="sList.intDrainDepthParamId">
+                                                                    {{sList.sitDrainWidth}}
+                                                                </ng-option>
+                                                            </ng-select>
+                                                                <span class="text-danger validator-message"
+                                                                    *ngIf="isaddnewDrain &&  (item.sitDrainWidth===undefined)">*
+                                                                    Leg Required. </span>
+                                                            </td>
+                                                            <td>
+                                                                <ng-select [selectOnTab]="true"   appendTo="body" 
+                                                                [(ngModel)]="item.sitDrainTypeId"lass="ng-selectwbs"
+                                                               >
+                                                              
+                                                                <ng-option *ngFor="let sList of Drain_WM_Draintype"
+                                                                    [value]="sList.sitDrainTypeId">
+                                                                    {{sList.vchDrainType}}
+                                                                </ng-option>
+                                                            </ng-select>
+                                                                <span class="text-danger validator-message" 
+                                                                    *ngIf="isaddnewDrain &&  (item.intDrainDepthParamId==undefined)">*
+                                                                    Leg Required. </span>
+                                                            </td>
+                                                            <td>
+                                                                <ng-select [selectOnTab]="true"  appendTo="body" 
+                                                                [(ngModel)]="item.sitMaxDepth"class="ng-selectwbs"
+                                                                >
+                                                              
+                                                                <ng-option *ngFor="let sList of Drain_WM_MaxDepth"
+                                                                    [value]="sList.intDrainMaxDepth">
+                                                                    {{sList.intDrainMaxDepth}}
+                                                                </ng-option>
+                                                            </ng-select>
+                                                                <span class="text-danger validator-message"
+                                                                    *ngIf="isaddnewDrain &&  (item.sitMaxDepth==undefined)">*
+                                                                    Leg Required. </span>
+                                                            </td>
+                                                            <td>
+                                                                <ng-select [selectOnTab]="true"  appendTo="body" 
+                                                                [(ngModel)]="item.tntDrainLayerId" class="ng-selectwbs" (change)="loadDrainWM_Shape($event);onChangeLayer_Edit($event,item)"
+                                                                >
+                                                              
+                                                                <ng-option *ngFor="let sList of Drain_layer"
+                                                                    [value]="sList.tntDrainLayerId">
+                                                                    {{sList.vchDrainLayer}}
+                                                                </ng-option>
+                                                            </ng-select>
+                                                                <span class="text-danger validator-message"
+                                                                    *ngIf="isaddnewDrain &&  (item.tntDrainLayerId==undefined)">*
+                                                                    Leg Required. </span>
+                                                            </td>
+                                                            <td>
+                                                                <ng-select [selectOnTab]="true"   appendTo="body" 
+                                                                [(ngModel)]="item.intProductCodeId" class="ng-selectwbs"
+                                                                >
+                                                              
+                                                                <ng-option *ngFor="let sList of Drain_WM_Productcode"
+                                                                    [value]="sList.intProductCodeId">
+                                                                    {{sList.vchProductCode}}
+                                                                </ng-option>
+                                                            </ng-select>
+                                                                <span class="text-danger validator-message"
+                                                                    *ngIf="isaddnewDrain &&  (item.intProductCodeId==undefined)">*
+                                                                    Leg Required. </span>
+                                                            </td>
+                                                            <td>
+                                                                <div> <ng-select [selectOnTab]="true" 
+                                                                    [(ngModel)]="item.intShapeId" class="ng-selectwbs" (change)="ChangeShape($event,item.intParamA,'L')"
+                                                                    >
+                                                                  
+                                                                    <ng-option *ngFor="let sList of Drain_WM_Shape"
+                                                                        [value]="sList.intShapeId">
+                                                                        {{sList.chrShapeCode}}
+                                                                    </ng-option>
+                                                                </ng-select>
+                                                                <br>
+                                                              <div *ngIf="enableParam">
+                                                                <input class="form-control" maxlength="10" type="number" style="width:55px;position: relative;left: 24px;"
+                                                                [(ngModel)]="item.intParamA" />
+                                                              </div>
+                                        </div>
+                                                                
+                                                                <span class="text-danger validator-message"
+                                                                    *ngIf="isaddnewDrain &&  (item.intShapeId==undefined)">*
+                                                                    Leg Required. </span>
+                                                            </td>
+                                                            <td>
+                                                                <div class=" row custom-control custom-switch" style="margin:auto; padding-left: 4rem;">
+
+                                                                    <input type="checkbox" [(ngModel)]="item.bitPreDefined" class="custom-control-input" [disabled]="true"
+                                                                    id="Split_Up_Ind_inp_3">
+                                    
+                                                                    <label class="custom-control-label" for="Split_Up_Ind_inp_3"></label>
+                                    
+                                                                </div>
+                                                            </td>
+                                                            <td><input class="form-control" maxlength="10" type="number" (keydown.enter)="on_updateWM(item)"
+                                                                [(ngModel)]="item.intQty" />
+                                                            <span class="text-danger validator-message"
+                                                                *ngIf="isaddnewDrain &&  (item.intQty==undefined)">*
+                                                                Leg Required. </span>
+                                                        </td>
+                                                        <td><input class="form-control" maxlength="10" type="number" (keydown.enter)="on_updateWM(item)"
+                                                            [(ngModel)]="item.numLeftWallThickness">
+                                                        <span class="text-danger validator-message"
+                                                            *ngIf="isaddnewDrain &&  (item.numLeftWallThickness==undefined)">*
+                                                            Leg Required. </span>
+                                                    </td>
+                                                    <td><input class="form-control" maxlength="10" type="number"  (keydown.enter)="on_updateWM(item)"
+                                                        [(ngModel)]="item.numLeftWallFactor" />
+                                                    <span class="text-danger validator-message"
+                                                        *ngIf="isaddnewDrain &&  (item.numLeftWallFactor==undefined)">*
+                                                        Leg Required. </span>
+                                                </td>
+                                                <td><input class="form-control" maxlength="10" type="number" (keydown.enter)="on_updateWM(item)"
+                                                    [(ngModel)]="item.numRightWallThickness"/>
+                                                <span class="text-danger validator-message"
+                                                    *ngIf="isaddnewDrain &&  (item.numRightWallThickness==undefined)">*
+                                                    Leg Required. </span>
+                                            </td>
+                                            <td><input class="form-control" maxlength="10" type="number" (keydown.enter)="on_updateWM(item)"
+                                                [(ngModel)]="item.numRightWallFactor" />
+                                            <span class="text-danger validator-message"
+                                                *ngIf="isaddnewDrain &&  (item.numRightWallFactor==undefined)">*
+                                                Leg Required. </span>
+                                        </td>
+                                        <td><input class="form-control" maxlength="10" type="number" (keydown.enter)="on_updateWM(item)"
+                                            [(ngModel)]="item.numBaseThickness"/>
+                                        <span class="text-danger validator-message"
+                                            *ngIf="isaddnewDrain &&  (item.numBaseThickness==0)">*
+                                            Leg Required. </span>
+                                    </td>
+                                                            
+
+
+                                                        </ng-container> 
+                                                    </tr>
+                                                </tbody>
+
+                                                <tfoot class="mt-3">
+
+
+                                                    <tr class="mt-3" *ngFor="let table of add_Drain_WM">
+
+                                                        <td class="text-center">
+                                                            <i class="material-icons" (click)="onSave_WM(table)" 
+                                                                ngbTooltip="Save">save</i>
+                                                            &nbsp;
+                                                            <i class="fa fa-refresh text-center" ngbTooltip="Reset" (click)="Reset_WM()"
+                                                                style=" color:red;font-size:20px;" 
+                                                               ></i>
+                                                        </td>
+                                                        <td>
+                                                            <ng-select [selectOnTab]="true" appendTo="body"  (change)="table.intDrainDepthParamId=$event;loadDrainWM_MaxDepth($event)"
+                                                            [(ngModel)]="table.sitDrainWidth" class="ng-selectwbs" 
+
+                                                            dropdownPosition="bottom" >
+                                                          
+                                                            <ng-option *ngFor="let sList of Drain_WM_width"
+                                                                [value]="sList.intDrainDepthParamId">
+                                                                {{sList.sitDrainWidth}}
+                                                            </ng-option>
+                                                        </ng-select>
+                                                            <span class="text-danger validator-message"
+                                                                *ngIf="isaddnewWM &&  (table.sitDrainWidth===undefined)">*
+                                                                Width Required. </span>
+                                                        </td>
+                                                        <td>
+                                                            <ng-select [selectOnTab]="true"   appendTo="body" 
+                                                            [(ngModel)]="table.sitDrainTypeId"lass="ng-selectwbs"
+                                                           >
+                                                          
+                                                            <ng-option *ngFor="let sList of Drain_WM_Draintype"
+                                                                [value]="sList.sitDrainTypeId">
+                                                                {{sList.vchDrainType}}
+                                                            </ng-option>
+                                                        </ng-select>
+                                                            <span class="text-danger validator-message"
+                                                                *ngIf="isaddnewWM &&  (table.sitDrainTypeId==undefined)">*
+                                                                Drain Type Required. </span>
+                                                        </td>
+                                                        <td>
+                                                            <ng-select [selectOnTab]="true"   appendTo="body" 
+                                                            [(ngModel)]="table.sitMaxDepth"class="ng-selectwbs"
+                                                            >
+                                                          
+                                                            <ng-option *ngFor="let sList of Drain_WM_MaxDepth"
+                                                                [value]="sList.intDrainMaxDepth">
+                                                                {{sList.intDrainMaxDepth}}
+                                                            </ng-option>
+                                                        </ng-select>
+                                                            <span class="text-danger validator-message"
+                                                                *ngIf="isaddnewWM &&  (table.sitMaxDepth==undefined)">*
+                                                                Max Depth Required. </span>
+                                                        </td>
+                                                        <td>
+                                                            <ng-select [selectOnTab]="true"  (change)="onChangeLayer($event,PreDefiend)"  appendTo="body" 
+                                                            [(ngModel)]="table.tntDrainLayerId" class="ng-selectwbs" (change)="loadDrainWM_Shape($event)"
+                                                            >
+                                                          
+                                                            <ng-option *ngFor="let sList of Drain_layer"
+                                                                [value]="sList.tntDrainLayerId">
+                                                                {{sList.vchDrainLayer}}
+                                                            </ng-option>
+                                                        </ng-select>
+                                                            <span class="text-danger validator-message"
+                                                                *ngIf="isaddnewWM &&  (table.tntDrainLayerId==undefined)">*
+                                                                Drain  Required. </span>
+                                                        </td>
+                                                        <td>
+                                                            <ng-select [selectOnTab]="true"   appendTo="body" 
+                                                            [(ngModel)]="table.intProductCodeId" class="ng-selectwbs"
+                                                            >
+                                                          
+                                                            <ng-option *ngFor="let sList of Drain_WM_Productcode"
+                                                                [value]="sList.intProductCodeId">
+                                                                {{sList.vchProductCode}}
+                                                            </ng-option>
+                                                        </ng-select>
+                                                            <span class="text-danger validator-message"
+                                                                *ngIf="isaddnewWM &&  (table.intProductCodeId==undefined)">*
+                                                                Product Required. </span>
+                                                        </td>
+                                                        <td>
+                                                           <div> <ng-select [selectOnTab]="true"   appendTo="body" 
+                                                            [(ngModel)]="table.intShapeId" class="ng-selectwbs" (change)="ChangeShape($event,table.intParamA,'S')"
+                                                            >
+                                                          
+                                                            <ng-option *ngFor="let sList of Drain_WM_Shape"
+                                                                [value]="sList.intShapeId">
+                                                                {{sList.chrShapeCode}}
+                                                            </ng-option>
+                                                        </ng-select>
+                                                        
+                                                      <div *ngIf="enableParam_foot">
+                                                        <label for="ParamA">A</label>
+                                                        <input id="ParamA" class="form-control" maxlength="10" type="number" style="width:55px;position: relative;left: 24px;"
+                                                        [(ngModel)]="table.intParamA" />
+                                                      </div>
+                                </div>
+
+                                                            <span class="text-danger validator-message"
+                                                                *ngIf="isaddnewWM &&  (table.intShapeId==undefined)">*
+                                                                Shape Required. </span>
+                                                        </td>
+                                                        <td>
+                                                            <div class=" row custom-control custom-switch" style="margin:auto; padding-left: 4rem;">
+
+                                                                <input type="checkbox" [(ngModel)]="PreDefiend" class="custom-control-input" disabled="true"
+                                                                id="Pre-defined_footer">
+                                
+                                                                <label class="custom-control-label" for="Pre-defined_footer"></label>
+                                
+                                                            </div>
+                                                        </td>
+                                <td><input class="form-control" maxlength="10" type="number" (keydown.enter)="onSave_WM(table)"
+                                    [(ngModel)]="table.intQty" style="width: 60px;" />
+                                <span class="text-danger validator-message"
+                                    *ngIf="isaddnewWM &&  (table.intQty==undefined)">*
+                                    Qty Required. </span>
+                            </td>
+                            <td><input class="form-control" maxlength="10" type="number"  (keydown.enter)="onSave_WM(table)"
+                                [(ngModel)]="table.numLeftWallThickness">
+                            <span class="text-danger validator-message"
+                                *ngIf="isaddnewWM &&  (table.numLeftWallThickness==undefined)">*
+                                Left Wall Thick	 Required. </span>
+                        </td>
+                        <td><input class="form-control" maxlength="10" type="number" (keydown.enter)="onSave_WM(table)"
+                            [(ngModel)]="table.numLeftWallFactor" />
+                        <span class="text-danger validator-message"
+                            *ngIf="isaddnewWM &&  (table.numLeftWallFactor==undefined)">*
+                            Left Wall Factor	 Required. </span>
+                    </td>
+                    <td><input class="form-control" maxlength="10" type="number" (keydown.enter)="onSave_WM(table)"
+                        [(ngModel)]="table.numRightWallThickness"/>
+                    <span class="text-danger validator-message"
+                        *ngIf="isaddnewWM &&  (table.numRightWallThickness==undefined)">*
+                        Right Wall Thick	 Required. </span>
+                </td>
+                <td><input class="form-control" maxlength="10" type="number" (keydown.enter)="onSave_WM(table)"
+                    [(ngModel)]="table.numRightWallFactor" />
+                <span class="text-danger validator-message"
+                    *ngIf="isaddnewWM &&  (table.numRightWallFactor==undefined)">*
+                    Right Wall Factor Required. </span>
+            </td>
+            <td><input class="form-control" maxlength="10" type="number" (keydown.enter)="onSave_WM(table)"
+                [(ngModel)]="table.numBaseThickness"/>
+            <span class="text-danger validator-message"
+                *ngIf="isaddnewWM &&  (table.numBaseThickness==0)">*
+                Base Thick Required. </span>
+        </td>
+                                                       
+
+                                                      
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+
+                                    </div>
+                                    <div class="d-flex">
+                                    <div>
+                                        <ngb-pagination [collectionSize]="Drain_WM.length" [(page)]="WM_currentPage"
+                                            [pageSize]="WM_itemsPerPage" (pageChange)="onPageChange_WM(WM_currentPage)" [maxSize]="5"
+                                            [boundaryLinks]="true">
+                                            <ng-template ngbPaginationPrevious>Prev</ng-template>
+                                            <ng-template ngbPaginationNext>Next</ng-template>
+                                        </ngb-pagination>
+                                    </div>
+                                    <div>
+                                        <select class="custom-select mr-2 ml-3" style="width: auto" [(ngModel)]="WM_itemsPerPage"
+                                            (ngModelChange)="OnPageSizeChange_WM(WM_itemsPerPage)">
+                                            <option [ngValue]="5">5 </option>
+                                            <option [ngValue]="10">10 </option>
+                                            <option [ngValue]="20">20 </option>
+                                            <option [ngValue]="50">50 </option>
+                                            <option [ngValue]="100">100 </option>
+                                        </select>
+                                        <span>Items per page</span>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </tab>
+                </tabset>
+            </div>
+        </div>
+    </div>
+</div>
+<div [class.mat-elevation-z8]="true" *ngIf="showImage"
+
+            style=" position: fixed;
+                background-color: white;z-index: 10000;right: 0; top:10%; width: 32%;max-height: 100%; border-radius: 15px;">
+            <div class="row d-flex" style=" text-align:justify; background-color:#fafafa ; margin: 5px;
+            border-radius: 9px;">
+                <div class="col-md-10">
+                    <h4><b>Shape Parameters</b></h4>
+                </div>
+                <div class="col-md-2">
+                    <i class="fa-solid fa-circle-xmark fa-2xs"></i>
+                    <!-- <i class="fa-solid fa-xmark" style=" font-Weight:bold; font-size: 16px;"></i> -->
+                    <button type="button" class="btn-close" aria-label="Close" (click)="showImage=false;"></button>
+                </div>
+            </div>
+        
+
+
+            <div class="d-flex ">
+
+               <div class="col-md-6">
+                <table class="table w-25 table-striped  table-bordered" style="height: fit-content; margin: 20px;">
+                    <thead>
+                        <tr>
+
+                            <th>Parameter Name</th>
+                            <th>Parameter Value</th>
+                       
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of ShapeParamlist">
+                            <td>{{item.chrParamName}}</td>
+                            <td class="text-center">
+
+                                <input class="form-control" maxlength="10" type="number" 
+                                    [(ngModel)]="item.intSegmentValue" [ngModelOptions]="{standalone: true}"
+                                    />
+                                    
+
+                            </td>
+                         
+                        </tr>
+                    </tbody>
+
+                </table>
+               </div>
+                <div  class="col-md-6" *ngIf="showImage">
+                    <img class="img-responsive" [src]="'assets/images/Shapes/'+ Imagename +''" alt="image" style="position: relative ;
+                            left: 0px;">
+            </div>
+
+           
+            <br>
+        </div>
+        <div class="row d-flex">
+            <div class="col-md-3" style="margin-left: 40px;"> MO1 <input class="form-control" maxlength="10" type="number"
+                    [(ngModel)]="popup_MO1" [ngModelOptions]="{standalone: true}" /></div>
+            <div class="col-md-3"> MO2 <input class="form-control" maxlength="10" type="number"
+                    [(ngModel)]="popup_MO2" [ngModelOptions]="{standalone: true}" /></div>
+            <!-- <div class="col-md-3"> CO1 <input class="form-control" maxlength="10" type="text"
+                    [(ngModel)]="popup_CO1" [ngModelOptions]="{standalone: true}" /></div>
+            <div class="col-md-3"> CO2 <input class="form-control" maxlength="10" type="text"
+                    [(ngModel)]="popup_CO2" [ngModelOptions]="{standalone: true}" /></div> -->
+
+        </div>
+        <div class="text-center">
+            <button class="btn btn-primary" (click)="saveButton()">Save</button>
+
+        </div>
+</div>

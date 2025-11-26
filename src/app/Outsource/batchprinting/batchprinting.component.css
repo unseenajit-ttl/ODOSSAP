@@ -1,0 +1,660 @@
+.fixed-select {
+    width: 80% !important;   /* prevents resize after selection */
+    min-width: 80% !important;
+  }
+
+  table tr:hover {
+    background-color: lightgrey; 
+    cursor: pointer;
+  }
+
+  ion-icon {
+    color: blue;
+  }
+  
+  table td,
+  table th {
+    font-size: 11px;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border: 1px solid #bcb7b7 !important;
+  }
+  
+  table td {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 10px !important;
+  }
+  
+  table th {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  
+  table th span {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  
+  
+  /* table th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    overflow: auto;
+    min-width: 30px !important;
+  } */
+  
+  #searchBar th {
+    height: 33px;
+    vertical-align: middle !important;
+  }
+  
+  #searchBar th input {
+    /* height: 25px !important; */
+  }
+  
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: button;
+  }
+  
+  #ngb-tooltip-2 {
+    z-index: 10000;
+  }
+  
+  .tooltip {
+    z-index: 1000;
+  }
+  
+  /* Firefox */
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+  
+  /*
+  thead th {
+    min-width: 25px !important;
+  } */
+  
+  .accordion-button.collapsed {
+    background: blue;
+  }
+  
+  .accordion-button.collapsed::after {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+  }
+  
+  .accordion-button {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    font-size: 0.8rem;
+    color: var(--bs-accordion-btn-color);
+    text-align: left;
+    background-color: var(--bs-accordion-btn-bg);
+    border: 0;
+    border-radius: 0;
+    overflow-anchor: none;
+    transition: var(--bs-accordion-transition);
+  }
+  
+  /* table {
+    width: 100%;
+  } */
+  
+  /* .mat-mdc-table .mdc-data-table__row:nth-child(odd) {
+    background-color: #e6e6e6;
+  } */
+  
+  /* .mat-mdc-table .mdc-data-table__row :nth-child(even){
+    background-color: #ffffff;
+  }
+  
+  
+  .mat-mdc-table .mdc-data-table__row :nth-child(odd){
+    background-color: #e6e6e6;
+  } */
+  
+  /* thead th {
+    text-align:left;
+    min-width:150px;
+    max-width:150px;
+  }
+  tbody td {
+    text-align:left;
+    min-width:150px;
+    max-width:150px;
+  }
+  table tr {
+    border-width: 2px 2px;
+  } */
+  
+  .ng-selectcustomer {
+    width: 340px;
+  }
+  
+  .ng-selectwbs {
+    width: 100px;
+  }
+  
+  .colbutton {
+    flex-basis: 0;
+    flex-grow: 1;
+    max-width: 100%;
+    padding: 2px;
+    padding-left: -10px;
+  }
+  
+  .custom-switch {
+    padding-left: 3rem;
+    padding-top: 7px;
+  }
+  
+  .custom-control-label {
+    position: relative;
+    padding-left: 5px;
+    margin-bottom: 0;
+    vertical-align: top;
+  }
+  
+  .btn {
+    --bs-btn-hover-border-color: #0a0a0a;
+  }
+  
+  .mat-mdc-form-field-subscript-wrapper {
+    height: 0 !important;
+  }
+  
+  .mdc-text-field--outlined .mdc-notched-outline {
+    z-index: 0;
+    background-color: white;
+  }
+  
+  .my-custom-scrollbar {
+    position: relative;
+    overflow: auto;
+    height: 50vh !important;
+    max-height: 50vh !important;
+    min-height: 50vh !important;
+  }
+  
+  /* .table-wrapper-scroll-y {
+    display: block;
+  } */
+  
+  /* .custom-control-input:checked~.custom-control-label::before {
+      color: #fff;
+      border-color: #6AB200;
+      background-color: #6AB200;
+  } */
+  
+  .mat-mdc-form-field-type-mat-date-range-input .mat-mdc-form-field-infix {
+    width: 90px;
+  }
+  
+  /* .custom-control-label:before{
+    background-color:red;
+  }
+  .custom-checkbox .custom-control-input:checked~.custom-control-label::before{
+    background-color:black;
+  } */
+  
+  .box {
+    float: left;
+    height: 20px;
+    width: auto;
+    margin-bottom: 15px;
+    padding: 3px;
+    /* border: 1px solid black; */
+    clear: both;
+  }
+  
+  .gray {
+    background-color: #9f9f9f;
+  }
+  
+  .green {
+    background-color: #6ab200;
+  }
+  
+  .blue {
+    background-color: #e5f5ff;
+  }
+  
+  /* table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+  } */
+  
+  /*
+  Generic Styling, for Desktops/Laptops
+  */
+  table {
+    min-width: 100%;
+    width: 1500px;
+    border-collapse: collapse;
+  }
+  
+  /* th {
+    background: #333;
+    color: white;
+    font-weight: bold;
+  } */
+  
+  td,
+  th {
+    padding: 6px;
+    border: 1px solid #ccc;
+    text-align: left;
+  }
+  
+  table td {
+    height: 33px;
+    font-size: medium;
+  }
+  
+  /*
+    Max width before this PARTICULAR table gets nasty. This query will take effect for any screen smaller than 760px and also iPads specifically.
+    */
+  table {
+    border-collapse: collapse;
+    border-spacing: 0;
+  }
+  
+  table,
+  th,
+  td {
+    border: 1px solid black;
+    border-radius: 0px !important;
+  }
+  
+  @media only screen and (max-width: 900px),
+  (min-device-width: 900px) and (max-device-width: 1024px) {
+  
+    /* Force table to not be like tables anymore */
+    table,
+    thead,
+    tbody,
+    th,
+    td,
+    tr {
+      display: block;
+    }
+  
+    /* Hide table headers (but not display: none;, for accessibility) */
+    thead tr {
+      position: absolute;
+      top: -999px;
+      left: -999px;
+    }
+  
+    tr {
+      margin: 0 0 1rem 0;
+    }
+  
+    /* tr:nth-child(odd) {
+      background: #ccc;
+    } */
+  
+    td {
+      /* Behave  like a "row" */
+      border: none;
+      border-bottom: 1px solid #eee;
+      position: relative;
+      padding-left: 50% !important;
+    }
+  
+    td:before {
+      /* Now like a table header */
+      position: absolute;
+      /* Top/left values mimic padding */
+      top: 0;
+      left: 6px;
+      width: 45%;
+      padding-right: 10px;
+      /* white-space: nowrap; */
+    }
+  
+    /*
+        Label the data
+        You could also use a data-* attribute and content for this. That way "bloats" the HTML, this way means you need to keep HTML and CSS in sync. Lea Verou has a clever way to handle with text-shadow.
+        */
+    td:nth-of-type(1):before {
+      content: "";
+      font-weight: 1000;
+    }
+  
+    td:nth-of-type(2):before {
+      content: "SNo.";
+      font-weight: 1000;
+    }
+  
+    td:nth-of-type(3):before {
+      content: "PO NO";
+      font-weight: 1000;
+    }
+  
+    td:nth-of-type(4):before {
+      content: "Required Date";
+      font-weight: 1000;
+    }
+  
+    td:nth-of-type(5):before {
+      content: "Plan Delivery Date";
+      font-weight: 1000;
+    }
+  
+    td:nth-of-type(6):before {
+      content: "WBS 1";
+      font-weight: 1000;
+    }
+  
+    td:nth-of-type(7):before {
+      content: "WBS 2";
+      font-weight: 1000;
+    }
+  
+    td:nth-of-type(8):before {
+      content: "WBS 3";
+      font-weight: 1000;
+    }
+  
+    td:nth-of-type(9):before {
+      content: "Product Type";
+      font-weight: 1000;
+    }
+  
+    td:nth-of-type(10):before {
+      content: "Structure Element";
+      font-weight: 1000;
+    }
+  
+    td:nth-of-type(11):before {
+      content: "BBS No";
+      font-weight: 1000;
+    }
+  
+    td:nth-of-type(12):before {
+      content: "BBS Desc";
+      font-weight: 1000;
+    }
+  
+    td:nth-of-type(13):before {
+      content: "Tonnage";
+      font-weight: 1000;
+    }
+  
+    td:nth-of-type(14):before {
+      content: "Order Status";
+      font-weight: 1000;
+    }
+  
+    td:nth-of-type(15):before {
+      content: "Select";
+      font-weight: 1000;
+    }
+  
+    td:nth-of-type(16):before {
+      content: "Action";
+      font-weight: 1000;
+    }
+  }
+  
+  .logo3 .desktop3 td {
+    /* max-width: 150px;
+    min-width: 115px; */
+  }
+  
+  .logo3 .mobile2 {
+    display: none !important;
+  }
+  
+  .logo4 .mobile4 {
+    display: none !important;
+  }
+  
+  .logo .mobile {
+    display: none !important;
+  }
+  
+  @media only screen and (max-width: 900px),
+  (min-device-width: 900px) and (max-device-width: 1024px) {
+    .logo2 .mobile2 {
+      display: none !important;
+    }
+  
+    .logo3 .desktop3 {
+      display: none !important;
+    }
+  
+    .logo3 .mobile2 {
+      display: block !important;
+    }
+  
+    .logo4 .mobile4 {
+      display: block !important;
+    }
+  
+    .logo4 .customerandprojecthideonweb {
+      display: none !important;
+    }
+  
+    .logo .mobile {
+      display: flex !important;
+    }
+  
+    .logo .desktop {
+      display: none !important;
+    }
+  }
+  
+  .ButtonsDis {
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+  }
+  
+  .new-table thead {
+    position: sticky !important;
+    z-index: 12;
+    background-color: #003ec4 !important;
+  }
+  
+  .new-table tbody {
+    position: sticky !important;
+    z-index: 10;
+  }
+  
+  .new-table tbody td {
+    position: sticky !important;
+    z-index: 10;
+  }
+  
+  table th {
+    background-color: #003ec4 !important;
+  }
+  
+  ::ng-deep .mat-date-range-picker-content {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  ::ng-deep .md-drppicker {
+    z-index: 1000 !important;
+    display: block !important;
+  }
+  
+  .highlight {
+    background-color: beige !important;
+    /* Highlight color */
+  }
+  
+  .bar {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 5px !important;
+    margin: 3px !important;
+    justify-self: flex-end;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    background-clip: content-box;
+    cursor: col-resize !important;
+    z-index: 50 !important;
+    cursor: -webkit-col-resize !important;
+  }
+  
+  .cdkDrag :hover {
+    cursor: col-resize;
+  }
+  
+  .draft-table {
+    background-color: white;
+  }
+  
+  /* .draft-table:hover {
+    background-color: #8bcce8;
+  } */
+  .selected-draft-table {
+    background-color: beige !important;
+    /* Highlight color */
+  }
+  
+  .shared-draft-table {
+    background-color: #dffac7 !important;
+  }
+  
+  .FixedColumn {
+    z-index: 20 !important;
+    background-color: inherit !important;
+  }
+  
+  ::ng-deep .mdc-tooltip--shown .mdc-tooltip__surface-animation {
+    transform: scale(1.1) !important;
+  }
+  
+  .setting-menu {
+    position: absolute;
+    z-index: 9999;
+    background-color: #dee2e6;
+    width: 32%;
+    right: 50px;
+    font-weight: 570;
+    border-radius: 10px 0 0 10px;
+    font-weight: 570;
+  }
+  
+  .setting-menu table td {
+    font-size: small;
+    border: 1px solid #c8cdd3 !important;
+  }
+  
+  .fixed-xolumn-head {
+    margin: auto;
+    font-size: 1rem;
+    font-weight: bold;
+  }
+  
+  .setting-menu .heading {
+    justify-content: space-between;
+    align-items: flex-end;
+    padding-left: 5px;
+    padding-top: 2px;
+  }
+  
+  .setting-menu .heading input {
+    width: 40%;
+    border: 1px solid #dee2e6 !important;
+    border-radius: 3px;
+    padding: 6px 12px;
+  }
+  
+  .setting-menu .heading button {
+    margin: auto 0;
+    font-size: 1rem;
+  }
+  
+  .setting-menu span {
+    font-size: 1rem;
+  }
+  
+  .no-record:hover {
+    background-color: white !important;
+  }
+  
+  .highlight-today {
+    background-color: #ffff00;
+    /* Yellow background */
+    border-radius: 50%;
+    color: black;
+  }
+  
+  
+  .new-table {
+    border-collapse: separate !important;
+  }
+  
+  #searchBar th input {
+    padding: 0px;
+  }
+  
+  ::ng-deep .cdk-virtual-scroll-content-wrapper {
+   
+    contain: none !important;
+  }
+
+  .row-focused {
+    background-color: #e6f0ff;
+    outline: 2px solid #007bff;
+  }
+
+  
+   .medium-label {
+    font-size: 12px;
+  }
+
+  ::ng-deep .custom-ng-select .ng-select-container {
+    height: 12px;
+    font-size: 12px;
+    line-height: 1;
+  }
+
+  ::ng-deep .custom-ng-select .ng-option {
+    font-size: 12px;
+  }
+
+  :host ::ng-deep table {
+    table-layout: auto !important;
+    /* width: max-content !important; */
+  }
+  /* :host ::ng-deep table.th, td {
+    white-space: nowrap;
+    width: max-content !important;
+  } */
+
+  /* .my-auto-width-table {
+    font-size: 2px !important;
+    line-height: 1.2!important;
+  }
+  
+  .my-auto-width-table th,
+  .my-auto-width-table td {
+    font-size: 12px!important;
+    line-height: 1!important;
+  } */
+
+ /* .disabled-icon {
+    pointer-events: none;  
+    opacity: 0.5;          
+    cursor: not-allowed;
+  } */
+  .highlight-row {
+    background-color:rgb(190, 225, 251); /* light green */
+  }

@@ -1,0 +1,15 @@
+.product-clicked{
+    border: 2px solid greenyellow;
+  }
+  tr{
+    cursor: pointer !important;
+  }
+  .modal-body .row{
+    height: 70vh !important;
+    scroll-behavior: smooth;
+    overflow-y: scroll;
+  }
+  button{
+    cursor: pointer !important;
+  }
+  

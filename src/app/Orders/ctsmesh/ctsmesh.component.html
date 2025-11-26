@@ -1,0 +1,351 @@
+ <div class="Row" style="margin-left: 20px; margin-top: 10px; font-size: medium">
+  <!-- <a  [routerLink]="['/order/createorder']"  (click)="backToOrder()">
+    <i class="fa fa-arrow-left arrow-left" aria-hidden="true"></i>
+    {{ getBackButtonText() }}
+  </a> -->
+  <span style="display: flex; align-items: center">
+    <i class="bi bi-arrow-left-short" style="font-size: x-large; color: blue" ngbTooltip="Back"
+      (click)="backToOrder()"></i>
+    <a  (click)="backToOrder()" style="color: blue">Back to Order Summary</a></span>
+  <!-- <a  [routerLink]="['/order/createorder']"  (click)="backToOrder()">
+    <i class="fa fa-arrow-left arrow-left" aria-hidden="true"></i>
+    {{ getBackButtonText() }}
+  </a> -->
+  <h4 class="order-heading" style="margin-top: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+    {{ getOrderHeadingText() }}
+  </h4>
+</div>
+<!-- <ul id="contextMenu" style="display:none;position:absolute">
+  <li data="insert" (click)="onRightClick('insert')">Insert</li>
+  <li data="delete" (click)="onRightClick('delete')">Delete</li>
+   <li data="clear" (click)="onRightClick('clear')">Clear Contents</li>
+
+  <li data="copy" (click)="onRightClick('copy')">Copy</li>
+  <li data="paste" (click)="onRightClick('paste')">Paste</li>
+
+  <li data="weight" (click)="onRightClick('weight')">Sub-total Weight</li>
+  <li data="qty" (click)="onRightClick('qty')">Sub-total Qty</li>
+</ul> -->
+<ul id="contextMenu" style="display:none;position:absolute">
+  <li data="insert" (click)="InsertItem()">Insert</li>
+  <li data="delete" (click)="DeleteMeshDetails()">Delete</li>
+  <li data="clear" (click)="ClearMeshDetails()">Clear Contents</li>
+  <!-- <li data="" style="background: url('@Url.Content("~/Content/images/line.png")') no-repeat center left"></li> -->
+  <li data="copy" (click)="MeshCopy2()">Copy</li>
+  <li data="paste" (click)="MeshPaste()">Paste</li>
+  <!-- <li data="" style="background: url('@Url.Content("~/Content/images/line.png")') no-repeat center left"></li> -->
+  <li data="weight" (click)="onRightClick('weight')">Sub-total Weight</li>
+  <li data="qty" (click)="onRightClick('qty')">Sub-total Qty</li>
+</ul>
+
+<div class="container-fluid" style="min-height: 445px !important; padding: 0;">
+  <div class="card m-1">
+    <div class="d-flex">
+      <div class="table-responsive table-wrapper-scroll-y my-custom-scrollbar">
+        <div width="100%" height="100%">
+          <angular-slickgrid
+            gridId="grid2"
+            [columnDefinitions]="templateColumns"
+            [gridOptions]="gridOptions"
+            [dataset]="dataset"
+            gridHeight="400"
+            gridWidth="800"
+            (onAngularGridCreated)="angularGridReady($event)"
+          ></angular-slickgrid>
+        </div>
+      </div>
+      <button id="slideshowButton" (click)="showSideTable = !showSideTable">
+        <span *ngIf="showSideTable"
+          ><i class="bi bi-caret-right-fill"></i
+        ></span>
+        <span *ngIf="!showSideTable"
+          ><i class="bi bi-caret-left-fill"></i
+        ></span>
+      </button>
+
+      <div
+        *ngIf="showSideTable"
+        style="
+          background-color: #e9ecef;
+          font-size: smaller;
+          min-width: 240px;
+        "
+      >
+        <!-- <fieldset #firstBox>
+          <div>
+            <img src="" alt="" />
+          </div>
+        </fieldset> -->
+        <fieldset #firstBox>
+          <div  style="text-align: center;
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;">
+
+            <div class="box1">
+                <div class="box-inner" >
+                    <img
+                      *ngIf="showupperimage"
+                      id="rightShapeImage"
+                      [src]="this.gShapeImage"
+                      style="width: 150px; height: 150px"
+                    />
+                  </div>
+
+                <img style="border: 2px;" class="img-responsive" id="btmElevImage" [src]="'../../../assets/images/'+ StaticImagename +''" alt="image" style="width: 150px; height: 150px">
+                <!-- <img
+                  id="btmElevImage"
+                  src=""
+                  style="width: 150px; height: 150px"
+
+                /> -->
+              </div>
+              <div>
+            <div
+              class="d-flex"
+              style="
+                align-items: center;
+                max-height: 25px;
+                padding: 5px;
+                justify-content: space-between;
+              "
+            >
+              <div class="field">
+                <label class="form-label"><div class="label1" id="rt_lblMWDia">
+                  MW Diameter (主筋直径):
+                </div></label>&nbsp;
+                <label class="form-label"> <div class="input1" id="rt_MWDia"></div></label>
+              </div>
+            </div>
+            <div
+              class="d-flex"
+              style="
+                align-items: center;
+                max-height: 25px;
+                padding: 5px;
+                justify-content: space-between;
+              "
+            >
+              <div class="field">
+                <label class="form-label"> <div class="label1" id="rt_lblMWSpacing">
+                  MW Spacing (主筋间距):
+                </div></label>&nbsp;
+                <label class="form-label"> <div class="input1" id="rt_MWSpacing"></div></label>
+              </div>
+            </div>
+
+            <div class="d-flex"     style="
+            align-items: center;
+            max-height: 25px;
+            padding: 5px;
+            justify-content: space-between;
+          ">
+              <div class="field"    >
+                <label class="form-label"><div class="label1" id="rt_lblCWDia">
+                  CW Diameter (副筋直径):
+                </div></label>&nbsp;
+                <label class="form-label"><div class="input1" id="rt_CWDia"></div></label>
+              </div>
+            </div>
+            <div class="d-flex" id="rt_lblCWSpacing"     style="
+            align-items: center;
+            max-height: 25px;
+            padding: 5px;
+            justify-content: space-between;
+          ">
+              <div class="field">
+                <label class="form-label"><div class="label1">CW Spacing (副筋间距):</div></label>&nbsp;
+                <label class="form-label"><div class="input1" id="rt_CWSpacing"></div></label>
+              </div>
+            </div>
+            <div class="d-flex"     style="
+            align-items: center;
+            max-height: 25px;
+            padding: 5px;
+            justify-content: space-between;
+          ">
+              <div class="field">
+                <label class="form-label"><div class="label1">Mass(kg/m<sup>2</sup>) (密度):</div></label>&nbsp;
+                <label class="form-label"><div class="input1" id="rt_mass"></div></label>
+              </div>
+            </div>
+            <div class="d-flex"     style="
+            align-items: center;
+            max-height: 25px;
+            padding: 5px;
+            justify-content: space-between;
+          ">
+              <div class="field">
+                <label class="form-label"><div class="label1">Total WT (总重量):</div></label>&nbsp;
+                <label class="form-label"><div class="input1" id="total_weight"></div></label>
+              </div>
+            </div>
+          </div>
+        </div>
+        </fieldset>
+        <fieldset id="secondBox">
+          <!-- <legend style="font-size:medium">Shape Finder</legend> -->
+          <div style="margin-top: 5px">
+            <!-- <div class="d-flex" style="align-items: center;padding: 2px;justify-content: space-between;">
+                             <label class="form-label">Category: </label>&nbsp;
+                             <ng-select class="w-auto" style="min-width: 160px;">
+                                 <ng-option *ngFor="let sList of shapeCodeList" [value]="sList.shapeCategory">
+                                     {{sList.shapeCategory}}</ng-option>
+                             </ng-select>
+                         </div> -->
+            <div
+              class="d-flex"
+              style="align-items: center; padding: 2px; justify-content: center"
+            >
+              <!-- <label class="form-label">Shape List:</label>&nbsp; -->
+              <button
+                class="btn btn-primary btn-sm"
+                type="button"
+                (click)="ShowShapeList()"
+              >
+                Show Shape List
+              </button>
+            </div>
+            <div
+              class="d-flex"
+              style="align-items: center; padding: 2px; justify-content: center"
+            >
+              <!-- <label class="form-label">New Shape: </label>&nbsp; -->
+              <button
+                class="btn btn-primary btn-sm"
+                type="button"
+                (click)="ShowProductList()"
+              >
+                Show Product List
+              </button>
+            </div>
+            <div
+              class="d-flex"
+              style="align-items: center; padding: 2px; justify-content: center"
+            >
+              <!-- <label class="form-label">Bending Limit: </label>&nbsp; -->
+              <button
+                class="btn btn-primary btn-sm"
+                type="button"
+                (click)="DownloadShapeList()"
+              >
+                Download Shape List
+              </button>
+            </div>
+            <div
+              class="d-flex"
+              style="align-items: center; padding: 2px; justify-content: center"
+            >
+              <!-- <label class="form-label">Checking: </label>&nbsp; -->
+              <button
+                class="btn btn-primary btn-sm"
+                type="button"
+                (click)="DownloadProductList()"
+              >
+                Download Product-List
+              </button>
+            </div>
+            <!-- <div class="d-flex" style="align-items: center;padding: 2px;justify-content: space-between;">
+                             <label class="form-label">Find: </label>&nbsp;
+                             <button class="btn btn-primary btn-sm" type="button">Discrepancy Rpt.</button>
+                         </div> -->
+          </div>
+        </fieldset>
+      </div>
+    </div>
+  </div>
+
+  <div [hidden]="true">
+  <div class="box-inner">
+    <img id="rightShapeImage" src="" style="width: 150px; height: 150px" />
+  </div>
+  <div class="box-inner">
+    <img id="rightElevImage" src="" style="width: 150px; height: 150px" />
+  </div>
+  <div class="field">
+    <div class="label1" id="bt_lblMWDia">MW Diameter (主筋直径):</div>
+    <div class="input1" id="bt_MWDia"></div>
+  </div>
+
+  <div class="field">
+    <div class="label1" id="bt_lblMWSpacing">MW Spacing (主筋间距):</div>
+    <div class="input1" id="bt_MWSpacing"></div>
+  </div>
+
+  <div class="field">
+    <div class="label1" id="bt_lblCWDia">CW Diameter (副筋直径):</div>
+    <div class="input1" id="bt_CWDia"></div>
+  </div>
+
+  <div class="field">
+    <div class="label1" id="bt_lblCWSpacing">CW Spacing (副筋间距):</div>
+    <div class="input1" id="bt_CWSpacing"></div>
+  </div>
+
+  <div class="field">
+    <div class="label1">Mass(kg/m<sup>2</sup>) (密度):</div>
+    <div class="input1" id="bt_mass"></div>
+  </div>
+
+  <div class="field">
+    <div class="label1">Total WT (总重量):</div>
+    <div class="input1" id="bt_total_weight"></div>
+  </div>
+
+  <div class="right-form">
+    <div class="field">
+      <div class="label1" id="rt_lblMWDia">MW Diameter<br />(主筋直径):</div>
+      <div class="input1" id="rt_MWDia"></div>
+    </div>
+  </div>
+  <div class="right-form">
+    <div class="field">
+      <div class="label1" id="rt_lblMWSpacing">MW Spacing<br />(主筋间距):</div>
+      <div class="input1" id="rt_MWSpacing"></div>
+    </div>
+  </div>
+  <div class="box1">
+    <img
+      id="btmShapeImage"
+      src=""
+      style="width: 150px; height: 150px"
+      align="top"
+    />
+    <img
+      id="btmElevImage"
+      src=""
+      style="width: 150px; height: 150px"
+      align="top"
+    />
+  </div>
+  <div class="right-form">
+    <div class="field">
+      <div class="label1" id="rt_lblCWDia">CW Diameter<br />(副筋直径):</div>
+      <div class="input1" id="rt_CWDia"></div>
+    </div>
+  </div>
+  <div class="right-form" id="rt_lblCWSpacing">
+    <div class="field">
+      <div class="label1">CW Spacing<br />(副筋间距):</div>
+      <div class="input1" id="rt_CWSpacing"></div>
+    </div>
+  </div>
+  <div class="right-form">
+    <div class="field">
+      <div class="label1">Mass(kg/m<sup>2</sup>)<br />(密度):</div>
+      <div class="input1" id="rt_mass"></div>
+    </div>
+  </div>
+  <div class="right-form">
+    <div class="field">
+      <div class="label1">Total WT<br />(总重量):</div>
+      <div class="input1" id="total_weight"></div>
+    </div>
+  </div>
+</div>
+<input type="hidden" id="order_transport" value="@ViewBag.OrderTransport" />
+</div>
+<div>
+  Notes: All dimensions and length are in "mm" unless otherwise. Maximum number
+  of various bar items is 26.
+</div>

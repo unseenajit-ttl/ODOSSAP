@@ -1,0 +1,73 @@
+label {
+  font-weight: bold;
+}
+
+input:read-only {
+  background: white;
+}
+
+/* input-with-suggestions.component.css */
+ul {
+  border: 1px solid #ccc;
+  max-height: 100px;
+  overflow-y: auto;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  z-index: 99999;
+  position: absolute;
+  background: white;
+  width: 90%;
+}
+
+li {
+  padding: 8px;
+  cursor: pointer;
+}
+
+li:hover {
+  background-color: #eee;
+}
+
+.modal-header {
+  padding-bottom: 0.2rem !important;
+  background: #dfe5ef;
+}
+
+.container {
+  margin: 0;
+}
+
+@media (min-width: 1200px) {
+  .container,
+  .container-sm,
+  .container-md,
+  .container-lg,
+  .container-xl {
+    max-width: 1510px;  
+  }
+}
+
+@media (min-width: 576px) {
+  .modal-dialog {
+    max-width: 70vw !important;
+    margin: auto;
+  }
+}
+.modal-dialog {
+  max-width: 70vw !important;
+  margin: auto;
+}
+
+#mydiv {
+  position: absolute;
+
+  cursor: move;
+  border: 1px solid #000;
+  background-color: white;
+  z-index: 100;
+  min-width: 1200px;
+  max-width: 750px;
+ 
+  transition: right 0.1s, top 0.1s;
+}

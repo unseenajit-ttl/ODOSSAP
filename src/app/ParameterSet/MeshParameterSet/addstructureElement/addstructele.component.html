@@ -1,0 +1,62 @@
+<div class="modal-header">
+  <h4 class="modal-title">Add New</h4>
+
+  <i class="fa-solid fa-xmark"></i>
+  <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+
+</div>
+<div class="modal-body ">
+
+  <div class="row">
+    <form [formGroup]="structeleform">
+      <div class="container">
+        <div class="row d-flex ">
+          <div class="col">
+            <label class="form-label">Parameter Set</label> <br>
+            <div class="d-flex ">
+
+              <ng-select formControlName="groupmark" placeholder="Select Parameter Set" class="ng-selectcustomer">
+                <ng-option *ngFor="let sList of parameterList" [value]="sList.value">
+                  {{sList.text}}
+                </ng-option>
+              </ng-select> &nbsp;
+              <i class="material-icons" ngbTooltip="Add New Parameter Set" (click)="this.addnew()">add_circle</i>
+            </div>
+          </div>
+
+
+          <div class="col">
+            <label class="form-label">Product Code</label> <br>
+            <input type="text" formControlName="ProductCode" placeholder="Product Code" class="form-control" style=" width: 230px;"  />
+          </div> 
+        </div>
+
+        <br>
+        <div class="row">
+            <div class="col ">
+            <label class="form-label">MW Lap</label> <br>
+            <div class="d-flex ">
+              <input type="text" placeholder="MW Lap" formControlName="MWLap" class="form-control" style=" width: 230px;"   /> &nbsp;
+            </div>
+          </div>
+
+          <div class="col ">
+            <label class="form-label">CW Lap</label> <br>
+            <div class="d-flex ">
+              <input type="text" placeholder="CW Lap" formControlName="CWLap" class="form-control"  style=" width: 230px;"
+               /> &nbsp;
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" (click)="Reset()" class="btn btn-transparent">
+    Reset </button>
+  <button type="button" (click)="submitReview()" class="btn btn-primary me-2" [disabled]="disableSubmit">
+    Submit
+  </button>
+</div>

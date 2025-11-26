@@ -1,0 +1,24 @@
+<div class="container-fluid">
+  <div class="card m-1">
+    <div class="mainHeading">
+      <span>Update Project In-charge to Selected Rows</span>
+    </div>
+    <div class="body">
+      <label style="width: 50%">Project In-charge: </label>
+      <!-- <ng-select style="width: 50%" [(ngModel)]="Projectincharge">
+        <ng-option *ngFor="let item of ProjectInchargeList; index as i" [value]="item">
+          {{item}}
+        </ng-option>
+      </ng-select> -->
+      <ng-select style="width: 60%" [multiple]="true" [items]="ProjectInchargeList" bindLabel="ProjectIncharge"
+      bindValue="ProjectIncharge" [(ngModel)]="Projectincharge" [addTag]="true">
+    </ng-select>
+    </div>
+    <div class="footer">
+      <button type="button" class="btn btn-primary me-2" (click)="UpdateIncharge()">Update</button>
+      <button type=" button" class="btn btn-primary me-2" (click)="close()">
+        Close
+      </button>
+    </div>
+  </div>
+</div>

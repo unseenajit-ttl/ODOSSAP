@@ -1,0 +1,46 @@
+export interface ALL_PRODUCT_CODE_LIST {
+    ApprovalId:number,
+    
+    ApprovedDate:string
+    
+    BOMIndicator:string,
+    BaseUOM:string,
+    BendIndicator:boolean,
+    CWDiameter:number,
+    CWGrade:string
+    CWLength:number,
+    CWMaterialAbbr:string,
+    CWMaterialType:string,
+    CWMaxBendLength:number,
+    CWProductCodeId:number,
+    CWSpace:number,
+    CWWeigthPerMeterRun:number,
+    ConvertionFactor:number,
+    CreatedDate:string
+    CreatedUID:number,
+    MWDiameter:number,
+    MWGrade:string
+    MWLength:number,
+    MWMaterialAbbr:string
+    MWMaxBendLength:number,
+    MWProductCodeId:number,
+    MWSpace:number,
+    MaterialNumber:string
+    MaterialTypeId:number,
+    MaxLinkFactor:number,
+    MinLinkFactor:number,
+    ProductCode:string
+    ProductCodeId:number,
+    ProductDescription:string
+    RawMaterial:boolean,
+    SAPMaterialCodeId:number,
+    SalesUOM:string
+    ShapeCodeId:number,
+    StaggeredIndicator:boolean,
+    StatusId:number,
+    TwinIndicator:string
+    UpdatedDate:string
+    UpdatedUID:number,
+    WeightArea:number,
+    WeigthPerMeterRun:number,
+}

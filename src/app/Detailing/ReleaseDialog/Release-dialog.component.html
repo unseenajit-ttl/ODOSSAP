@@ -1,0 +1,20 @@
+<div class="modal-header">
+  <h4 class="modal-title"></h4>
+  <i class="fa-solid fa-xmark"></i>
+  <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+
+</div>
+<div class="modal-body " >
+
+  <span>{{message}}</span>
+
+</div>
+
+<div class="modal-footer" >
+  <button type="button" (click)="cancel()" class="btn btn-transparent">
+    No
+  </button>
+  <button type="button" class="btn btn-primary me-2"  (click)="submit()">Yes</button>
+ 
+    
+</div>

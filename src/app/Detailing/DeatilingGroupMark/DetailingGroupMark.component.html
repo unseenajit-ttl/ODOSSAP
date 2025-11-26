@@ -1,0 +1,347 @@
+<div class="container-fluid">
+    <div class="card m-1">
+        <h3 class="card-header d-flex flex-column justify-content-center align-items-center">
+            <b>Detailing </b>
+        </h3>
+        <div *ngIf="loading" style="z-index: 500">
+          <div id="pause" class="d-flex align-items-center justify-content-center">
+              <div id="spinner" class="loader"></div>
+          </div>
+      </div>
+
+      <div class="row  d-flex ">
+        <span style="display: flex; align-items: center">
+
+          <i class="bi bi-arrow-left-short" style="font-size: x-large; color: blue" ngbTooltip="Back"
+            (click)="goBack()"></i>
+
+          <a style="color: blue" (click)="goBack()">Back to Group Marking  </a></span>
+        <br />
+      </div>
+
+        <div class="card-body" style="margin-top:-11px !important;">
+
+            <div>
+                <div class="row ">
+                    <ngb-accordion #acc="ngbAccordion" title="Filters" activeIds="panel1">
+                        <ngb-panel id="panel1">
+                            <ng-template ngbPanelContent>
+                                <div class="card-body">
+                                    <ng-container class="border">
+                                        <div class="row">
+                                            <div class="col-sm-3" style="margin-right: auto;">
+                                                <label class="form-label">Customer</label>
+                                                <input type="text" readonly="true" class="form-control"
+                                                    [value]="MeshData.CustomerName" />
+                                            </div>
+                                            <div class="col-sm-2" style="margin: auto;">
+                                                <label class="form-label ">Project</label> <br>
+                                                <input type="text" readonly="true" class="form-control"
+                                                    [value]="MeshData.ProjectName" />
+                                            </div>
+                                            <div class="col-sm" style="margin: auto;">
+                                                <label class="form-label">ProductType </label><br>
+                                                <input type="text" readonly="true" class="form-control"
+                                                    [value]="MeshData.VCHPRODUCTTYPE">
+                                            </div>
+                                            <div class="col-sm-2" style="margin: auto;">
+                                                <label for="bendingtype"
+                                                    class="form-label ">StructureElement</label><br>
+                                                <input type="text" readonly="true" class="form-control"
+                                                    [value]="MeshData.VCHSTRUCTUREELEMENTTYPE">
+                                            </div>
+                                            <div class="col-sm" style="margin: auto;">
+                                                <label for="bendingtype" class="form-label ">GroupMarking</label><br>
+                                                <input type="text" readonly="true" class="form-control"
+                                                    [value]="MeshData.VCHGROUPMARKINGNAME">
+                                            </div>
+                                            <div   class="col-sm" style="margin-left: auto;">
+                                                <label class="form-label">ParameterSet</label> <br>
+                                                <ng-select [ngbTooltip]="Description" triggers="hover" placement="top" [disabled]="disableparamterset" [(ngModel)]="ParameterSet"
+                                                    (change)="changeParameter($event)"
+                                                    [ngModelOptions]="{standalone: true}">
+                                                    <ng-option *ngFor="let sList of parameterList" [value]="sList">
+                                                        {{sList.INTPARAMETESET}}
+                                                    </ng-option>
+                                                </ng-select>
+                                                <!-- <i  class="bi bi-archive"></i> -->
+                                                <span hidden>{{Description}}</span>
+                                            </div>
+                                        </div>
+
+                                    </ng-container>
+                                </div>
+                            </ng-template>
+                        </ngb-panel>
+                    </ngb-accordion>
+                </div>
+                <div class="row " *ngIf="this.MeshData.VCHPRODUCTTYPE=='PRC'">
+                    <ngb-accordion #acc="ngbAccordion" title="Filters" [activeIds]="'panel1'">
+                        <ngb-panel id="panel1">
+                            <ng-template ngbPanelContent>
+                                <div class="card-body">
+                                    <ng-container class="border">
+                                        <div class="row">
+                                            <div class="col-sm-2" style="margin-right: auto;position: relative;top: 4px;">
+                                                <label class="form-label">SAP Material</label>
+                                                <ng-select [(ngModel)]="pushGroupMark.SapMaterialcode"
+                                                    (change)="changeSAP_PRC($event)"
+                                                    [ngModelOptions]="{standalone: true}">
+                                                    <ng-option *ngFor="let sList of SAPMaterialforPRC"
+                                                        [value]="sList.MaterialCodeID">
+                                                        {{sList.MaterialCode}}
+                                                    </ng-option>
+                                                </ng-select>
+                                            </div>
+                                            <div class="col-sm-2" style="margin-right: auto;position: relative;top: 4px;">
+                                              <label class="form-label">Cage Selection </label>
+                                              <ng-select [(ngModel)]="pushGroupMark.SelectionId" (change)="changeSAP_PRC($event)"
+                                                [ngModelOptions]="{standalone: true}">
+                                                <ng-option *ngFor="let sList of cagSelection" [value]="sList.CageId">
+                                                  {{sList.Cage_type}}
+                                                </ng-option>
+                                              </ng-select>
+                                            </div>
+                                            <div class="col-sm-2" style="margin: auto;">
+                                                <label class="form-label ">Width</label> <br>
+                                                <input type="text" maxlength="10" class="form-control"
+                                                    [(ngModel)]="pushGroupMark.Width" />
+                                            </div>
+                                            <div class="col-sm" style="margin: auto;">
+                                                <label class="form-label">Depth </label><br>
+                                                <input type="text" maxlength="10" class="form-control"
+                                                    [(ngModel)]="pushGroupMark.Depth" />
+                                            </div>
+                                            <div class="col-sm-2" style="margin: auto;">
+                                                <label for="bendingtype" class="form-label ">Length</label><br>
+                                                <input type="text" maxlength="10" class="form-control"
+                                                    [(ngModel)]="pushGroupMark.Length" />
+                                            </div>
+                                            <div class="col-sm" style="margin: auto;">
+                                                <label for="bendingtype" class="form-label ">Assembly Ind</label><br>
+                                                <div class=" row custom-control custom-switch ml-0">
+                                                    <input type="checkbox" [(ngModel)]="pushGroupMark.AssemblyInd"
+                                                        [checked]="pushGroupMark.AssemblyInd"
+                                                        class="custom-control-input" id="cl-only">
+                                                    <label class="custom-control-label" for="cl-only"></label>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm" style="margin-left: auto;">
+                                                <br>
+                                                <button class="btn btn-primary btn-sm" type="submit"
+                                                    (click)="SavePRCGroupMarkDetails()">Save</button>
+                                            </div>
+
+                                            <div class="col-sm" style="margin-left: auto;text-wrap-mode: nowrap;">
+                                                <br>
+                                                <button class="btn btn-primary btn-sm" type="submit"
+                                                    (click)="Report_Click()">View Report </button>
+                                            </div>
+
+                                        </div>
+                                        <!-- <div class="row">
+                                            <div  style="position: relative;
+                                            left: 32px;">
+                                                <label>
+                                                  Coupler Type:
+                                                </label>
+                                                <ng-select [selectOnTab]="true" class="ng-selectcustomer" [(ngModel)]="CouplerType"
+                                                  (ngModelChange)="OnChangeCouplerType()" [disabled]="NON_Editable">
+                                                  <ng-option *ngFor="let sList of CouplerList" [value]="sList">
+                                                    {{ sList }}
+                                                  </ng-option>
+                                                </ng-select>
+                                                <span  class="Coupler-Type">The purpose of the dropdown is simply to provide the required shape codes corresponding to the coupler type.</span>
+                                              </div>
+                                        </div> -->
+
+                                    </ng-container>
+                                </div>
+                            </ng-template>
+                        </ngb-panel>
+                    </ngb-accordion>
+                    <ngb-accordion #acc="ngbAccordion" title="Coupler Type">
+                        <ngb-panel id="panel1">
+                          <ng-template ngbPanelContent>
+                      <div class="d-flex" style="justify-content: space-between; padding: 0 20px;">
+                        <div class="card-body">
+                          <label>
+                            Coupler Type:
+                          </label>
+                          <ng-select [selectOnTab]="true" class="ng-selectcustomer" [(ngModel)]="CouplerType"
+                            (ngModelChange)="OnChangeCouplerType()" [disabled]="NON_Editable">
+                            <ng-option *ngFor="let sList of CouplerList" [value]="sList">
+                              {{ sList }}
+                            </ng-option>
+                          </ng-select>
+                          <span  class="Coupler-Type">The purpose of the dropdown is simply to provide the required shape codes corresponding to the coupler type.</span>
+                        </div>
+                    </div>
+                    </ng-template>
+                    </ngb-panel>
+                    </ngb-accordion>
+                </div>
+                <div class="row " *ngIf="this.MeshData.VCHPRODUCTTYPE=='CORE'">
+                    <ngb-accordion #acc="ngbAccordion" title="Filters" [activeIds]="'panel1'">
+                        <ngb-panel id="panel1">
+                            <ng-template ngbPanelContent>
+                                <div class="card-body">
+                                    <ng-container class="border">
+                                        <div class="row">
+                                            <div class="col-sm-2" style="margin-right: auto;">
+                                                <label class="form-label">Product Code</label>
+                                                <ng-select [(ngModel)]="pushGroupMark.ProductCodeId"
+                                                    (change)="changeCoreCage_Product($event)"
+                                                    [ngModelOptions]="{standalone: true}">
+                                                    <ng-option *ngFor="let sList of CoreCageProductList"
+                                                        [value]="sList.ProductCodeId">
+                                                        {{sList.ProductCodeName}}
+                                                    </ng-option>
+                                                </ng-select>
+                                            </div>
+                                            <div class="col-sm-2" style="margin: auto;">
+                                                <label class="form-label ">Width</label> <br>
+                                                <input type="text" maxlength="10" class="form-control"
+                                                    [(ngModel)]="pushGroupMark.Width" />
+                                            </div>
+                                            <div class="col-sm" style="margin: auto;">
+                                                <label class="form-label">Depth </label><br>
+                                                <input type="text" maxlength="10" class="form-control"
+                                                    [(ngModel)]="pushGroupMark.Depth" />
+                                            </div>
+                                            <div class="col-sm-2" style="margin: auto;">
+                                                <label for="bendingtype" class="form-label ">Length</label><br>
+                                                <input type="text" maxlength="10" class="form-control"
+                                                    [(ngModel)]="pushGroupMark.Length" />
+                                            </div>
+                                            <div class="col-sm" style="margin: auto;">
+                                                <label for="bendingtype" class="form-label ">Assembly Ind</label><br>
+                                                <div class=" row custom-control custom-switch ml-0">
+                                                    <input type="checkbox" [(ngModel)]="pushGroupMark.AssemblyInd"
+                                                        [checked]="pushGroupMark.AssemblyInd"
+                                                        class="custom-control-input" id="cl-only">
+                                                    <label class="custom-control-label" for="cl-only"></label>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm" style="margin-left: auto;">
+                                                <br>
+                                                <button class="btn btn-primary btn-sm" type="submit"
+                                                    (click)="SavePRCGroupMarkDetails()">Save</button>
+                                            </div>
+
+                                            <div class="col-sm" style="margin-left: auto;">
+                                                <br>
+                                                <button class="btn btn-primary btn-sm" type="submit"
+                                                    (click)="Report_Click()">View Report </button>
+                                            </div>
+                                        </div>
+
+                                        <!-- <div class="row">
+                                            <div style="    position: relative;
+                                            left: 32px;">
+                                                <label>
+                                                  Coupler Type:
+                                                </label>
+                                                <ng-select [selectOnTab]="true" class="ng-selectcustomer" [(ngModel)]="CouplerType"
+                                                  (ngModelChange)="OnChangeCouplerType()" [disabled]="NON_Editable">
+                                                  <ng-option *ngFor="let sList of CouplerList" [value]="sList">
+                                                    {{ sList }}
+                                                  </ng-option>
+                                                </ng-select>
+                                                <span  class="Coupler-Type">The purpose of the dropdown is simply to provide the required shape codes corresponding to the coupler type.</span>
+                                              </div>
+                                        </div> -->
+                                    </ng-container>
+                                </div>
+                            </ng-template>
+                        </ngb-panel>
+                    </ngb-accordion>
+                    <ngb-accordion #acc="ngbAccordion" title="Coupler Type">
+                        <ngb-panel id="panel1">
+                          <ng-template ngbPanelContent>
+                      <div class="d-flex" style="justify-content: space-between; padding: 0 20px;">
+                        <div class="card-body">
+                          <label>
+                            Coupler Type:
+                          </label>
+                          <ng-select [selectOnTab]="true" class="ng-selectcustomer" [(ngModel)]="CouplerType"
+                            (ngModelChange)="OnChangeCouplerType()" [disabled]="NON_Editable">
+                            <ng-option *ngFor="let sList of CouplerList" [value]="sList">
+                              {{ sList }}
+                            </ng-option>
+                          </ng-select>
+                          <span  class="Coupler-Type">The purpose of the dropdown is simply to provide the required shape codes corresponding to the coupler type.</span>
+                        </div>
+                    </div>
+                    </ng-template>
+                    </ngb-panel>
+                    </ngb-accordion>
+                </div>
+
+                <br>
+                <div>
+                    <tabset>
+                        <tab class="tab" heading={{SlabHeading}}
+                            [active]="structElement=='Slab' ||  structElement=='SLAB-T'|| structElement=='Wall'||structElement=='SLAB-B'||structElement=='DWALL'"
+                            title="Tab 1" style="background:#fff">
+                            <app-slab-tab [ParameterSetNo]="ParameterSet"
+                                [ParentStructureMarkId]="ParentStructureMarkId"></app-slab-tab>
+                        </tab>
+
+                        <tab class="tab" heading=Column *ngIf="!(this.MeshData.VCHPRODUCTTYPE=='CORE')"
+                            [active]="structElement=='Column'" title="Tab 2" style="background:#fff">
+                            <app-column [ParameterSetNo]="ParameterSet" [ParentStructureMarkId]="ParentStructureMarkId">
+                            </app-column>
+                        </tab>
+                        <tab class="tab" heading=Beam *ngIf="!(this.MeshData.VCHPRODUCTTYPE=='CORE')"
+                            [active]="structElement=='Beam'" title="Tab 3" style="background:#fff">
+                            <app-beam [ParameterSetNo]="ParameterSet" [ParentStructureMarkId]="ParentStructureMarkId">
+                            </app-beam>
+                        </tab>
+                        <tab class="tab" heading="Accessories" [active]="structElement=='Accessories'" title="Tab 4"
+                            style="background:#fff">
+                            <app-accessories [ParentStructureMarkId]="ParentStructureMarkId"></app-accessories>
+                        </tab>
+                        <tab class="tab" *ngIf="this.MeshData.VCHPRODUCTTYPE=='PRC' || this.MeshData.VCHPRODUCTTYPE=='CORE'" [active]="true" heading="CAB"
+                            title="Tab 4" style="background:#fff">
+                            <!-- <app-bbs-orderdetails></app-bbs-orderdetails>                             -->
+                            <div>
+                                <ul id="contextMenuCAB" style="display:none;position:absolute;">
+                                    <li data="insert" (click)="InsertItem()">Insert</li>
+                                    <li data="delete" (click)="Delete()">Delete</li>
+                                    <li data="clear" (click)="ClearRows()">Clear Contents</li>
+                                    <!-- <li data="" style="background: url('@Url.Content(" ~/Content/images/line.png")') no-repeat center left"></li> -->
+                                    <li data="copy" (click)="CopyRows()">Copy</li>
+                                    <li data="paste" (click)="PasteRows()">Paste</li>
+                                    <!-- <li data="" style="background: url('@Url.Content(" ~/Content/images/line.png")') no-repeat center left"></li> -->
+                                    <!-- <li data="weight" (click)="SubTotalWeight()">Sub-total Weight</li>
+                                    <li data="qty" (click)="SubTotalQty()">Sub-total Qty</li> -->
+                                    <!-- <li data="" style="background: url('@Url.Content(" ~/Content/images/line.png")') no-repeat center left"></li> -->
+                                    <!-- <li data="MoreInfo" (click)="OpenMoreInfo()">More Info</li> -->
+                                </ul>
+                                <angular-slickgrid gridId="grid2" [columnDefinitions]="templateColumns"
+                                    [gridOptions]="gridOptions" [dataset]="bbsOrderdataset" gridHeight="600"
+                                    gridWidth="700" (onAngularGridCreated)="angularGridReady($event)">
+                                </angular-slickgrid>
+                            </div>
+
+                        </tab>
+
+                    </tabset>
+
+                </div>
+            </div>
+
+            <br>
+            <div id="imageBox" class="movable-container" [ngClass]="{'hide-image': showShapeImage===false}"
+                [style.right.px]="right" [style.top.px]="top" (mousedown)="onMouseDown($event)"
+                (document:mousemove)="onMouseMove($event)" (document:mouseup)="onMouseUp($event)">
+                <div class="close-button"><i class="bi bi-x" (click)="showShapeImage = false"></i></div>
+                <!-- IMAGE HERE ONLY-->
+                <div>
+                    <canvas #myCanvas width="355" height="246" style="width: 355px; height: 246px"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

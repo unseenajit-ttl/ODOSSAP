@@ -1,0 +1,164 @@
+<div class="container-fluid">
+  <div class="logo2">
+    <div class="card m-1">
+      <h3 class="card-header d-flex flex-column justify-content-center align-items-center">
+        <b> CAB Shape Create/Modify</b>
+      </h3>
+
+      <div class="card-body">
+        <div class="row justify-content-center">
+          <div *ngIf="selectedShapecode!=undefined" class="col-12 text-center">
+            <button class="btn btn-primary" (click)="importImage=!importImage">Import Shape Image</button>
+            <button class="btn btn-primary">Refresh Image</button><br>
+            <!-- <input type="file" [(ngModel)]="image" name="file" id="">
+            <button class="btn btn-primary btn-sm" (click)="SaveImage()">Save</button> -->
+            <input *ngIf="importImage" type="file" [(ngModel)]="image" (change)="onFileSelected($event)">
+            <button *ngIf="importImage" (click)="uploadFile()">Upload</button>
+          </div>
+          <div class="col-12">
+            <div class="row">
+              <div class="col-2"></div>
+              <div class="col-8">
+                <table class="table table-borderless w-100">
+                  <tr class="text-left">
+                    <td>
+                  <tr>
+                    <td><label class="form-label">Catalog:</label></td>
+                    <td>
+                      <ng-select>
+                        <ng-option [value]="0">0</ng-option>
+                      </ng-select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><label class="form-label">ShapeCode:</label></td>
+                    <td>
+                      <ng-select [selectOnTab]="true" [(ngModel)]="selectedShapecode" appendTo="body"
+                        (change)="changeShape()" class="ng-selectcustomer" style="width:100px">
+                        <ng-option *ngFor="let sList of shapeList" [value]="sList.chrShapeCode"
+                          style="font-family:Verdana">
+                          {{sList.chrShapeCode}}
+                        </ng-option>
+                      </ng-select>
+
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><label class="form-label">Version:</label></td>
+                    <td><span>{{version}}</span></td>
+                  </tr>
+                  <tr>
+                    <td><label class="form-label">Status:</label></td>
+                    <td>
+                      <ng-select [(ngModel)]="status" (change)="chageStatusCab(status)">
+                        <ng-option value="1">Active</ng-option>
+                        <ng-option value="0" >Inactive</ng-option>
+                      </ng-select>
+                    </td>
+                  </tr>
+                  </td>
+
+                  <td>
+                    <!-- <img [src]="imageSrc" alt="Shape Image"> -->
+                    <canvas #myCanvas width="355" height="246" style="width: 355px; height: 246px"></canvas>
+
+                  </td>
+                  </tr>
+                </table>
+              </div>
+              <div class="col-2"></div>
+            </div>
+          </div>
+          <div class="col-12 text-center">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+              <label class="form-check-label" for="flexCheckDefault">
+                New
+              </label>
+              <button class="btn btn-primary" (click)="createCabShape()">Create/Modify Shape</button>
+              <button class="btn btn-primary">Create/Modify Shape(Special)</button>
+              <button class="btn btn-primary" (click)="DeleteShapeCode()">Delete ShapeCode</button>
+              <button class="btn btn-primary" (click)="ShowAllShapes()">Show All Shape Code</button>
+              <button class="btn btn-primary" (click)="testImage()">Test Image</button>
+            </div>
+          </div>
+          <div *ngIf="selectedShapecode!=undefined">
+            <table class="table table-responsive table-hover">
+              <thead>
+                <tr>
+                  <th>Parameter Sequence</th>
+                  <th>Parameter Name</th>
+                  <th>X-Coordinate</th>
+                  <th>Y-Coordinate</th>
+                  <th>Z-Coordinate</th>
+                  <th>Visible</th>
+                  <th>Symmetric To</th>
+                  <th>Custom Formula</th>
+                  <th>Range(+/-)</th>
+                  <th>Height Angle Formula</th>
+                  <th>Offset Angle Formula</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of cabShapeCoOrdinatest; index as i">
+                  <ng-container *ngIf="enableEditIndex != i">
+
+                    <td>{{item.INTPARAMSEQ}}</td>
+                    <td>{{item.CHRPARAMNAME}}</td>
+                    <td>{{item.INTXCOORD}}</td>
+                    <td>{{item.INTYCOORD}}</td>
+                    <td>{{item.INTZCOORD}}</td>
+                    <td>{{item.VISIBLE}}</td>
+                    <td>{{item.SYMMETRICTO}}</td>
+                    <td>{{item.FORMULA}}</td>
+                    <td>{{item.RoundOffRANGE}}</td>
+                    <td>{{item.HEIGHTANGLEFORMULA}}</td>
+                    <td>{{item.OFFSETANGLEFORMULA}}</td>
+                    <td class="text-center">
+                      <i class="material-icons" ngbTooltip="Edit" (click)="enableEditIndex=i">mode_edit</i>&nbsp;
+                    </td>
+                  </ng-container>
+
+                  <ng-container *ngIf="enableEditIndex == i">
+                    <td>{{item.INTPARAMSEQ}}</td>
+                    <td>{{item.CHRPARAMNAME}}</td>
+                    <td><input type="number" [(ngModel)]="item.INTXCOORD" name="" id=""></td>
+                    <td><input type="number" [(ngModel)]="item.INTYCOORD" name="" id=""></td>
+                    <td><input type="number" [(ngModel)]="item.INTZCOORD" name="" id=""></td>
+                    <td>
+                      <!-- <select name="">
+                        <option value="VISIBLE">Visible</option>
+                        <option value="INVISIBLE">Invisible</option>
+                      </select> -->
+                      <select [(ngModel)]="item.VISIBLE" name="visible_{{i}}">
+                        <option value="VISIBLE">Visible</option>
+                        <option value="INVISIBLE">Invisible</option>
+                      </select>
+                      <!-- <ng-select  class="ng-selectcustomer" style="width:100px" [(ngModel)]="item.VISIBLE">
+                      <ng-option  value="VISIBLE">Visible</ng-option>
+                      <ng-option value="INVISIBLE">InVisible</ng-option>
+                    </ng-select> -->
+                    </td>
+                    <td><input type="text" name="" [(ngModel)]="item.SYMMETRICTO" id=""></td>
+                    <td><input type="text" name="" [(ngModel)]="item.FORMULA" id=""></td>
+                    <td><input type="text" name="" [(ngModel)]="item.RoundOffRANGE" id=""></td>
+                    <td><input type="text" name="" [(ngModel)]="item.HEIGHTANGLEFORMULA" id=""></td>
+                    <td><input type="text" name="" [(ngModel)]="item.OFFSETANGLEFORMULA" id=""></td>
+                    <td class="text-center" style="width:200px;">
+                      <i class="material-icons" (click)="UpdateParameters(item)" ngbTooltip="Update">save</i>
+                      &nbsp;
+                      <i class="material-icons" (click)="EditCancel()" ngbTooltip="Cancel">cancel</i>
+                    </td>
+                  </ng-container>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div>
+</div>

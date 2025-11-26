@@ -1,0 +1,63 @@
+
+
+<div  cdkDragRootElement=".your-custom-dialog-class ">
+  <div class="modal-header">
+    <h4 id="ui-id-2" class="ui-dialog-title">PRC Data Entry</h4>
+    <button type="button" class="close" (click)="dismissModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row p-2">
+        <div class="col-12">
+            <table class="table table-bordered table-hover my-table">
+              <caption>
+                <span style="display:inline-block; width:12px; height:12px; background-color:#F08080; margin-right:6px; border:1px solid #000;"></span>
+                Component Marking not matching with existing Groupmarks
+            </caption>                
+            <thead>
+                    <tr>
+                        <th>Sr.No</th>
+                        <th>Component Marking</th>
+                        <th>Block</th>
+                        <th>Level</th>
+                        <th>Qty</th>
+                        <th>Remark</th>
+                        <th>Page No.</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of PrecastArray; index as i" [ngStyle]="{'background-color':giveRowcolor(item)}">
+                         <td>{{ i + 1 }}</td>
+                         <td>{{ item.ComponentMarking }}</td>
+                         <td>{{ item.Block }}</td>
+                         <td>{{ item.Level }}</td>
+                         <td>{{ item.Qty }}</td>
+                         <td>{{ item.Remark }}</td>
+                         <td>{{item.PageNo}}</td>
+                    </tr>
+                </tbody>
+
+            </table>
+            <div>
+                 <ngb-pagination [collectionSize]="PrecastArray.length" [(page)]="currentPage"
+                                [pageSize]="itemsPerPage" (pageChange)="onPageChange(currentPage)"
+                                [boundaryLinks]="false" [maxSize]="maxSize">
+                                <ng-template ngbPaginationPrevious>Prev</ng-template>
+                                <ng-template ngbPaginationNext>Next</ng-template>
+                 </ngb-pagination>
+            </div>
+
+        </div>
+
+    </div>
+    
+  </div>
+  <div class="d-flex justify-content-end align-items-center">
+     <!-- <button class="btn btn-primary  mb-2" type="button"(click)="dismissModal()"> Close </button>  -->
+       <button type="button" (click)="dismissModal()" class="btn btn-transparent"> Cancel</button>
+      <button class="btn btn-primary  mb-2" type="button"(click)="downloadReport()"> Download Report </button>
+        
+  </div>
+</div>
+

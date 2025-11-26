@@ -1,0 +1,87 @@
+<div *ngIf="isLoading" style="z-index: 500">
+  <div id="pause" class="d-flex align-items-center justify-content-center">
+    <div id="spinner" class="loader"></div>
+  </div>
+</div>
+
+<div class="container-fluid">
+  <h2 class="card-header d-flex flex-column justify-content-center align-items-center" style="color:red ;">
+    <b>All Shape Code List</b>
+  </h2>
+
+
+
+  <div class="card-body">
+    <div class="row">
+      
+      <div class="col-md-2">
+        <!-- <button class="btn btn-primary btn-sm" type="button" (click)="downloadPdf()"
+          ngbTooltip="Download PDF for All Shapes">DownLoad PDF
+        </button> -->
+        <button class="btn btn-info btn-md" type="button"><i class="material-icons" style="font-size:20px;" ngbTooltip="Download PDF" (click)="downloadShapePDF()">download</i></button>
+      </div>
+
+
+    </div>
+    <hr>
+    <div class="row">
+      <div class="col-md-3" *ngFor="let item of AllShapes">
+        <div class="card" style="padding: 0px;">
+          <!-- <img class="card-img-top" [src]="'assets/images/Shapes/' + item.vchImage" alt="Card image cap"> -->
+          <img class="card-img-top" [src]="item.imageSrc" alt="Card image cap">
+          <div class="card-body">
+            <h5>Shape Code : {{item.chrShapeCode}}</h5>
+            <h5>Status : {{item.tntStatusId}}</h5>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<table id="myTable" style="visibility:hidden;">
+  <thead>
+    <th>Shape Code</th>
+    <th>Status</th>
+    <th>Image</th>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of AllShapes">
+      <td>{{item.chrShapeCode}}</td>
+      <td>{{item.tntStatusId}}</td>
+      <td><img class="card-img-top" [src]="item.imageSrc" alt="Card image cap" height="50" width="50"></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- <div class="modal-header">
+
+  <h3 class="modal-title" style="display:flex; color: red;">All Shape Codes :</h3>
+  <button type="button" class="close" (click)="dismissModal()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  <div class="input-group flex-nowrap">
+
+    <span class="input-group-text ">
+      <i class="material-icons" style="font-size:20px;" ngbTooltip="Download Excel" (click)="downloadPdf()">download</i>
+    </span>
+
+  </div>
+</div>
+<div class="modal-body" style="height: 400px;overflow-y: scroll;">
+  <div class="row">
+    <div class="col-md-3" *ngFor="let item of AllShapes">
+      <div class="card" style="padding: 0px;">
+        <img class="card-img-top" [src]="'assets/images/Shapes/' + item.vchImage" alt="Card image cap">
+
+        <div class="card-body">
+          <h5>Shape Code : {{item.chrShapeCode}}</h5>
+          <h5>Status : {{item.tntStatusId}}</h5>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div> -->

@@ -1,0 +1,3079 @@
+<div class="container-fluid" (click)="setCopyFlag(false, $event)">
+  <div class="card m-1">
+    <h3 class="card-header d-flex flex-column justify-content-center" style="margin: 0 0 0px !important;">
+      <span> <img src="../../../assets/imagesuiux/review.png" style="width: 30px;height: 30px;">
+        <b> NatSteel Order Process Status (大众钢铁订单处理状态)</b>
+      </span>
+    </h3>
+
+    <div class="card-body" style="padding: 0px">
+      <section class="collapsible" [@collapse]="Collapse" style="margin: 0">
+        <div id="inputdropdown">
+          <form [formGroup]="ProcessOrderForm">
+            <div class="row d-flex">
+              <div class="col-md-1">
+                <label class="form-label bold" style="font-size:small">Customer</label>
+              </div>
+              <div class="col-md-5">
+                <input formControlName="customer" type="text" placeholder="Customer" class="form-control"
+                  style="font-weight:700;" />
+              </div>
+
+              <div class="col-md-1">
+                <label class="form-label bold" style="font-size:small">Project</label>
+              </div>
+              <div class="col-md-5">
+                <input formControlName="project" type="text" placeholder="Project" class="form-control"
+                  style="font-weight:700;" />
+              </div>
+            </div>
+            <div class="row d-flex">
+              <div class="col-md-1">
+                <label class="form-label bold" style="font-size:small">Contract</label>
+              </div>
+              <div class="col-md-3">
+                <ng-select id="pr_contract"
+                  [ngClass]="{'check-contract-red':(selectedRow.length > 0 && ((contractterm===false&&contractcolorred===true) || (ProcessOrderForm.controls.Contract.value == undefined || ProcessOrderForm.controls.Contract.value == ''))),'check-contract-yellow': (selectedRow.length > 0 && contractcoloryellow===true)}"
+                  [selectOnTab]="true" class="w-auto" formControlName="Contract" style="font-weight:700 !important;">
+                  <ng-option *ngFor="let sList of ContractListDDL" style="font-weight:700 !important;">
+                    {{ sList }}
+                  </ng-option>
+                </ng-select>
+              </div>
+              <div class="col-md-2">
+                <button class="btn btn-md btn-outline-primary" matTooltip="Show All Contract"
+                  tooltipClass="my-custom-class" type="button" (click)="open()"
+                  style="margin: -1px; padding: 2px;font-size:medium !important">
+                  Show All Contract
+                </button><br />
+              </div>
+              <div class="col-md-1">
+                <label class="form-label bold" style="font-size:small">Order Type</label>
+              </div>
+              <div class="col-md-5">
+                <ng-select id="pr_ordertype" [selectOnTab]="true" class="w-auto" formControlName="OrderType"
+                  style="font-weight:700 !important;">
+                  <ng-option *ngFor="let sItem of OrderTypeList" [value]="sItem"
+                    style="font-weight:700 !important;">{{sItem}}</ng-option>
+                  <!-- <ng-option value="CREDIT">CREDIT</ng-option>
+                  <ng-option value="CASH">CASH</ng-option>
+                  <ng-option value="FOC">FOC</ng-option> -->
+                </ng-select>
+              </div>
+            </div>
+
+            <div class="row d-flex" style="margin-top: 10px !important;">
+              <!-- <div class="col-md-1">
+                <label class="form-label bold" style="font-size:small">Ship To</label>
+              </div>
+              <div class="col-md-5">
+                <ng-select class="w-auto" formControlName="ShipTo" style="font-weight:700 !important;">
+                  <ng-option *ngFor="let sList of ShipPartyList" style="font-weight:700;">
+                    {{ sList }}
+                  </ng-option>
+                </ng-select>
+              </div> -->
+              <div class="col-md-1">
+                <label class="form-label bold" style="font-size:small">Address</label>
+              </div>
+              <div class="col-md-2">
+                <input type="text" placeholder="Address" formControlName="Address" class="form-control"
+                  style="font-weight:700;" />
+              </div>
+
+              <div class="col-md-1">
+                <label class="form-label bold" style="font-size:small">Gate</label>
+              </div>
+              <div class="col-md-2">
+                <input type="text" placeholder="Gate" formControlName="Gate" class="form-control"
+                  style="font-weight:700;" />
+              </div>
+
+              <div class="col-md-1" *ngIf="showProjectStage">
+                <label class="form-label bold" style="text-align: right;font-size:small">Project Stage</label>
+              </div>
+              <div class="col-md-3" *ngIf="showProjectStage">
+                <!-- <input type="text" placeholder="Project Stage" class="form-control" /> -->
+                <ng-select class="w-auto" formControlName="ProjectStage" style="font-weight:700 !important;">
+                  <ng-option *ngFor="let sList of projectStageddl" [value]="sList" style="font-weight:700 !important;">
+                    {{ sList }}
+                  </ng-option>
+                </ng-select>
+              </div>
+
+              <div class="col-md-1" *ngIf="showSONumber">
+                <label class="form-label bold" style="font-size:small">SO Number</label>
+              </div>
+              <div class="col-md-3" *ngIf="showSONumber">
+                <input type="text" placeholder="SO Number" formControlName="SONumber" class="form-control"
+                  style="font-weight:700;" />
+                <!-- <ng-select class="w-auto" formControlName="SONumber">
+                  <ng-option *ngFor="let sList of projectStageddl" [value]="sList">
+                    {{ sList }}
+                  </ng-option>
+                </ng-select> -->
+              </div>
+            </div>
+            <div class="row d-flex" style="margin-top: 10px !important;">
+              <div class="col-md-1">
+                <label for="" class="bold" style="text-align: right;font-size:small">Req Date</label>
+              </div>
+              <div class="col-md-2">
+                <!-- <input type="text" placeholder="Req Date" class="form-control" formControlName="ReqDate" /> -->
+
+                <mat-form-field style="display: contents">
+                  <input matInput formControlName="ReqDate" [matDatepicker]="pickerReqDate"
+                    style="font-weight:700;font-size:small;display:block;padding-left:0px !important;" />
+                  <!-- <mat-hint style="font-size: xx-small">YYYY-MM-DD</mat-hint> -->
+                  <!-- <mat-datepicker-toggle matIconSuffix [for]="pickerReqDate" style="padding-top: 15px !important">
+                  </mat-datepicker-toggle> -->
+                  <mat-datepicker #pickerReqDate [dateClass]="dateClass" (opened)="onDatepickerOpened(pickerReqDate)"
+                    (closed)="onDatepickerClosed(pickerReqDate, 'pickerReqDate')" [calendarHeaderComponent]="calHeader">
+                  </mat-datepicker>
+                </mat-form-field>
+              </div>
+              <div class="col-md-1">
+                <label class="bold" style="font-size:small">Updated Req Date</label>
+              </div>
+              <div class="col-md-2">
+                <!-- <input type="text" placeholder="Updated Req Date" class="form-control"
+                  formControlName="UpdateReqDate" /> -->
+                <mat-form-field style="display: contents">
+                  <input matInput formControlName="UpdateReqDate" [matDatepicker]="pickerUpdateReqDate"
+                    style="font-weight:700;font-size:small;display:block;padding-left:0px !important;" />
+                  <!-- <mat-hint style="font-size: xx-small">YYYY-MM-DD</mat-hint> -->
+                  <mat-datepicker-toggle matIconSuffix [for]="pickerUpdateReqDate" style="padding-top: 15px !important">
+                  </mat-datepicker-toggle>
+                  <mat-datepicker #pickerUpdateReqDate [dateClass]="dateClass"
+                    (opened)="onDatepickerOpened(pickerUpdateReqDate)"
+                    (closed)="onDatepickerClosed(pickerUpdateReqDate, 'pickerUpdateReqDate')"
+                    [calendarHeaderComponent]="calHeader">
+                  </mat-datepicker>
+                </mat-form-field>
+              </div>
+              <div class="col-md-1">
+                <label class="form-label bold" style="text-align: right;font-size:small">PO Number</label>
+              </div>
+              <div class="col-md-3">
+                <input type="text" (blur)="ConvertFormToUpper('ponumber')" placeholder="PO Number" class="form-control"
+                  formControlName="ponumber" style="font-weight:700;" />
+              </div>
+            </div>
+
+            <div class="row d-flex" *ngIf="showWBS">
+              <div class="col-md-1">
+                <label class="form-label bold" style="text-align: right;font-size:small">WBS 1</label>
+              </div>
+              <div class="col-md-2">
+                <ng-select [selectOnTab]="true" [closeOnSelect]="false" formControlName="wbs1" class="w-auto"
+                  (change)="GetWBS2(); " style="font-weight:700 !important;">
+                  <ng-option *ngFor="let sList of wbs1List" [value]="sList"
+                    style="font-weight:700 !important;">{{sList}} </ng-option>
+                </ng-select>
+              </div>
+
+              <div class="col-md-1">
+                <label class="form-label bold" style="font-size:small">WBS 2</label>
+              </div>
+              <div class="col-md-2">
+                <ng-select [selectOnTab]="true" [closeOnSelect]="false" formControlName="wbs2" class="w-auto"
+                  (change)="GetWBS3()" style="font-weight:700 !important;">
+                  <ng-option *ngFor="let sList of wbs2List" [value]="sList"
+                    style="font-weight:700 !important;">{{sList}}</ng-option>
+                </ng-select>
+              </div>
+
+              <div class="col-md-1">
+                <label class="form-label bold" style="font-size:small">WBS 3</label>
+              </div>
+              <div class="col-md-3">
+                <ng-select [selectOnTab]="true" [closeOnSelect]="false" formControlName="wbs3" class="w-auto"
+                  style="font-weight:700 !important;">
+                  <ng-option *ngFor="let sList of wbs3List" [value]="sList"
+                    style="font-weight:700 !important;">{{sList}}</ng-option>
+                </ng-select>
+              </div>
+            </div>
+            <div class="row d-flex" style="margin-top: 10px !important;margin-bottom: 3px !important;">
+              <div class="col-md-1" *ngIf="showCabWeight">
+                <label class="form-label bold" style="font-size:small">CAB Weight</label>
+              </div>
+              <div class="col-md-2" *ngIf="showCabWeight">
+                <input type="text" placeholder="CAB Weight" class="form-control" formControlName="CABWeight"
+                  style="font-weight:700;" />
+              </div>
+
+              <div class="col-md-1" *ngIf="showTotalPcs">
+                <label class="form-label bold" style="font-size:small">Total Pcs</label>
+              </div>
+              <div class="col-md-2" *ngIf="showTotalPcs">
+                <input type="text" placeholder="Total Pcs" class="form-control" formControlName="TotalPcs"
+                  style="font-weight:700;" />
+              </div>
+
+              <div class="col-md-1" *ngIf="showSbWeight">
+                <label class="form-label bold" style="font-size:small">SB Weight</label>
+              </div>
+              <div class="col-md-2" *ngIf="showSbWeight">
+                <input type="text" placeholder="SB Weight" class="form-control" formControlName="SBWeight"
+                  style="font-weight:700;" />
+              </div>
+
+              <div class="col-md-1" *ngIf="showTotalWeight">
+                <label class="form-label bold" style="font-size:small">Total Weight</label>
+              </div>
+              <div class="col-md-2" *ngIf="showTotalWeight">
+                <input type="text" placeholder="Total Weight" class="form-control" formControlName="TotalWeight"
+                  style="font-weight:700;" />
+              </div>
+
+              <div class="col-md-1">
+                <label class="form-label bold" style="font-size:small">Vehicle Type</label>
+              </div>
+              <div class="col-md-2">
+                <!-- <ng-select [selectOnTab]="true" class="w-auto" formControlName="VehicleType"
+                  (change)="checkLowBed(this.ProcessOrderForm.controls.VehicleType.value)">
+                  <ng-option *ngFor="let sList of VehicleTypeList" [value]="sList.code">
+                    {{sList.code}} {{ sList.value }}
+                  </ng-option>
+                </ng-select> -->
+                <ng-select [selectOnTab]="true" class="w-auto" formControlName="VehicleType"
+                  (change)="checkLowBed(this.ProcessOrderForm.controls.VehicleType.value)"
+                  style="font-weight:700 !important;">
+                  <ng-option value="HC" style="font-weight:700 !important;">HC Haip Crane</ng-option>
+                  <ng-option value="LB40" style="font-weight:700 !important;">LB40 40ft Low Bed</ng-option>
+                  <ng-option value="LBE" style="font-weight:700 !important;">LBE Low Bed Escoted</ng-option>
+                  <ng-option value="SC" style="font-weight:700 !important;">SC Self Collection</ng-option>
+                  <ng-option value="TR40/24" style="font-weight:700 !important;">TR40/24 40ft 24mt Trailer</ng-option>
+                </ng-select>
+              </div>
+              <div class="col-md-1" *ngIf="true">
+                <label class="form-label bold" style="font-size:small"></label>
+              </div>
+              <div class="col-md-2" *ngIf="true"></div>
+
+              <div class="col-md-1" *ngIf="showCarbonRate">
+                <label class="form-label bold" style="font-size:small">Low Carbon</label>
+              </div>
+              <div class="col-md-2" *ngIf="showCarbonRate">
+                <input type="text" placeholder="Low Carbon" class="form-control" formControlName="LowCarbon"
+                  style="font-weight:700;" />
+              </div>
+
+              <div class="col-md-1" *ngIf="showEpdValue">
+                <label class="form-label bold" style="font-size:small">EPD Value</label>
+              </div>
+              <div class="col-md-2" *ngIf="showEpdValue">
+                <input type="text" placeholder="EPD Value" class="form-control" formControlName="EPDValue"
+                  style="font-weight:700;" />
+              </div>
+
+              <!-- <div class="col-md-2" *ngIf="showEpdValue">
+                <div _ngcontent-vlm-c257="" class="form-check form-switch">
+                  <input _ngcontent-vlm-c257="" type="checkbox" role="switch"
+                  id="flexSwitchCheckDefault" class="form-check-input ng-valid ng-dirty ng-touched" ng-reflect-model="false"
+                   [(ngModel)]="gGreenSteelSelection"  [ngModelOptions]="{ standalone: true }" (change)="UpdateGreenSteel()" >
+                  <label _ngcontent-vlm-c257="" for="flexSwitchCheckDefault" class="form-check-label">Green-Steel</label>
+                </div>
+              </div> -->
+              <div class="col-md-1" *ngIf="showRecycleContent">
+                <label class="form-label bold" style="font-size:small">Recycle Content</label>
+              </div>
+              <div class="col-md-2" *ngIf="showRecycleContent">
+                <input type="text" placeholder="Recycle Content" class="form-control" formControlName="RecycleContent"
+                  style="font-weight:700;" />
+              </div>
+
+              <div class="col-md-1" *ngIf="showEpdValue">
+                <label class="form-label bold" style="font-size:small">Low Carbon Indicator</label>
+              </div>
+              <div class="col-md-2 Green-Steel form-check form-switch" *ngIf="showEpdValue">
+                <input _ngcontent-vlm-c257="" type="checkbox" role="switch" id="flexSwitchCheckDefault"
+                  class="form-check-input ng-valid ng-dirty ng-touched" ng-reflect-model="false" [(ngModel)]="gGreenSteelSelection"
+                  [ngModelOptions]="{ standalone: true }" (change)="UpdateGreenSteel()" [disabled]="isGreenSteelDisabled">
+                <label _ngcontent-vlm-c257="" for="flexSwitchCheckDefault" class="form-check-label"></label>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div id="OrderDetails">
+          <div class="row order-detail-heading">
+            <div class="col d-flex" style="align-items: center">
+              <span>
+                <i class="bi bi-plus-square" *ngIf="!showOrderDetailsTable" (click)="showOrderDetailsTable = true"></i>
+                <i class="bi bi-dash-square" *ngIf="showOrderDetailsTable" (click)="showOrderDetailsTable = false"></i>
+              </span>
+              <span style="margin-left: 10px">
+                <b>Order Details</b>
+              </span>
+            </div>
+          </div>
+
+          <div #table class="content" [class.open]="showOrderDetailsTable">
+            <div class="table-responsive  Order-Details">
+              <table id="BBSBar" class="table table-bordered" *ngIf="showBBSBar">
+                <thead>
+                  <tr>
+                    <th>SNo
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+
+                    <th>
+                      BBS No
+                      <!-- <i class="bi bi-card-list" style="float: right; font-size: x-large"
+                        matTooltip="Click the button to list used BBS No in the project."
+                        (click)="OpenBBSNoListPopup()"></i> -->
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>Product Type
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>Bar Length
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>Tonnage
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>SB Weight
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>SB So
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="no-record" *ngIf="OrderDetailsList_BBSBar.length == 0">
+                    <td colspan="7" style="text-align: center">
+                      No Record found
+                    </td>
+                  </tr>
+                  <ng-container *ngFor="let sList of OrderDetailsList_BBSBar; index as i">
+                    <tr (click)="SelectOrderDetailsTable(OrderDetailsList_BBSBar, sList, i, $event)"
+                      [class.details-row-highlight]="sList.isSelected">
+                      <td>{{sList.BBSID}}</td>
+                      <td>{{sList.BBSNo}}</td>
+                      <td>{{sList.BBSDesc}}</td>
+                      <td>{{sList.BBSSOR}}</td>
+                      <td>{{sList.BBSCopiedFrom}}</td>
+                      <td>{{ConverWeightFormat(sList.BBSTotalWT)}}</td>
+                      <td>{{sList.BBSSAPSO}}</td>
+                    </tr>
+                  </ng-container>
+                </tbody>
+              </table>
+              <table id="BBS" class="table table-bordered" *ngIf="showBBS">
+                <thead>
+                  <tr>
+                    <th>SNo
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>Structure Element
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>
+                      BBS No.
+                      <i class="bi bi-card-list" style="float: right; font-size: x-large"
+                        matTooltip="Click the button to list used BBS No in the project."
+                        (click)="OpenBBSNoListPopup()"></i>
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>BBS Description
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>CAB Weight
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>SB Weight
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>Total Weight
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>Coupler Type
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>CAB Order Series No.
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>Coupler Order Series No.
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>SB SO
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>Action
+                      <div class="bar" appColumnResize cdkDrag>
+
+                      </div>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="no-record" *ngIf="OrderDetailsList_BBS.length == 0">
+                    <td colspan="14" style="text-align: center">
+                      No Record found
+                    </td>
+                  </tr>
+                  <ng-container *ngFor="let sList of OrderDetailsList_BBS; index as i">
+                    <tr (click)="SelectOrderDetailsTable(OrderDetailsList_BBS, sList, i, $event)"
+                      [class.details-row-highlight]="sList.isSelected">
+                      <td>{{sList.BBSID}}</td>
+                      <!-- <td>{{sList.BBSStrucElem}}</td> -->
+                       <td *ngIf="!gEditStructureElement_Flag" (click)="EditStructureElement(sList)">{{sList.BBSStrucElem}}</td>
+                      <td *ngIf="gEditStructureElement_Flag">
+                        <ng-select class="struct-element-editor" [selectOnTab]="true" class="w-auto"
+                        style="font-weight:700 !important;height: fit-content !important"
+                        [(ngModel)]="gUpdatedStructureElement" (change)="UpdateStrutureElement(sList)"
+                        (blur)="gEditStructureElement_Flag=false" appendTo="body">
+                          <ng-option *ngFor="let item of StructureElementList" [value]="item">
+                            {{ item }}
+                          </ng-option>
+                        </ng-select>
+                      </td>
+                      <td (click)="EditBBSProcess(sList,i,'BBSNo')" *ngIf="!editBBSNo || currEditIndex!=i"
+                        [ngClass]="{'highlight-bbs': (sList.highlighted===true)}">{{sList.BBSNo}}</td>
+                      <td *ngIf="editBBSNo && currEditIndex==i">
+                        <input class="form-control" type="text" [(ngModel)]="sList.BBSNo"
+                          (keydown.enter)="SaveBBS(sList);editBBSNo=false"
+                          (blur)="sList.BBSNo = ConvertToUpper(sList.BBSNo) ;SaveBBS(sList);editBBSNo=false"  maxlength="12">
+                      </td>
+                      <td (click)="EditBBSProcess(sList,i,'BBSDesc')" *ngIf="!editBBSDesc || currEditIndex!=i">
+                        {{sList.BBSDesc}}
+                      </td>
+                      <td *ngIf="editBBSDesc && currEditIndex==i">
+                        <input class="form-control" type="text" [(ngModel)]="sList.BBSDesc"
+                          (keydown.enter)="SaveBBS(sList);editBBSDesc=false"
+                          (blur)="sList.BBSDesc = ConvertToUpper(sList.BBSDesc);SaveBBS(sList);editBBSDesc=false"
+                          maxlength="40">
+                      </td>
+                      <td>{{ConverWeightFormat(sList.BBSOrderCABWT)}}</td>
+                      <td>{{ConverWeightFormat(sList.BBSOrderSTDWT)}}</td>
+                      <td>{{ConverWeightFormat(sList.BBSTotalWT)}}</td>
+                      <td>{{sList.BBSNoNDSCoupler}}</td>
+                      <td>{{sList.BBSSOR}}</td>
+                      <td>{{sList.BBSSORCoupler}}</td>
+                      <td>{{sList.BBSSAPSO}}</td>
+                      <td><span class="Order-details-cancel" (click)="CancelCABBBS(sList)"
+                          *ngIf="sList.showCancel === true">Cancel</span></td>
+                    </tr>
+                  </ng-container>
+                </tbody>
+              </table>
+              <table id="MESH" class="table table-bordered" *ngIf="showMESH">
+                <thead>
+                  <tr>
+                    <th>SNo
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>Source
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>Product Category
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>Structure Element
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>Description
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>Total Pcs
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>Total Weight
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>Posted Date
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>Posted By
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>Order Series/SO No
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="no-record" *ngIf="OrderDetailsList_MESH.length == 0">
+                    <td colspan="10" style="text-align: center">
+                      No Record found
+                    </td>
+                  </tr>
+                  <ng-container *ngFor="let sList of OrderDetailsList_MESH; index as i">
+                    <tr (click)="SelectOrderDetailsTable(OrderDetailsList_MESH, sList, i, $event)"
+                      [class.details-row-highlight]="sList.isSelected">
+
+                      <td>{{i+1}}</td>
+                      <td>{{sList.BBSSource}}</td>
+                      <td>{{sList.BBSProdCategory}}</td>
+                      <td *ngIf="!gEditStructureElement_Flag" (click)="EditStructureElement(sList)">{{sList.BBSStrucElem}}</td>
+                      <td *ngIf="gEditStructureElement_Flag">
+                        <ng-select class="struct-element-editor" [selectOnTab]="true" class="w-auto"
+                        style="font-weight:700 !important;height: fit-content !important"
+                        [(ngModel)]="gUpdatedStructureElement" (change)="UpdateStrutureElement(sList)"
+                        (blur)="gEditStructureElement_Flag=false" appendTo="body">
+                          <ng-option *ngFor="let item of StructureElementList" [value]="item">
+                            {{ item }}
+                          </ng-option>
+                        </ng-select>
+                      </td>
+                      <td>{{sList.BBSDesc}}</td>
+                      <td>{{sList.BBSTotalPcs}}</td>
+                      <td>{{ConverWeightFormat(sList.BBSTotalWT)}}</td>
+                      <td>{{sList.BBSNDSPostDate}}</td>
+                      <td>{{sList.BBSNDSPostBy}}</td>
+                      <td>{{sList.BBSSOR}}</td>
+                    </tr>
+                  </ng-container>
+                </tbody>
+              </table>
+              <table id="Std_Msh" class="table table-bordered" *ngIf="showStdMESH">
+                <thead>
+                  <tr>
+                    <th>SNo
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>Product Code
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>Main Length
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>Cross Length
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>MW Dia
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>MW Spacing
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>MO1/MO2
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>CW Dia
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>CW Spacing
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>CO1/CO2
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>Unit Weight
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>Order Pieces
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>Total Weight
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="no-record" *ngIf="OrderDetailsList_StdMESH.length == 0">
+                    <td colspan="13" style="text-align: center">
+                      No Record found
+                    </td>
+                  </tr>
+                  <ng-container *ngFor="let item of OrderDetailsList_StdMESH; index as i">
+                    <tr (click)="SelectOrderDetailsTable(OrderDetailsList_StdMESH, item, i, $event)"
+                      [class.details-row-highlight]="item.isSelected">
+
+                      <td>{{ i+1 }}</td>
+                      <td>{{item.sheet_name}}</td>
+                      <td>{{ item.mw_length }}</td>
+                      <td>{{ item.cw_length }}</td>
+                      <td>{{ item.mw_size }}</td>
+                      <td>{{ item.mw_spacing }}</td>
+                      <td>{{ item.mo1 + "/" + item.mo2 }}</td>
+                      <td>{{ item.cw_size }}</td>
+                      <td>{{ item.cw_spacing }}</td>
+                      <td>{{ item.co1 + "/" + item.co2 }}</td>
+                      <td>{{ ConverWeightFormat(item.unit_weight) }}</td>
+                      <td>{{ item.order_pcs }}</td>
+                      <td>{{ ConverWeightFormat(item.order_wt) }}</td>
+                    </tr>
+                  </ng-container>
+                </tbody>
+              </table>
+              <table id="Std_Prod" class="table table-bordered" *ngIf="showStdProd">
+                <thead>
+                  <tr>
+                    <th>SNo
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>Product Code
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>Product Description
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>Diameter
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>Grade
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>Unit Weight
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>Order Pieces
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>Total Weight
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="no-record" *ngIf="OrderDetailsList_StdProd.length == 0">
+                    <td colspan="8" style="text-align: center">
+                      No Record found
+                    </td>
+                  </tr>
+                  <ng-container *ngFor="let item of OrderDetailsList_StdProd; index as i">
+                    <tr (click)="SelectOrderDetailsTable(OrderDetailsList_StdProd, item, i, $event)"
+                      [class.details-row-highlight]="item.isSelected">
+                      <td>{{ i+1 }}</td>
+                      <td>{{ item.ProdCode }}</td>
+                      <td>{{ item.ProdDesc }}</td>
+                      <td>{{ item.Diameter }}</td>
+                      <td>{{ item.Grade }}</td>
+                      <td>{{ ConverWeightFormat(item.UnitWT) }}</td>
+                      <td>{{ item.order_pcs }}</td>
+                      <td>{{ ConverWeightFormat(item.order_wt) }}</td>
+                    </tr>
+                  </ng-container>
+                </tbody>
+              </table>
+              <table id="BPC" class="table table-bordered" *ngIf="showBPC">
+                <thead>
+                  <tr>
+                    <th>SNo
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>Pile Dia
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>Cage Type
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>No of Main Bars
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>Main Bar Shape
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>Cage Length
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>Lap Length
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>Link Dia-Spacing-Length
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>End Length
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>Combinatn of Cages
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>Order Qty
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>Weight (MT)
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>Load Qty
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>Required Date
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>Internal Remarks
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>External Remarks
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>Load S/N
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>Per Set
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>Cage Mark.
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>Order Series No.
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                    <th>Action
+                      <div class="bar" appColumnResize cdkDrag></div>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="no-record" *ngIf="OrderDetailsList_BPC.length == 0">
+                    <td colspan="21" style="text-align: center">
+                      No Record found
+                    </td>
+                  </tr>
+
+                  <ng-container *ngFor="let item of OrderDetailsList_BPC; index as i">
+                    <tr (click)="SelectOrderDetailsTable(OrderDetailsList_BPC, item, i, $event)"
+                      [class.details-row-highlight]="item.isSelected">
+
+                      <td (click)="currEditIndex=null">{{ i+1 }}</td>
+                      <td (click)="currEditIndex=null"> {{item.pile_dia}} </td>
+                      <td (click)="currEditIndex=null">{{item.pile_type}}</td>
+                      <td (click)="currEditIndex=null">{{item.main_bar_ct}}</td>
+                      <td (click)="currEditIndex=null">{{item.main_bar_shape}}</td>
+                      <td (click)="currEditIndex=null">{{item.cage_length}}</td>
+                      <td (click)="currEditIndex=null">{{item.lap_length}}</td>
+                      <td (click)="currEditIndex=null">{{item.spiral_link_spacing}}</td>
+                      <td (click)="currEditIndex=null">{{item.end_length}}</td>
+                      <td (click)="currEditIndex=null">{{item.cage_location}}</td>
+                      <td (click)="currEditIndex=null">{{item.cage_qty}}</td>
+                      <td (click)="currEditIndex=null">{{ConverWeightFormat(item.cage_weight)}}</td>
+                      <td (click)="currEditIndex=null">{{item.load_qty}}</td>
+                      <td (click)="EditBPCProcess(item,i,'ReqDateBPC', $event)"
+                        *ngIf="item.editable!='ReqDateBPC' || currEditIndex!=i">{{item.required_date}}</td>
+
+                      <td *ngIf="item.editable=='ReqDateBPC' && currEditIndex==i">
+                        <mat-form-field style="display: contents">
+                          <input matInput [(ngModel)]="item.required_date" [matDatepicker]="pickerReqDate"
+                            (ngModelChange)="UpdateReqDateBPC(item) ;item.editable=''" />
+                          <!-- <mat-hint style="font-size: xx-small">YYYY-MM-DD</mat-hint> -->
+                          <mat-datepicker-toggle matIconSuffix [for]="pickerReqDate"
+                            style="padding-top: 15px !important">
+                          </mat-datepicker-toggle>
+                          <mat-datepicker [dateClass]="dateClass" [calendarHeaderComponent]="calHeader" #pickerReqDate>
+                          </mat-datepicker>
+                        </mat-form-field>
+                      </td>
+
+
+
+                      <!-- <td *ngIf="editBBSNo && currEditIndex==i">
+                      <input class="form-control" type="text" [(ngModel)]="item.required_date"
+                        (keydown.enter)="SaveBBS(sList);editBBSNo=false"
+                        (blur)="item.required_date = ConvertToUpper(item.required_date) ;SaveBBS(sList);editBBSNo=false">
+                    </td>
+ -->
+                      <td (click)="EditBPCProcess(item,i,'IntRemarksBPC', $event)"
+                        *ngIf="item.editable!='IntRemarksBPC' || currEditIndex!=i">
+                        {{item.int_remarks}}</td>
+
+                      <td *ngIf="item.editable=='IntRemarksBPC' && currEditIndex==i">
+                        <input class="form-control" type="text" [(ngModel)]="item.int_remarks"
+                          (keydown.enter)="item.editable=''; UpdateBPCRemarks('IntRemarksBPC', item)"
+                          (blur)="item.int_remarks = ConvertToUpper(item.int_remarks) ;UpdateBPCRemarks('IntRemarksBPC', item);item.editable=''">
+                      </td>
+                      <td (click)="EditBPCProcess(item,i,'ExtRemarksBPC', $event)"
+                        *ngIf="item.editable!='ExtRemarksBPC' || currEditIndex!=i">
+                        {{item.ext_remarks}}</td>
+                      <td *ngIf="item.editable=='ExtRemarksBPC' && currEditIndex==i">
+                        <input class="form-control" type="text" [(ngModel)]="item.ext_remarks"
+                          (keydown.enter)="item.editable=''; UpdateBPCRemarks('ExtRemarksBPC', item)"
+                          (blur)="item.ext_remarks = ConvertToUpper(item.ext_remarks) ;UpdateBPCRemarks('ExtRemarksBPC', item);item.editable=''">
+                      </td>
+                      <td (click)="currEditIndex=null">{{item.load_id}}</td>
+                      <td (click)="currEditIndex=null">{{item.per_set}}</td>
+                      <td (click)="currEditIndex=null">{{item.bbs_no}}</td>
+                      <td (click)="currEditIndex=null">{{item.sor_no}}</td>
+                      <td><span class="Order-details-cancel"
+                          (click)="CancelBPCItem(item.cage_id,item.load_id,item.sor_no, item)"
+                          *ngIf="item.ShowCancel === true">Cancel</span></td>
+                    </tr>
+                  </ng-container>
+                </tbody>
+              </table>
+              <div *ngIf="showOrderDetailsLoader()">
+                <div style="justify-content: center;display: flex;">
+                  <div class="spinner-border text-secondary" role="status">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <form [formGroup]="ProcessorderCheckbox">
+              <div class="row d-flex">
+                <div class="col-md-2 col-sm-2">
+                  <input formControlName="UrgentOrder" type="checkbox" id="vehicle1" name="vehicle1"
+                    value="Bike" />&nbsp;
+                  <label for="vehicle1" style="font-weight:bold;font-size:small">Urgent Order</label>
+                </div>
+                <div class="col-md-2 col-sm-2">
+                  <input formControlName="Conquas" type="checkbox" id="vehicle1" name="vehicle1" value="Bike" />&nbsp;
+                  <label for="vehicle1" style="font-weight:bold;font-size:small">Conquas</label>
+                </div>
+
+                <div class="col-md-2 col-sm-2">
+                  <input formControlName="PremiumService" type="checkbox" id="vehicle1" name="vehicle1"
+                    value="Bike" />&nbsp;
+                  <label for="vehicle1" style="font-weight:bold;font-size:small">Premium Service</label>
+                </div>
+                <div class="col-md-2 col-sm-2">
+                  <input formControlName="ZeroTol" type="checkbox" id="vehicle1" name="vehicle1" value="Bike" />&nbsp;
+                  <label for="vehicle1" style="font-weight:bold;font-size:small">Zero Tol</label>
+                </div>
+
+                <div class="col-md-2 col-sm-2">
+                  <input formControlName="FabricateESM" type="checkbox" id="vehicle1" name="vehicle1"
+                    value="Bike" />&nbsp;
+                  <label for="vehicle1" style="font-weight:bold;font-size:small">Fabriacte in ESM</label>
+                </div>
+              </div>
+              <div class="row d-flex">
+                <div class="col-md-2 col-sm-2">
+                  <input formControlName="CallBDel" type="checkbox" id="vehicle1" name="vehicle1" value="Bike"
+                    checked />&nbsp;
+                  <label for="vehicle1" style="font-weight:bold;font-size:small">CallBeforeDelivery</label>
+                </div>
+                <div class="col-md-2 col-sm-2">
+                  <input formControlName="DoNotMix" type="checkbox" id="vehicle1" name="vehicle1" value="Bike" />&nbsp;
+                  <label for="vehicle1" style="font-weight:bold;font-size:small">DoNotMix</label>
+                </div>
+
+                <div class="col-md-2 col-sm-2">
+                  <input formControlName="SpecialPass" type="checkbox" id="vehicle1" name="vehicle1"
+                    value="Bike" />&nbsp;
+                  <label for="vehicle1" style="font-weight:bold;font-size:small">SpecialPass</label>
+                </div>
+                <div class="col-md-2 col-sm-2">
+                  <input formControlName="VehLowBed" type="checkbox" id="vehicle1" name="vehicle1" value="Bike" />&nbsp;
+                  <label for="vehicle1" style="font-weight:bold;font-size:small">LowBedVehAllowed</label>
+                </div>
+
+                <div class="col-md-2 col-sm-2">
+                  <input formControlName="Veh50Ton" type="checkbox" id="vehicle1" name="vehicle1" value="Bike"
+                    checked />&nbsp;
+                  <label for="vehicle1" style="font-weight:bold;font-size:small">50TonVehAllowed</label>
+                </div>
+
+              </div>
+              <div class="row d-flex">
+                <div class="col-md-2 col-sm-2">
+                  <label for="vehicle1" style="font-weight:bold;font-size:small">Book Indicator :</label>
+                </div>
+                <div class="col-md-2 col-sm-2">
+                  <input formControlName="Borge" type="checkbox" id="vehicle1" name="vehicle1" value="Bike" />&nbsp;
+                  <label for="vehicle1" style="font-weight:bold;font-size:small">Barge</label>
+                </div>
+
+                <div class="col-md-2 col-sm-2">
+                  <input formControlName="PoliceEscort" type="checkbox" id="vehicle1" name="vehicle1"
+                    value="Bike" />&nbsp;
+                  <label for="vehicle1" style="font-weight:bold;font-size:small">Police Escort</label>
+                </div>
+                <div class="col-md-2 col-sm-2">
+                  <input formControlName="Crane" type="checkbox" id="vehicle1" name="vehicle1" value="Bike" />&nbsp;
+                  <label for="vehicle1" style="font-weight:bold;font-size:small">Crane</label>
+                </div>
+
+                <div class="col-md-1">
+                  <label for="vehicle1" style="font-weight:bold; font-size:small">Time Range</label>
+                </div>
+                <div class="col-md-2 col-sm-2">
+                  <input type="text" class="form-control" formControlName="TimeRange" />
+                </div>
+              </div>
+            </form>
+
+            <div class="row d-flex">
+              <div class="col-md-2" style="max-width: 11% !important;text-align:right">
+                <label class="form-label bold;" style="font-weight:bold;font-size:small">Internal Remark</label>
+              </div>
+              <div class="col-md-10">
+                <div class="d-flex">
+                  <input type="text" placeholder="Internal Remark" class="form-control" [(ngModel)]="InternalRemarks"
+                    (ngModelChange)="setIntRemarks(InternalRemarks)"
+                    (blur)="InternalRemarks = InternalRemarks.toUpperCase()" maxlength="100"
+                    style="font-weight: bold;" />
+                  <span *ngIf="InternalRemarks == '' || InternalRemarks == null" style="
+                    padding: 4px;
+                    background-color: #ccc6c682;
+                    font-size: x-small;
+                    border-radius: 0 5px 5px 0;
+                  ">100</span>
+                  <span *ngIf="InternalRemarks != '' && InternalRemarks != null && InternalRemarks.length != 0"
+                    [class.remark-ind-color]="InternalRemarks.length == 100" style="
+                    padding: 4px;
+                    background-color: #ccc6c682;
+                    font-size: x-small;
+                    border-radius: 0 5px 5px 0;
+                  ">{{ 100 - InternalRemarks.length }}</span>
+                </div>
+              </div>
+
+              <div class="col-md-2" style="max-width: 11% !important;text-align:right">
+                <label class="form-label bold;" style="font-weight:bold;font-size:small">External Remark</label>
+              </div>
+              <div class="col-md-10">
+                <div class="d-flex">
+                  <input type="text" placeholder="External Remark" class="form-control" [(ngModel)]="ExternalRemarks"
+                    (ngModelChange)="setExtRemarks(ExternalRemarks)"
+                    (blur)="ExternalRemarks = ExternalRemarks.toUpperCase()" maxlength="100"
+                    style="font-weight: bold;" />
+                  <span *ngIf="ExternalRemarks == '' || ExternalRemarks == null" style="
+                    padding: 4px;
+                    background-color: #ccc6c682;
+                    font-size: x-small;
+                    border-radius: 0 5px 5px 0;
+                    font-weight:bold;
+                  ">100</span>
+                  <span *ngIf="ExternalRemarks != '' && ExternalRemarks != null"
+                    [class.remark-ind-color]="ExternalRemarks.length == 100" style="
+                    padding: 4px;
+                    background-color: #ccc6c682;
+                    font-size: x-small;
+                    border-radius: 0 5px 5px 0;font-weight:700;
+                  ">{{ 100 - ExternalRemarks.length }}</span>
+                </div>
+              </div>
+
+              <div class="col-md-2" *ngIf="showInvoiceRemarks" style="max-width: 11% !important;text-align:right">
+                <label class="form-label bold;font-size:small" style="font-weight:bold; text-align:right">Invoice
+                  Remark</label>
+              </div>
+              <div class="col-md-10" *ngIf="showInvoiceRemarks">
+                <div class="d-flex">
+                  <input type="text" placeholder="Invoice Remark" class="form-control" [(ngModel)]="InvoiceRemarks"
+                    maxlength="100" (blur)="InvoiceRemarks = InvoiceRemarks.toUpperCase()"
+                    style="font-weight: bold;display: block;" />
+                  <span *ngIf="InvoiceRemarks == '' || InvoiceRemarks == null" style="
+                    padding: 4px;
+                    background-color: #ccc6c682;
+                    font-size: x-small;
+                    border-radius: 0 5px 5px 0;
+                  ">100</span>
+                  <span *ngIf="InvoiceRemarks != '' && InvoiceRemarks != null" style="
+                    padding: 4px;
+                    background-color: #ccc6c682;
+                    font-size: x-small;
+                    border-radius: 0 5px 5px 0;
+                  ">{{ 100 - InvoiceRemarks.length }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row" style="
+          margin: -8px !important;
+      ">
+            <div class="col-md-1"></div>
+            <div class="col-md-11 pr-0 mr-0">
+              <div id="buttons" class="d-flex pr-0 mr-0 process-buttons">
+                <button class="btn btn-primary btn-sm" type="button" [disabled]="disableSubmit"
+                  (click)="submitOrderStart()" style="height:37px">
+                  Submit
+                </button>
+                <button class="btn btn-primary btn-sm" type="button" [disabled]="disableWithdraw"
+                  (click)="CancelWithdrawOrder('Withdraw');" style="height:37px">
+                  Withdraw
+                </button>
+                <button class="btn btn-primary btn-sm" type="button" [disabled]="disableCancel"
+                  (click)="CancelWithdrawOrder('Cancel');" style="height:37px">
+                  Cancel
+                </button>
+                <button class="btn btn-primary btn-sm" type="button" [disabled]="disableUpdate" (click)="StartUpdate()"
+                  style="height:37px">
+                  Update
+                </button>
+                <button class="btn btn-primary btn-sm" type="button" (click)="downloadOrderDetails()"
+                  style="height:37px">
+                  Print Order Details
+                </button>
+                <button class="btn btn-primary btn-sm" type="button" (click)="downloadOrderForm()" style="height:37px">
+                  Print Order Form
+                </button>
+                <button class="btn btn-primary btn-sm" type="button" (click)="OpenESM()" style="height:37px" 
+                 *ngIf="selectedRow.length > 0"   [disabled]="!selectedRow[0]?.SAPSONo">
+                  View Dataset
+                   <ng-template #loadingTpl>
+                   <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                  Loading... </ng-template>
+                </button>
+                <button class="btn btn-primary btn-sm" type="button" (click)="RouteToAmendment()" style="height:37px">
+                  Batch Amendment
+                </button>
+                <button class="btn btn-primary btn-sm" type="button" (click)="OpenAttachments(false,$event)"
+                  style="height:37px">
+                  Attachment
+                  <span class="badge">{{GetAttachmentNumber()}}</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- SETTINGS BUTTON START -->
+      <div class="d-flex" style="justify-content: flex-end;height: 40px;">
+        <div id="buttons" style="text-align: end;height: 38px;box-sizing: border-box;padding: 11px;">
+          <input type="checkbox" [(ngModel)]="ForeCast" (ngModelChange)="ChangeForeCast()">&nbsp;
+          <label>Forecast</label>
+        </div>
+        <button id="PendingENTMenuSettings" *ngIf="CurrentTab == 'CREATING'" class="btn settings-menu" (click)="
+              scrollToTop();
+              togglePendingENTSettingMenu = !togglePendingENTSettingMenu
+            " [matTooltip]="'Setting'" matTooltipPosition="above" (mouseenter)="HoverSetting=true"
+          (mouseleave)="HoverSetting=false">
+          <i class="bi bi-gear-fill" style="display: flex;"></i>
+        </button>
+        <button id="IncomingMenuSettings" *ngIf="CurrentTab == 'INCOMING'" class="btn settings-menu" (click)="
+              scrollToTop();
+              toggleIncomingSettingMenu = !toggleIncomingSettingMenu
+            " [matTooltip]="'Setting'" matTooltipPosition="above" (mouseenter)="HoverSetting=true"
+          (mouseleave)="HoverSetting=false">
+          <i class="bi bi-gear-fill" style="display: flex;"></i>
+        </button>
+        <button id="PendingDETMenuSettings" *ngIf="CurrentTab == 'DETAILING'" class="btn settings-menu" (click)="
+              scrollToTop();
+              togglePendingDETSettingMenu = !togglePendingDETSettingMenu
+            " [matTooltip]="'Setting'" matTooltipPosition="above" (mouseenter)="HoverSetting=true"
+          (mouseleave)="HoverSetting=false">
+          <i class="bi bi-gear-fill" style="display: flex;"></i>
+        </button>
+        <button id="CancelledMenuSettings" *ngIf="CurrentTab == 'CANCELLED'" class="btn settings-menu" (click)="
+              scrollToTop();
+              toggleCancelledSettingMenu = !toggleCancelledSettingMenu
+            " [matTooltip]="'Setting'" matTooltipPosition="above" (mouseenter)="HoverSetting=true"
+          (mouseleave)="HoverSetting=false">
+          <i class="bi bi-gear-fill" style="display: flex;"></i>
+        </button>
+        <button id="ProcessingMenuSettings" *ngIf="CurrentTab == 'PROCESSING'" class="btn settings-menu" (click)="
+              scrollToTop();
+              toggleProcessingSettingMenu = !toggleProcessingSettingMenu
+            " [matTooltip]="'Setting'" matTooltipPosition="above" (mouseenter)="HoverSetting=true"
+          (mouseleave)="HoverSetting=false">
+          <i class="bi bi-gear-fill" style="display: flex;"></i>
+        </button>
+        <button id="AllMenuSettings" *ngIf="CurrentTab == 'ALL'" class="btn settings-menu" (click)="
+              scrollToTop();
+              toggleAllSettingMenu = !toggleAllSettingMenu
+            " [matTooltip]="'Setting'" matTooltipPosition="above" (mouseenter)="HoverSetting=true"
+          (mouseleave)="HoverSetting=false">
+          <i class="bi bi-gear-fill" style="display: flex;"></i>
+        </button>
+        <button id="SearchMenuSettings" *ngIf="CurrentTab == 'SEARCH'" class="btn settings-menu" (click)="
+              scrollToTop();
+              toggleSeacrhSettingMenu = !toggleSeacrhSettingMenu
+            " [matTooltip]="'Setting'" matTooltipPosition="above" (mouseenter)="HoverSetting=true"
+          (mouseleave)="HoverSetting=false">
+          <i class="bi bi-gear-fill" style="display: flex;"></i>
+        </button>
+        <button class="btn collapse-menu" (click)="Collapse = !Collapse" [matTooltip]="'Collapse'"
+          matTooltipPosition="above">
+          <i class="bi bi-chevron-double-up" style="display: flex;"></i>
+        </button>
+        <!-- <button class="btn collapse-menu" (click)="CopyData()" [matTooltip]="'Copy'" matTooltipPosition="above"  [matTooltipDisabled]="true" >
+
+          <i class="bi bi-clipboard" style="display: flex;"></i>
+        </button> -->
+      </div>
+      <!-- SETTINGS MENU START -->
+      <div id="Pending-ENT-Settings-Menu" class="settingsMenu" [class.mat-elevation-z8]="true"
+        *ngIf="togglePendingENTSettingMenu" (mouseenter)="HoverSetting=true" (mouseleave)="HoverSetting=false">
+        <div style="
+            display: flex;
+            justify-content: space-between;
+            font-size: 20px;
+            font-weight: 500;
+          ">
+          <span>Custom Menus</span>
+          <span><i class="bi bi-x-circle" (click)="togglePendingENTSettingMenu = false;"></i></span>
+        </div>
+        <div>
+          <table class="table">
+            <tr>
+              <button class="border-less-btn" (click)="Update('Management')">Update PM Remarks to Selected Rows</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="Update('Technical')">Update Tech Remarks to Selected
+                Rows</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="Update('Project')">Change Project In-charge</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="Update('Detailling')">Change Detailing In-Charge</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="openPopup('pendingEnt')">Frozen Columns</button>
+            </tr>
+          </table>
+        </div>
+        <div>
+          <table class="table">
+            <tr>
+              <button class="border-less-btn" (click)="reset()">Clear Filters</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="toggleFilter = !toggleFilter">Toggle Filter Row</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="ExportToExcel('CREATING')">Export to Excel</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="ChangeSelectionModel()">Change Selection Model</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="HideRows(PendingENT, selectedRow, 'PendingENT')">Hide Selected
+                Rows</button>
+            </tr>
+            <tr [style.background-color]="RowsHidden ? '': '#ededed'">
+              <button class="border-less-btn" (click)="UnHideRows()">Unhide</button>
+            </tr>
+          </table>
+        </div>
+        <div style="font-size: 20px; font-weight: 500">
+          <span>Columns</span>
+        </div>
+        <div class="d-flex">
+          <table class="table">
+            <tr *ngFor="let headerColumn of splitArray(1,pendingEntCols);">
+              <input type="checkbox" [(ngModel)]="headerColumn.isVisible" (ngModelChange)="columnHidden('PendingENT')"
+                [checked]="headerColumn.isVisible">&nbsp;
+              <span>{{headerColumn.displayName}}</span>
+            </tr>
+          </table>
+          <table class="table">
+            <tr *ngFor="let headerColumn of splitArray(0,pendingEntCols);">
+              <input type="checkbox" [(ngModel)]="headerColumn.isVisible" (ngModelChange)="columnHidden('PendingENT')"
+                [checked]="headerColumn.isVisible">&nbsp;
+              <span>{{headerColumn.displayName}}</span>
+            </tr>
+          </table>
+
+        </div>
+      </div>
+      <div id="Incoming-Settings-Menu" class="settingsMenu" [class.mat-elevation-z8]="true"
+        *ngIf="toggleIncomingSettingMenu" (mouseenter)="HoverSetting=true" (mouseleave)="HoverSetting=false">
+        <div style="
+            display: flex;
+            justify-content: space-between;
+            font-size: 20px;
+            font-weight: 500;
+          ">
+          <span>Custom Menus</span>
+          <span><i class="bi bi-x-circle" (click)="toggleIncomingSettingMenu = false;"></i></span>
+        </div>
+        <div>
+          <table class="table">
+            <tr>
+              <button class="border-less-btn" (click)="Update('Management')">Update PM Remarks to Selected Rows</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="Update('Technical')">Update Tech Remarks to Selected
+                Rows</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="Update('Project')">Change Project In-charge</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="Update('Detailling')">Change Detailing In-Charge</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="openPopup('incoming')">Frozen Columns</button>
+            </tr>
+          </table>
+        </div>
+        <div>
+          <table class="table">
+            <tr>
+              <button (click)="reset()" class="border-less-btn">Clear Filters</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="toggleFilter = !toggleFilter">Toggle Filter Row</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="ExportToExcel('INCOMING')">Export to Excel</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="ChangeSelectionModel()">Change Selection Model</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="HideRows(IncomingData, selectedRow, 'Incoming')">Hide Selected
+                Rows</button>
+            </tr>
+            <tr [style.background-color]="RowsHidden ? '': '#ededed'">
+              <button class="border-less-btn" (click)="UnHideRows()">Unhide</button>
+            </tr>
+          </table>
+        </div>
+        <div style="font-size: 20px; font-weight: 500">
+          <span>Columns</span>
+        </div>
+        <div class="d-flex">
+
+          <table class="table">
+            <tr *ngFor="let headerColumn of splitArray(1,incomingCols);">
+              <input type="checkbox" [(ngModel)]="headerColumn.isVisible" (ngModelChange)="columnHidden('Incoming')"
+                [checked]="headerColumn.isVisible">&nbsp;
+              <span>{{headerColumn.displayName}}</span>
+            </tr>
+          </table>
+          <table class="table">
+            <tr *ngFor="let headerColumn of splitArray(0,incomingCols);">
+              <input type="checkbox" [(ngModel)]="headerColumn.isVisible" (ngModelChange)="columnHidden('Incoming')"
+                [checked]="headerColumn.isVisible">&nbsp;
+              <span>{{headerColumn.displayName}}</span>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div id="Pending-DET-Menu" class="settingsMenu" (mouseenter)="HoverSetting=true" (mouseleave)="HoverSetting=false"
+        [class.mat-elevation-z8]="true" *ngIf="togglePendingDETSettingMenu">
+        <div style="
+            display: flex;
+            justify-content: space-between;
+            font-size: 20px;
+            font-weight: 500;
+          ">
+          <span>Custom Menus</span>
+          <span><i class="bi bi-x-circle" (click)="togglePendingDETSettingMenu = false;"></i></span>
+        </div>
+        <div>
+          <table class="table">
+            <tr>
+              <button class="border-less-btn" (click)="Update('Management')">Update PM Remarks to Selected Rows</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="Update('Technical')">Update Tech Remarks to Selected
+                Rows</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="Update('Project')">Change Project In-charge</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="Update('Detailling')">Change Detailing In-Charge</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="openPopup('det')">Frozen Columns</button>
+            </tr>
+          </table>
+        </div>
+        <div>
+          <table class="table">
+            <tr>
+              <button class="border-less-btn" (click)="reset()">Clear Filters</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="toggleFilter = !toggleFilter">Toggle Filter Row</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="ExportToExcel('DETAILING')">Export to Excel</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="ChangeSelectionModel()">Change Selection Model</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="HideRows(PendingDET, selectedRow, 'PendingDET')">Hide Selected
+                Rows</button>
+            </tr>
+            <tr [style.background-color]="RowsHidden ? '': '#ededed'">
+              <button class="border-less-btn" (click)="UnHideRows()">Unhide</button>
+            </tr>
+          </table>
+        </div>
+        <div style="font-size: 20px; font-weight: 500">
+          <span>Columns</span>
+        </div>
+        <div class="d-flex">
+          <table class="table">
+            <tr *ngFor="let headerColumn of splitArray(1,dettCols);">
+              <input type="checkbox" [(ngModel)]="headerColumn.isVisible" (ngModelChange)="columnHidden('PendingDET')"
+                [checked]="headerColumn.isVisible">&nbsp;
+              <span>{{headerColumn.displayName}}</span>
+            </tr>
+          </table>
+          <table class="table">
+            <tr *ngFor="let headerColumn of splitArray(0,dettCols);">
+              <input type="checkbox" [(ngModel)]="headerColumn.isVisible" (ngModelChange)="columnHidden('PendingDET')"
+                [checked]="headerColumn.isVisible">&nbsp;
+              <span>{{headerColumn.displayName}}</span>
+            </tr>
+          </table>
+
+        </div>
+      </div>
+      <div id="Cancelled-Menu" class="settingsMenu" (mouseenter)="HoverSetting=true" (mouseleave)="HoverSetting=false"
+        [class.mat-elevation-z8]="true" *ngIf="toggleCancelledSettingMenu" appClickOutside>
+        <div style="
+       display: flex;
+       justify-content: space-between;
+       font-size: 20px;
+       font-weight: 500;">
+          <span>Custom Menus</span>
+          <span><i class="bi bi-x-circle"></i></span>
+        </div>
+        <div>
+          <table class="table">
+            <tr>
+              <button class="border-less-btn" (click)="Update('Management')">Update PM Remarks to Selected Rows</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="Update('Technical')">Update Tech Remarks to Selected
+                Rows</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="Update('Project')">Change Project In-charge</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="Update('Detailling')">Change Detailing In-Charge</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="openPopup('cancelled')">Frozen Columns</button>
+            </tr>
+          </table>
+        </div>
+        <div>
+          <table class="table">
+            <tr>
+              <button class="border-less-btn" (click)="reset()">Clear Filters</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="toggleFilter = !toggleFilter">Toggle Filter Row</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="ExportToExcel('CANCELLED')">Export to Excel</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="ChangeSelectionModel()">Change Selection Model</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="HideRows(CancelData, selectedRow, 'Cancel')">Hide Selected
+                Rows</button>
+
+            </tr>
+            <tr [style.background-color]="RowsHidden ? '': '#ededed'">
+              <button class="border-less-btn" (click)="UnHideRows()">Unhide</button>
+            </tr>
+          </table>
+        </div>
+        <div style="font-size: 20px; font-weight: 500">
+          <span>Columns</span>
+        </div>
+        <div class="d-flex">
+          <table class="table">
+            <tr *ngFor="let headerColumn of splitArray(1,cancelledCols);">
+              <input type="checkbox" [(ngModel)]="headerColumn.isVisible" (ngModelChange)="columnHidden('Cancelled')"
+                [checked]="headerColumn.isVisible">&nbsp;
+              <span>{{headerColumn.displayName}}</span>
+            </tr>
+          </table>
+          <table class="table">
+            <tr *ngFor="let headerColumn of splitArray(0,cancelledCols);">
+              <input type="checkbox" [(ngModel)]="headerColumn.isVisible" (ngModelChange)="columnHidden('Cancelled')"
+                [checked]="headerColumn.isVisible">&nbsp;
+              <span>{{headerColumn.displayName}}</span>
+            </tr>
+          </table>
+
+        </div>
+      </div>
+      <div id="Processing-Menu" class="settingsMenu" (mouseenter)="HoverSetting=true" (mouseleave)="HoverSetting=false"
+        [class.mat-elevation-z8]="true" *ngIf="toggleProcessingSettingMenu">
+        <div style="
+            display: flex;
+            justify-content: space-between;
+            font-size: 20px;
+            font-weight: 500;
+          ">
+          <span>Custom Menus</span>
+          <span><i class="bi bi-x-circle" (click)="toggleProcessingSettingMenu = false;"></i></span>
+        </div>
+        <div>
+          <table class="table">
+            <tr>
+              <button class="border-less-btn" (click)="Update('Management')">Update PM Remarks to Selected Rows</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="Update('Technical')">Update Tech Remarks to Selected
+                Rows</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="Update('Project')">Change Project In-charge</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="Update('Detailling')">Change Detailing In-Charge</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="openPopup('processing')">Frozen Columns</button>
+            </tr>
+          </table>
+        </div>
+        <div>
+          <table class="table">
+            <tr>
+              <button class="border-less-btn" (click)="reset()">Clear Filters</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="toggleFilter = !toggleFilter">Toggle Filter Row</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="ExportToExcelPOSearch('PROCESSING')">Export to Excel</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="ChangeSelectionModel()">Change Selection Model</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="HideRows(ProcessingData, selectedRow, 'Processing')">Hide
+                Selected Rows</button>
+            </tr>
+            <tr [style.background-color]="RowsHidden ? '': '#ededed'">
+              <button class="border-less-btn" (click)="UnHideRows()">Unhide</button>
+            </tr>
+          </table>
+        </div>
+        <div style="font-size: 20px; font-weight: 500">
+          <span>Columns</span>
+        </div>
+        <div class="d-flex">
+          <table class="table">
+            <tr *ngFor="let headerColumn of processingCols;">
+              <input type="checkbox" [(ngModel)]="headerColumn.isVisible" (ngModelChange)="columnHidden('Processing')"
+                [checked]="headerColumn.isVisible">&nbsp;
+              <span>{{headerColumn.displayName}}</span>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div id="All-Menu" class="settingsMenu" (mouseenter)="HoverSetting=true"
+        (ngModelChange)="columnHidden('Processing')" (mouseleave)="HoverSetting=false" [class.mat-elevation-z8]="true"
+        *ngIf="toggleAllSettingMenu">
+        <div style="
+            display: flex;
+            justify-content: space-between;
+            font-size: 20px;
+            font-weight: 500;
+          ">
+          <span>Custom Menus</span>
+          <span><i class="bi bi-x-circle" (click)="toggleAllSettingMenu = false;"></i></span>
+        </div>
+        <div>
+          <table class="table">
+            <tr>
+              <button class="border-less-btn" (click)="Update('Management')">Update PM Remarks to Selected Rows</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="Update('Technical')">Update Tech Remarks to Selected
+                Rows</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="Update('Project')">Change Project In-charge</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="Update('Detailling')">Change Detailing In-Charge</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="openPopup('all')">Frozen Columns</button>
+            </tr>
+          </table>
+        </div>
+        <div>
+          <table class="table">
+            <tr>
+              <button class="border-less-btn" (click)="reset()">Clear Filters</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="toggleFilter = !toggleFilter">Toggle Filter Row</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="ExportToExcelPOSearch('ALL')">Export to Excel</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="ChangeSelectionModel()">Change Selection Model</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="HideRows(AllData, selectedRow, 'ALL')">Hide Selected
+                Rows</button>
+            </tr>
+            <tr [style.background-color]="RowsHidden ? '': '#ededed'">
+              <button class="border-less-btn" (click)="UnHideRows()">Unhide</button>
+            </tr>
+          </table>
+        </div>
+        <div style="font-size: 20px; font-weight: 500">
+          <span>Columns</span>
+        </div>
+        <div class="d-flex">
+          <table class="table">
+            <tr *ngFor="let headerColumn of allDataCols;">
+              <input type="checkbox" [(ngModel)]="headerColumn.isVisible" (ngModelChange)="columnHidden('All')"
+                [checked]="headerColumn.isVisible">&nbsp;
+              <span>{{headerColumn.displayName}}</span>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div id="Search-Menu" class="settingsMenu" (mouseenter)="HoverSetting=true" (mouseleave)="HoverSetting=false"
+        [class.mat-elevation-z8]="true" *ngIf="toggleSeacrhSettingMenu">
+        <div style="
+            display: flex;
+            justify-content: space-between;
+            font-size: 20px;
+            font-weight: 500;
+          ">
+          <span>Custom Menus</span>
+          <span><i class="bi bi-x-circle" (click)="toggleSeacrhSettingMenu = false;"></i></span>
+        </div>
+        <div>
+          <table class="table">
+            <tr>
+              <button class="border-less-btn" (click)="Update('Management')">Update PM Remarks to Selected Rows</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="Update('Technical')">Update Tech Remarks to Selected
+                Rows</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="Update('Project')">Change Project In-charge</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="Update('Detailling')">Change Detailing In-Charge</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="openPopup('search')">Frozen Columns</button>
+            </tr>
+          </table>
+        </div>
+        <div>
+          <table class="table">
+            <tr>
+              <button class="border-less-btn" (click)="reset()">Clear Filters</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="toggleFilter = !toggleFilter">Toggle Filter Row</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="ExportToExcelPOSearch('SEARCH')">Export to Excel</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="ChangeSelectionModel()">Change Selection Model</button>
+            </tr>
+            <tr>
+              <button class="border-less-btn" (click)="HideRows(SearchResultData, selectedRow, 'Search')">Hide Selected
+                Rows</button>
+
+            </tr>
+            <tr [style.background-color]="RowsHidden ? '' : '#ededed'">
+              <button class="border-less-btn" (click)="UnHideRows()">Unhide</button>
+            </tr>
+          </table>
+        </div>
+        <div style="font-size: 20px; font-weight: 500">
+          <span>Columns</span>
+        </div>
+        <div class="d-flex">
+          <table class="table">
+            <tr *ngFor="let headerColumn of searchCols;">
+              <input type="checkbox" [(ngModel)]="headerColumn.isVisible" (ngModelChange)="columnHidden('Search')"
+                [checked]="headerColumn.isVisible">&nbsp;
+              <span>{{headerColumn.displayName}}</span>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <!-- LOADER -->
+      <div *ngIf="ProcessOrderLoading" style="z-index: 500;opacity:1">
+        <div id="pause" class="d-flex align-items-center justify-content-center">
+          <div id="spinner" class="loader"></div>
+        </div>
+      </div>
+      <!-- TABS START -->
+      <div id="tabs">
+        <div class="row MobileView">
+          <div class="col-md-12">
+            <tabset style="display:block">
+              <tab id="pending-ent-tab" heading="Pending ENT" style="background: #fff" (selectTab)="setActiveTab(0)">
+                <div class="row">
+                  <div #tableContainer *ngIf="activeTab === 0"
+                    class="table-responsive table-responsive-custom  min-height col-md-12">
+                    <cdk-virtual-scroll-viewport id="view-port" [itemSize]="itemSize" #scrollViewportENT (scroll)="syncScroll($event)"
+                      [style.height]="'65vh'">
+
+                      <form [formGroup]="PendingEntTableSearch">
+                        <table class="table table-bordered new-table">
+                          <thead [style.top]="inverseOfENT" id="PendingENTHeading" class="tableHeading"
+                            [ngStyle]="{'display':'sticky','top': '0px'}">
+                            <tr id="heading-cell" [style.top]="inverseOfENT" cdkDropList cdkDropListOrientation="horizontal"
+                              [cdkDropListData]="pendingEntCols" (cdkDropListDropped)="dropENtCol($event)"
+                              style="font-size: large;">
+                              <!-- <th [class.FixedColumn]="pendingEntFixedColumn != 0" [style.width]="'50px !important'"  (click)="toggleSortingOrderForENT('sno','sno')">
+                              S/No
+
+                            </th> -->
+                              <!-- <th [class.FixedColumn]="pendingEntFixedColumn != 0" [style.width]="'50px !important'" style="z-index: 10; position: sticky;" (click)="toggleSortingOrderForENT('sno','sno')">
+                              S/No.</th> -->
+                              <th [style.top]="inverseOfENT" [class.FixedColumn]="pendingEntFixedColumn != 0"
+                                [style.width]="'50px !important'" (click)="toggleSortingOrderForENT('sno','sno')">
+                                S/No.</th>
+                              <ng-container *ngFor="let entColumnh1 of pendingEntCols;index as headIndex;">
+                                <th [style.top]="inverseOfENT" #thNomVar
+                                  (click)="toggleSortingOrderForENT(entColumnh1.field,entColumnh1.colName)"
+                                  [style.left]="(headIndex+1) < pendingEntFixedColumn ? getRightWidthTest(thNomVar,headIndex,'pendingENT') : 'inherit'"
+                                  [style.display]="'table-cell'" [style.width]="entColumnh1.width+ 'px !important'"
+                                  [class.FixedColumn]="(headIndex+1) < pendingEntFixedColumn"
+                                  *ngIf="entColumnh1.isVisible && entColumnh1.colName != 'linkTo'"
+                                  style="cursor: pointer;" cdkDrag [matTooltip]="entColumnh1.displayName"
+                                  matTooltipPosition="above" [matTooltipDisabled]="true">
+                                  <div [style.width]="entColumnh1.width+ 'px !important'" role="columnheader"
+                                    *ngIf="showOrderNo">
+                                    <div [style.width]="entColumnh1.width+ 'px !important'" class="d-flex"
+                                      style="align-items: center;">
+                                      <span [style.width]="entColumnh1.width+ 'px !important'">
+                                        {{entColumnh1.displayName}}</span><i class="bi bi-arrow-up"
+                                        *ngIf="!isAscending&&currentSortingColumn==entColumnh1.field"></i><i
+                                        class="bi bi-arrow-down"
+                                        *ngIf="isAscending&&currentSortingColumn==entColumnh1.field"></i>
+                                    </div>
+                                  </div>
+                                  <div [style.width.px]="entColumnh1.resizeWidth"></div>
+                                </th>
+                                <th [style.top]="inverseOfENT" style="text-align: center;"
+                                  [style.width]="entColumnh1.width"
+                                  *ngIf="entColumnh1.isVisible && entColumnh1.colName == 'linkTo'"
+                                  style="cursor: pointer;" cdkDrag>{{entColumnh1.displayName}}</th>
+                              </ng-container>
+                              <!-- <th *ngIf="
+                                PendingEntTableColumnToggle.controls.LinkTo.value
+                              " style="text-align: center">
+                              Link To
+                            </th> -->
+                              <!-- <th style="text-align: left;">Docs Attached</th>
+                                          <th style="text-align: left;">Product Details</th> -->
+                            </tr>
+                          </thead>
+                          <thead [style.top]="inverseOfENTSearch" class="search-head" *ngIf="toggleFilter"
+                            [ngStyle]="{'display':'sticky','top.px': getMinHeightIncoming('PendingENTHeading'),'position':'sticky'}">
+                            <tr [style.top]="inverseOfENTSearch">
+                              <th [style.top]="inverseOfENTSearch" [class.FixedColumn]="pendingEntFixedColumn != 0"
+                                [style.width]="'50px !important'">
+                                <!-- <span>
+                                  <i class="bi bi-save2-fill" style="font-size: 22px;"
+                                    (click)="saveColumnsToLocalStorage('pendingEntCols',pendingEntCols)"
+                                    [matTooltip]="'Save Resized Columns'" matTooltipPosition="above"
+                                    [matTooltipDisabled]="true"></i>
+                                </span> -->
+                                <span style="margin: auto; padding: 2px">
+                                  <i class="fa fa-refresh" ngbTooltip="Reset" style="color: red; font-size: 20px"
+                                  (click)="reset()"></i>
+                                </span>
+                              </th>
+                              <ng-container *ngFor="let entColumnh2 of pendingEntCols;let j = index;">
+                                <th [style.top]="inverseOfENTSearch" #thInputVar
+                                  [style.width]="entColumnh2.width+ 'px !important'"
+                                  [style.left]="(j+1) < pendingEntFixedColumn ? getLeftOfTable('pendingENT',j) : 'inherit'"
+                                  [style.display]="'table-cell'" [class.FixedColumn]="(j+1) < pendingEntFixedColumn"
+                                  *ngIf="entColumnh2.isVisible">
+                                  <input class="form-control" formControlName="{{entColumnh2.controlName}}"
+                                    *ngIf="entColumnh2.colName != 'linkTo'" />
+                                  <div class="bar" appColumnResize [colName]="'pendingENT'" [colIndex]="j"
+                                    (widthChangeEvent)="onWidthChange($event)" cdkDrag></div>
+                                </th>
+                              </ng-container>
+                              <!-- <th style="text-align: center;width:30px;" *ngIf="
+                                PendingEntTableColumnToggle.controls.LinkTo.value
+                              ">
+                            </th> -->
+                              <!-- <th style="text-align: left;">Docs Attached</th>
+                                          <th style="text-align: left;">Product Details</th> -->
+                            </tr>
+                          </thead>
+                          <tbody (click)="setCopyFlag(true, $event)">
+                            <ng-container *cdkVirtualFor="
+                                                  let item of PendingENT
+
+                                                    | filter : searchText;
+                                                  index as i
+                                                ">
+                              <tr id="ProcessTableRows" (click)="selectRow(item,PendingENT, $event); scrollToTop()"
+                                [style.background-color]="item.isSelected ? 'beige' : setRowColor(item)">
+                                <td [class.FixedColumn]="pendingEntFixedColumn != 0" [style.width.px]="item.width"
+                                  [style.background-color]="(CheckCellSelection_id(item)) ? 'beige' : setRowColor(item)">
+                                  {{ item.sno }}</td>
+                                <ng-container *ngFor="let column of pendingEntCols;index as footerIndex;">
+                                  <td #tdDataVar *ngIf="column.isVisible"
+                                    (click)="selectCell(column,pendingEntCols, item, PendingENT, $event)"
+                                    [style.background-color]="(CheckCellSelection(item, column)) ? 'beige' : setRowColor(item)"
+                                    [style.left]="(footerIndex+1) < pendingEntFixedColumn ? getLeftOfTable('pendingENT',footerIndex) : 'inherit'"
+                                    [style.display]="'table-cell'" [style.width]="column.width+ 'px !important'"
+                                    [class.FixedColumn]="(footerIndex+1) < pendingEntFixedColumn">
+                                    <div class="text-overlap" [ngStyle]="isMobile > 768 ? { width: column.width + 'px' } : { width: 'auto' }"
+                                      *ngIf="column.colName=='PODate' || column.colName=='OrigReqDate' || column.colName=='RequiredDate' || column.colName=='ForecastDate' || column.colName=='LastDeliveryDate'; else elseBlock2">
+                                      {{ getFormattedDate(item[column.colName]) }}
+                                    </div>
+                                    <ng-template #elseBlock2>
+                                      <div class="text-overlap" [ngStyle]="isMobile > 768 ? { width: column.width + 'px' } : { width: 'auto' }">
+                                        <div
+                                          [ngClass]="{'NumberColor':(item.AttachedNo!=0 && item.AttachedNo!= '' && item.AttachedNo!=undefined)}"
+                                          *ngIf="column.colName == 'AttachedNo'; else elseBlock3"
+                                          (click)="OpenAttachments(item,$event)">
+                                          {{ (item.AttachedNo==0) ? '' : item.AttachedNo }}
+                                        </div>
+                                      </div>
+                                      <ng-template #elseBlock3>
+                                        <div class="text-overlap" [ngStyle]="isMobile > 768 ? { width: column.width + 'px' } : { width: 'auto' }"
+                                          *ngIf="column.colName == 'CustomerName'; else elseBlock4">
+                                          {{ item.CustomerName }} ({{ item.CustomerCode }})
+                                        </div>
+                                        <ng-template #elseBlock4>
+                                          <div class="text-overlap" [ngStyle]="isMobile > 768 ? { width: column.width + 'px' } : { width: 'auto' }"
+                                            *ngIf="column.colName == 'ProjectTitle'; else elseBlock5">
+                                            {{ item.ProjectTitle }} ({{ item.ProjectCode }})
+                                          </div>
+                                          <ng-template #elseBlock5>
+                                            <div *ngIf="column.colName == 'linkTo'; else elseBlock6">
+                                              <span>
+                                                <!-- ROUTE BUTTON -->
+                                                <i class="bi bi-pencil-square" (click)="RouteToProductDetails(item)"
+                                                  matTooltip="Product Details"></i>
+                                              </span>
+                                            </div>
+                                            <ng-template #elseBlock6>
+                                              <div class="text-overlap" [ngStyle]="isMobile > 768 ? { width: column.width + 'px' } : { width: 'auto' }">
+                                                {{ item[column.colName] }}
+                                              </div>
+                                            </ng-template>
+                                          </ng-template>
+                                        </ng-template>
+                                      </ng-template>
+                                    </ng-template>
+                                  </td>
+                                </ng-container>
+
+                                <!-- <td *ngIf="
+                                  PendingEntTableColumnToggle.controls.LinkTo.value
+                                ">
+                                <span>
+                                  <i class="bi bi-pencil-square" (click)="RouteToProductDetails(item)"
+                                    matTooltip="Product Details"></i>
+                                </span>
+                              </td> -->
+                              </tr>
+                            </ng-container>
+                          </tbody>
+                        </table>
+                      </form>
+                    </cdk-virtual-scroll-viewport>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-9">
+                    <!-- <div class="d-flex mt-2" style="flex-wrap: wrap">
+                      <ngb-pagination [collectionSize]="PendingENT.length" [(page)]="currentPageENT"
+                        [pageSize]="itemsPerPageENT" (pageChange)="onPageChangeENT(currentPageENT)" [maxSize]="2"
+                        [boundaryLinks]="false">
+                        <ng-template ngbPaginationPrevious>Prev</ng-template>
+                        <ng-template ngbPaginationNext>Next</ng-template>
+                      </ngb-pagination>
+
+                      <select class="custom-select mr-2 ml-3" style="width: auto" [(ngModel)]="itemsPerPageENT"
+                        (ngModelChange)="OnPageSizeChangeENT(itemsPerPageENT)">
+                        <option [ngValue]="5">5</option>
+                        <option [ngValue]="10">10</option>
+                        <option [ngValue]="20">20</option>
+                        <option [ngValue]="30">50</option>
+                        <option [ngValue]="100">100</option>
+                      </select>
+                      <span style="margin-top: 5px">Items per page</span>
+                    </div> -->
+                  </div>
+                </div>
+              </tab>
+              <tab id="incoming-tab" [active]="startIncoming" heading="Incoming" style="background: #fff"
+                (selectTab)="setActiveTab(1)">
+                <div class="row">
+                  <div #tableContainer *ngIf="activeTab === 1"
+                    class="table-responsive table-responsive-custom  min-height col-md-12">
+                    <form [formGroup]="IncomingTableSearch">
+                      <cdk-virtual-scroll-viewport id="view-port" [itemSize]="itemSize" #scrollViewportIncoming
+                        (scroll)="syncScroll($event)" [style.height]="'65vh'">
+                        <table class="table table-bordered new-table">
+                          <thead [style.top]="inverseOfIncoming" id="IncomingHeading" class="tableHeading"
+                            [ngStyle]="{'display':'sticky','top': '0px'}">
+                            <tr id="heading-cell" [style.top]="inverseOfIncoming" cdkDropList cdkDropListOrientation="horizontal"
+                              [cdkDropListData]="incomingCols" (cdkDropListDropped)="dropCol($event)"
+                              style="font-size: large;">
+                              <!-- <th [class.FixedColumn]="'true'" [style.width]="'20px !important'" [style.left]="'0px'">
+                            <i class="bi bi-search" (click)="toggleFilter = !toggleFilter"></i>
+                          </th> -->
+                              <!-- <th [class.FixedColumn]="incomingFixedColumn != 0" [style.width]="'50px !important'" style="z-index: 10; position: sticky;" (click)="toggleSortingOrder('sno','sno')">
+                            S/No.</th> -->
+                              <th [style.top]="inverseOfIncoming" [class.FixedColumn]="incomingFixedColumn != 0"
+                                [style.width]="'50px !important'" (click)="toggleSortingOrder('sno','sno')">
+                                S/No.</th>
+                              <!-- <th [style.top]="inverseOfIncoming" class="FixedColumn" [style.width]="'50px !important'"
+                            (click)="toggleSortingOrder('sno','sno')">
+                          S/No.
+                        </th> -->
+                              <ng-container *ngFor="let column of incomingCols;index as headIndex;">
+                                <th [style.top]="inverseOfIncoming" #thIncomingVar
+                                  [style.left]="(headIndex+1) < incomingFixedColumn ? getRightWidthTest(thIncomingVar,headIndex,'incoming') : 'inherit'"
+                                  [style.display]="'table-cell'"
+                                  [class.FixedColumn]="(headIndex+1) < incomingFixedColumn"
+                                  (click)="toggleSortingOrder(column.field,column.colName)"
+                                  *ngIf="column.isVisible&& column.colName != 'linkTo'" style="cursor: pointer;"
+                                  [matTooltip]="column.displayName" matTooltipPosition="above"
+                                  [matTooltipDisabled]="true" cdkDrag>
+                                  <div [ngStyle]="isMobile > 768 ? { width: column.width + 'px' } : { width: 'auto' }" role="columnheader"
+                                    *ngIf="showOrderNo">
+                                    <div [ngStyle]="isMobile > 768 ? { width: column.width + 'px' } : { width: 'auto' }" class="d-flex"
+                                      style="align-items: center;">
+                                      <span [ngStyle]="isMobile > 768 ? { width: column.width + 'px' } : { width: 'auto' }">
+                                        {{column.displayName}}</span><i class="bi bi-arrow-up"
+                                        *ngIf="!isAscending&&currentSortingColumn==column.field"></i><i
+                                        class="bi bi-arrow-down"
+                                        *ngIf="isAscending&&currentSortingColumn==column.field"></i>
+                                    </div>
+                                  </div>
+                                  <div [style.width.px]="column.resizeWidth +'!important'"></div>
+
+                                </th>
+                                <th [style.top]="inverseOfIncoming" style="text-align: center;"
+                                  *ngIf="column.isVisible && column.colName == 'linkTo'"
+                                  [class.FixedColumn]="incomingFixedColumn != 0" [style.width]="'50px !important'"
+                                  style="cursor: pointer;" cdkDrag>{{column.displayName}}</th>
+                              </ng-container>
+
+                              <!-- <th *ngIf="IncomingTableColumnToggle.controls.LinkTo.value"
+                            style="text-align: center;width:30px;">
+                            Link To
+                          </th> -->
+                              <!-- <th style="text-align: left;">Docs Attached</th>
+                                        <th style="text-align: left;">Product Details</th> -->
+                            </tr>
+                          </thead>
+                          <thead [style.top]="inverseOfIncomingSearch" class="search-head" *ngIf="toggleFilter"
+                            [ngStyle]="{'display':'sticky','top.px': getMinHeightIncoming('IncomingHeading'),'position':'sticky'}">
+                            <tr id="search-cell" [style.top]="inverseOfIncomingSearch">
+                              <th [style.top]="inverseOfIncomingSearch" [class.FixedColumn]="incomingFixedColumn != 0"
+                                [style.width]="'50px !important'">
+                                <!-- <span>
+                                  <i class="bi bi-save2-fill" style="font-size: 22px;"
+                                    (click)="saveColumnsToLocalStorage('incomingCols',incomingCols)"
+                                    [matTooltip]="'Save Resized Columns'" matTooltipPosition="above"
+                                    [matTooltipDisabled]="true"></i>
+                                </span> -->
+                                <span style="margin: auto; padding: 2px">
+                                  <i class="fa fa-refresh" ngbTooltip="Reset" style="color: red; font-size: 20px"
+                                  (click)="reset()"></i>
+                                </span>
+
+                              </th>
+                              <ng-container *ngFor="let column of incomingCols;let j = index;">
+                                <th [style.top]="inverseOfIncomingSearch" style="text-align: center;"
+                                  [style.left]="(j+1) < incomingFixedColumn ? getLeftOfTable('incoming',j) : 'inherit'"
+                                  [style.display]="'table-cell'" [class.FixedColumn]="(j+1) < incomingFixedColumn"
+                                  *ngIf="column.isVisible" [ngStyle]="isMobile > 768 ? { width: column.width + 'px' } : { width: 'auto' }">
+                                  <input class="form-control" *ngIf="column.colName != 'linkTo'"
+                                    formControlName="{{column.controlName}}" />
+                                  <div class="bar" appColumnResize [colName]="'incoming'" [colIndex]="j"
+                                    (widthChangeEvent)="onWidthChange($event)" cdkDrag></div>
+                                  <!-- <div cdkDrag class="resize-handle" (cdkDragEnded)="resizeColumn($event, j)"></div> -->
+                                </th>
+                                <!-- <th style="text-align: center;" *ngIf="column.isVisible && column.colName == 'linkTo'"></th> -->
+                              </ng-container>
+                              <!-- <th style="text-align: center">
+                            <input class="form-control" formControlName="LinkTo" hidden />
+                          </th> -->
+                              <!-- <th style="text-align: left;">Docs Attached</th>
+                                        <th style="text-align: left;">Product Details</th> -->
+                            </tr>
+                          </thead>
+                          <tbody (click)="setCopyFlag(true, $event)">
+                            <ng-container *cdkVirtualFor="
+                            let item of IncomingData
+
+                              | filter : searchText;
+                            index as i
+                          ">
+                              <tr id="body-cell" (click)="selectRow(item,IncomingData, $event); scrollToTop()"
+                                [style.background-color]="(item.isSelected && cellSelection==false) ? 'beige' : setRowColor(item)">
+                                <td [class.FixedColumn]="incomingFixedColumn != 0" [style.width.px]="item.width"
+                                  [style.background-color]="(CheckCellSelection_id(item)) ? 'beige' : setRowColor(item)">
+                                  {{ item.sno }}</td>
+                                <ng-container *ngFor="let column of incomingCols;index as footerIndex">
+                                  <td *ngIf="column.isVisible"
+                                    (click)="selectCell(column,incomingCols, item, IncomingData, $event)"
+                                    [style.left]="(footerIndex+1) < incomingFixedColumn ? getLeftOfTable('incoming',footerIndex) : 'inherit'"
+                                    [style.display]="'table-cell'"
+                                    [class.FixedColumn]="(footerIndex+1) < incomingFixedColumn"
+                                    [style.background-color]="(CheckCellSelection(item, column)) ? 'beige' : setRowColor(item)">
+                                    <div id="IncomingTableData" class="text-overlap"
+                                      [ngStyle]="isMobile > 768 ? { width: column.width + 'px' } : { width: 'auto' }"
+                                      *ngIf="column.colName=='PODate' || column.colName=='OrigReqDate' || column.colName=='RequiredDate' || column.colName=='ForecastDate' || column.colName=='LastDeliveryDate'; else elseBlock2">
+                                      {{ getFormattedDate(item[column.colName]) }}
+                                    </div>
+                                    <ng-template #elseBlock2>
+                                      <div class="text-overlap" [ngStyle]="isMobile > 768 ? { width: column.width + 'px' } : { width: 'auto' }">
+                                        <div
+                                          [ngClass]="{'NumberColor':(item.AttachedNo!=0 && item.AttachedNo!= '' && item.AttachedNo!=undefined)}"
+                                          *ngIf="column.colName == 'AttachedNo'; else elseBlock3"
+                                          (click)="OpenAttachments(item,$event)">
+                                          {{ (item.AttachedNo==0) ? '' : item.AttachedNo }}
+                                        </div>
+                                      </div>
+                                      <ng-template #elseBlock3>
+                                        <div class="text-overlap" [ngStyle]="isMobile > 768 ? { width: column.width + 'px' } : { width: 'auto' }"
+                                          id="IncomingTableData"
+                                          *ngIf="column.colName == 'CustomerName'; else elseBlock4">
+                                          {{ item.CustomerName }} ({{ item.CustomerCode }})
+                                        </div>
+                                        <ng-template #elseBlock4>
+                                          <div class="text-overlap" [ngStyle]="isMobile > 768 ? { width: column.width + 'px' } : { width: 'auto' }"
+                                            id="IncomingTableData"
+                                            *ngIf="column.colName == 'ProjectTitle'; else elseBlock5">
+                                            {{ item.ProjectTitle }} ({{ item.ProjectCode }})
+                                          </div>
+                                          <ng-template #elseBlock5>
+                                            <div class="text-overlap" [ngStyle]="isMobile > 768 ? { width: column.width + 'px' } : { width: 'auto' }"
+                                              id="IncomingTableData"
+                                              *ngIf="column.colName == 'StructureElement'; else elseBlock6">
+                                              {{ item.StructureElement=='NONWBS' ? '' : item.StructureElement }}
+                                            </div>
+                                            <ng-template #elseBlock6>
+                                              <div class="text-overlap" [ngStyle]="isMobile > 768 ? { width: column.width + 'px' } : { width: 'auto' }"
+                                                *ngIf="column.colName == 'linkTo'; else elseBlock7">
+                                                <span>
+                                                  <!-- ROUTE BUTTON -->
+                                                  <i class="bi bi-pencil-square" (click)="RouteToProductDetails(item)"
+                                                    matTooltip="Product Details"></i>
+                                                </span>
+                                              </div>
+                                              <ng-template id="IncomingTableData" #elseBlock7>
+                                                <div class="text-overlap" [ngStyle]="isMobile > 768 ? { width: column.width + 'px' } : { width: 'auto' }">
+                                                  {{ item[column.colName] }}
+                                                </div>
+                                              </ng-template>
+                                            </ng-template>
+                                          </ng-template>
+                                        </ng-template>
+                                      </ng-template>
+                                    </ng-template>
+                                  </td>
+                                </ng-container>
+
+                                <!-- <td *ngIf="
+                                IncomingTableColumnToggle.controls.LinkTo.value
+                              ">
+                              <span>
+                                <i class="bi bi-pencil-square" (click)="RouteToProductDetails(item)"
+                                  matTooltip="Product Details"></i>
+                              </span>
+                            </td> -->
+                              </tr>
+                            </ng-container>
+                          </tbody>
+                        </table>
+                      </cdk-virtual-scroll-viewport>
+                    </form>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-9">
+                    <!-- <div class="d-flex mt-2" style="flex-wrap: wrap">
+                    <ngb-pagination [collectionSize]="IncomingData.length" [(page)]="currentPageIncoming"
+                      [pageSize]="itemsPerPageIncoming" (pageChange)="onPageChangeIncoming(currentPageIncoming)"
+                      [maxSize]="2" [boundaryLinks]="false">
+                      <ng-template ngbPaginationPrevious>Prev</ng-template>
+                      <ng-template ngbPaginationNext>Next</ng-template>
+                    </ngb-pagination>
+
+                    <select class="custom-select mr-2 ml-3" style="width: auto" [(ngModel)]="itemsPerPageIncoming"
+                      (ngModelChange)="
+                        OnPageSizeChangeIncoming(itemsPerPageIncoming)
+                      ">
+                      <option [ngValue]="5">5</option>
+                      <option [ngValue]="10">10</option>
+                      <option [ngValue]="20">20</option>
+                      <option [ngValue]="30">50</option>
+                      <option [ngValue]="100">100</option>
+                    </select>
+                    <span style="margin-top: 5px">Items per page</span>
+                  </div> -->
+                  </div>
+                </div>
+              </tab>
+              <tab id="pending-det-tab" [active]="startDetailling" heading="Pending DET" style="background: #fff"
+                (selectTab)="setActiveTab(2)">
+                <div class="row">
+                  <div #tableContainer *ngIf="activeTab === 2"
+                    class="table-responsive table-responsive-custom  min-height col-md-12">
+                    <form [formGroup]="PendingDETTableSearch">
+                      <cdk-virtual-scroll-viewport id="view-port" [itemSize]="itemSize" #scrollViewportDET
+                        (scroll)="syncScroll($event)" [style.height]="'65vh'">
+                        <table class="table table-bordered new-table">
+                          <thead [style.top]="inverseOfDET" id="PendingDetHeading" class="tableHeading"
+                            [ngStyle]="{'display':'sticky','top': '0px'}">
+                            <tr id="heading-cell" [style.top]="inverseOfDET" cdkDropList cdkDropListOrientation="horizontal"
+                              [cdkDropListData]="dettCols" (cdkDropListDropped)="dropDetCol($event)"
+                              style="font-size: large;">
+                              <th [style.top]="inverseOfDET" [class.FixedColumn]="detFixedColumn != 0"
+                                [style.width]="'50px !important'" (click)="toggleSortingOrderForDET('sno','sno')">
+                                S/No.</th>
+                              <ng-container *ngFor="let columndet1 of dettCols;index as headerIndex">
+                                <th [style.top]="inverseOfDET" #thDETTgVar [style.width]="columndet1.width"
+                                  (click)="toggleSortingOrderForDET(columndet1.field,columndet1.colName)"
+                                  [style.left]="(headerIndex+1) < detFixedColumn ? getRightWidthTest(thDETTgVar,headerIndex,'pendingDET') : 'inherit'"
+                                  [style.display]="'table-cell'" [class.FixedColumn]="(headerIndex+1) < detFixedColumn"
+                                  *ngIf="columndet1.isVisible && columndet1.colName != 'linkTo'"
+                                  style="cursor: pointer;" [style.width]="columndet1.width +'px !important'"
+                                  [matTooltip]="columndet1.displayName" matTooltipPosition="above"
+                                  [matTooltipDisabled]="true" cdkDrag>
+                                  <div [style.width]="columndet1.width +'px !important'" role="columnheader"
+                                    *ngIf="showOrderNo">
+                                    <div [style.width]="columndet1.width +'px !important'" class="d-flex"
+                                      style="align-items: center;">
+                                      <span [style.width]="columndet1.width +'px !important'">
+                                        {{columndet1.displayName}}</span><i class="bi bi-arrow-up"
+                                        *ngIf="!isAscending&&currentSortingColumn==columndet1.field"></i><i
+                                        class="bi bi-arrow-down"
+                                        *ngIf="isAscending&&currentSortingColumn==columndet1.field"></i>
+                                    </div>
+                                  </div>
+                                  <div [style.width.px]="columndet1.resizeWidth"></div>
+                                </th>
+                                <th [style.top]="inverseOfDET" style="text-align: center;"
+                                  [style.width]="columndet1.width"
+                                  *ngIf="columndet1.isVisible && columndet1.colName == 'linkTo'"
+                                  style="cursor: pointer;" cdkDrag>{{columndet1.displayName}}</th>
+                              </ng-container>
+                              <!-- <th style="text-align: left;">Docs Attached</th>
+                                        <th style="text-align: left;">Product Details</th> -->
+                            </tr>
+                          </thead>
+
+                          <thead class="search-head" [style.top]="inverseOfDETSearch"
+                            [ngStyle]="{'display':'sticky','top.px': getMinHeightIncoming('PendingDetHeading'),'position':'sticky'}"
+                            *ngIf="toggleFilter">
+                            <tr [style.top]="inverseOfDETSearch">
+                              <th [style.top]="inverseOfDETSearch" [class.FixedColumn]="detFixedColumn != 0"
+                                [style.width]="'50px !important'">
+                                <!-- <span>
+                                  <i class="bi bi-save2-fill" style="font-size: 22px;"
+                                    (click)="saveColumnsToLocalStorage('dettCols',dettCols)"
+                                    [matTooltip]="'Save Resized Columns'" matTooltipPosition="above"
+                                    [matTooltipDisabled]="true"></i>
+                                </span> -->
+                                <span style="margin: auto; padding: 2px">
+                                  <i class="fa fa-refresh" ngbTooltip="Reset" style="color: red; font-size: 20px"
+                                  (click)="reset()"></i>
+                                </span>
+
+                              </th>
+                              <ng-container *ngFor="let columndet2 of dettCols;let j = index;">
+                                <th [style.top]="inverseOfDETSearch" style="text-align: center;"
+                                  *ngIf="columndet2.isVisible"
+                                  [style.left]="(j+1) < detFixedColumn ? getLeftOfTable('pendingDET',j): 'inherit'"
+                                  [style.display]="'table-cell'" [class.FixedColumn]="(j+1) < detFixedColumn">
+                                  <input class="form-control" formControlName="{{columndet2.controlName}}"
+                                    *ngIf="columndet2.colName != 'linkTo'" />
+                                  <div class="bar" appColumnResize [colName]="'pendingDET'" [colIndex]="j"
+                                    (widthChangeEvent)="onWidthChange($event)" cdkDrag></div>
+                                </th>
+                              </ng-container>
+                              <!-- <th style="text-align: left;">Docs Attached</th>
+                                        <th style="text-align: left;">Product Details</th> -->
+                            </tr>
+                          </thead>
+                          <tbody (click)="setCopyFlag(true, $event)">
+                            <ng-container *cdkVirtualFor="
+                              let item of PendingDET
+                                | filter : searchText;
+                              index as i
+                            ">
+                              <tr id="body-cell" (click)="selectRow(item,PendingDET, $event); scrollToTop()"
+                                [style.background-color]="item.isSelected ? 'beige' : setRowColorDetailing(item)">
+                                <td [class.FixedColumn]="detFixedColumn != 0" [style.width.px]="item.width"
+                                  [style.background-color]="(CheckCellSelection_id(item)) ? 'beige' : setRowColorDetailing(item)">
+                                  {{
+                                  item.sno }}</td>
+                                <ng-container *ngFor="let dettCol1 of dettCols;index as footerIndex;">
+
+                                  <td *ngIf="dettCol1.isVisible"
+                                    (click)="selectCell(dettCol1,dettCols, item, PendingDET, $event)"
+                                    [style.background-color]="(CheckCellSelection(item, dettCol1)) ? 'beige' : setRowColorDetailing(item)"
+                                    [style.left]="(footerIndex+1) < detFixedColumn ? getLeftOfTable('pendingDET',footerIndex) : 'inherit'"
+                                    [style.display]="'table-cell'"
+                                    [class.FixedColumn]="(footerIndex+1) < detFixedColumn">
+                                    <div class="text-overlap" [style.width]="dettCol1.width +'px !important'"
+                                      *ngIf="dettCol1.colName=='PODate' || dettCol1.colName=='OrigReqDate' || dettCol1.colName=='RequiredDate' || dettCol1.colName=='ForecastDate' || dettCol1.colName=='LastDeliveryDate'; else elseBlock2">
+                                      {{ getFormattedDate(item[dettCol1.colName]) }}
+                                    </div>
+                                    <ng-template #elseBlock2>
+                                      <div class="text-overlap" [style.width]="dettCol1.width +'px !important'">
+                                        <div
+                                          [ngClass]="{'NumberColor':(item.AttachedNo!=0 && item.AttachedNo!= '' && item.AttachedNo!=undefined)}"
+                                          *ngIf="dettCol1.colName == 'AttachedNo'; else elseBlock3"
+                                          (click)="OpenAttachments(item,$event)">
+                                          {{ (item.AttachedNo==0) ? '' : item.AttachedNo }}
+                                        </div>
+                                      </div>
+                                      <ng-template #elseBlock3>
+                                        <div class="text-overlap" [style.width]="dettCol1.width +'px !important'"
+                                          *ngIf="dettCol1.colName == 'CustomerName'; else elseBlock4"
+                                          [matTooltip]="item.CustomerName + '(' + item.CustomerCode + ')'">
+                                          {{ item.CustomerName }} ({{ item.CustomerCode }})
+                                        </div>
+                                        <ng-template #elseBlock4>
+                                          <div class="text-overlap" [style.width]="dettCol1.width +'px !important'"
+                                            *ngIf="dettCol1.colName == 'ProjectTitle'; else elseBlock5"
+                                            [matTooltip]="item.ProjectTitle + '(' + item.ProjectCode + ')'">
+                                            {{ item.ProjectTitle }} ({{ item.ProjectCode }})
+                                          </div>
+                                          <ng-template #elseBlock5>
+                                            <div *ngIf="dettCol1.colName == 'linkTo'; else elseBlock6">
+                                              <span>
+                                                <i class="bi bi-pencil-square" (click)="RouteToProductDetails(item)"
+                                                  matTooltip="Product Details"></i>
+                                              </span>
+                                            </div>
+                                            <ng-template #elseBlock6>
+                                              <div *ngIf="dettCol1.colName == 'PMDRemarks'; else elseBlock7"
+                                                [matTooltip]="item.PMDRemarksHis">
+                                                {{ item[dettCol1.colName] }}
+                                              </div>
+                                              <ng-template #elseBlock7>
+                                                <div *ngIf="dettCol1.colName == 'TECHRemarks'; else elseBlock8"
+                                                  [matTooltip]="item.TECHRemarksHis">
+                                                  {{ item[dettCol1.colName] }}
+                                                </div>
+                                                <ng-template #elseBlock8>
+                                                  <div class="text-overlap"
+                                                    [style.width]="dettCol1.width +'px !important'">
+                                                    {{ item[dettCol1.colName] }}
+                                                  </div>
+                                                </ng-template>
+                                              </ng-template>
+                                            </ng-template>
+                                          </ng-template>
+                                        </ng-template>
+                                      </ng-template>
+                                    </ng-template>
+                                  </td>
+                                </ng-container>
+                                <!-- <td *ngIf="PendingDETTableColumnToggle.controls.LinkTo.value">
+                                <span>
+                                  <i class="bi bi-pencil-square" (click)="RouteToProductDetails(item)"
+                                    matTooltip="Product Details"></i>
+                                </span>
+                              </td> -->
+                              </tr>
+                            </ng-container>
+                          </tbody>
+                        </table>
+                      </cdk-virtual-scroll-viewport>
+                    </form>
+                  </div>
+                </div>
+                <div class="row">
+                  <!-- <div class="col-md-9">
+                    <div class="d-flex mt-2" style="flex-wrap: wrap">
+                      <ngb-pagination [collectionSize]="PendingDET.length" [(page)]="currentPage" [pageSize]="itemsPerPage"
+                        (pageChange)="onPageChange(currentPage)" [maxSize]="2" [boundaryLinks]="false">
+                        <ng-template ngbPaginationPrevious>Prev</ng-template>
+                        <ng-template ngbPaginationNext>Next</ng-template>
+                      </ngb-pagination>
+
+                      <select class="custom-select mr-2 ml-3" style="width: auto" [(ngModel)]="itemsPerPage"
+                        (ngModelChange)="OnPageSizeChange(itemsPerPage)">
+                        <option [ngValue]="5">5</option>
+                        <option [ngValue]="10">10</option>
+                        <option [ngValue]="20">20</option>
+                        <option [ngValue]="30">50</option>
+                        <option [ngValue]="100">100</option>
+                      </select>
+                      <span style="margin-top: 5px">Items per page</span>
+                    </div>
+                  </div> -->
+                </div>
+              </tab>
+              <tab id="cancel-tab" heading="Cancelled" style="background: #fff" (selectTab)="setActiveTab(3)">
+                <div class="row">
+                  <div #tableContainer *ngIf="activeTab === 3"
+                    class="table-responsive table-responsive-custom min-height col-md-12">
+
+                    <cdk-virtual-scroll-viewport id="view-port" [itemSize]="itemSize" #scrollViewportCancelled
+                      (scroll)="syncScroll($event)" [style.height]="'65vh'">
+                      <form [formGroup]="CancelledTableSearch">
+                        <table class="table table-bordered new-table">
+                          <thead [style.top]="inverseOfCancellation" id="CancelledHeading" class="tableHeading"
+                            [ngStyle]="{'display':'sticky','top': '0px'}">
+                            <tr id="heading-cell" cdkDropList cdkDropListOrientation="horizontal" [cdkDropListData]="cancelledCols"
+                              (cdkDropListDropped)="dropCancelledCol($event)" style="font-size: large;"
+                              [style.top]="inverseOfCancellation">
+                              <th [class.FixedColumn]="cancelledFixedColumn != 0" [style.width]="'50px !important'"
+                                [style.top]="inverseOfCancellation"
+                                (click)="toggleSortingOrderForCancelled('sno','sno')">
+                                S/No.</th>
+                              <ng-container *ngFor="let cancelCol1 of cancelledCols;index as headerIndex">
+                                <th [style.top]="inverseOfCancellation" #thCancelledVar [style.width]="cancelCol1.width"
+                                  (click)="toggleSortingOrderForCancelled(cancelCol1.field,cancelCol1.colName)"
+                                  [style.left]="(headerIndex+1) < cancelledFixedColumn ? getRightWidthTest(thCancelledVar,headerIndex,'cancelled') : 'inherit'"
+                                  [style.display]="'table-cell'"
+                                  [class.FixedColumn]="(headerIndex+1) < cancelledFixedColumn"
+                                  *ngIf="cancelCol1.isVisible  && cancelCol1.colName != 'linkTo'"
+                                  style="cursor: pointer;" [style.width]="cancelCol1.width +'px !important'"
+                                  [matTooltip]="cancelCol1.displayName" matTooltipPosition="above"
+                                  [matTooltipDisabled]="true" cdkDrag>
+                                  <div [style.width]="cancelCol1.width +'px !important'" role="columnheader"
+                                    *ngIf="showOrderNo">
+                                    <div [style.width]="cancelCol1.width +'px !important'" class="d-flex"
+                                      style="align-items: center;">
+                                      <span [style.width]="cancelCol1.width +'px !important'">
+                                        {{cancelCol1.displayName}}</span><i class="bi bi-arrow-up"
+                                        *ngIf="!isAscending&&currentSortingColumn==cancelCol1.field"></i><i
+                                        class="bi bi-arrow-down"
+                                        *ngIf="isAscending&&currentSortingColumn==cancelCol1.field"></i>
+                                    </div>
+                                  </div>
+                                  <div [style.width.px]="cancelCol1.resizeWidth"></div>
+                                </th>
+                                <th [style.top]="inverseOfCancellation" style="text-align: center;"
+                                  [style.width]="cancelCol1.width" [style.top]="inverseOfCancellation"
+                                  *ngIf="cancelCol1.isVisible && cancelCol1.colName == 'linkTo'"
+                                  style="cursor: pointer;" cdkDrag>{{cancelCol1.displayName}}</th>
+                              </ng-container>
+                              <!-- <th style="text-align: left;">Docs Attached</th>
+                                        <th style="text-align: left;">Product Details</th> -->
+                            </tr>
+                          </thead>
+                          <thead class="search-head"
+                            [ngStyle]="{'display':'sticky','top.px': getMinHeightIncoming('CancelledHeading'),'position':'sticky'}"
+                            *ngIf="toggleFilter" [style.top]="inverseOfCancellationSearch">
+                            <tr id="search-cell" [style.top]="inverseOfCancellationSearch">
+                              <th [class.FixedColumn]="cancelledFixedColumn != 0" [style.width]="'50px !important'"
+                                [style.top]="inverseOfCancellationSearch">
+                                <!-- <span>
+                                  <i class="bi bi-save2-fill" style="font-size: 22px;"
+                                    (click)="saveColumnsToLocalStorage('cancelledCols',cancelledCols)"
+                                    [matTooltip]="'Save Resized Columns'" matTooltipPosition="above"
+                                    [matTooltipDisabled]="true"></i>
+                                </span> -->
+                                <span style="margin: auto; padding: 2px">
+                                  <i class="fa fa-refresh" ngbTooltip="Reset" style="color: red; font-size: 20px"
+                                  (click)="reset()"></i>
+                                </span>
+
+                              </th>
+                              <ng-container *ngFor="let cancelledCol2 of cancelledCols;let j = index;">
+                                <th style="text-align: center;" *ngIf="cancelledCol2.isVisible"
+                                  [style.left]="(j+1) < cancelledFixedColumn ? getLeftOfTable('cancelled',j) : 'inherit'"
+                                  [style.display]="'table-cell'" [class.FixedColumn]="(j+1) < cancelledFixedColumn"
+                                  [style.top]="inverseOfCancellationSearch">
+                                  <input class="form-control" formControlName="{{cancelledCol2.controlName}}"
+                                    [hidden]="cancelledCol2.colName == 'linkTo'" />
+                                  <div class="bar" appColumnResize [colName]="'cancelled'" [colIndex]="j"
+                                    (widthChangeEvent)="onWidthChange($event)" cdkDrag></div>
+                                </th>
+                              </ng-container>
+
+                              <!-- <th style="text-align: left;">Docs Attached</th>
+                                        <th style="text-align: left;">Product Details</th> -->
+                            </tr>
+                          </thead>
+                          <tbody (click)="setCopyFlag(true, $event)">
+                            <ng-container *cdkVirtualFor="
+                              let item of CancelData
+                                | filter : searchText;
+                              index as i
+                            ">
+                              <tr id="body-cell" (click)="selectRow(item,CancelData, $event); scrollToTop()"
+                                [style.background-color]="item.isSelected ? 'beige' : setRowColor(item)">
+                                <td [class.FixedColumn]="cancelledFixedColumn != 0" [style.width.px]="item.width"
+                                  [style.background-color]="(CheckCellSelection_id(item)) ? 'beige' : setRowColor(item)">
+                                  {{ item.sno }}</td>
+                                <ng-container *ngFor="let column of cancelledCols;index as footerIndex">
+                                  <td *ngIf="column.isVisible"
+                                    (click)="selectCell(column,cancelledCols, item, CancelData, $event)"
+                                    [style.background-color]="(CheckCellSelection(item, column)) ? 'beige' : setRowColor(item)"
+                                    [style.left]="(footerIndex+1) < cancelledFixedColumn ? getLeftOfTable('cancelled',footerIndex): 'inherit'"
+                                    [style.display]="'table-cell'"
+                                    [class.FixedColumn]="(footerIndex+1) < cancelledFixedColumn">
+                                    <div class="text-overlap" [ngStyle]="isMobile > 768 ? { width: column.width + 'px' } : { width: 'auto' }"
+                                      *ngIf="column.colName=='PODate' || column.colName=='OrigReqDate' || column.colName=='RequiredDate' || column.colName=='ForecastDate' || column.colName=='LastDeliveryDate'; else elseBlock2">
+                                      {{ getFormattedDate(item[column.colName]) }}
+                                    </div>
+                                    <ng-template #elseBlock2>
+                                      <div class="text-overlap" [ngStyle]="isMobile > 768 ? { width: column.width + 'px' } : { width: 'auto' }">
+                                        <div
+                                          [ngClass]="{'NumberColor':(item.AttachedNo!=0 && item.AttachedNo!= '' && item.AttachedNo!=undefined)}"
+                                          *ngIf="column.colName == 'AttachedNo'; else elseBlock3"
+                                          (click)="OpenAttachments(item,$event)">
+                                          {{ (item.AttachedNo==0) ? '' : item.AttachedNo }}
+                                        </div>
+                                      </div>
+                                      <ng-template #elseBlock3>
+                                        <div class="text-overlap" [ngStyle]="isMobile > 768 ? { width: column.width + 'px' } : { width: 'auto' }"
+                                          *ngIf="column.colName == 'CustomerName'; else elseBlock4">
+                                          {{ item.CustomerName }} ({{ item.CustomerCode }})
+                                        </div>
+                                        <ng-template #elseBlock4>
+                                          <div class="text-overlap" [ngStyle]="isMobile > 768 ? { width: column.width + 'px' } : { width: 'auto' }"
+                                            *ngIf="column.colName == 'ProjectTitle'; else elseBlock5">
+                                            {{ item.ProjectTitle }} ({{ item.ProjectCode }})
+                                          </div>
+                                          <ng-template #elseBlock5>
+                                            <div class="text-overlap" [ngStyle]="isMobile > 768 ? { width: column.width + 'px' } : { width: 'auto' }"
+                                              *ngIf="column.colName == 'StructureElement'; else elseBlock6">
+                                              {{ item.StructureElement=='NONWBS' ? '' : item.StructureElement }}
+                                            </div>
+                                            <ng-template #elseBlock6>
+                                              <div *ngIf="column.colName == 'linkTo'; else elseBlock7">
+                                                <span>
+                                                  <!-- ROUTE BUTTON -->
+                                                  <i class="bi bi-pencil-square" (click)="RouteToProductDetails(item)"
+                                                    matTooltip="Product Details"></i>
+                                                </span>
+                                              </div>
+                                              <ng-template #elseBlock7>
+                                                <div class="text-overlap" [ngStyle]="isMobile > 768 ? { width: column.width + 'px' } : { width: 'auto' }">
+                                                  {{ item[column.colName] }}
+                                                </div>
+                                              </ng-template>
+                                            </ng-template>
+                                          </ng-template>
+                                        </ng-template>
+                                      </ng-template>
+                                    </ng-template>
+                                  </td>
+                                </ng-container>
+                              </tr>
+                            </ng-container>
+                          </tbody>
+                        </table>
+                      </form>
+                    </cdk-virtual-scroll-viewport>
+                    <!-- TABLE TO BE REMOVED  -->
+
+                  </div>
+                </div>
+              </tab>
+              <tab id="processing-tab" heading="Processing" style="background: #fff" (selectTab)="setActiveTab(4)">
+                <div class="row">
+                  <div #tableContainer *ngIf="activeTab === 4"
+                    class="table-responsive table-responsive-custom  min-height col-md-12">
+                    <form [formGroup]="ProcessingTableSearch">
+                      <cdk-virtual-scroll-viewport id="view-port" [itemSize]="itemSize" #scrollViewportProcessing
+                        (scroll)="syncScroll($event)" class="example-viewport" [style.height]="'65vh'">
+
+                        <table class="table table-bordered new-table">
+                          <thead [style.top]="inverseOfTranslationProcess" id="ProcessingHeading" class="tableHeading">
+                            <tr id="heading-cell" [style.top]="inverseOfTranslationProcess" cdkDropList
+                              cdkDropListOrientation="horizontal" [cdkDropListData]="processingCols"
+                              (cdkDropListDropped)="dropProcessingCol($event)" style="font-size: large;">
+                              <th [style.top]="inverseOfTranslationProcess"
+                                [class.FixedColumn]="processingFixedColumn != 0" [style.width]="'50px !important'"
+                                (click)="toggleSortingOrderForProcessing('sno','sno')">
+                                S/No</th>
+                              <ng-container *ngFor="let processingCol of processingCols;index as headerIndex">
+                                <th [style.top]="inverseOfTranslationProcess" #thProcessingVar
+                                  [style.width]="processingCol.width"
+                                  (click)="toggleSortingOrderForProcessing(processingCol.field,processingCol.colName)"
+                                  [style.left]="(headerIndex+1) < processingFixedColumn ? getRightWidthTest(thProcessingVar,headerIndex,'processing') : 'inherit'"
+                                  [style.display]="'table-cell'"
+                                  [class.FixedColumn]="(headerIndex+1) < processingFixedColumn"
+                                  *ngIf="processingCol.isVisible && processingCol.colName != 'linkTo'"
+                                  style="cursor: pointer;" [style.width]="processingCol.width +'px !important'"
+                                  [matTooltip]="processingCol.displayName" matTooltipPosition="above"
+                                  [matTooltipDisabled]="true" cdkDrag>
+                                  <div [style.width]="processingCol.width +'px !important'" role="columnheader"
+                                    *ngIf="showOrderNo">
+                                    <div [style.width]="processingCol.width +'px !important'" class="d-flex"
+                                      style="align-items: center;">
+                                      <span [style.width]="processingCol.width +'px !important'">
+                                        {{processingCol.displayName}}</span><i class="bi bi-arrow-up"
+                                        *ngIf="!isAscending&&currentSortingColumn==processingCol.field"></i><i
+                                        class="bi bi-arrow-down"
+                                        *ngIf="isAscending&&currentSortingColumn==processingCol.field"></i>
+                                    </div>
+                                  </div>
+                                  <div [style.width.px]="processingCol.resizeWidth"></div>
+                                </th>
+                                <th [style.top]="inverseOfTranslationProcess" style="text-align: center;"
+                                  [style.width]="processingCol.width"
+                                  *ngIf="processingCol.isVisible && processingCol.colName == 'linkTo'"
+                                  style="cursor: pointer;" cdkDrag>{{processingCol.displayName}}</th>
+                              </ng-container>
+                            </tr>
+                          </thead>
+                          <thead class="search-head" [style.top]="inverseOfTranslationProcessSearch"
+                            [ngStyle]="{'display':'sticky','top.px': getMinHeightIncoming('ProcessingHeading'),'position':'sticky'}"
+                            *ngIf="toggleFilter">
+                            <tr id="search-cell" [style.top]="inverseOfTranslationProcessSearch">
+                              <th [style.top]="inverseOfTranslationProcessSearch"
+                                [class.FixedColumn]="processingFixedColumn != 0" [style.width]="'50px !important'">
+                                <!-- <span>
+                                  <i class="bi bi-save2-fill" style="font-size: 22px;"
+                                    (click)="saveColumnsToLocalStorage('processingCols',processingCols)"
+                                    [matTooltip]="'Save Resized Columns'" matTooltipPosition="above"
+                                    [matTooltipDisabled]="true"></i>
+                                </span> -->
+                                <span style="margin: auto; padding: 2px">
+                                  <i class="fa fa-refresh" ngbTooltip="Reset" style="color: red; font-size: 20px"
+                                  (click)="reset()"></i>
+                                </span>
+
+                              </th>
+                              <ng-container *ngFor="let processingCol1 of processingCols;let j = index;">
+                                <th [style.top]="inverseOfTranslationProcessSearch" style="text-align: center;"
+                                  *ngIf="processingCol1.isVisible"
+                                  [style.left]="(j+1) < processingFixedColumn ? getLeftOfTable('processing',j) : 'inherit'"
+                                  [style.display]="'table-cell'" [class.FixedColumn]="(j+1) < processingFixedColumn">
+                                  <input class="form-control" formControlName="{{processingCol1.controlName}}"
+                                    *ngIf="processingCol1.colName != 'linkTo'" />
+                                  <div class="bar" appColumnResize [colName]="'processing'" [colIndex]="j"
+                                    (widthChangeEvent)="onWidthChange($event)" cdkDrag></div>
+                                </th>
+                              </ng-container>
+                              <th style="text-align: center">
+                                <!-- <input class="form-control" formControlName="SNo" /> -->
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody (click)="setCopyFlag(true, $event)">
+                            <ng-container *cdkVirtualFor="let item of ProcessingData; index as i">
+                              <tr id="body-cell" (click)="selectRow(item,ProcessingData, $event); scrollToTop()"
+                                [style.background-color]="item.isSelected ? 'beige' : setRowColor(item)">
+                                <td [class.FixedColumn]="processingFixedColumn != 0" [style.width.px]="item.width"
+                                  [style.background-color]="(CheckCellSelection_id(item)) ? 'beige' : setRowColor(item)">
+                                  {{ item.sno }}</td>
+                                <ng-container *ngFor="let column of processingCols;index as footerIndex">
+                                  <td *ngIf="column.isVisible"
+                                    (click)="selectCell(column,processingCols, item, ProcessingData, $event);openDeliveryDoc(item, column.colName, $event)"
+                                    [style.background-color]="(CheckCellSelection(item, column)) ? 'beige' : setRowColor(item)"
+                                    [style.left]="(footerIndex+1) < processingFixedColumn ? getLeftOfTable('processing',footerIndex) : 'inherit'"
+                                    [style.display]="'table-cell'"
+                                    [class.FixedColumn]="(footerIndex+1) < processingFixedColumn"
+                                    [ngClass]="{'text-link':(checkForLink(column.colName))}">
+                                    <div class="text-overlap" [ngStyle]="isMobile > 768 ? { width: column.width + 'px' } : { width: 'auto' }"
+                                      *ngIf="column.colName=='PODate' || column.colName=='OrigReqDate' || column.colName=='RequiredDate' || column.colName=='ForecastDate' || column.colName=='LastDeliveryDate'; else elseBlock2">
+                                      {{ getFormattedDate(item[column.colName]) }}
+                                    </div>
+                                    <ng-template #elseBlock2>
+                                      <div class="text-overlap" [ngStyle]="isMobile > 768 ? { width: column.width + 'px' } : { width: 'auto' }">
+                                        <div
+                                          [ngClass]="{'NumberColor':(item.AttachedNo!=0 && item.AttachedNo!= '' && item.AttachedNo!=undefined)}"
+                                          *ngIf="column.colName == 'AttachedNo'; else elseBlock3"
+                                          (click)="OpenAttachments(item,$event)" style="text-decoration: underline;">
+                                          {{ (item.AttachedNo==0) ? '' : item.AttachedNo }}
+                                        </div>
+                                      </div>
+                                      <ng-template #elseBlock3>
+                                        <div class="text-overlap" [ngStyle]="isMobile > 768 ? { width: column.width + 'px' } : { width: 'auto' }"
+                                          *ngIf="column.colName == 'CustomerName'; else elseBlock4">
+                                          {{ item.CustomerName }} ({{ item.CustomerCode }})
+                                        </div>
+                                        <ng-template #elseBlock4>
+                                          <div class="text-overlap" [ngStyle]="isMobile > 768 ? { width: column.width + 'px' } : { width: 'auto' }"
+                                            *ngIf="column.colName == 'ProjectTitle'; else elseBlock5">
+                                            {{ item.ProjectTitle }} ({{ item.ProjectCode }})
+                                          </div>
+                                          <ng-template #elseBlock5>
+                                            <div class="text-overlap" [ngStyle]="isMobile > 768 ? { width: column.width + 'px' } : { width: 'auto' }"
+                                              *ngIf="column.colName == 'StructureElement'; else elseBlock6">
+                                              {{ item.StructureElement=='NONWBS' ? '' : item.StructureElement }}
+                                            </div>
+                                            <ng-template #elseBlock6>
+                                              <div *ngIf="column.colName == 'linkTo'; else elseBlock7">
+                                                <span>
+                                                  <!-- ROUTE BUTTON -->
+                                                  <i class="bi bi-pencil-square" (click)="RouteToProductDetails(item)"
+                                                    matTooltip="Product Details"></i>
+                                                </span>
+                                              </div>
+                                              <ng-template #elseBlock7>
+                                                <div class="text-overlap" [ngStyle]="isMobile > 768 ? { width: column.width + 'px' } : { width: 'auto' }"
+                                                  *ngIf="column.colName == 'PONumber'; else elseBlock8">
+                                                  {{ item.SAPPONo ? item.SAPPONo : item.PONumber }}
+                                                </div>
+                                                <ng-template #elseBlock8>
+                                                  <div class="text-overlap"
+                                                    [ngStyle]="isMobile > 768 ? { width: column.width + 'px' } : { width: 'auto' }"
+                                                    *ngIf="column.colName == 'LoadNumber'; else elseBlock9"
+                                                    style="text-decoration: underline;">
+                                                    {{ item[column.colName] }}
+                                                  </div>
+                                                  <ng-template #elseBlock9>
+                                                    <div class="text-overlap"
+                                                      [ngStyle]="isMobile > 768 ? { width: column.width + 'px' } : { width: 'auto' }">
+                                                      {{ item[column.colName] }}
+                                                    </div>
+                                                  </ng-template>
+                                                </ng-template>
+                                              </ng-template>
+                                            </ng-template>
+                                          </ng-template>
+                                        </ng-template>
+                                      </ng-template>
+                                    </ng-template>
+                                  </td>
+                                </ng-container>
+                              </tr>
+                            </ng-container>
+                          </tbody>
+                        </table>
+                      </cdk-virtual-scroll-viewport>
+                    </form>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <div class="col-md-9">
+                    <!-- <div class="d-flex mt-2">
+                      <ngb-pagination [collectionSize]="ProcessingData.length" [(page)]="currentPageProcessing"
+                        [pageSize]="itemsPerPageProcessing" (pageChange)="onPageChangeProcessing(currentPageProcessing)"
+                        [boundaryLinks]="false" [maxSize]="maxSizeProcessing">
+                        <ng-template ngbPaginationPrevious>Prev</ng-template>
+                        <ng-template ngbPaginationNext>Next</ng-template>
+                      </ngb-pagination>
+
+                      <select class="custom-select mr-2 ml-3" style="width: auto" [(ngModel)]="itemsPerPageProcessing"
+                        (ngModelChange)="OnPageSizeChangeProcessing(itemsPerPageProcessing)">
+                        <option [ngValue]="5">5</option>
+                        <option [ngValue]="10">10</option>
+                        <option [ngValue]="20">20</option>
+                        <option [ngValue]="30">50</option>
+                        <option [ngValue]="100">100</option>
+                      </select>
+                      <span style="margin-top: 5px">Items per page</span>
+                    </div> -->
+                  </div>
+                </div>
+              </tab>
+              <tab id="all-tab" heading="All" style="background: #fff" (selectTab)="setActiveTab(5)">
+                <div class="row">
+                  <div #tableContainer *ngIf="activeTab === 5" class="table-responsive  min-height col-md-12">
+                    <form [formGroup]="AllTableSearch">
+                      <cdk-virtual-scroll-viewport id="view-port" [itemSize]="itemSize" #scrollViewportAll
+                        (scroll)="syncScroll($event)" [style.height]="'65vh'">
+                        <table class="table table-bordered new-table">
+                          <thead id="AllDataHeading" [ngStyle]="{'display':'sticky','top': '0px'}">
+                            <tr id="heading-cell" cdkDropList cdkDropListOrientation="horizontal" [cdkDropListData]="allDataCols"
+                              (cdkDropListDropped)="dropAllDataCol($event)" style="font-size: large;"
+                              [style.top]="inverseOfAll">
+                              <th [class.FixedColumn]="allFixedColumn != 0" [style.width]="'50px !important'"
+                                [style.top]="inverseOfAll" (click)="toggleSortingOrderForAll('sno','sno')">
+                                S/No.</th>
+                              <!-- <th *ngFor="let allDataCol of allDataCols;" [style.width]="allDataCol.width">
+                              <div role="columnheader" style="cursor: pointer;margin-right: 3px;" cdkDrag>
+                                <div class="d-flex" style="align-items: center;">
+                                  <span> {{allDataCol.displayName}}</span>
+                                </div>
+                              </div>
+                            </th> -->
+                              <ng-container *ngFor="let allDataCol of allDataCols;index as headerIndex;">
+                                <th #thAllVar [style.width]="allDataCol.width"
+                                  (click)="toggleSortingOrderForAll(allDataCol.field,allDataCol.colName)"
+                                  [style.left]="(headerIndex+1) < allFixedColumn ? getRightWidthTest(thAllVar,headerIndex,'all') : 'inherit'"
+                                  [style.display]="'table-cell'" [class.FixedColumn]="(headerIndex+1) < allFixedColumn"
+                                  *ngIf="allDataCol.isVisible && allDataCol.colName != 'linkTo'"
+                                  style="cursor: pointer;" [style.top]="inverseOfAll"
+                                  [style.width]="allDataCol.width +'px !important'"
+                                  [matTooltip]="allDataCol.displayName" matTooltipPosition="above"
+                                  [matTooltipDisabled]="true" cdkDrag>
+                                  <div [style.width]="allDataCol.width +'px !important'" role="columnheader">
+                                    <div [style.width]="allDataCol.width +'px !important'" class="d-flex"
+                                      style="align-items: center;">
+                                      <span [style.width]="allDataCol.width +'px !important'">
+                                        {{allDataCol.displayName}}</span><i class="bi bi-arrow-up"
+                                        *ngIf="!isAscending&&currentSortingColumn==allDataCol.field"></i><i
+                                        class="bi bi-arrow-down"
+                                        *ngIf="isAscending&&currentSortingColumn==allDataCol.field"></i>
+                                    </div>
+                                  </div>
+                                  <div [style.width.px]="allDataCol.resizeWidth"></div>
+                                </th>
+                                <th style="text-align: center;" [style.width]="allDataCol.width"
+                                  [style.top]="inverseOfAll"
+                                  *ngIf="allDataCol.isVisible && allDataCol.colName == 'linkTo'"
+                                  style="cursor: pointer;" cdkDrag>{{allDataCol.displayName}}</th>
+                              </ng-container>
+                              <!-- <th style="text-align: left;">Docs Attached</th>
+                                          <th style="text-align: left;">Product Details</th> -->
+                            </tr>
+                          </thead>
+                          <thead class="search-head"
+                            [ngStyle]="{'display':'sticky','top.px': getMinHeightIncoming('AllDataHeading'),'position':'sticky'}"
+                            *ngIf="toggleFilter">
+                            <tr id="search-cell" [style.top]="inverseOfAllSearch">
+                              <th [class.FixedColumn]="allFixedColumn != 0" [style.width]="'50px !important'"
+                                [style.top]="inverseOfAllSearch">
+                                <!-- <span>
+                                  <i class="bi bi-save2-fill" style="font-size: 22px;"
+                                    (click)="saveColumnsToLocalStorage('allDataCols',allDataCols)"
+                                    [matTooltip]="'Save Resized Columns'" matTooltipPosition="above"
+                                    [matTooltipDisabled]="true"></i>
+                                </span> -->
+                                <span style="margin: auto; padding: 2px">
+                                  <i class="fa fa-refresh" ngbTooltip="Reset" style="color: red; font-size: 20px"
+                                  (click)="reset()"></i>
+                                </span>
+
+                              </th>
+                              <ng-container *ngFor="let allDataCol1 of allDataCols;let j = index;">
+                                <th style="text-align: center;" *ngIf="allDataCol1.isVisible"
+                                  [style.left]="(j+1) < allFixedColumn ? getLeftOfTable('all',j) : 'inherit'"
+                                  [style.display]="'table-cell'" [class.FixedColumn]="(j+1) < allFixedColumn"
+                                  [style.top]="inverseOfAllSearch">
+                                  <input class="form-control" formControlName="{{allDataCol1.controlName}}"
+                                    *ngIf="allDataCol1.colName != 'linkTo'" />
+                                  <div class="bar" appColumnResize [colName]="'all'" [colIndex]="j"
+                                    (widthChangeEvent)="onWidthChange($event)" cdkDrag></div>
+                                </th>
+                              </ng-container>
+                              <!-- <th style="text-align: center; width: 114px" *ngIf="
+                                PendingEntTableColumnToggle.controls.OrderNo.value
+                              ">
+                              <input class="form-control" formControlName="OrderNo" />
+                            </th> -->
+                            </tr>
+
+                          </thead>
+                          <tbody (click)="setCopyFlag(true, $event)">
+                            <ng-container *cdkVirtualFor="
+                            let item of AllData
+
+                              | filter : searchText;
+                            index as i
+                          ">
+                              <tr id="body-cell" (click)="selectRow(item,AllData, $event); scrollToTop()"
+                                [style.background-color]="item.isSelected ? 'beige' : setRowColor(item)">
+                                <td [class.FixedColumn]="allFixedColumn != 0" [style.width.px]="item.width"
+                                  [style.background-color]="(CheckCellSelection_id(item)) ? 'beige' : setRowColor(item)">
+                                  {{ item.sno }}</td>
+                                <ng-container *ngFor="let column of allDataCols;index as footerIndex">
+                                  <td *ngIf="column.isVisible"
+                                    (click)="selectCell(column,allDataCols, item, AllData, $event);openDeliveryDoc(item, column.colName, $event)"
+                                    [style.background-color]="(CheckCellSelection(item, column)) ? 'beige' : setRowColor(item)"
+                                    [style.left]="(footerIndex+1) < allFixedColumn ? getLeftOfTable('all',footerIndex) : 'inherit'"
+                                    [style.display]="'table-cell'"
+                                    [class.FixedColumn]="(footerIndex+1) < allFixedColumn"
+                                    [style.text-decoration]="checkForLink(column.colName)?'underline':'none'">
+                                    <div class="text-overlap" [ngStyle]="isMobile > 768 ? { width: column.width + 'px' } : { width: 'auto' }"
+                                      *ngIf="column.colName=='PODate' || column.colName=='OrigReqDate' || column.colName=='RequiredDate' || column.colName=='ForecastDate' || column.colName=='LastDeliveryDate'; else elseBlock2">
+                                      {{ getFormattedDate(item[column.colName]) }}
+                                    </div>
+                                    <ng-template #elseBlock2>
+                                      <div class="text-overlap" [ngStyle]="isMobile > 768 ? { width: column.width + 'px' } : { width: 'auto' }">
+                                        <div
+                                          [ngClass]="{'NumberColor':(item.AttachedNo!=0 && item.AttachedNo!= '' && item.AttachedNo!=undefined)}"
+                                          *ngIf="column.colName == 'AttachedNo'; else elseBlock3"
+                                          (click)="OpenAttachments(item,$event)" style="text-decoration: underline;">
+                                          {{ (item.AttachedNo==0) ? '' : item.AttachedNo }}
+                                        </div>
+                                      </div>
+                                      <ng-template #elseBlock3>
+                                        <div class="text-overlap" [ngStyle]="isMobile > 768 ? { width: column.width + 'px' } : { width: 'auto' }"
+                                          *ngIf="column.colName == 'CustomerName'; else elseBlock4">
+                                          {{ item.CustomerName }} ({{ item.CustomerCode }})
+                                        </div>
+                                        <ng-template #elseBlock4>
+                                          <div class="text-overlap" [ngStyle]="isMobile > 768 ? { width: column.width + 'px' } : { width: 'auto' }"
+                                            *ngIf="column.colName == 'ProjectTitle'; else elseBlock5">
+                                            {{ item.ProjectTitle }} ({{ item.ProjectCode }})
+                                          </div>
+                                          <ng-template #elseBlock5>
+                                            <div class="text-overlap" [ngStyle]="isMobile > 768 ? { width: column.width + 'px' } : { width: 'auto' }"
+                                              *ngIf="column.colName == 'StructureElement'; else elseBlock6">
+                                              {{ item.StructureElement=='NONWBS' ? '' : item.StructureElement }}
+                                            </div>
+                                            <ng-template #elseBlock6>
+                                              <div class="text-overlap" [ngStyle]="isMobile > 768 ? { width: column.width + 'px' } : { width: 'auto' }"
+                                                *ngIf="column.colName == 'PONumber'; else elseBlock7">
+                                                {{ item.SAPPONo ? item.SAPPONo : item.PONumber }}
+                                              </div>
+                                              <ng-template #elseBlock7>
+                                                <div class="text-overlap" [ngStyle]="isMobile > 768 ? { width: column.width + 'px' } : { width: 'auto' }"
+                                                  *ngIf="column.colName == 'LoadNumber'; else elseBlock8">
+                                                  {{ item[column.colName] }}
+                                                </div>
+                                                <ng-template #elseBlock8>
+                                                  <div class="text-overlap"
+                                                    [ngStyle]="isMobile > 768 ? { width: column.width + 'px' } : { width: 'auto' }">
+                                                    {{ item[column.colName] }}
+                                                  </div>
+                                                </ng-template>
+                                              </ng-template>
+                                            </ng-template>
+
+                                          </ng-template>
+                                        </ng-template>
+                                      </ng-template>
+                                    </ng-template>
+                                  </td>
+                                </ng-container>
+                              </tr>
+                            </ng-container>
+                          </tbody>
+                        </table>
+                      </cdk-virtual-scroll-viewport>
+                    </form>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-9">
+                    <!-- <div class="d-flex mt-2">
+                      <ngb-pagination [collectionSize]="AllData.length" [(page)]="currentPageAll"
+                        [pageSize]="itemsPerPageAll" (pageChange)="onPageChangeAll(currentPageAll)"
+                        [boundaryLinks]="false" [maxSize]="maxSizeAll">
+                        <ng-template ngbPaginationPrevious>Prev</ng-template>
+                        <ng-template ngbPaginationNext>Next</ng-template>
+                      </ngb-pagination>
+
+                      <select class="custom-select mr-2 ml-3" style="width: auto" [(ngModel)]="itemsPerPageAll"
+                        (ngModelChange)="OnPageSizeChangeAll(itemsPerPageAll)">
+                        <option [ngValue]="5">5</option>
+                        <option [ngValue]="10">10</option>
+                        <option [ngValue]="20">20</option>
+                        <option [ngValue]="30">50</option>
+                        <option [ngValue]="100">100</option>
+                      </select>
+                      <span style="margin-top: 5px">Items per page</span>
+                    </div> -->
+                  </div>
+                </div>
+              </tab>
+              <tab id="search-tab" mat-raised-button heading="Search" style="background: #fff">
+                <div class="row" *ngIf="gSearchTabFlag">
+                  <div #tableContainer class="table-responsive table-responsive-custom min-height col-md-12">
+                    <form [formGroup]="SearchResultTableSearch">
+                      <cdk-virtual-scroll-viewport id="view-port" [itemSize]="itemSize" #scrollViewportSearch
+                        (scroll)="syncScroll($event)" [style.height]="'65vh'">
+                        <table class="table table-bordered new-table">
+                          <thead [style.top]="inverseOfTranslation" id="SearchTabHeading" class="tableHeading"
+                            [ngStyle]="{'display':'sticky','top': '0px'}">
+                            <tr id="heading-cell" [style.top]="inverseOfTranslation" cdkDropList cdkDropListOrientation="horizontal"
+                              [cdkDropListData]="searchCols" (cdkDropListDropped)="dropSearchCol($event)"
+                              style="font-size: large;">
+                              <th [style.top]="inverseOfTranslation" [class.FixedColumn]="searchFixedColumn != 0"
+                                [style.width]="'50px !important'" (click)="toggleSortingOrderForSearch('sno','sno')">
+                                S/No</th>
+                              <!-- <th *ngFor="let searchCol of searchCols;" [style.width]="searchCol.width">
+                              <div role="columnheader" style="cursor: pointer;margin-right: 3px;" cdkDrag>
+                                <div class="d-flex" style="align-items: center;">
+                                  <span> {{searchCol.displayName}}</span>
+                                </div>
+                              </div>N
+                            </th> -->
+                              <ng-container *ngFor="let searchCol of searchCols;index as headerIndex;">
+                                <th [style.top]="inverseOfTranslation" #thSearchVar [style.width]="searchCol.width"
+                                  (click)="toggleSortingOrderForSearch(searchCol.field,searchCol.colName)"
+                                  [style.left]="(headerIndex+1) < searchFixedColumn ? getRightWidthTest(thSearchVar,headerIndex,'search') : 'inherit'"
+                                  [style.display]="'table-cell'"
+                                  [class.FixedColumn]="(headerIndex+1) < searchFixedColumn"
+                                  *ngIf="searchCol.isVisible && searchCol.colName != 'linkTo'" style="cursor: pointer;"
+                                  [style.width]="searchCol.width +'px !important'" [matTooltip]="searchCol.displayName"
+                                  matTooltipPosition="above" [matTooltipDisabled]="true" cdkDrag>
+                                  <div [style.width]="searchCol.width +'px !important'" role="columnheader"
+                                    *ngIf="showOrderNo">
+                                    <div [style.width]="searchCol.width +'px !important'" class="d-flex"
+                                      style="align-items: center;">
+                                      <span [style.width]="searchCol.width +'px !important'">
+                                        {{searchCol.displayName}}</span><i class="bi bi-arrow-up"
+                                        *ngIf="!isAscending&&currentSortingColumn==searchCol.field"></i><i
+                                        class="bi bi-arrow-down"
+                                        *ngIf="isAscending&&currentSortingColumn==searchCol.field"></i>
+                                    </div>
+                                  </div>
+                                  <div [style.width.px]="searchCol.resizeWidth"></div>
+                                </th>
+                                <th [style.top]="inverseOfTranslation" style="text-align: center;"
+                                  [style.width]="searchCol.width"
+                                  *ngIf="searchCol.isVisible && searchCol.colName == 'linkTo'" style="cursor: pointer;"
+                                  cdkDrag>
+                                  {{searchCol.displayName}}</th>
+                              </ng-container>
+                            </tr>
+                          </thead>
+                          <thead class="search-head" [style.top]="inverseOfTranslationSearch"
+                            [ngStyle]="{'display':'sticky','top.px': getMinHeightIncoming('SearchTabHeading'),'position':'sticky'}"
+                            *ngIf="toggleFilter">
+                            <tr id="search-cell" [style.top]="inverseOfTranslationSearch">
+                              <th [style.top]="inverseOfTranslationSearch" [class.FixedColumn]="searchFixedColumn != 0"
+                                [style.width]="'50px !important'">
+                                <!-- <span>
+                                  <i class="bi bi-save2-fill" style="font-size: 22px;"
+                                    (click)="saveColumnsToLocalStorage('searchCols',searchCols)"
+                                    [matTooltip]="'Save Resized Columns'" matTooltipPosition="above"
+                                    [matTooltipDisabled]="true"></i>
+                                </span> -->
+                                <span style="margin: auto; padding: 2px">
+                                  <i class="fa fa-refresh" ngbTooltip="Reset" style="color: red; font-size: 20px"
+                                  (click)="reset()"></i>
+                                </span>
+
+                              </th>
+                              <ng-container *ngFor="let searchCol1 of searchCols;let j = index;">
+                                <th [style.top]="inverseOfTranslationSearch" style="text-align: center;"
+                                  *ngIf="searchCol1.isVisible"
+                                  [style.left]="(j+1) < searchFixedColumn ? getLeftOfTable('search',j) : 'inherit'"
+                                  [style.display]="'table-cell'" [class.FixedColumn]="(j+1) < searchFixedColumn">
+                                  <input class="form-control" formControlName="{{searchCol1.controlName}}"
+                                    *ngIf="searchCol1.colName != 'linkTo'" />
+                                  <div class="bar" appColumnResize [colName]="'search'" [colIndex]="j"
+                                    (widthChangeEvent)="onWidthChange($event)" cdkDrag></div>
+                                </th>
+                              </ng-container>
+                              <th>
+                              </th>
+                              <!-- <th style="text-align: center; width: 114px" *ngIf="
+                                PendingEntTableColumnToggle.controls.OrderNo.value
+                              ">
+                              <input class="form-control" formControlName="OrderNo" />
+                            </th> -->
+                            </tr>
+
+                          </thead>
+
+                          <tbody (click)="setCopyFlag(true, $event)">
+
+                            <ng-container *cdkVirtualFor="
+                            let searchItem of SearchResultData
+                              | filter : searchText;
+                            index as s
+                          ">
+                              <!-- <ng-container *ngFor="let searchItem of SearchResultData; index as i"> -->
+                              <!-- <ng-container *ngFor="let searchItem of SearchResultData | slice : pageSizeProcessing | slice : 0 : itemsPerPageProcessing; index as i"> -->
+                              <tr id="body-cell" (click)="selectRow(searchItem,SearchResultData, $event); scrollToTop()"
+                                [style.background-color]="searchItem.isSelected ? 'beige' : setRowColor(searchItem)">
+                                <td [class.FixedColumn]="searchFixedColumn != 0" [style.width.px]="searchItem.width"
+                                  [style.background-color]="(CheckCellSelection_id(searchItem)) ? 'beige' : setRowColor(searchItem)">
+                                  {{ searchItem.sno }}</td>
+                                <ng-container *ngFor="let column of searchCols;index as footerIndex;">
+                                  <td *ngIf="column.isVisible"
+                                    (click)="selectCell(column,searchCols, searchItem, SearchResultData, $event);openDeliveryDoc(searchItem, column.colName, $event)"
+                                    [style.background-color]="(CheckCellSelection(searchItem, column)) ? 'beige' : setRowColor(searchItem)"
+                                    [style.left]="(footerIndex+1) < searchFixedColumn ? getLeftOfTable('search',footerIndex) : 'inherit'"
+                                    [style.display]="'table-cell'"
+                                    [class.FixedColumn]="(footerIndex+1) < searchFixedColumn"
+                                    [ngClass]="{'text-link':(checkForLink(column.colName))}">
+                                    <div class="text-overlap" [ngStyle]="isMobile > 768 ? { width: column.width + 'px' } : { width: 'auto' }"
+                                      *ngIf="column.colName=='PODate' || column.colName=='OrigReqDate' || column.colName=='RequiredDate' || column.colName=='ForecastDate' || column.colName=='LastDeliveryDate'; else elseBlock2">
+                                      {{ getFormattedDate(searchItem[column.colName]) }}
+                                    </div>
+                                    <ng-template #elseBlock2>
+                                      <div class="text-overlap" [ngStyle]="isMobile > 768 ? { width: column.width + 'px' } : { width: 'auto' }">
+                                        <div
+                                          [ngClass]="{'NumberColor':(searchItem.AttachedNo!=0 && searchItem.AttachedNo!= '' && searchItem.AttachedNo!=undefined)}"
+                                          *ngIf="column.colName == 'AttachedNo'; else elseBlock3"
+                                          (click)="OpenAttachments(searchItem,$event)">
+                                          {{ (searchItem.AttachedNo==0) ? '' : searchItem.AttachedNo }}</div>
+                                      </div>
+                                      <ng-template #elseBlock3>
+                                        <div class="text-overlap" [ngStyle]="isMobile > 768 ? { width: column.width + 'px' } : { width: 'auto' }"
+                                          *ngIf="column.colName == 'CustomerName'; else elseBlock4">
+                                          {{ searchItem.CustomerName }} ({{ searchItem.CustomerCode }})
+                                        </div>
+                                        <ng-template #elseBlock4>
+                                          <div class="text-overlap" [ngStyle]="isMobile > 768 ? { width: column.width + 'px' } : { width: 'auto' }"
+                                            *ngIf="column.colName == 'ProjectTitle'; else elseBlock5">
+                                            {{ searchItem.ProjectTitle }} ({{ searchItem.ProjectCode }})
+                                          </div>
+                                          <ng-template #elseBlock5>
+                                            <div class="text-overlap" [ngStyle]="isMobile > 768 ? { width: column.width + 'px' } : { width: 'auto' }"
+                                              *ngIf="column.colName == 'StructureElement'; else elseBlock6">
+                                              {{ searchItem.StructureElement=='NONWBS' ? '' :
+                                              searchItem.StructureElement }}
+                                            </div>
+                                            <ng-template #elseBlock6>
+                                              <div *ngIf="column.colName == 'linkTo'; else elseBlock7">
+                                                <span>
+                                                  <!-- ROUTE BUTTON -->
+                                                  <i class="bi bi-pencil-square"
+                                                    (click)="RouteToProductDetails(searchItem)"
+                                                    matTooltip="Product Details"></i>
+                                                </span>
+                                              </div>
+                                              <ng-template #elseBlock7>
+                                                <div class="text-overlap" [ngStyle]="isMobile > 768 ? { width: column.width + 'px' } : { width: 'auto' }"
+                                                  *ngIf="column.colName == 'PONumber'; else elseBlock8">
+                                                  {{ searchItem.SAPPONo ? searchItem.SAPPONo : searchItem.PONumber }}
+                                                </div>
+                                                <ng-template #elseBlock8>
+                                                  <div class="text-overlap"
+                                                    [ngStyle]="isMobile > 768 ? { width: column.width + 'px' } : { width: 'auto' }"
+                                                    *ngIf="column.colName == 'LoadNumber'; else elseBlock9">
+                                                    {{ searchItem[column.colName] }}
+                                                  </div>
+                                                  <ng-template #elseBlock9>
+                                                    <div class="text-overlap"
+                                                      [ngStyle]="isMobile > 768 ? { width: column.width + 'px' } : { width: 'auto' }">
+                                                      {{ searchItem[column.colName] }}
+                                                    </div>
+                                                  </ng-template>
+                                                </ng-template>
+                                              </ng-template>
+                                            </ng-template>
+                                          </ng-template>
+                                        </ng-template>
+                                      </ng-template>
+                                    </ng-template>
+                                  </td>
+                                </ng-container>
+                              </tr>
+                            </ng-container>
+                          </tbody>
+                        </table>
+                      </cdk-virtual-scroll-viewport>
+                    </form>
+                  </div>
+                </div>
+
+
+                <div class="row">
+                  <div class="col-md-9">
+                    <!-- <div class="d-flex mt-2">
+                      <ngb-pagination [collectionSize]="SearchResultData.length" [(page)]="currentPageSearch"
+                        [pageSize]="itemsPerPageSearch" (pageChange)="onPageChangeSearch(currentPageSearch)"
+                        [boundaryLinks]="false" [maxSize]="maxSizeSearch">
+                        <ng-template ngbPaginationPrevious>Prev</ng-template>
+                        <ng-template ngbPaginationNext>Next</ng-template>
+                      </ngb-pagination>
+
+                      <select class="custom-select mr-2 ml-3" style="width: auto" [(ngModel)]="itemsPerPageSearch"
+                        (ngModelChange)="OnPageSizeChangeSearch(itemsPerPageSearch)">
+                        <option [ngValue]="5">5</option>
+                        <option [ngValue]="10">10</option>
+                        <option [ngValue]="20">20</option>
+                        <option [ngValue]="30">50</option>
+                        <option [ngValue]="100">100</option>
+                      </select>
+                      <span style="margin-top: 5px">Items per page</span>
+                    </div> -->
+                  </div>
+                </div>
+              </tab>
+              <!-- <button class="btn btn-outline-primary" (click)="widthChangeCompletedStore()">Save Resized Columns</button> -->
+
+              <!-- <input
+                  type="checkbox"
+                  id="vehicle1"
+                  name="vehicle1"
+                  value="Bike"
+                />&nbsp;
+                <label for="vehicle1">Forcast Date</label> -->
+            </tabset>
+          </div>
+        </div>
+
+
+        <div class="row d-flex mt-3 mb-3 weight-row">
+          <div class="col md-6">
+            <span style="font-weight:700">
+              Total Orders/Weight {{lOrdersCT}} : {{lOrdersWT}}
+            </span><br />
+
+
+          </div>
+          <div class="col md-6" style="display: contents">
+            <span style="font-weight:700">
+              Total Filtered Orders/Weight {{gFilteredQty}} : {{gFilteredWeight}}
+            </span>
+          </div>
+
+          <span style="font-weight:700"> Color Legend: </span>
+          <div class="d-flex" style="margin-left: 0px !important;"
+            *ngIf="(CurrentTab != 'DETAILING' && CurrentTab != 'INCOMING')">
+            <div #buttons style="text-align: left;font-size:small">
+              <span class="color-legends" style="background-color: #d9d9d9 !important;font-weight:700;">Created</span>
+              &nbsp;
+              <span class="color-legends" style="background-color: #cecbff !important;font-weight:700;">Submitted</span>
+              &nbsp;
+              <span class="color-legends" style="background-color: #ccc699 !important;font-weight:700;">On
+                Hold</span>
+              &nbsp;
+              <span class="color-legends" style="background-color: #ffccff;font-weight:700;">Withdrawn</span>
+              &nbsp;
+              <span class="color-legends" style="background-color: #ffcccb;font-weight:700;">Cancelled</span>
+              &nbsp;
+              <span class="color-legends" style="font-weight:700;">Reviewed</span>
+              &nbsp;
+              <span class="color-legends" style="background-color: #b5eee1;font-weight:700;">SO Generated</span>
+              &nbsp;
+              <span class="color-legends" style="background-color: #f6db91;font-weight:700;">Credit/Delivery
+                Blocked</span>
+              &nbsp;
+              <span class="color-legends" style="background-color: #f90101;font-weight:700;">SO Generation
+                Error</span>
+              &nbsp;
+              <span class="color-legends" style="background-color: #069fda;font-weight:700;">Delivery Date
+                Confirmed</span>
+              &nbsp;
+              <span class="color-legends" style="background-color: #9ab1ea;font-weight:700;">Production</span>
+              &nbsp;
+              <span class="color-legends" style="background-color: #7ce2ac;font-weight:700;">Partial
+                Delivered</span>
+              &nbsp;
+              <span class="color-legends" style="background-color: #00b050;font-weight:700;">Delivered</span>
+            </div>
+          </div>
+          <div class="text-left" style="margin-left: 0px !important;" *ngIf="CurrentTab == 'DETAILING'">
+            <div #buttons style="text-align: left;">
+              <span class="color-legends" style="background-color: #f9e766;font-weight:700;">
+                Reach to required
+                date in 5 days
+              </span>
+              &nbsp;
+              <span class="color-legends" style="background-color: lightskyblue;font-weight:700; ">6 Days</span>
+              &nbsp;
+              <span class="color-legends" style="background-color: lightgreen;font-weight:700; ">
+                7 to 14
+                Days
+              </span>
+              &nbsp;
+              <span class="color-legends" style="background-color: white;font-weight:700;">
+                15 days and
+                more
+              </span>
+              &nbsp;
+            </div>
+          </div>
+          <div class="text-left" style="margin-left: 0px !important;" *ngIf="CurrentTab == 'INCOMING'">
+            <div #buttons style="text-align: left;">
+              <span class="color-legends" style="background-color: #ffccff !important;font-weight:700;">Withdrawn</span>
+              &nbsp;
+              <span class="color-legends" style="background-color: #cecbff !important;font-weight:700;">Submitted</span>
+              &nbsp;
+              <span class="color-legends" style="background-color: #ccc699 !important;font-weight:700;">On
+                Hold</span>
+              &nbsp;
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="popup-overlay" *ngIf="this.showPopup">
+    <div class="popup-content" (click)="$event.stopPropagation()">
+      <h2>Frozen Column</h2>
+      <input class="form-control" [(ngModel)]="pendingEntFixedColumn" type="number" name="pendingEntFixedColumn"
+        placeholder="Enter value" *ngIf="activeTab === 0">
+      <input class="form-control" [(ngModel)]="incomingFixedColumn" type="number" name="incomingFixedColumn"
+        placeholder="Enter value" *ngIf="activeTab === 1">
+      <input class="form-control" [(ngModel)]="detFixedColumn" type="number" name="detFixedColumn"
+        placeholder="Enter value" *ngIf="activeTab === 2">
+      <input class="form-control" [(ngModel)]="cancelledFixedColumn" type="number" name="cancelledFixedColumn"
+        placeholder="Enter value" *ngIf="activeTab === 3">
+      <input class="form-control" [(ngModel)]="processingFixedColumn" type="number" name="processingFixedColumn"
+        placeholder="Enter value" *ngIf="activeTab === 4">
+      <input class="form-control" [(ngModel)]="allFixedColumn" type="number" name="allFixedColumn"
+        placeholder="Enter value" *ngIf="activeTab === 5">
+      <input class="form-control" [(ngModel)]="searchFixedColumn" type="number" name="searchFixedColumn"
+        placeholder="Enter value" *ngIf="activeTab === 6">
+      <button class="btn btn-secondary btn-sm" (click)="closePopup()">Close</button>
+    </div>
+  </div>
+</div>

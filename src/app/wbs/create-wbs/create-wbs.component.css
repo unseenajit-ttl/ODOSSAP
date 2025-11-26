@@ -1,0 +1,30 @@
+.box {
+    display: flex;
+    flex-grow:10px
+  }
+
+  /* .movable-container {
+    display: block;
+    position: absolute;
+    cursor: grab;
+    border: 1px solid #000;
+    background-color: white;
+    z-index: 100;
+    padding: 35px;
+    padding-top: 0px;
+  
+    transition: right 0.1s, top 0.1s;
+  } */
+
+  #mydiv {
+    position: absolute;
+
+    border: 1px solid #000;
+    background-color: white;
+    z-index: 100;
+    min-width: 750px;
+    max-width: 750px;
+   
+    transition: right 0.1s, top 0.1s;
+  }
+ 

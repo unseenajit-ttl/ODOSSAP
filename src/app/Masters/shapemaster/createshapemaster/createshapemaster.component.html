@@ -1,0 +1,254 @@
+<div id="pause" class="d-flex align-items-center justify-content-center" *ngIf="loading">
+  <div id="spinner" class="loader"></div>
+</div>
+<div class="modal-header">
+  <h4 class="modal-title">Add New</h4>
+  <i class="fa-solid fa-xmark"></i>
+  <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+</div>
+<div class="modal-body">
+  <div class="card m-1">
+    <div class="card-body  border border-secondary">
+      <form [formGroup]="createshapemasterForm">
+        <div class="row" style="margin-top:-2pz">
+          <div class="col">
+            <label class="required-label" style="padding-right:5px;">* </label>
+            <label class="form-label">Shape Code</label> <br>
+            <input type="text" formControlName="shapecode" class="form-control" maxlength="15"  [(ngModel)]="selected_Shape" />
+
+          </div>
+          <div class="col">
+            <label class="required-label" style="padding-right:5px;">* </label>
+
+            <label class="form-label">Mesh Shape Group</label>
+            <input type="text" class="form-control form-control-sm" formControlName="meshshapegroup" maxlength="14"
+              [(ngModel)]="selected_Meshshapegroup" />
+          </div>
+
+          <div class="col">
+            <label class="form-label "> MO CO</label> <br>
+
+            <ng-select formControlName="moco" [(ngModel)]="selected_MO">
+              <ng-option *ngFor="let sList of MOCOList" [value]="sList.item_id">
+                {{sList.item_text}}
+              </ng-option>
+            </ng-select>
+          </div>
+          <div class="col">
+            <label class="required-label" style="padding-right:5px;">* </label>
+            <label class="form-label">No of Bends</label><br>
+            <input type="text" class="form-control form-control-sm" formControlName="noofbends" maxlength="4"
+              [(ngModel)]="selectedNoOfBend">
+          </div>
+          <div class=" col">
+            <label for="bendinggroup" class="form-label ">Bending Group</label><br>
+            <input type="text" class="form-control form-control-sm" formControlName="bendinggroup" maxlength="40"
+              [(ngModel)]="selectedbendinggroup">
+          </div>
+
+
+        </div>
+
+        <div class="row">
+          <div class=" col">
+            <label for="couplertype" class="form-label">MW bending group</label><br>
+            <input type="text" class="form-control form-control-sm" formControlName="mwbending" maxlength="40"
+              [(ngModel)]="selectedmwbending">
+
+          </div>
+
+          <div class=" col">
+            <label for="couplertype" class="form-label">CW bending group</label><br>
+            <input type="text" class="form-control form-control-sm" formControlName="cwbending" maxlength="40"
+              [(ngModel)]="selectedcwbending">
+          </div>
+          <div class="col">
+            <label class="required-label" style="padding-right:5px;">* </label>
+
+            <label for="couplertype" class="form-label">No of segments</label><br>
+            <input type="text" class="form-control form-control-sm" formControlName="segmentno" maxlength="3"
+              [(ngModel)]="selectedsegmentno">
+          </div>
+          <div class="col">
+            <label class="required-label" style="padding-right:5px;">* </label>
+
+            <label for="couplertype" class="form-label">No of parameters</label><br>
+            <input type="text" class="form-control form-control-sm" formControlName="parameterno" maxlength="3"
+              [(ngModel)]="selectedparameterno">
+
+          </div>
+          <div class="col">
+            <label class="required-label" style="padding-right:5px;">* </label>
+
+            <label for="couplertype" class="form-label">No of cuts</label><br>
+            <input type="text" class="form-control form-control-sm" formControlName="cutno" [(ngModel)]="selectedcutno"
+              maxlength="3">
+          </div>
+
+        </div>
+        <div class="row">
+          <div class="col">
+            <label class="required-label" style="padding-right:5px;">* </label>
+            <label for="bendingtype" class="form-label ">Bend Type</label><br>
+            <ng-select formControlName="bendingtype" [(ngModel)]="selectedbendingtype">
+              <ng-option *ngFor="let sList of BendTypeList" [value]="sList.item_id">
+                {{sList.item_text}}
+              </ng-option>
+            </ng-select>
+
+          </div>
+          <div class="col">
+            <label class="required-label" style="padding-right:5px;">* </label>
+
+            <label for="status" class="form-label ">Status</label><br>
+            <ng-select formControlName="status" [(ngModel)]="selectedstatus">
+              <ng-option *ngFor="let sList of Status" [value]="sList.tntStatusId">
+                {{sList.vchStatus}}
+              </ng-option>
+            </ng-select>
+          </div>
+          <!-- <div class="col">
+            <label class="form-label">TCX File Path</label><br>
+            <input type="file" class="form-control form-control-sm" formControlName="tcxFilepath" (change)="onTCXFilechange($event)"
+              [(ngModel)]="selectedtcxFilepath">
+
+          </div> -->
+          <div class="col">
+            <label class="required-label" style="padding-right:5px;">* </label>
+
+            <label class="form-label">No of Rolls</label><br>
+            <input type="text" class="form-control form-control-sm" formControlName="rollno" maxlength="3"
+              [(ngModel)]="selectedrollno">
+
+          </div>
+          <div class="col">
+            <label class="form-label">Image Path</label><br>
+            <input type="file" class="form-control form-control-sm" formControlName="fupImage" (change)="onImageFilechange($event)"
+              [(ngModel)]="selectedfupImage">
+
+          </div>
+
+        </div>
+        <div class="row">
+          <div class="col">
+            <label class="form-label">Image</label><br>
+            <input type="text" readonly="true" class="form-control form-control-sm" formControlName="txtImage"
+              [(ngModel)]="selectedtxtImage">
+
+          </div>
+          <div class="col d-flex">
+            <div class="row">
+              <div class="col" style="padding-left:20px;">
+                <label class="form-label ">Creep Deduct at CO1</label><br>
+                <div class=" row custom-control custom-switch" style="padding-left: 59px; margin-top: 3px;">
+                  <input type="checkbox" class="custom-control-input" id="creepdeductatco1switch"
+                    [(ngModel)]="selectedcreepdeductatco1" [ngModelOptions]="{standalone: true}">
+                  <label class="custom-control-label" for="creepdeductatco1switch"></label>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <div class="col ">
+            <label class="form-label">Creep Deduct at MO1</label><br>
+
+            <div class=" row d-flex custom-control custom-switch" style="padding-left: 59px; margin-top: 3px;">
+              <input type="checkbox" class="custom-control-input" id="creepdeductatmo1switch"
+                [(ngModel)]="selectedcreepdeductatmo1" [ngModelOptions]="{standalone: true}">
+              <label class="custom-control-label" for="creepdeductatmo1switch"></label>
+            </div>
+          </div>
+
+          <div class="col">
+            <label class="form-label ">OH Indicator</label><br>
+
+            <div class=" row custom-control custom-switch" style="padding-left: 59px; margin-top: 3px;">
+              <input type="checkbox" class="custom-control-input" (change)="changeOHindicatior()" id="ohindicatorswitch"
+              [(ngModel)]="selectedohindicator"  [ngModelOptions]="{standalone: true}">
+              <label class="custom-control-label" for="ohindicatorswitch"></label>
+            </div>
+          </div>
+          <div class="col">
+            <label class="form-label ">Bend Indicator</label><br>
+            <div class=" row custom-control custom-switch" style="padding-left: 59px; margin-top: 3px;">
+              <input type="checkbox" class="custom-control-input" id="bendindicatorswitch" [(ngModel)]="selectedbendindicator"
+              [ngModelOptions]="{standalone: true}">
+              <label class="custom-control-label" for="bendindicatorswitch"></label>
+            </div>
+          </div>
+
+        </div>
+        <div class="row">
+          <div class="col-md-3">
+            <label class="required-label" style="padding-right:5px;">* </label>
+            <label class="form-label">CW BVBS Template</label><br>
+            <input type="text" class="form-control form-control-sm " formControlName="cwbvbs" maxlength="100"
+              [(ngModel)]="selectedcwbvbs">
+
+          </div>
+          <div class="col-md-3">
+            <label class="required-label" style="padding-right:5px;">* </label>
+            <label class="form-label ">MW BVBS Template</label><br>
+            <input type="text" class="form-control form-control-sm " formControlName="mwbvbs" maxlength="100"
+              [(ngModel)]="selectedmwbvbs">
+          </div>
+
+        
+        </div>
+        <div class="container " *ngIf="isOHindicatior">
+          <br>
+          <div class="row border border-secondary" style="padding:2px">
+            <div class="col">
+              <label class="form-label">Even MO1</label><br>
+              <input type="text" class="form-control " formControlName="evenmo1" [(ngModel)]="selectedevenmo1" maxlength="4">
+            </div>
+            <div class="col">
+              <label class="form-label">Even MO2</label><br>
+              <input type="text" class="form-control " formControlName="evenmo2" [(ngModel)]="selectedevenmo2" maxlength="4">
+
+            </div>
+            <div class="col">
+              <label class="form-label">Odd MO1</label><br>
+              <input type="text" class="form-control " formControlName="oddmo1" [(ngModel)]="selectedoddmo1" maxlength="4">
+            </div>
+            <div class="col">
+              <label class="form-label">Odd MO2</label><br>
+              <input type="text" class="form-control " formControlName="oddmo2" [(ngModel)]="selectedoddmo2" maxlength="4">
+            </div>
+            <div class="col">
+              <label class="form-label">Even CO1</label><br>
+              <input type="text" class="form-control " formControlName="evenco1" [(ngModel)]="selectedevenco1" maxlength="4">
+            </div>
+            <div class="col">
+              <label class="form-label">Even CO2</label><br>
+              <input type="text" class="form-control " formControlName="evenco2" [(ngModel)]="selectedevenco2" maxlength="4">
+
+            </div>
+            <div class="col">
+              <label class="form-label">Odd CO1</label><br>
+              <input type="text" class="form-control " formControlName="oddco1" [(ngModel)]="selectedoddco1" maxlength="4">
+            </div>
+
+            <div class="col">
+              <label class="form-label">Odd CO2</label><br>
+              <input type="text" class="form-control " formControlName="oddco2" [(ngModel)]="selectedoddco2" maxlength="4">
+
+            </div>
+          </div>
+          
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+
+  <div class="modal-footer">
+    <button type="button" (click)="cancel()" class="btn btn-secondary"
+      ngbTooltip="Please click here to Cancel.">Cancel</button>
+    <button type="button" (click)="txtBoxValidation()" class="btn btn-primary me-2" [disabled]="disableSubmit"
+      ngbTooltip="Please click here to save the Product Type.">
+      Submit
+    </button>
+  </div>

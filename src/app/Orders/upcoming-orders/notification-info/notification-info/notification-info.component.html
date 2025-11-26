@@ -1,0 +1,42 @@
+<div id="mydiv" cdkDrag cdkDragRootElement=".your-custom-dialog-class">
+    <div class="modal-header" cdkDragHandle>
+        <span class="modal-title">Notification Info</span>
+        <i class="fa-solid fa-xmark"></i>
+        <button type="button" class="btn-close" aria-label="Close"
+            (click)="activeModal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <div *ngIf="gIsNotifiactionSent">
+            <div class="d-flex" *ngFor="let item of pNotificationInfo; index as i" [style.padding]="'5px'">
+                <span [style.padding-right]="'6px'"><b>{{i+1}}.</b></span>
+                <div>
+                    <span class="d-flex body-title"><b>Notification sent On :</b> {{item.lNotificationDate}}</span>
+                    <span class="d-flex body-title"><b>Notification sent To :</b>
+                        <div class="d-flex">
+                            <ng-container *ngFor="let obj of item.lNotificationTo;index as j">
+                                {{obj}},
+                            </ng-container>
+                        </div>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="neg-info-box" *ngIf="!gIsNotifiactionSent">
+            <span>
+                Currently no notification has been sent to anyone regarding this Order.
+            </span>
+            <br>
+            <span>
+                目前尚未向任何人发送有关此订单的通知
+            </span>
+        </div>
+    </div>
+    
+    
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary me-2" style="height: 40px"
+            (click)="activeModal.dismiss('Cross click')">
+            Close (关闭)
+        </button>
+    </div>
+</div>

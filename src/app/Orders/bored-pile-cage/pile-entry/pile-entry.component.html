@@ -1,0 +1,347 @@
+<!-- precast-pile-data-entry.component.html -->
+<div class="jumbotron bg-white border-secondary pt-1">
+  <form [formGroup]="PileDataInsert">
+    <h3 class="card-header mb-1 pb-0">
+      <div class="row">
+        <a (click)="goBack()" style="color: blue; cursor: pointer" class="col-md-4">
+          <i class="fa fa-arrow-left arrow-left" aria-hidden="true"></i>
+          Back to BPC
+        </a>
+        <b class="col-md-7">Pile Data Entry</b>
+      </div>
+    </h3>
+    <div class="d-flex justify-content-end align-items-center">
+      <div class="d-flex align-items-center me-3">
+        <!-- Download button -->
+        <button class="btn btn-secondary btn-sm" type="button" (click)="downloadExcelTemplate()">
+          Download Template
+        </button>
+        <!-- Upload button -->
+        <button class="btn btn-primary btn-sm me-2" type="button" (click)="openFileSelector()">
+          Upload Template
+        </button>
+      </div>
+
+      <!-- Hidden File Input -->
+      <input id="file-upload" type="file" hidden #fileInput (change)="onFileChange($event)" accept=".xlsx, .xls" />
+
+      <!-- Display selected file name and action buttons -->
+      <div *ngIf="selectedFileName" class="d-flex align-items-center">
+        <!-- File name -->
+        <span class="text-truncate me-2" style="max-width: 204px">
+          <strong>Selected File:</strong> {{ selectedFileName }}
+        </span>
+
+        <!-- Clear and Submit buttons -->
+        <button class="btn btn-sm btn-danger me-2" (click)="clearFile()">
+          Clear
+        </button>
+        <button class="btn btn-sm btn-success" (click)="submitThroughExcel()">
+          Submit
+        </button>
+      </div>
+    </div>
+
+    <table class="table new-table table-condensed" style="margin-top: 15px">
+      <thead>
+        <tr>
+          <th *ngFor="let item of columnName">{{ item }}</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let item of PileDataArray; index as i">
+          <ng-container *ngIf="enableEditIndex != i">
+            <td>{{ i + 1 }}</td>
+            <!-- S/N -->
+            <td>{{ item.PileDia }}</td>
+            <!-- Pile dia (mm) -->
+            <td>{{ item.NoofMainBar }}</td>
+            <!-- No of Main Bar -->
+            <td>{{ item.CageLength }}</td>
+            <!-- Cage Length (m) -->
+            <td>{{ item.L1 }}</td>
+            <!-- L1 (min.100) -->
+            <td>{{ item.NOs }}</td>
+            <!-- Links -->
+            <td>{{ item.Dia }}</td>
+            <td>{{ item.Spacing }}</td>
+
+            <td>{{ item.L2 }}</td>
+            <!-- L2 (min.100) -->
+            <td>{{ item.StraightCrank }}</td>
+            <!-- Straight or crank -->
+            <td>{{ item.Qty }}</td>
+            <!-- Qty -->
+            <td>{{ item.TypeOfCages }}</td>
+            <!-- Type of cages -->
+            <td>{{ item.EstimationWt }}</td>
+            <!-- Est. Wt (t) -->
+            <td>{{ item.Concrete_cover }}</td>
+            <td>{{ item.PileType }}</td>
+            <td>{{ item.DeliveryDate | date: 'dd/MM/yyyy' }}</td>
+            <td>{{ item.Remark }}</td>
+            <!-- Remarks -->
+            <td>
+              <i class="material-icons" ngbTooltip="Edit" (click)="EditData(item, i)">mode_edit</i>&nbsp;
+              <i class="bi bi-trash text-danger" ngbTooltip="Delete" (click)="Delete_Pile(item.bpc_ID)"
+                style="font-size: 22px"></i>
+            </td>
+          </ng-container>
+
+          <ng-container *ngIf="enableEditIndex == i">
+            <td></td>
+            <!-- S/N -->
+            <td>
+              <input class="form-control" type="number" placeholder="Pile dia (mm)" [(ngModel)]="item.PileDia"
+                [ngModelOptions]="{ standalone: true }" />
+            </td>
+            <!-- Pile dia (mm) -->
+            <td>
+              <input class="form-control" type="text" placeholder="No of Main Bar" [(ngModel)]="item.NoofMainBar"
+                [ngModelOptions]="{ standalone: true }" />
+            </td>
+            <!-- No of Main Bar -->
+            <td>
+              <input class="form-control" type="text" placeholder="Cage Length (m)" [(ngModel)]="item.CageLength"
+                [ngModelOptions]="{ standalone: true }" />
+            </td>
+            <!-- Cage Length (m) -->
+            <td>
+              <input class="form-control" type="number" placeholder="L1 (min.100)" [(ngModel)]="item.L1"
+                [ngModelOptions]="{ standalone: true }" />
+            </td>
+            <!-- L1 (min.100) -->
+            <td>
+              <input class="form-control" type="number" placeholder="Nos" [(ngModel)]="item.NOs"
+                [ngModelOptions]="{ standalone: true }" />
+            </td>
+            <!-- Links -->
+            <td>
+              <!-- <input class="form-control" type="text"
+                                                                placeholder="Dia" [(ngModel)]="item.Dia"   [ngModelOptions]="{standalone: true}" /> -->
+              <ng-select [(ngModel)]="item.Dia" [items]="pileDia_dropdown" [ngModelOptions]="{ standalone: true }"
+                [searchable]="true">
+              </ng-select>
+            </td>
+            <td>
+              <input class="form-control" type="text" placeholder="Spacing" [(ngModel)]="item.Spacing"
+                [ngModelOptions]="{ standalone: true }" />
+            </td>
+
+            <td>
+              <input class="form-control" type="text" placeholder="L2 (min.100)" [(ngModel)]="item.L2"
+                [ngModelOptions]="{ standalone: true }" />
+            </td>
+            <!-- L2 (min.100) -->
+            <td>
+              <!-- <input  class="form-control"
+                                                                type="text" placeholder="Straight or crank"
+                                                                [(ngModel)]="item.StraightCrank"   [ngModelOptions]="{standalone: true}" /> -->
+
+              <ng-select [(ngModel)]="item.StraightCrank" [ngModelOptions]="{ standalone: true }"
+                class="ng-selectcustomer">
+                <ng-option *ngFor="let sList of StraightCranklist" [value]="sList.value">
+                  {{ sList.value }}
+                </ng-option>
+              </ng-select>
+            </td>
+            <!-- Straight or crank -->
+            <td>
+              <input class="form-control" type="text" placeholder="Qty" [(ngModel)]="item.Qty"
+                [ngModelOptions]="{ standalone: true }" />
+            </td>
+            <!-- Qty -->
+            <td>
+              <!-- <input class="form-control"
+                                                                type="text" placeholder="Type of cages"
+                                                                [(ngModel)]="item.TypeOfCages"   [ngModelOptions]="{standalone: true}" /> -->
+
+              <ng-select [(ngModel)]="item.TypeOfCages" [ngModelOptions]="{ standalone: true }">
+                <ng-option *ngFor="let cage of Types_of_cage" [value]="cage">
+                  {{ cage }}
+                </ng-option>
+              </ng-select>
+            </td>
+            <!-- Type of cages -->
+            <td>
+              <input class="form-control" type="text" placeholder="Est. Wt (t)" [(ngModel)]="item.EstimationWt"
+                [ngModelOptions]="{ standalone: true }" />
+            </td>
+            <!-- Est. Wt (t) -->
+            <td>
+              <input class="form-control" type="text" placeholder="Est. Wt (t)" [(ngModel)]="item.Concrete_cover"
+                [ngModelOptions]="{ standalone: true }" />
+            </td>
+            <td>
+              <input class="form-control" type="text" placeholder="Pile Type" [(ngModel)]="item.PileType"
+                [ngModelOptions]="{ standalone: true }" />
+            </td>
+            <td>
+              <input class="form-control" type="date" placeholder="Delivery Date" [(ngModel)]="item.DeliveryDate"
+                [ngModelOptions]="{ standalone: true }" />
+            </td>
+            <td>
+              <input class="form-control" type="text" placeholder="Remarks" [(ngModel)]="item.Remark"
+                [ngModelOptions]="{ standalone: true }" />
+            </td>
+            <!-- Remarks -->
+            <td>
+              <i class="material-icons" (click)="UpdatePile(item)" ngbTooltip="Update">save</i>
+              &nbsp;
+              <i class="material-icons" (click)="EditCancle()" ngbTooltip="Cancel">cancel</i>
+            </td>
+          </ng-container>
+        </tr>
+      </tbody>
+
+      <tfoot>
+        <tr *ngFor="let table of newPileData">
+          <td></td>
+          <td>
+            <input formControlName="pileDia" class="form-control" type="number" placeholder="Pile dia (mm)"
+              [(ngModel)]="table.PileDia" (keydown.enter)="insertPileData()" />
+          </td>
+          <td>
+            <input formControlName="mainBar" class="form-control" type="text" placeholder="No of Main Bar"
+              [(ngModel)]="table.NoofMainBar" (input)="table.NoofMainBar = table.NoofMainBar.toUpperCase()"
+              (keydown.enter)="insertPileData()" />
+          </td>
+          <td>
+            <input formControlName="cageLength" class="form-control" type="number" placeholder="Cage Length (m)"
+              [(ngModel)]="table.CageLength" (keydown.enter)="insertPileData()" />
+          </td>
+          <td>
+            <input formControlName="L1" class="form-control" type="number" placeholder="L1 (min.100)"
+              [(ngModel)]="table.L1" (keydown.enter)="insertPileData()" />
+          </td>
+          <td>
+            <input formControlName="Nos" class="form-control" type="text" placeholder="Nos"
+              (keydown.enter)="insertPileData()" />
+          </td>
+          <td>
+            <!-- <input formControlName="Dia" class="form-control" type="text"
+                                                        placeholder="Dia"
+                                                        (input)="table.Dia = table.Dia.toUpperCase()"
+                                                        (keydown.enter)="insertPileData();" /> -->
+            <ng-select [selectOnTab]="true" #diaSelect formControlName="Dia" [items]="pileDia_dropdown"
+              [searchable]="true">
+              <ng-option *ngFor="let dia of pileDia_dropdown" [value]="dia">
+                {{ dia }}
+              </ng-option>
+            </ng-select>
+          </td>
+          <td>
+            <input formControlName="Spacing" class="form-control" type="text" placeholder="Spacing"
+              (keydown.enter)="insertPileData()" />
+          </td>
+          <td>
+            <input formControlName="L2" class="form-control" type="text" placeholder="L2 (min.100)"
+              (keydown.enter)="insertPileData()" />
+          </td>
+          <td>
+            <ng-select formControlName="straightOrCrank" class="ng-selectcustomer" [selectOnTab]="true">
+              <ng-option *ngFor="let sList of StraightCranklist" [value]="sList.value">
+                {{ sList.value }}
+              </ng-option>
+            </ng-select>
+          </td>
+          <td>
+            <input formControlName="qty" class="form-control" type="number" placeholder="Qty"
+              (keydown.enter)="insertPileData()" />
+          </td>
+          <td>
+            <!-- <input formControlName="typeOfCages" class="form-control" type="text"
+                                                        placeholder="Type of cages"
+                                                        (input)="table.TypeOfCages = table.TypeOfCages.toUpperCase()"
+                                                        (keydown.enter)="insertPileData();" /> -->
+            <ng-select formControlName="typeOfCages" [selectOnTab]="true">
+              <ng-option *ngFor="let cage of Types_of_cage" [value]="cage">
+                {{ cage }}
+              </ng-option>
+            </ng-select>
+          </td>
+          <td>
+            <input formControlName="estWt" class="form-control" type="number" placeholder="Est. Wt (t)"
+              (keydown.enter)="insertPileData()" />
+          </td>
+          <td>
+            <input formControlName="concrete_cover" class="form-control" type="number" placeholder="Concrete Cover"
+              (keydown.enter)="insertPileData()" />
+          </td>
+          <td>
+            <input formControlName="pileType" class="form-control" type="text" placeholder="Pile Type"
+              (keydown.enter)="insertPileData()" />
+          </td>
+          <td>
+            <input formControlName="deliveryDate" class="form-control" type="date" placeholder="Delivery Date"
+              (keydown.enter)="insertPileData()" />
+          </td>
+          <td>
+            <input formControlName="remarks" class="form-control" type="text" placeholder="Remarks"
+              (keydown.enter)="insertPileData()" />
+          </td>
+          <td></td>
+        </tr>
+      </tfoot>
+    </table>
+  </form>
+
+  <div class="text-end">
+    <button class="btn btn-link" style="padding: 4px; border: 0px; margin: 0px" (click)="SaveJobAdvice(true)">
+      Save All
+    </button>
+    <button class="btn btn-link" style="padding: 4px; border: 0px; margin: 0px" (click)="generatePDF()">
+      Download PDF
+    </button>
+    <button mat-button color="primary" (click)="openDialogWithTemplateRef(myDialog)">
+      Open dialog
+    </button>
+  </div>
+</div>
+
+<ng-template #myDialog>
+  <h2 matDialogTitle>Guide on use of Bored Pile Load Calculator</h2>
+  <mat-dialog-content>
+    <img class="pb-4" src="../../../../assets/images/BPCGuide.png" alt="" />
+
+    <ol>
+      <li>Input concrete cover = <code> 75 / 80 / 60 </code></li>
+      <li>
+        Input pile diameter = <code> 800 / 900 /1000 /2000 (number only) </code>
+      </li>
+      <li>
+        Input number of bar and follow by main bar diameter =
+        <code> 10T16 / 25T40 / 8T20 </code>
+      </li>
+      <li>
+        Input length of cage = <code> 12 /6 /4 /5.5 /3.8 (number only) </code>
+      </li>
+      <li>
+        Input starter bar or lap length =
+        <code> 1000 /1125 / 550 (number only) </code>
+      </li>
+      <li>
+        Key no of link(s) 1 or 2 only ( 1= single spiral link (T13-200) / 2=
+        double spiral link (2T13-200))
+      </li>
+      <li>
+        Input spiral link as following format: select bar grade and diameter;
+        key spacing = <code> 75/100/200 (number only) </code>
+      </li>
+      <li>
+        Input starter bar or lap length =
+        <code> 1000 /1125 / 550 (number only) </code>
+      </li>
+      <li>Select bar shape= <code>Straight/crank </code></li>
+      <li>Input number of cage (eg. 8 / 10 / 50 / 30 cages)</li>
+      <li>
+        Select type of the pile =
+        <code> T for Top / M for Middle / E for End (Optional) </code>
+      </li>
+    </ol>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button matDialogClose color="primary">Dismiss</button>
+  </mat-dialog-actions>
+</ng-template>

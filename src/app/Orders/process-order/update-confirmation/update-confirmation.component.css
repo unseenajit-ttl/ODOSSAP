@@ -1,0 +1,94 @@
+.container-fluid {
+  padding: 0px;
+}
+.mainHeading {
+  font-size: x-large;
+  font-weight: 500;
+  padding: 10px 0;
+  background: #d8dcdf;
+  cursor: move;
+}
+.subHeading {
+  font-size: large;
+  font-weight: 500;
+  padding: 10px 0;
+}
+.body {
+  padding: 0 10px;
+  font-size: medium;
+}
+.footer {
+  padding: 10px;
+  display: flex;
+  justify-content: flex-end;
+  background: inherit;
+}
+
+/* .movable-container {
+  display: block;
+  position: absolute;
+  cursor: move;
+  border: 1px solid #000;
+  background-color: white;
+  z-index: 100;
+  padding: 35px;
+  padding-top: 0px;
+ 
+  transition: right 0.1s, top 0.1s;
+} */
+
+#mydiv {
+  position: absolute;
+  border: 1px solid #000;
+  background-color: white;
+  z-index: 100;
+  min-width: 750px;
+  max-width: 750px;
+  transition: right 0.1s, top 0.1s;
+}
+
+.checkbox-container {
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+}
+
+.checkbox-container input[type="checkbox"] {
+  display: none; /* Hide the default checkbox */
+}
+
+.custom-checkbox {
+  width: 16px;
+  height: 16px;
+  border: 2px solid #ccc;
+  border-radius: 3px; /* Optional rounded corners */
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+}
+
+.checkbox-container input[type="checkbox"]:not(:disabled):hover + .custom-checkbox {
+  border-color: #007bff; /* Highlight border color on hover */
+}
+.checkbox-container input[type="checkbox"]:disabled + .custom-checkbox {
+  background-color: #cecece; /* Highlight border color on hover */
+}
+.checkbox-container input[type="checkbox"]:checked + .custom-checkbox {
+  background-color: #007bff; /* Checked background color */
+  border-color: #007bff; /* Match the background when checked */
+}
+
+.checkbox-container input[type="checkbox"]:checked + .custom-checkbox::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 5px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+

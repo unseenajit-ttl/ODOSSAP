@@ -1,0 +1,20 @@
+export interface addPostingCCLMarkDetails {
+    WBSElementID: number,
+    ProductCodeID: number,
+    Width: number,
+    Depth: number,
+    MWLength: number,
+    CWLength: number,
+    Qty: number,
+    RevNo: number,
+    AddFlag: string,
+    ShapeId: string,
+    MO1: number,
+    MO2: number,
+    CO1: number,
+    CO2: number,
+    StructElementID: number,
+    ProductTypeL1Id: number,
+    UserId: number,
+    PostHeaderID: number
+  }

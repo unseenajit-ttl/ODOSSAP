@@ -1,0 +1,143 @@
+<div class="container-fluid" style="padding:0;">
+    <div class="card m-1">
+        <h3 class="card-header d-flex flex-column justify-content-left align-items-left">
+            <h3 style="margin:0;">Order Info </h3>
+        </h3>
+        <div class="d-flex" style="justify-content:space-between;padding: 0 10px;">
+            <h3 style="margin:0;"><b>SELECT PRODUCTS</b></h3>
+            <span style="font-size: xx-large;">
+                <i class="bi bi-chevron-double-down" *ngIf="ProductCollapse && !disableCreateOrder" (click)="ProductCollapse=!ProductCollapse;showOrderSummary=false;
+                    resetTempOrderList();
+                    GetProductListData(CustomerCode, ProjectCode)"></i>
+                <i class="bi bi-chevron-double-up" *ngIf="!ProductCollapse  && !disableCreateOrder"
+                    (click)="ProductCollapse=!ProductCollapse"></i>
+            </span>
+        </div>
+        <section class="collapsible" [@collapse]="ProductCollapse" style="margin:0;">
+            <div id="ProductSection" class="card-body" style="    border:#dad6d6 solid 1px;
+        border-radius: 10px;margin: 10px;
+    ">
+                <div class="filter">
+                    <form>
+
+                        <div class="row">
+                            <div class=" col-md-4 card-body" *ngFor="let product of nonProjectDataList; index as i">
+                                <div class="card-body" (dblclick)="SelectonDblClick(product)"
+                                    style="border: #dad6d6 solid 1px; border-radius: 10px; margin: 5px; height: fit-content;background-color: {{product.isSelected==true? '#90eb6875': 'white'}};">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <img src="../../../../assets/imagesuiux/{{product.ProdCode}}.png">
+                                        </div>
+                                        <div class="col-md-8" style="display: flex;
+                                flex-direction: column;
+                                justify-content: space-between;">
+                                            <div>
+                                                <b>{{product.ProdName}}</b>
+                                            </div>
+                                            <div style="text-align:end">
+                                                <button *ngIf="!product.isSelected" class="btn btn-primary btn-sm"
+                                                    type="button" [disabled]="product.lockSelection"
+                                                    (click)="product.isSelected = !product.isSelected;AddToTempData('NONWBS' ,product, product.ProdCode)">Add
+                                                    To
+                                                    Cart</button>
+                                                <button *ngIf="product.isSelected" class="btn btn-primary btn-sm"
+                                                    type="button" [disabled]="product.lockSelection"
+                                                    (click)="product.isSelected= !product.isSelected;AddToTempData('NONWBS' ,product, product.ProdCode)"
+                                                    style="background-color: #ff9b00d6;
+                                            border: #ff9b00d6;font-size: larger;">Remove</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- <div class=" col-md-4 card-body"
+                            style="border: #dad6d6 solid 1px; border-radius: 10px; margin: 5px; height: fit-content;">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <img src="../../../../assets/images/Standard.png">
+                                </div>
+                                <div class="col-md-8" style="display: flex;
+                                flex-direction: column;
+                                justify-content: space-between;">
+                                    <div>
+                                        <b>Standard Bar</b>
+                                    </div>
+                                    <div style="text-align:end">
+                                        <button class="btn btn-primary btn-sm" type="button">Add To Cart</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class=" col-md-4 card-body"
+                            style="border: #dad6d6 solid 1px; border-radius: 10px; margin: 5px; height: fit-content;">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <img src="../../../../assets/images/Coil.png">
+                                </div>
+
+                                <div class="col-md-8" style="display: flex;
+                                flex-direction: column;
+                                justify-content: space-between;">
+                                    <div>
+                                        <b>Coil Product</b>
+                                    </div>
+                                    <div style="text-align:end">
+                                        <button class="btn btn-primary btn-sm" type="button">Add
+                                            To Cart</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
+                        </div>
+                    </form>
+
+
+
+                </div>
+            </div>
+            <!-- <div style="text-align:end">
+                <button class="btn btn-primary btn-sm" type="button" style="width: 80px" [disabled]="nextButtonClicked"
+                    (click)="getData();gotoOrderSummary()">
+                    Next
+                </button>
+            </div> -->
+
+        <div class="row">
+            <div class="col text-end d-flex" style="justify-content: flex-end;">
+                <div class="green-steel-sub">
+                    <div class="Green-Steel-label">
+                    <label class="form-label bold">CARBON-RATE -</label>
+                    </div>
+                    <div class=" Green-Steel-input form-check form-switch" style="padding-left: 0.5rem;" [matTooltip]="greenSteelToolTip()">
+                    <label class="form-label bold" [style.height]="'10px'">{{ GreenSteelCarbonValue }}%</label>
+                    </div>
+                </div>
+
+                <select class="form-select form-select-sm d-inline-block me-2 green-steel-dropdown"
+                    appendTo="body" [disabled]="disableGreenSteelToggle()" [(ngModel)]="selectedGreenOption"
+                    (change)="GreenSteelSelection()" [matTooltip]="greenSteelSelectToolTip()" required>
+                    <option style="font-weight:bold" value="">--Select Greensteel--</option>
+                    <option style="font-weight:bold" value="Green">Green</option>
+                    <option style="font-weight:bold" value="Non-Green">Non-Green</option>
+                </select>
+
+                <button
+                class="btn btn-primary btn-sm"
+                type="button"
+                style="width: 80px;"
+                [disabled]="nextButtonClicked"
+                (click)="onNextClick()"
+                >
+                Next
+                </button>
+            </div>
+        </div>
+
+        </section>
+        <div id="OrderSummary" class="container-fluid" style="padding:0" *ngIf="showOrderSummary">
+            <app-ordersummary [state]="{tempOrderSummaryList}"></app-ordersummary>
+        </div>
+    </div>
+</div>

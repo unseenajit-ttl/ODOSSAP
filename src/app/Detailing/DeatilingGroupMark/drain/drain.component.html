@@ -1,0 +1,1309 @@
+
+   <div class="row  d-flex ">
+    <span style="display: flex; align-items: center">
+
+      <i class="bi bi-arrow-left-short" style="font-size: x-large; color: blue" ngbTooltip="Back"
+        (click)="goBack()"></i>
+
+      <a style="color: blue" (click)="goBack()">Back to Group Marking  </a></span>
+    <br />
+  </div>
+<div class="row ">
+    <ngb-accordion #acc="ngbAccordion" title="Filters" activeIds="panel1">
+      <ngb-panel id="panel1">
+        <ng-template ngbPanelContent>
+          <div class="card-body">
+            <ng-container class="border">
+              <div class="row">
+                <div class="col-md-3">
+                  <label class="form-label">Customer</label>
+                  <input type="text" readonly="true" class="form-control" [value]="MeshData.CustomerName" />
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label ">Project</label> <br>
+                  <input type="text" readonly="true" class="form-control" [value]="MeshData.ProjectName" />
+                </div>
+                <div class="col-md-2">
+                  <label class="form-label">ProductType </label><br>
+                  <input type="text" readonly="true" class="form-control" [value]="MeshData.VCHPRODUCTTYPE">
+                </div>
+                <div class="col-md-2">
+                  <label for="bendingtype" class="form-label ">StructureElement</label><br>
+                  <input type="text" readonly="true" class="form-control" [value]="MeshData.VCHSTRUCTUREELEMENTTYPE">
+                </div>
+                <div class="col-md-1">
+                  <label for="bendingtype" class="form-label ">GroupMarking</label><br>
+                  <input type="text" readonly="true" class="form-control" [value]="MeshData.VCHGROUPMARKINGNAME">
+                </div>
+                <div class="col-md-1">
+                  <label class="form-label">ParameterSet</label> <br>
+                  <input type="text" readonly="true" class="form-control" [value]="MeshData.INTPARAMETESET">
+                </div>
+              </div>
+
+            </ng-container>
+          </div>
+        </ng-template>
+      </ngb-panel>
+    </ngb-accordion>
+
+    <ngb-accordion #acc="ngbAccordion" title="Parameter Set">
+      <ngb-panel id="panel1">
+        <ng-template ngbPanelContent>
+          <div class="card-body">
+            <ng-container class="border">
+              <div class="row">
+
+                <div class="col-md-1">
+                  <label class="form-label">Top Cover	</label>
+                  <input type="text" readonly="true" class="form-control" [value]="parameterSet_values[0].sitTopCover" />
+                </div>
+                <div class="col-md-2"></div>
+                <div class="col-md-1">
+                  <label class="form-label ">Bottom Cover	</label> <br>
+                  <input type="text" readonly="true" class="form-control" [value]="parameterSet_values[0].sitBottomCover" />
+                </div>
+                <div class="col-md-2"></div>
+                <div class="col-md-1">
+                  <label class="form-label">Outer Cover	 </label><br>
+                  <input type="text" readonly="true" class="form-control" [value]="parameterSet_values[0].sitOuterCover">
+                </div>
+                <div class="col-md-2"></div>
+                <div class="col-md-1">
+                  <label for="bendingtype" class="form-label ">Inner Cover	</label><br>
+                  <input type="text" readonly="true" class="form-control" [value]="parameterSet_values[0].sitInnerCover">
+                </div>
+
+              </div>
+
+            </ng-container>
+          </div>
+        </ng-template>
+      </ngb-panel>
+    </ngb-accordion>
+  </div>
+
+  <div class="card-body table-responsive">
+    <div [class.mat-elevation-z8]="true" *ngIf="showImage"
+
+    id="imageBox" class="movable-container"
+[style.right.px]="right" [style.top.px]="top" (mousedown)="onMouseDown($event)"
+(document:mousemove)="onMouseMove($event)" (document:mouseup)="onMouseUp($event)"
+    style=" position: fixed;
+            background-color: white;z-index: 10000;right: 0; top:10%; width: 32%;max-height: 100%; border-radius: 15px;">
+    <div class="row d-flex" style=" text-align:justify; background-color:#fafafa ; margin: 5px;
+        border-radius: 9px;">
+      <div class="col-md-10">
+        <h4><b>Shape Parameters</b></h4>
+      </div>
+      <div class="col-md-2">
+        <i class="fa-solid fa-circle-xmark fa-2xs"></i>
+        <!-- <i class="fa-solid fa-xmark" style=" font-Weight:bold; font-size: 16px;"></i> -->
+        <button type="button" class="btn-close" aria-label="Close" (click)="showImage=false;"></button>
+      </div>
+    </div>
+    <div class="row d-flex">
+      <div class="col-md-4"> MW length <input class="form-control" maxlength="10" type="text"
+          [(ngModel)]="popup_MWLength" [ngModelOptions]="{standalone: true}" /></div>
+      <div class="col-md-4"> CW length <input class="form-control" maxlength="10" type="text"
+          [(ngModel)]="popup_CWLength" [ngModelOptions]="{standalone: true}" /></div>
+      <div class="col-md-4"></div>
+    </div>
+
+
+    <div class="d-flex ">
+
+      <table class="table w-25 table-striped  table-bordered" style="height: fit-content; margin: 20px;">
+        <thead>
+          <tr>
+
+            <th>Parameter Name</th>
+            <th>Parameter Value</th>
+            <!-- <th>Critical Indicator</th>
+            <th>Seauence Number</th> -->
+
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngIf="Mode==='S'">
+          <tr *ngFor="let item of ShapeParamlist ; index as j" >
+
+            <td>{{item.chrParamName}}</td>
+            <td class="text-center">
+
+              <input class="form-control" maxlength="10" type="text"   (keydown.Tab)="shapeParameterGrid_KeyDown(ShapeParamlist,item,j)"
+                [(ngModel)]="item.ParameterValue" [ngModelOptions]="{standalone: true}"
+                />
+            </td>
+            <!-- <td><input type="checkbox" class="form-check-input" id="Chainage_Start" [(ngModel)]="item.chrCriticalInd" >
+            </td>
+            <td> <input class="form-control" maxlength="10" type="text"
+              [(ngModel)]="item.intParamSeq" [ngModelOptions]="{standalone: true}"
+              /></td> -->
+
+          </tr>
+        </ng-container>
+
+        <ng-container *ngIf="Mode==='E'">
+          <tr *ngFor="let item of ShapeParamlist_edit ; index as j">
+
+            <td>{{item.chrParamName}}</td>
+            <td class="text-center">
+
+              <input class="form-control" maxlength="10" type="text"   (keydown.enter)="shapeParameterGrid_KeyDown(ShapeParamlist_edit,item,j)"
+                [(ngModel)]="item.ParameterValue" [ngModelOptions]="{standalone: true}"
+                />
+            </td>
+            <!-- <td><input type="checkbox" class="form-check-input" id="Chainage_Start" [(ngModel)]="item.chrCriticalInd" >
+            </td>
+            <td> <input class="form-control" maxlength="10" type="text"
+              [(ngModel)]="item.intParamSeq" [ngModelOptions]="{standalone: true}"
+              /></td> -->
+
+          </tr>
+        </ng-container>
+        </tbody>
+
+      </table>
+      <div *ngIf="showImage" class="width_set">
+        <img class="img-responsive" [src]="'assets/images/Shapes/'+ Imagename +''" alt="image" style="position: relative ;
+                left: 0px;">
+      </div>
+
+    </div>
+
+    <div class="row d-flex">
+      <div class="col-md-3"> MO1 <input class="form-control" maxlength="10" type="text" [(ngModel)]="popup_MO1"
+          [ngModelOptions]="{standalone: true}" /></div>
+      <div class="col-md-3"> MO2 <input class="form-control" maxlength="10" type="text" [(ngModel)]="popup_MO2"
+          [ngModelOptions]="{standalone: true}" /></div>
+      <div class="col-md-3"> CO1 <input class="form-control" maxlength="10" type="text" [(ngModel)]="popup_CO1"
+          [ngModelOptions]="{standalone: true}" /></div>
+      <div class="col-md-3"> CO2 <input class="form-control" maxlength="10" type="text" [(ngModel)]="popup_CO2"
+          [ngModelOptions]="{standalone: true}" /></div>
+
+    </div>
+    <div class="text-center">
+      <button class="btn btn-primary" (click)="saveButton_Click()">Save</button>
+
+    </div>
+    <br>
+  </div>
+    <!-- IMAGE TABLE START -->
+    <div *ngIf="loading" style="z-index: 500">
+
+      <div id="pause" class="d-flex align-items-center justify-content-center">
+
+        <div id="spinner" class="loader"></div>
+
+      </div>
+
+    </div>
+
+
+
+    <div class="row " style="padding: 0;">
+
+      <div class="table-responsive table-bordered" style="padding: 0; margin:0">
+        <table class="table  table-bordered" style="margin-bottom: 0; align-self:flex-start;width: 120%;">
+          <thead>
+
+            <tr>
+              <th  class="w-60px"   > </th>
+              <th  class="w-60px"   > Marking </th>
+              <th  class="w-60px"   > Chainage</th>
+              <th  class="w-60px"   > Distance </th>
+              <th  class="w-60px"   > Top Level</th>
+              <th  class="w-60px"   >Invert Level </th>
+              <th  class="w-60px"   > Height </th>
+              <th  class="w-60px"   > Depth </th>
+              <th  class="w-60px"   > Member QTY </th>
+              <th  class="w-60px"   > Cross Length</th>
+              <th  class="w-60px"   > Is Cascade </th>
+              <th  class="w-60px"   > Cascade (MM)</th>
+
+              <!-- <th style="width:6%;" *ngIf="strIsReadOnly==='NO'">Action</th> -->
+              <th class="w-60px sticky-column" style="width: 6%;" *ngIf="strIsReadOnly==='NO'">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let item of Drain_Data| slice: pageSize | slice: 0:itemsPerPage ;index as i ">
+              <ng-container *ngIf="enableDrainEditIndex !== i">
+                <tr  [style.background-color]="giveRowcolor(item)"    (click)="item.isExpand = !item.isExpand;SelectedTab = 'ProductMark';Get_ProductMark(item);Get_OtherProductMark(item);selectRow(item,$event)" >
+                  <!-- <td style="width: 3%;">
+                    <i class="bi-chevron-right" (click)="Get_ProductMark(item)" ngbTooltip="Product Marking"></i>
+                  </td> -->
+
+                  <td>
+                    <i *ngIf="!item.isExpand" class="bi-chevron-right" ngbTooltip="Product Marking"></i>
+                    <i *ngIf="item.isExpand" class="bi-chevron-up" ngbTooltip="Product Marking"></i>
+                </td>
+                  <td >
+                    {{item.vchStructureMarkingName}}
+                  </td>
+
+                  <td >
+                    <table class="table-borderless">
+                      <tr>
+                        <td>
+                          <label for="Chainage_Start"> Start</label>
+                        </td>
+                        <td>
+                          {{item.decStartChainage}}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <label for="Chainage_End"> End</label>
+                        </td>
+                        <td>
+                          {{item.decEndChainage}}
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td >
+                    {{item.decDistance}}
+                  </td>
+                  <td >
+                    <table class="table-borderless">
+                      <tr>
+                        <td>
+                          <label for="Chainage_Start"> Start</label>
+                        </td>
+                        <td>
+                          {{item.decStartTopLevel}}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <label for="Chainage_End"> End</label>
+                        </td>
+                        <td>
+                          {{item.decEndTopLevel}}
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td >
+                    <table class="table-borderless">
+                      <tr>
+                        <td>
+                          <label for="Chainage_Start"> Start</label>
+                        </td>
+                        <td>
+                          {{item.decStartInvertLevel}}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <label for="Chainage_End"> End</label>
+                        </td>
+                        <td>{{item.decEndInvertLevel}}</td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td >
+                    <table class="table-borderless">
+                      <tr>
+                        <td><label for="Chainage_Start"> Start</label></td>
+                        <td>{{item.decStartHeight}}</td>
+                      </tr>
+                      <tr>
+                        <td><label for="Chainage_End"> End</label></td>
+                        <td>{{item.decEndHeight}}</td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td >
+                    <table class="table-borderless">
+                      <tr>
+                        <td><label for="Chainage_Start"> Start</label></td>
+                        <td>{{item.decStartDepth}}</td>
+                      </tr>
+                      <tr>
+                        <td><label for="Chainage_End"> End</label></td>
+                        <td>{{item.decEndDepth}}</td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td> {{item.intMemberQty}}</td>
+                  <td>
+                    <table class="table-borderless">
+                      <tr>
+                        <td><label for="Chainage_Start"> Inner</label></td>
+                        <td>{{item.decCrossLenInner}}</td>
+                        <td><label for="Chainage_End"> Outer</label></td>
+                        <td>{{item.decCrossLenOuter}}</td>
+                      </tr>
+                      <tr>
+                        <td><label for="Chainage_Start"> Slab</label></td>
+                        <td>{{item.decCrossLenSlab}}</td>
+                        <td><label for="Chainage_End"> Base</label></td>
+                        <td>{{item.decCrossLenBase}}</td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td>
+                    <input type="checkbox"  id="blnTC" [(ngModel)]="item.bitCascade" (click)="item.bitCascade=!item.bitCascade;fnCascadeCheck(item)" disabled="true" >
+                  </td>
+                  <td>
+                    <table class="table-borderless">
+                      <tr>
+                        <td><label for="Chainage_Start"> Cascade No</label></td>
+                        <td>{{item.intCascadeNo}}</td>
+                        <td><label for="Chainage_End"> Width</label></td>
+                        <td>{{item.decCascadeWidth}}</td>
+                      </tr>
+                      <tr>
+                        <td><label for="Chainage_Start">Drop Ht</label></td>
+                        <td>{{item.decCascadeDropHeight}}</td>
+                        <td><label for="Chainage_End"> Cross Len</label></td>
+                        <td>{{item.decCascadeCWLength}}</td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td *ngIf="strIsReadOnly==='NO'" style="width: 6%;" class="sticky-column-body">
+
+                    <i class="material-icons" ngbTooltip="Edit" (click)="onEdit(item,i)" style="cursor: pointer;">mode_edit</i>
+                    <i class="bi bi-trash" ngbTooltip="Delete" style="color:red; font-size:22px; cursor: pointer;"
+                      (click)="Delete_StructureMark(item.intStructureMarkId)"></i>
+
+                  </td>
+
+
+
+
+                </tr>
+                <tr *ngIf="item.isExpand && (item.DrainProductMark.length >0 || item.DrainOtherProductMark.length >0)">
+                  <td colspan="18">
+                     <div class="d-flex">
+
+
+
+                            <tabset style="    width: 75%;
+    font-size: large;">
+
+
+                              <tab class="tab" [active]="SelectedTab=='ProductMark'"   heading="Product Mark" (change)="changeTab('ProductMark')"  title="Tab 1" style="background:#fff">
+
+                              <table class="table table-sm ">
+
+                                  <thead>
+                                      <th > ProductMarking Name </th>
+                                      <th > Drain Layer </th>
+                                      <th > Chainage Start </th>
+                                      <th > Chainage End </th>
+                                      <th > Product </th>
+                                      <th > Main Wire Length</th>
+                                      <th >Cross Wire Length </th>
+                                      <th >Shape </th>
+                                      <th >QTY</th>
+                                      <th >MO1</th>
+                                      <th >MO2</th>
+                                      <th >CO1</th>
+                                      <th >CO2</th>
+                                      <th >T/C</th>
+                                      <th >B/C</th>
+                                      <th >M/C</th>
+                                      <th >Produce Indicator</th>
+                                      <th >Param Values</th>
+
+                                      <th  >Action</th>
+                                  </thead>
+                                  <tbody>
+                                      <ng-container *ngFor="let row2 of item.DrainProductMark;index as j ">
+
+                                          <tr class="hover-change" tooltipClass="my-tooltip-class" *ngIf="enableDrainEditIndex_ProductMark!==j">
+
+                                              <td>{{row2.vchProductMarkingName}}</td>
+                                              <td>{{row2.vchDrainLayer}}</td>
+                                              <td>{{row2.decStartChainage}}</td>
+                                              <td>{{row2.decEndChainage}}</td>
+                                              <td>{{row2.vchProductCode}}</td>
+                                              <td>{{row2.MhMwLength}}</td>
+                                              <td>{{row2.MhCwLength}}</td>
+                                              <td>{{row2.Shape}}</td>
+                                              <td>{{row2.TotalQty}}</td>
+                                              <td>{{row2.MhMo1}}</td>
+                                              <td>{{row2.MhMo2}}</td>
+                                              <td>{{row2.MhCo1}}</td>
+                                              <td>{{row2.MhCo2}}</td>
+                                              <td>{{row2.TC}}</td>
+                                              <td>{{row2.BC}}</td>
+                                              <td>{{row2.MC}}</td>
+                                              <td>{{row2.ProduceIndicator}}</td>
+
+                                              <td>{{row2.ParamValues}}</td>
+                                              <td>
+                                                  <i class="material-icons"
+
+                                                      ngbTooltip="View BOM" (click)="RouteToBom(row2)">view_timeline</i>
+                                                      <i *ngIf="strIsReadOnly==='NO'" class="material-icons" ngbTooltip="Edit" (click)="onEdit_Productmark(item,j)" style="cursor: pointer;">mode_edit</i>
+                                                      <i *ngIf="strIsReadOnly==='NO'" class="bi bi-trash" ngbTooltip="Delete" style="color:red; font-size:22px; cursor: pointer;"
+                                                        (click)="Delete_ProductMark(row2.intProductMarkId,item,'ProductMark')"></i>
+
+                                              </td>
+                                              <td *ngIf="strIsReadOnly!=='NO'">
+
+                                              </td>
+
+                                          </tr>
+
+                                          <tr class="hover-change" tooltipClass="my-tooltip-class" *ngIf="enableDrainEditIndex_ProductMark===j">
+
+                                            <td>{{row2.vchProductMarkingName}}</td>
+                                            <td>{{row2.vchDrainLayer}}</td>
+                                            <td>{{row2.decStartChainage}}</td>
+                                            <td>{{row2.decEndChainage}}</td>
+                                            <td>{{row2.vchProductCode}}</td>
+                                            <td>{{row2.MhMwLength}}</td>
+                                            <td>{{row2.MhCwLength}}</td>
+                                            <td>{{row2.Shape}}</td>
+                                            <!-- <td>{{row2.TotalQty}}</td> -->
+                                            <td><input class="form-control" maxlength="50" type="number"
+                                              [(ngModel)]="row2.TotalQty"  [ngModelOptions]="{standalone: true}"
+                                             >
+                                            <td><input class="form-control" maxlength="50" type="text"
+                                              [(ngModel)]="row2.MhMo1" (keyup)="popup_MO1=row2.MhMo1"  [ngModelOptions]="{standalone: true}"
+                                             >
+                                            </td>
+                                            <td><input class="form-control" maxlength="50" type="text" (keyup)="popup_MO2=row2.MhMo2"
+                                              [(ngModel)]="row2.MhMo2" [ngModelOptions]="{standalone: true}"
+                                              >
+                                            </td>
+                                            <td><input class="form-control" maxlength="50" type="text" (keyup)="popup_CO1=row2.MhCo1"
+                                              [(ngModel)]="row2.MhCo1" [ngModelOptions]="{standalone: true}"
+                                              ></td>
+                                            <td>
+                                              <input class="form-control" maxlength="50" type="text" (keyup)="popup_CO2=row2.MhCo2"
+                                              [(ngModel)]="row2.MhCo2" [ngModelOptions]="{standalone: true}"
+                                              >
+                                            </td>
+                                            <td>{{row2.TC}}</td>
+                                            <td>{{row2.BC}}</td>
+                                            <td>{{row2.MC}}</td>
+                                            <td>{{row2.ProduceIndicator}}</td>
+
+                                            <td>{{row2.ParamValues}}</td>
+                                            <td>
+                                              <i class="material-icons" (click)="Update_ProductMark(row2,item)" ngbTooltip="Update">save</i>
+                                              &nbsp;
+                                              <i class="material-icons" (click)="Editcancel_ProductMark(row2)" ngbTooltip="Cancel">cancel</i>
+
+                                            </td>
+
+                                        </tr>
+                                          <tr *ngIf="isTooltipHidden">
+                                              <td colspan="18"><span style="color: red;">
+                                                      </span></td>
+                                          </tr>
+
+                                      </ng-container>
+                                  </tbody>
+                              </table>
+                              <!-- <div class="d-flex mt-2">
+                                <div>
+                                  <ngb-pagination [collectionSize]="Drain_Data.length" [(page)]="currentPage"
+                                    [pageSize]="itemsPerPage" (pageChange)="onPageChange(currentPage)" [maxSize]="5" [boundaryLinks]="true">
+                                    <ng-template ngbPaginationPrevious>Prev</ng-template>
+                                    <ng-template ngbPaginationNext>Next</ng-template>
+                                  </ngb-pagination>
+                                </div>
+                                <div>
+                                  <select class="custom-select mr-2 ml-3" style="width: auto" [(ngModel)]="itemsPerPage"
+                                    (ngModelChange)="OnPageSizeChange(itemsPerPage)">
+                                    <option [ngValue]=5>5 </option>
+                                    <option [ngValue]=10>10 </option>
+                                    <option [ngValue]=20>20 </option>
+                                    <option [ngValue]=50>50 </option>
+                                    <option [ngValue]=100>100 </option>
+                                  </select>
+                                  <span>Items per page</span>
+                                </div>
+                              </div> -->
+                            </tab>
+                            <tab class="tab" heading="Other drain Details" [active]="SelectedTab=='OtherProductMark'"  (change)="changeTab('OtherProductMark')" title="Tab 2" style="background:#fff">
+                              <table class="table table-sm w-100 ">
+
+                                <thead>
+                                    <th class="w-125px"> ProductMarking Name </th>
+                                    <th class="w-125px"> Drain Layer </th>
+                                    <th class="w-125px"> Product </th>
+                                    <th class="w-125px"> Main Wire Length </th>
+                                    <th class="w-125px">Cross Wire Length </th>
+                                    <th class="w-125px">Shape </th>
+                                    <th class="w-125px">QTY</th>
+                                    <th class="w-125px">MO1</th>
+
+                                    <th class="w-125px">MO2</th>
+                                    <th class="w-125px">CO1</th>
+                                    <th class="w-125px">CO2</th>
+                                    <th class="w-125px">T/C</th>
+                                    <th class="w-125px">B/C</th>
+                                    <th class="w-125px">M/C</th>
+                                    <th class="w-125px">Produce Indicator</th>
+                                    <th class="w-125px">Param Values</th>
+
+                                    <th class="w-125px">Action</th>
+                                </thead>
+                                <tbody>
+                                    <ng-container *ngFor="let row2 of item.DrainOtherProductMark;index as j ">
+
+                                        <tr class="hover-change" tooltipClass="my-tooltip-class" *ngIf="enableDrainEditIndex_OtherProductMark!==j">
+
+                                            <td>{{row2.vchProductMarkingName}}</td>
+                                            <td>{{row2.vchDrainLayer}}</td>
+                                            <td>{{row2.vchProductCode}}</td>
+                                            <td>{{row2.MhMwLength}}</td>
+                                            <td>{{row2.MhCwLength}}</td>
+                                            <td>{{row2.Shape}}</td>
+                                            <td>{{row2.TotalQty}}</td>
+                                            <td>{{row2.MhMo1}}</td>
+                                            <td>{{row2.MhMo2}}</td>
+                                            <td>{{row2.MhCo1}}</td>
+                                            <td>{{row2.MhCo2}}</td>
+                                            <td>P</td>
+                                            <td>P</td>
+                                            <td>P</td>
+                                            <!-- <td>{{row2.TC}}</td>
+                                            <td>{{row2.BC}}</td>
+                                            <td>{{row2.MC}}</td> -->
+                                            <td>{{row2.ProduceIndicator}}</td>
+
+                                            <td>{{row2.ParamValues}}</td>
+                                            <td>
+                                                <i class="material-icons"
+
+                                                    ngbTooltip="View BOM" (click)="RouteToBom(row2)">view_timeline</i>
+                                                    <i *ngIf="strIsReadOnly==='NO'" class="material-icons" ngbTooltip="Edit" (click)="onEdit_OtherProductmark(row2,j)" style="cursor: pointer;">mode_edit</i>
+                                                    <i *ngIf="strIsReadOnly==='NO'"  class="bi bi-trash" ngbTooltip="Delete" style="color:red; font-size:22px; cursor: pointer;"
+                                                      (click)="Delete_ProductMark(row2.intProductMarkId,item,'OtherProductMark')"></i>
+
+                                            </td>
+
+                                        </tr>
+
+                                        <tr tooltipClass="my-tooltip-class" *ngIf="enableDrainEditIndex_OtherProductMark===j">
+
+                                          <td>
+                                            <input class="form-control" maxlength="50" type="text" style="width: 66px;" (keyup)="ConvertToUpperCase_ProductMark(row2)"
+                                            [(ngModel)]="row2.vchProductMarkingName" [ngModelOptions]="{standalone: true}"
+                                           ></td>
+                                            <td>
+                                              <input class="form-control" maxlength="50" type="text" style="width: 66px;" value="OT" [readOnly]="true" >
+
+                                          </td>
+                                          <td>
+                                            <ng-select [selectOnTab]="true" class="ng-selectcustomer" appendTo="body"
+                                            [(ngModel)]="row2.intProductCodeId" (change)="changeProductCode($event,'E')"
+                                             style="width:120px;">
+
+                                            <ng-option *ngFor="let sList of ProductCode_list" [value]="sList.intProductCodeId">
+                                                {{sList.vchProductCode}}
+
+                                            </ng-option>
+                                        </ng-select>
+                                          </td>
+                                          <td>
+                                            <input class="form-control" maxlength="50" type="text"  style="width: 66px;"
+                                            [(ngModel)]="row2.MhMwLength" [ngModelOptions]="{standalone: true}"
+                                            >
+                                            <!-- <input class="form-control" maxlength="50" type="text"  style="width: 66px;"
+                                            [(ngModel)]="row2.vchProductCode" [ngModelOptions]="{standalone: true}"
+                                            > -->
+                                          </td>
+                                          <td>
+                                            <input class="form-control" maxlength="50" type="text"  style="width: 66px;"
+                                            [(ngModel)]="row2.MhCwLength" [ngModelOptions]="{standalone: true}"
+                                            >
+                                          </td>
+                                          <td>
+
+                                            <ng-select [selectOnTab]="true" class="ng-selectcustomer" appendTo="body"
+                                    [(ngModel)]="row2.intShapeId" (change)="ChangeShapeCode(row2,$event,Shapecode_list,'E')"
+                                     style="width:120px;">
+
+                                    <ng-option *ngFor="let sList of Shapecode_list" [value]="sList.intShapeId">
+                                        {{sList.vchShapeCode}}
+                                    </ng-option>
+                                </ng-select>
+                                          </td>
+                                          <td>
+                                            <input class="form-control" maxlength="50" type="text"  style="width: 66px;"
+                                            [(ngModel)]="row2.TotalQty" [ngModelOptions]="{standalone: true}"
+                                            >
+                                          </td>
+                                          <td>
+                                            <input class="form-control" maxlength="50" type="text" style="width: 66px;" (keyup)="popup_MO1=row2.MhMo1"
+                                            [(ngModel)]="row2.MhMo1" [ngModelOptions]="{standalone: true}"
+                                           >
+                                          </td>
+                                          <td>
+                                            <input class="form-control" maxlength="50" type="text"  style="width: 66px;" (keyup)="popup_MO2=row2.MhMo2"
+                                            [(ngModel)]="row2.MhMo2" [ngModelOptions]="{standalone: true}"
+                                            >
+                                          </td>
+                                          <td>
+                                            <input class="form-control" maxlength="50" type="text" style="width: 66px;" (keyup)="popup_CO1=row2.MhCo1"
+                                            [(ngModel)]="row2.MhCo1" [ngModelOptions]="{standalone: true}"
+                                            >
+                                          </td>
+
+                                          <td>
+                                            <input class="form-control" maxlength="50" type="text" style="width: 66px;" (keyup)="popup_CO2=row2.MhCo2"
+                                            [(ngModel)]="row2.MhCo2" [ngModelOptions]="{standalone: true}"
+                                            >
+                                          </td>
+                                          <td>{{row2.TC}}</td>
+                                          <td>{{row2.BC}}</td>
+                                          <td>{{row2.MC}}</td>
+                                          <td>{{row2.ProduceIndicator}}</td>
+
+                                          <td>{{row2.ParamValues}}</td>
+                                          <td>
+                                            <i class="material-icons" (click)="Update_OtherProductMark(row2,item)" ngbTooltip="Update">save</i>
+                                            &nbsp;
+                                            <i class="material-icons" (click)="Editcancel_OtherProductMark(row2)" ngbTooltip="Cancel">cancel</i>
+
+                                          </td>
+
+                                      </tr>
+                                        <tr *ngIf="isTooltipHidden">
+                                            <td colspan="18"><span style="color: red;">
+                                                    </span></td>
+                                        </tr>
+
+                                    </ng-container>
+                                </tbody>
+                                <tfoot *ngIf="strIsReadOnly==='NO'">
+                                  <td>
+                                    <input class="form-control" maxlength="50" type="text" (keydown.enter)="SaveOtherProductMark(item,-1)" (keyup)="GenerateOtherDrainProduct.strProductMarkName=GenerateOtherDrainProduct.strProductMarkName.toUpperCase()"
+                                    [(ngModel)]="GenerateOtherDrainProduct.strProductMarkName" [ngModelOptions]="{standalone: true}"
+                                   >
+                                  </td>
+                                  <td><input class="form-control" maxlength="50" type="text" value="OT" readonly="true" (keydown.enter)="SaveOtherProductMark(item,-1)">
+
+
+                                  </td>
+                                  <td>
+                                    <ng-select [selectOnTab]="true" class="ng-selectcustomer" appendTo="body"
+                                    [(ngModel)]="GenerateOtherDrainProduct.strProductCodeId" (change)="changeProductCode($event,'S')"
+                                     style="width:120px;">
+
+                                    <ng-option *ngFor="let sList of ProductCode_list" [value]="sList.intProductCodeId">
+                                        {{sList.vchProductCode}}
+
+                                    </ng-option>
+                                </ng-select>
+                                <span class="text-danger validator-message"
+                                    *ngIf="isaddnewRecord &&  (pushElement.shape=='')">*
+                                    Shape Required. </span>
+
+                                  </td>
+                                  <td><input class="form-control" maxlength="50" type="text" (keydown.enter)="SaveOtherProductMark(item,-1)"
+                                    [(ngModel)]="GenerateOtherDrainProduct.strMWLen" [ngModelOptions]="{standalone: true}"
+                                   >
+                                  </td>
+                                  <td><input class="form-control" maxlength="50" type="text" (keydown.enter)="SaveOtherProductMark(item,-1)"
+                                    [(ngModel)]="GenerateOtherDrainProduct.strCWLen" [ngModelOptions]="{standalone: true}"
+                                   >
+                                  </td>
+                                  <td>  <ng-select [selectOnTab]="true" class="ng-selectcustomer" appendTo="body"
+                                    [(ngModel)]="GenerateOtherDrainProduct.intShapeId" (change)="ChangeShapeCode(GenerateOtherDrainProduct,$event,Shapecode_list,'S')"
+                                     style="width:120px;">
+
+                                    <ng-option *ngFor="let sList of Shapecode_list" [value]="sList.intShapeId">
+                                        {{sList.vchShapeCode}}
+                                    </ng-option>
+                                </ng-select>
+                                <span class="text-danger validator-message"
+                                    *ngIf="isaddnewRecord &&  (pushElement.shape=='')">*
+                                    Shape Required. </span>
+                                  </td>
+                                  <td><input class="form-control" maxlength="50" type="text" (keydown.enter)="SaveOtherProductMark(item,-1)"
+                                    [(ngModel)]="GenerateOtherDrainProduct.TotMeshQty" [ngModelOptions]="{standalone: true}"
+                                   >
+                                  </td>
+                                  <td><input class="form-control" maxlength="50" type="text" (keydown.enter)="SaveOtherProductMark(item,-1)"  (keyup)="popup_MO1=GenerateOtherDrainProduct.strMO1"
+                                    [(ngModel)]="GenerateOtherDrainProduct.strMO1" [ngModelOptions]="{standalone: true}"
+                                   >
+                                  </td>
+                                  <td><input class="form-control" maxlength="50" type="text" (keydown.enter)="SaveOtherProductMark(item,-1)" (keyup)="popup_MO2=GenerateOtherDrainProduct.strMO2"
+                                    [(ngModel)]="GenerateOtherDrainProduct.strMO2" [ngModelOptions]="{standalone: true}"
+                                   >
+                                  </td>
+                                  <td><input class="form-control" maxlength="50" type="text"  (keyup)="popup_CO1=GenerateOtherDrainProduct.strCO1"
+                                    [(ngModel)]="GenerateOtherDrainProduct.strCO1" [ngModelOptions]="{standalone: true}"
+                                   >
+                                  </td>
+                                  <td>
+                                    <input class="form-control" maxlength="50" type="text" (keydown.enter)="SaveOtherProductMark(item,-1)"  (keyup)="popup_CO2=GenerateOtherDrainProduct.strCO2"
+                                    [(ngModel)]="GenerateOtherDrainProduct.strCO2" [ngModelOptions]="{standalone: true}"
+                                   >
+                                  </td>
+                                  <td>
+                                    <input type="checkbox"  id="blnTC" [(ngModel)]="GenerateOtherDrainProduct.blnTC"  (keydown.enter)="SaveOtherProductMark(item,-1)" disabled="true" >
+                                  </td>
+
+                                  <td>
+                                    <input type="checkbox" id="blnTC" [(ngModel)]="GenerateOtherDrainProduct.blnMC"  disabled="true">
+                                  </td>
+                                  <td>
+                                    <input type="checkbox"  id="blnTC" [(ngModel)]="GenerateOtherDrainProduct.blnBC" disabled="true" >
+                                  </td>
+                                  <td>
+                                    <input type="checkbox"  id="strPrdInd" [(ngModel)]="GenerateOtherDrainProduct.strPrdInd"  >
+
+                                  </td>
+
+
+
+                                </tfoot>
+                            </table>
+                            </tab>
+                          </tabset>
+
+
+                        </div>
+
+
+
+
+
+                  </td>
+              </tr>
+              </ng-container>
+
+              <ng-container *ngIf="enableDrainEditIndex == i" >
+              <tr >
+                <td></td>
+                <td> <input class="form-control" maxlength="50" type="text" [(ngModel)]="item.vchStructureMarkingName" (keyup)="ConvertToUpperCase(item)"
+                    [ngModelOptions]="{standalone: true}">
+                  <span class="text-danger validator-message"
+                    *ngIf="isaddnewRecord &&  (pushElement.vchStructureMarkingName=='')">*
+                    Structure Marking Required. </span>
+                </td>
+
+                <td>
+                  <table class="table-borderless">
+                    <tbody>
+                      <tr>
+                        <td>
+                          <label for="Chainage_Start"> Start</label>
+                        </td>
+                        <td>
+                          <input class=" form-control" maxlength="10" type="number" (keyup)="onChangeChainage(item)"
+                          [(ngModel)]="item.decStartChainage" [ngModelOptions]="{standalone: true}">
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <label for="Chainage_End"> End</label>
+                        </td>
+                        <td>
+                          <input class=" form-control" maxlength="10" type="number" (keyup)="onChangeChainage(item)"
+                          [(ngModel)]="item.decEndChainage" [ngModelOptions]="{standalone: true}">
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+                <td> <input class="form-control" maxlength="10" type="text" [(ngModel)]="item.decDistance" readonly="true"
+                    [ngModelOptions]="{standalone: true}" (keydown.enter)="onSubmit(pushElement)">
+                  <span class="text-danger validator-message" *ngIf="isaddnewRecord &&  (item.decDistance==0)">*
+                    Structure Marking Required. </span>
+                </td>
+                <td>
+                  <table class="table-borderless">
+                    <tbody>
+                      <tr>
+                        <td>
+                          <label for="Chainage_Start"> Start</label>
+                        </td>
+                        <td>
+                          <input class=" form-control" maxlength="10" type="number" (keyup)="fnHeight(item,'S')"
+                            [(ngModel)]="item.decStartTopLevel" [ngModelOptions]="{standalone: true}">
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <label for="Chainage_End"> End</label>
+                        </td>
+                        <td>
+                          <input class=" form-control" maxlength="10" type="number" (keyup)="fnHeight(item,'E')"
+                        [(ngModel)]="item.decEndTopLevel" [ngModelOptions]="{standalone: true}">
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+                <td>
+                  <table class="table-borderless">
+                    <tbody>
+                      <tr>
+                        <td>
+                          <label for="Chainage_Start"> Start</label>
+                        </td>
+                        <td>
+                          <input class=" form-control" maxlength="10" type="number" (keyup)="fnHeight(item,'S')"
+                        [(ngModel)]="item.decStartInvertLevel" [ngModelOptions]="{standalone: true}">
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <label for="Chainage_End"> End</label>
+                        </td>
+                        <td>
+                          <input class=" form-control" maxlength="10" type="number" (keyup)="fnHeight(item,'E')"
+                        [(ngModel)]="item.decEndInvertLevel" [ngModelOptions]="{standalone: true}">
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+                <td>
+                  <table class="table-borderless">
+                    <tbody>
+                      <tr>
+                        <td>
+                          <label for="Chainage_Start"> Start</label>
+                        </td>
+                        <td>
+                          <input class=" form-control" maxlength="10" type="number" readonly="true"
+                            [(ngModel)]="item.decStartHeight" [ngModelOptions]="{standalone: true}">
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <label for="Chainage_End"> End</label>
+                        </td>
+                        <td>
+                          <input class=" form-control" maxlength="10" type="number" readonly="true"
+                            [(ngModel)]="item.decEndHeight" [ngModelOptions]="{standalone: true}">
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+                <td>
+                  <table class="table-borderless">
+                    <tbody>
+                      <tr>
+                        <td>
+                          <label for="Chainage_Start"> Start</label>
+                        </td>
+                        <td>
+                          <input class=" form-control" maxlength="10" type="number" readonly="true"
+                            [(ngModel)]="item.decStartDepth" [ngModelOptions]="{standalone: true}">
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <label for="Chainage_End"> End</label>
+                        </td>
+                        <td>
+                          <input class=" form-control" maxlength="10" type="number" readonly="true"
+                            [(ngModel)]="item.decEndDepth" [ngModelOptions]="{standalone: true}">
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+                <td> <input class="form-control" maxlength="10" type="text" [(ngModel)]="item.intMemberQty"
+                    [ngModelOptions]="{standalone: true}" (keydown.enter)="onSubmit(pushElement)">
+                  <span class="text-danger validator-message" *ngIf="isaddnewRecord &&  (pushElement.intMemberQty==0)">*
+                    Structure Marking Required. </span>
+                </td>
+                <td>
+                  <table class="table-borderless">
+                    <tbody>
+                      <tr>
+                        <td>
+                          <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="bitCrossLenInner" [(ngModel)]="item.bitCrossLenInner" >
+                            <label class="form-check-label" for="bitCrossLenInner">Inner</label>
+                          </div>
+                        </td>
+                        <td>
+                          <input class=" form-control" maxlength="10" type="number" [(ngModel)]="item.decCrossLenInner"  [readOnly]="!(item.bitCrossLenInner)"
+                            [ngModelOptions]="{standalone: true}">
+                        </td>
+                        <td>
+                          <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="bitCrossLenOuter"  [(ngModel)]="item.bitCrossLenOuter">
+                            <label class="form-check-label" for="bitCrossLenOuter">Outer</label>
+                          </div>
+                        </td>
+                        <td>
+                          <input class=" form-control" maxlength="10" type="number" [(ngModel)]="item.decCrossLenOuter"  [readOnly]="!(item.bitCrossLenOuter)"
+                            [ngModelOptions]="{standalone: true}">
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td>
+                          <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="bitCrossLenSlab" [(ngModel)]="item.bitCrossLenSlab">
+                            <label for="bitCrossLenSlab"> Slab</label>
+                          </div>
+                        </td>
+                        <td>
+                          <input class=" form-control" maxlength="10" type="number" [(ngModel)]="item.decCrossLenSlab"  [readOnly]="!(item.bitCrossLenSlab)"
+                            [ngModelOptions]="{standalone: true}">
+                        </td>
+                        <td>
+                          <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="bitCrossLenBase" [(ngModel)]="item.bitCrossLenBase">
+                            <label for="bitCrossLenBase"> Base</label>
+                          </div>
+                        </td>
+                        <td>
+                          <input class=" form-control" maxlength="10" type="number" [(ngModel)]="item.decCrossLenBase"  [readOnly]="!(item.bitCrossLenBase)"
+                            [ngModelOptions]="{standalone: true}">
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+                <td>
+                  <input type="checkbox"  id="blnTC" [(ngModel)]="item.bitCascade"  disabled="true" >
+                </td>
+                <td>
+                  <table class="table-borderless">
+                    <tr>
+                      <td><label for="Chainage_Start"> Cascade No</label></td>
+                      <td>
+                        <input class=" form-control" maxlength="10" type="number" [(ngModel)]="item.intCascadeNo"  
+                            [ngModelOptions]="{standalone: true}">
+                      </td>
+                      <td><label for="Chainage_End"> Width</label></td>
+                      <td>
+                        <input class=" form-control" maxlength="10" type="number" [(ngModel)]="item.decCascadeWidth"
+                        [ngModelOptions]="{standalone: true}">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><label for="Chainage_Start">Drop Ht</label></td>
+                      <td>
+                        <input class=" form-control" maxlength="10" type="number" [(ngModel)]="item.decCascadeDropHeight"
+                        [ngModelOptions]="{standalone: true}">
+                      </td>
+                      <td><label for="Chainage_End"> Cross Len</label></td>
+                      <td>
+                        <input class=" form-control" maxlength="10" type="number" [(ngModel)]="item.decCascadeCWLength"
+                        [ngModelOptions]="{standalone: true}">
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+
+                <td>
+                  <i class="material-icons" (click)="Update(item,i)" ngbTooltip="Update">save</i>
+                  &nbsp;
+                  <i class="material-icons" (click)="Editcancel(item)" ngbTooltip="Cancel">cancel</i>
+                </td>
+
+              </tr>
+            </ng-container>
+            </ng-container>
+
+
+
+          </tbody>
+
+          <tfoot *ngIf="strIsReadOnly==='NO'" >
+            <tr *ngFor="let pushElement of Drain_Insert_Update">
+
+              <td></td>
+              <td> <input class="form-control" maxlength="50" type="text"
+                  [(ngModel)]="pushElement.vchStructureMarkingName " [ngModelOptions]="{standalone: true}" (keyup)="ConvertToUpperCase(pushElement)"
+                  (keydown.enter)="onSubmit(pushElement)">
+                <span class="text-danger validator-message"
+                  *ngIf="isaddnewRecord &&  (pushElement.vchStructureMarkingName=='')">*
+                  Structure Marking Required. </span>
+              </td>
+
+              <td>
+                <table class="table-borderless">
+                  <tbody>
+                    <tr>
+                      <td>
+                        <label for="Chainage_Start"> Start</label>
+                      </td>
+                      <td>
+                        <input class=" form-control" maxlength="10" type="number" (keydown.enter)="onSubmit(pushElement)"
+                          (keyup)="onChangeChainage(pushElement)" [(ngModel)]="pushElement.decStartChainage "
+                          [ngModelOptions]="{standalone: true}">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <label for="Chainage_End"> End</label>
+                      </td>
+                      <td>
+                        <input class=" form-control" maxlength="10" type="number" (keydown.enter)="onSubmit(pushElement)"
+                          (keyup)="onChangeChainage(pushElement)" [(ngModel)]="pushElement.decEndChainage "
+                          [ngModelOptions]="{standalone: true}">
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+              <td> <input class="form-control" maxlength="10" type="text" [(ngModel)]="pushElement.decDistance" readonly="true"
+                  [ngModelOptions]="{standalone: true}" (keydown.enter)="onSubmit(pushElement)">
+                <span class="text-danger validator-message" *ngIf="isaddnewRecord &&  (pushElement.decDistance==0)">*
+                  Structure Marking Required. </span>
+              </td>
+              <td>
+                <table class="table-borderless">
+                  <tbody>
+                    <tr>
+                      <td>
+                        <label for="Chainage_Start"> Start</label>
+                      </td>
+                      <td>
+                        <input class=" form-control" maxlength="10" type="number" (keydown.enter)="onSubmit(pushElement)"
+                          (keyup)="fnHeight(pushElement,'S')" [(ngModel)]="pushElement.decStartTopLevel"
+                          [ngModelOptions]="{standalone: true}">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <label for="Chainage_End"> End</label>
+                      </td>
+                      <td>
+                        <input class=" form-control" maxlength="10" type="number" (keydown.enter)="onSubmit(pushElement)"
+                          (keyup)="fnHeight(pushElement,'E')" [(ngModel)]="pushElement.decEndTopLevel"
+                          [ngModelOptions]="{standalone: true}">
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+              <td>
+                <table class="table-borderless">
+                  <tbody>
+                    <tr>
+                      <td>
+                        <label for="Chainage_Start"> Start</label>
+                      </td>
+                      <td>
+                        <input class=" form-control" maxlength="10" type="number" (keydown.enter)="onSubmit(pushElement)"
+                          (keyup)="fnHeight(pushElement,'S')" [(ngModel)]="pushElement.decStartInvertLevel"
+                          [ngModelOptions]="{standalone: true}">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <label for="Chainage_End"> End</label>
+                      </td>
+                      <td>
+                        <input class=" form-control" maxlength="10" type="number" (keydown.enter)="onSubmit(pushElement)"
+                          (keyup)="fnHeight(pushElement,'E')" [(ngModel)]="pushElement.decEndInvertLevel"
+                          [ngModelOptions]="{standalone: true}">
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+              <td>
+                <table class="table-borderless">
+                  <tbody>
+                    <tr>
+                      <td>
+                        <label for="Chainage_Start"> Start</label>
+                      </td>
+                      <td>
+                        <input class=" form-control" maxlength="10" type="number" readonly="true" (keydown.enter)="onSubmit(pushElement)"
+                          [(ngModel)]="pushElement.decStartHeight" [ngModelOptions]="{standalone: true}">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <label for="Chainage_End"> End</label>
+                      </td>
+                      <td>
+                        <input class=" form-control" maxlength="10" type="number" readonly="true" (keydown.enter)="onSubmit(pushElement)"
+                          [(ngModel)]="pushElement.decEndHeight" [ngModelOptions]="{standalone: true}">
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+              <td>
+                <table class="table-borderless">
+                  <tbody>
+                    <tr>
+                      <td>
+                        <label for="Chainage_Start"> Start</label>
+                      </td>
+                      <td>
+                        <input class=" form-control" maxlength="10" type="number" readonly="true"(keydown.enter)="onSubmit(pushElement)"
+                          [(ngModel)]="pushElement.decStartDepth" [ngModelOptions]="{standalone: true}">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <label for="Chainage_End"> End</label>
+                      </td>
+                      <td>
+                        <input class=" form-control" maxlength="10" type="number" readonly="true" (keydown.enter)="onSubmit(pushElement)"
+                          [(ngModel)]="pushElement.decEndDepth" [ngModelOptions]="{standalone: true}">
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+              <td> <input class="form-control" maxlength="10" type="text" [(ngModel)]="pushElement.intMemberQty"
+                  [ngModelOptions]="{standalone: true}" (keydown.enter)="onSubmit(pushElement)">
+                <span class="text-danger validator-message" *ngIf="isaddnewRecord &&  (pushElement.intMemberQty==0)">*
+                  Structure Marking Required. </span>
+              </td>
+              <td>
+                <table class="table-borderless">
+                  <tbody>
+                    <tr>
+                      <td>
+                        <div class="form-check">
+                          <input type="checkbox" class="form-check-input" id="bitCrossLenInner" [(ngModel)]="pushElement.bitCrossLenInner"  (click)="ChangeLen(pushElement,pushElement.bitCrossLenInner,'decCrossLenInner')"  >
+                          <label class="form-check-label" for="bitCrossLenInner">Inner</label>
+                        </div>
+                      </td>
+                      <td>
+                        <input class=" form-control" maxlength="10" type="number" [readOnly]="!(pushElement.bitCrossLenInner)" (keydown.enter)="onSubmit(pushElement)"
+                          [(ngModel)]="pushElement.decCrossLenInner" [ngModelOptions]="{standalone: true}">
+                      </td>
+                      <td>
+                        <div class="form-check">
+                          <input type="checkbox" class="form-check-input" id="bitCrossLenOuter" [(ngModel)]="pushElement.bitCrossLenOuter" (click)="ChangeLen(pushElement,pushElement.bitCrossLenOuter,'decCrossLenOuter')" >
+                          <label class="form-check-label" for="bitCrossLenOuter">Outer</label>
+                        </div>
+                      </td>
+                      <td>
+                        <input class=" form-control" maxlength="10" type="number" [readOnly]="!(pushElement.bitCrossLenOuter)" (keydown.enter)="onSubmit(pushElement)"
+                          [(ngModel)]="pushElement.decCrossLenOuter" [ngModelOptions]="{standalone: true}">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <div class="form-check">
+                          <input type="checkbox" class="form-check-input" id="bitCrossLenSlab"  [(ngModel)]="pushElement.bitCrossLenSlab" (click)="ChangeLen(pushElement,pushElement.bitCrossLenSlab,'decCrossLenSlab')">
+                          <label class="form-check-label" for="bitCrossLenSlab">Slab</label>
+                        </div>
+                      </td>
+                      <td>
+                        <input class=" form-control" maxlength="10" type="number" [readOnly]="!(pushElement.bitCrossLenSlab)" (keydown.enter)="onSubmit(pushElement)"
+                          [(ngModel)]="pushElement.decCrossLenSlab" [ngModelOptions]="{standalone: true}">
+                      </td>
+                      <td>
+                        <div class="form-check">
+                          <input type="checkbox" class="form-check-input" id="bitCrossLenBase" [(ngModel)]="pushElement.bitCrossLenBase" (click)="ChangeLen(pushElement,pushElement.bitCrossLenBase,'decCrossLenBase')" >
+                          <label class="form-check-label" for="bitCrossLenBase">Base</label>
+                        </div>
+                      </td>
+                      <td>
+                        <input class=" form-control" maxlength="10" type="number" [readOnly]="!(pushElement.bitCrossLenBase)" (keydown.enter)="onSubmit(pushElement)"
+                          [(ngModel)]="pushElement.decCrossLenBase" [ngModelOptions]="{standalone: true}">
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+              <td style="width: 5%;">
+                <input type="checkbox"  id="blnTC" [(ngModel)]="pushElement.bitCascade" (click)="pushElement.bitCascade=!pushElement.bitCascade;fnCascadeCheck(pushElement)"  >
+
+              </td>
+              <td>
+                <table class="table-borderless">
+                  <tbody>
+                    <tr>
+                      <td>
+                        <label class="form-check-label" for="bitCrossLenInner">Cascade No</label>
+                      </td>
+                      <td>
+                        <input class=" form-control" maxlength="10" type="number" [readOnly]="(isCascade.cascadeNo)" (keydown.enter)="onSubmit(pushElement)"
+                          [(ngModel)]="pushElement.intCascadeNo" [ngModelOptions]="{standalone: true}">
+                      </td>
+                      <td>
+                        <label for="Chainage_End"> Width </label>
+                      </td>
+                      <td>
+                        <input class=" form-control" maxlength="10" type="number" [readOnly]="(isCascade.width)" (keydown.enter)="onSubmit(pushElement)"
+                          [(ngModel)]="pushElement.decCascadeWidth" [ngModelOptions]="{standalone: true}">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <label for="Chainage_Start"> Drop Ht</label>
+                      </td>
+                      <td>
+                        <input class=" form-control" maxlength="10" type="number" [readOnly]="(isCascade.dropHeight)" (keydown.enter)="onSubmit(pushElement)"
+                          [(ngModel)]="pushElement.decCascadeDropHeight" [ngModelOptions]="{standalone: true}">
+                      </td>
+                      <td>
+                        <label for="Chainage_End"> Cross Len</label>
+                      </td>
+                      <td>
+                        <input class=" form-control" maxlength="10" type="number" [readOnly]="(isCascade.crossLen)" (keydown.enter)="onSubmit(pushElement)"
+                          [(ngModel)]="pushElement.decCascadeCWLength" [ngModelOptions]="{standalone: true}">
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+              <td class="sticky-footer"></td>
+            </tr>
+          </tfoot>
+
+        </table>
+
+      </div>
+
+      <div class="row ml-0 mr-0">
+        <div class="col-md-8">
+          <div class="d-flex mt-2">
+            <div>
+              <ngb-pagination [collectionSize]="Drain_Data.length" [(page)]="currentPage"
+                [pageSize]="itemsPerPage" (pageChange)="onPageChange(currentPage)" [maxSize]="5" [boundaryLinks]="true">
+                <ng-template ngbPaginationPrevious>Prev</ng-template>
+                <ng-template ngbPaginationNext>Next</ng-template>
+              </ngb-pagination>
+            </div>
+            <div>
+              <select class="custom-select mr-2 ml-3" style="width: auto" [(ngModel)]="itemsPerPage"
+                (ngModelChange)="OnPageSizeChange(itemsPerPage)">
+                <option [ngValue]=5>5 </option>
+                <option [ngValue]=10>10 </option>
+                <option [ngValue]=20>20 </option>
+                <option [ngValue]=50>50 </option>
+                <option [ngValue]=100>100 </option>
+              </select>
+              <span>Items per page</span>
+            </div>
+          </div>
+
+        </div>
+       
+        <div class="col-md-4 mr-0" style="text-align:right !important ;display: flex; align-items:center;justify-content:flex-end;">
+          <div style="display:flex">
+          <span _ngcontent-nlc-c225="" style="font-weight: bold;" class="ng-tns-c225-25"> Color Legend: </span><br>
+          <div class="justify-content-start d-flex">
+          <label class="box gray font-weight-bold" style="background-color:#c1c1c1">Footers</label>&nbsp;
+                            </div>
+                          </div>
+          <button class="btn btn-primary  btn-sm" (click)="Report_Click()">View Report</button>
+          <button class="btn btn-primary  btn-sm" (click)="NewGM_Click()">Add New Group Mark</button>
+
+        </div>
+
+
+
+
+      </div>
+
+    </div>
+  </div>
+
+
+

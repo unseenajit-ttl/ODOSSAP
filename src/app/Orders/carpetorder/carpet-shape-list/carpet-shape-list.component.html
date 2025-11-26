@@ -1,0 +1,27 @@
+<div class="container-fluid" cdkDrag cdkDragRootElement=".your-custom-dialog-class">
+    <div class="Header" cdkDragHandle>
+        <span>List of Carpet Shapes (毯铁图形列表)</span>
+        <button type="button" class="btn-close" aria-label="Close"
+            (click)="activeModal.dismiss('Cross click')"></button>
+    </div>
+    <div>
+        <div>
+            <div *ngIf="ShapeListCarpet.length > 0">
+                <table border="1" style="width:100%" id="table_imagelist">
+                    <tr class="table-row">
+                        <td *ngFor="let item of ShapeListCarpet" class="image-cell" (click)="ImageListClick(item)">
+                            <img [id]="'ImageList_' + item.shapeCode" [src]="GetShapeImage(item)" class="image-thumb"
+                                (click)="ImageListImageClick(item, $event)" />
+                            {{ item.shapeCode }}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary me-2" (click)="Cancel()">
+            Cancel
+        </button>
+    </div>
+</div>

@@ -1,0 +1,35 @@
+<div cdkDrag cdkDragRootElement=".your-custom-dialog-class">
+    <div class="modal-header" cdkDragHandle>
+        <span class="modal-title">Import Order from Excel (从 Excel 导入订单)</span>
+        <i class="fa-solid fa-xmark"></i>
+        <button type="button" class="btn-close" aria-label="Close" (click)="Cancel()"></button>
+    </div>
+    
+    <div class="modal-body">
+        <div class="subHeading">
+            Import Order from NSH OES Excel File <br />
+            (从大众钢铁的 OES Excel 文件导入订单): <br />
+        </div>
+        <div>
+            <label>Excel File (Excel文件)</label>
+        </div>
+        <div class="file-select">
+            <input type="file" name="OrderExcelImport" id="OrderExcelImport" [(ngModel)]="SelectedFile"
+                (ngModelChange)="ExcelfileCheck(this);">
+        </div>
+    
+    </div>
+    <div *ngIf="ImportOrderLoading" style="z-index: 500">
+        <div id="pause" class="d-flex align-items-center justify-content-center">
+          <div id="spinner" class="loader"></div>
+        </div>
+      </div>
+    <div class="modal-footer">
+        <button type="button" class="import btn btn-primary" (click)="Import()">
+            Import (导入)
+        </button>
+        <button type="button" class="btn btn-danger me-2" (click)="Cancel()">
+            Cancel (取消)
+        </button>
+    </div>
+    </div>

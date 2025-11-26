@@ -3,7 +3,7 @@ name: Angular Build and Deploy to IIS (Self-Hosted, Inline)
 on:
   push:
     branches:
-      - main1123
+      - test
 
 jobs:
   build-and-deploy:

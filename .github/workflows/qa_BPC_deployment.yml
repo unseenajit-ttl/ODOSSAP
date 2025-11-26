@@ -3,7 +3,7 @@ name: Angular Build and Deploy to IIS (Split Ubuntu + Self-Hosted)
 on:
   push:
     branches:
-      - main
+      - test
 
 jobs:
   build-angular:

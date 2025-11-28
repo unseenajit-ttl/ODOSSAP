@@ -11,7 +11,7 @@ export const environment = {
   production: false,
   //apiUrl: 'https://localhost:5003/',
  // apiUrl: 'http://172.25.1.224:89/',
-  apiUrl:'https://devodos.natsteel.com.sg:444/',
+  apiUrl:'https://odossap.natsteel.com.sg:444/',
   // apiUrl:'https://odos.natsteel.com.sg/GetWayAPI/',
   // apiUrl:'http://172.25.1.141:89/', // detailing prod
   // apiURL_Ordering:'https://localhost:5003/', // Ordering prod

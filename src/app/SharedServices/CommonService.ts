@@ -74,7 +74,7 @@ export class CommonService {
   getToken() {
     //return this.httpClient.get<any>(`https://devodos.natsteel.com.sg/ODOS_Auth/Home/gettoken`);
     return this.httpClient.get<any>(
-      `https://devodos.natsteel.com.sg/ODOS_Auth/Home/gettoken`
+      `https://odossap.natsteel.com.sg/ODOS_Auth/Home/gettoken`
     );
   }
 
@@ -90,7 +90,7 @@ export class CommonService {
     debugger;
 
     //return this.httpClient.post<any>(`https://localhost:7297/IndexUMP`, formData)
-    return this.httpClient.post<any>(`https://odossap.natsteel.com.sg/TokenHandler/IndexUMP`, formData) // For SAP 
+    return this.httpClient.post<any>(`https://odossap.natsteel.com.sg:71/IndexUMP`, formData) // For SAP 
     // return this.httpClient.post<any>(`https://devodos.natsteel.com.sg:71/IndexUMP`, formData)
     //return this.httpClient.post<any>(`https://odos.natsteel.com.sg:71/IndexUMP`, formData)
     // return this.httpClient.post<any>(

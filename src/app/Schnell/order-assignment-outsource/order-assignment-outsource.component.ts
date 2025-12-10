@@ -313,6 +313,18 @@ export class OrderAssignmentOutsourceComponent implements OnInit {
           left: '0',
           resizeWidth: '100',
         },
+          {
+          controlName: 'SOWt',
+          displayName: 'SO Weight',
+          chineseDisplayName: '',
+          colName: 'SOWt',
+          field: 'SOWt',
+          placeholder: 'Search SOWt',
+          isVisible: true,
+          width: '5%',
+          left: '0',
+          resizeWidth: '100',
+        },
         {
           controlName: 'NoofCuts',
           displayName: 'No. Of Cuts',

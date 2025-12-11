@@ -9159,6 +9159,8 @@ export class ProcessOrderComponent implements OnInit {
           }
         }
 
+        this.UpdatePONumber_RemoveCXL(this.selectedRow[i].JobID)
+
         // STEP 3. Update Internal and External Remarks
         await this.UpdateRemarksAfterSubmit(this.selectedRow[i]);
 
@@ -17066,6 +17068,42 @@ export class ProcessOrderComponent implements OnInit {
     // }
 
     //return value.toUpperCase();
+  }
+
+  UpdatePONumber_RemoveCXL(pOrderNo: any) {
+    /**
+     * When the Order status of any record is updated (either "Withdrawn" or "Cancelled"),
+     * then update the PoNumber of all the subsequent records which share the same order number.
+     */
+    let ldataList: any[] = [];
+
+    if (this.CurrentTab == 'CREATING') {
+      ldataList = this.PendingENT;
+    } else if (this.CurrentTab == 'INCOMING') {
+      ldataList = this.IncomingData;
+    } else if (this.CurrentTab == 'DETAILING') {
+      ldataList = this.PendingDET;
+    } else if (this.CurrentTab == 'CANCELLED') {
+      ldataList = this.CancelData;
+    } else if (this.CurrentTab == 'PROCESSING') {
+      ldataList = this.ProcessingData;
+    } else if (this.CurrentTab == 'ALL') {
+      ldataList = this.AllData;
+    } else if (this.CurrentTab == 'SEARCH') {
+      ldataList = this.SearchResultData;
+    }
+
+    for (let i = 0; i < ldataList.length; i++) {
+      let item = ldataList[i];
+
+      if(item.JobID == pOrderNo){
+        if (item.SAPPONo.includes('-CXL')) {
+            item.SAPPONo = item.SAPPONo.split('-CXL')[0];
+        }
+      }
+
+      this.UpdateBackupRecords(item);
+    }
   }
 
   UpdatePONumber_CXL(pOrderNo: any) {

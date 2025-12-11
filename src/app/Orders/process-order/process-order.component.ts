@@ -7322,6 +7322,7 @@ export class ProcessOrderComponent implements OnInit {
           if(this.selectedRow[i].SAPPONo){
             this.selectedRow[i].SAPPONo = this.selectedRow[i].SAPPONo + '-CXL';
           }
+          this.UpdatePONumber_CXL(this.selectedRow[i].JobID);
 
           this.UpdateOrderStatus(this.selectedRow[i].JobID, 'Cancelled');
           if (i == this.selectedRow.length - 1) {
@@ -7420,6 +7421,7 @@ export class ProcessOrderComponent implements OnInit {
           if(this.selectedRow[i].SAPPONo){
             this.selectedRow[i].SAPPONo = this.selectedRow[i].SAPPONo + '-CXL';
           }
+          this.UpdatePONumber_CXL(this.selectedRow[i].JobID);
 
           this.UpdateOrderStatus(this.selectedRow[i].JobID, 'Withdrawn');
           if (i == this.selectedRow.length - 1) {
@@ -16078,6 +16080,9 @@ export class ProcessOrderComponent implements OnInit {
             item.SORStatus = 'X';
           }
 
+          // CXL code added
+          item.SAPPONo = item.PONumber + '-CXL';
+
           //Update the Backup list
           this.UpdateBackUpData(item);
 
@@ -16103,8 +16108,10 @@ export class ProcessOrderComponent implements OnInit {
                 item.SORStatus = 'X';
               }
 
+              item.SAPPONo = item.PONumber + '-CXL';
+
               //Update the Backup list
-              this, this.UpdateBackUpData(item);
+              this.UpdateBackUpData(item);
 
               // lDataView.updateItem(item.id, item);
               lCurrOrder = lCurrOrder + 1;
@@ -17059,6 +17066,40 @@ export class ProcessOrderComponent implements OnInit {
     // }
 
     //return value.toUpperCase();
+  }
+
+  UpdatePONumber_CXL(pOrderNo: any) {
+    /**
+     * When the Order status of any record is updated (either "Withdrawn" or "Cancelled"),
+     * then update the PoNumber of all the subsequent records which share the same order number.
+     */
+    let ldataList: any[] = [];
+
+    if (this.CurrentTab == 'CREATING') {
+      ldataList = this.PendingENT;
+    } else if (this.CurrentTab == 'INCOMING') {
+      ldataList = this.IncomingData;
+    } else if (this.CurrentTab == 'DETAILING') {
+      ldataList = this.PendingDET;
+    } else if (this.CurrentTab == 'CANCELLED') {
+      ldataList = this.CancelData;
+    } else if (this.CurrentTab == 'PROCESSING') {
+      ldataList = this.ProcessingData;
+    } else if (this.CurrentTab == 'ALL') {
+      ldataList = this.AllData;
+    } else if (this.CurrentTab == 'SEARCH') {
+      ldataList = this.SearchResultData;
+    }
+
+    for (let i = 0; i < ldataList.length; i++) {
+      let item = ldataList[i];
+
+      if(item.JobID == pOrderNo){
+        item.SAPPONo = item.PONumber + '-CXL';
+      }
+
+      this.UpdateBackupRecords(item);
+    }
   }
 
   UpdateOrderStatus(pOrderNo: any, pStatus: any) {
@@ -18075,6 +18116,9 @@ export class ProcessOrderComponent implements OnInit {
           if (item.SORStatus != null) {
             item.SORStatus = 'X';
           }
+
+          item.SAPPONo = item.PONumber + '-CXL';
+
           // Update the Backup Data
           this.UpdateBackUpData(item);
 
@@ -18093,6 +18137,8 @@ export class ProcessOrderComponent implements OnInit {
               if (item.SORStatus != null) {
                 item.SORStatus = 'X';
               }
+
+              item.SAPPONo = item.PONumber + '-CXL';
               // Update the Backup Data
               this.UpdateBackUpData(item);
 

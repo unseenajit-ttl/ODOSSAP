@@ -9161,6 +9161,8 @@ export class ProcessOrderComponent implements OnInit {
 
         this.UpdatePONumber_RemoveCXL(this.selectedRow[i].JobID)
 
+        this.UpdateOrderStatus(this.selectedRow[i].JobID, this.selectedRow[i].OrderStatus);
+
         // STEP 3. Update Internal and External Remarks
         await this.UpdateRemarksAfterSubmit(this.selectedRow[i]);
 
@@ -17170,12 +17172,14 @@ export class ProcessOrderComponent implements OnInit {
     for (let i = 0; i < ldataList.length; i++) {
       let item = ldataList[i];
       item.OrderStatus = item.JobID == pOrderNo ? pStatus : item.OrderStatus;
-      item.SORStatus =
-        item.JobID == pOrderNo &&
-        (item.SORStatus != null || item.SORStatus != '')
-          ? 'X'
-          : item.SORStatus;
-      item.SORStatusCK = item.JobID == pOrderNo ? 'X' : item.SORStatusCK;
+      if(pStatus != 'Reviewed' && pStatus != 'Processed'){
+        item.SORStatus =
+          item.JobID == pOrderNo &&
+          (item.SORStatus != null || item.SORStatus != '')
+            ? 'X'
+            : item.SORStatus;
+        item.SORStatusCK = item.JobID == pOrderNo ? 'X' : item.SORStatusCK;
+      }
 
       this.UpdateBackupRecords(item);
     }

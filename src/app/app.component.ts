@@ -10,7 +10,7 @@ import { Title } from '@angular/platform-browser';
 import { Location } from '@angular/common';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { InvalidTokenPopupComponent } from './SharedComponent/invalid-token-popup/invalid-token-popup.component';
-import {SelectServer} from '../environments/SelectServer'
+// import {SelectServer} from '../environments/SelectServer'
 
 @Component({
   selector: 'app-root',

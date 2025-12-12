@@ -3,7 +3,7 @@ name: Angular Build and Deploy to IIS (Split Ubuntu + Self-Hosted)
 on:
   push:
     branches:
-      - test
+      - main
 
 jobs:
   build-angular:
@@ -31,7 +31,7 @@ jobs:
           retention-days: 1
 
   deploy-to-iis:
-    runs-on: [self-hosted, dev_BPC_Runner]
+    runs-on: [self-hosted, ODOSSAPUI]
     needs: build-angular
 
     steps:
@@ -60,7 +60,7 @@ jobs:
         shell: powershell
         run: |
           $source = (Get-ChildItem -Path dist | Where-Object { $_.PSIsContainer } | Select-Object -First 1).FullName
-          $destination = "C:\inetpub\wwwroot\ODOS_UI"
+          $destination = "C:\inetpub\wwwroot\ODOS"
           $backupRoot = "D:\IIS_Backups\ODOS_UI_Backup"
           $timestamp = Get-Date -Format "yyyy-MM-dd_HH-mm-ss"
           $backupFolder = Join-Path $backupRoot "ODOS-Backup_$timestamp"

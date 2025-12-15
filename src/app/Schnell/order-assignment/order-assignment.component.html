@@ -163,7 +163,6 @@
           <label class="form-label"> </label>
           <div class="d-flex">
             <button class="btn btn-primary btn-sm" type="button" ngbTooltip="View Report" (click)="getSchnellOrderAssignment()">View
-
             </button>
           </div>
         </div>
@@ -414,8 +413,8 @@
                           style="color: white; font-size: medium;border-radius: 0px;">Suggestions</th>
                         <!-- <th width='4%' [style.top]="inverseOfENT" *ngIf="loading"
                           style="color: white; font-size: medium;border-radius: 0px;">Action<br />选择</th> -->
-                        <!-- <th width='4%' [style.top]="inverseOfENT" *ngIf="loading"
-                          style="color: white; font-size: medium;border-radius: 0px;">Extra Cab_cut_length<br />选择</th> -->
+                        <th width='4%' [style.top]="inverseOfENT" *ngIf="loading"
+                          style="color: white; font-size: medium;border-radius: 0px;">Extra Cab_cut_length<br />选择</th>
                         <th width='4%' [style.top]="inverseOfENT" *ngIf="loading"
                           style="color: white; font-size: medium;border-radius: 0px;">
                           Planner Confirmation
@@ -500,40 +499,40 @@
                             <span *ngIf="item.Score < 85"
                               style="color: red;font-size: 20px; font-weight: bold;">&#10006;</span>
                           </td>
-                            <!-- <td class="text-center">
+                            <td class="text-center">
 
                            
-                            <ng-container *ngIf="!item.isEditing; else editMode">
+                            <ng-container *ngIf="!item.isEditing && item.Extra_cab_cut_length <= 0; else editMode">
                               <i class="material-icons"
                                  style="color: grey; cursor: pointer;"
                                  ngbTooltip="Edit"
-                                 (click)="onEdit(i)" [ngClass]="{ 'disabled-icon': item.CouplrBrPeices <= 0 }">
+                                 (click)="onEdit(i)" [ngClass]="{ 'disabled-icon': item.CouplrBrPeices <= 0 || item.AssignmentStatus === 'ASSIGNED' }"
+                                 [style.pointer-events]="item.CouplrBrPeices <= 0 || item.AssignmentStatus === 'ASSIGNED' ? 'none' : 'auto'">
                                  mode_edit
                               </i>
                             </ng-container>
                           
                             
                             <ng-template #editMode>
-                              <div class="d-flex align-items-center justify-content-center">
+                              <div *ngIf="item.isEditing || item.Extra_cab_cut_length > 0" class="d-flex align-items-center justify-content-center">
                                 <i class="material-icons"
                                    style="color: grey; cursor: pointer;"
                                    ngbTooltip="Edit Done" >
                                    mode_edit
                                 </i>
                                 <input type="number"
-                                       [(ngModel)]="item.Extralength"
+                                       [(ngModel)]="item.Extra_cab_cut_length"
                                        [ngModelOptions]="{ standalone: true }"
                                        class="form-control me-2"
                                        style="max-width: 100px; font-size: 16px; font-weight: bold; font-family: Arial, sans-serif;"
                                        min="1"
                                        step="1"
-                                       (keydown)="blockInvalid($event)">
-                                      
-                                
+                                       (keydown)="blockInvalid($event)"
+                                       [disabled]="item.AssignmentStatus === 'ASSIGNED'"> 
                               </div>
                             </ng-template>
                           
-                          </td> -->
+                          </td>
                           <td style="text-align: center;" (click)="toggleCheckbox(item)">
                             <input type="checkbox" [(ngModel)]="item.isSelected"  [ngModelOptions]="{ standalone: true }"  style="position: relative; z-index: 10; " 
                              [disabled]="item.AssignmentStatus === 'ASSIGNED' || item.AssignmentStatus === 'CANCEL'" (click)="$event.stopPropagation()">

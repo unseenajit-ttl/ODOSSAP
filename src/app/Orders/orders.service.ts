@@ -182,10 +182,10 @@ getSupplierData(productType: string | null): Observable<{
   //   );
 
   // }
-  SaveOrderAssignment(OrderRequestNo: any,AssignedTo: any) {
+  SaveOrderAssignment(OrderRequestNo: any[],AssignedTo: any) {
     //let username=this.loginService.GetGroupName();
     const obj = {
-      orderRequestNo: OrderRequestNo,
+      OrderNoList: OrderRequestNo,
       assignedTo: AssignedTo,
       //assignedby: username
     };

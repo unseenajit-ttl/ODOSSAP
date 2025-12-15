@@ -518,7 +518,7 @@ export class WbsService {
     let UserName = this.loginService.GetGroupName();
     // return this.httpClient.get<any>(`http://localhost:55592/api/SharePointAPI/deleteDrawing_wbsPosting/${CustomerCode}/${ProjectCode}/${DrawingID}`);
     return this.httpClient.get<any>(
-      `https://devodos.natsteel.com.sg/SAP_API/api/SharePointAPI/deleteDrawing_wbsPosting/${CustomerCode}/${ProjectCode}/${DrawingID}`
+      `https://odossap.natsteel.com.sg/SAP_API/api/SharePointAPI/deleteDrawing_wbsPosting/${CustomerCode}/${ProjectCode}/${DrawingID}`
     );
   }
   Modify(obj: any) {
@@ -662,7 +662,7 @@ export class WbsService {
     // );
 
     return this.httpClient.post<any>(
-      `https://devodos.natsteel.com.sg/SAP_API/api/SharePointAPI/uploadDrawingFiles_2`,formData
+      `https://odossap.natsteel.com.sg/SAP_API/api/SharePointAPI/uploadDrawingFiles_2`,formData
     );
   }
   modifyDrawing_Status(WBSID: any) {

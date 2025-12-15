@@ -2780,7 +2780,7 @@ getSupplierData(productType: string | null): Observable<{
   ) {
     let UserName = this.loginService.GetGroupName();
     return this.httpClient.get(
-      `https://devodos.natsteel.com.sg/SAP_API/api/SharePointAPI/ShowDirDownload/${ddCustomerCode}/${ddProjectCode}/${ddFileName}/${ddRevision}`
+      `https://odossap.natsteel.com.sg/SAP_API/api/SharePointAPI/ShowDirDownload/${ddCustomerCode}/${ddProjectCode}/${ddFileName}/${ddRevision}`
       //  {
       //       responseType: 'blob', // Important to specify blob as the response type
       //     }
@@ -2897,9 +2897,9 @@ getSupplierData(productType: string | null): Observable<{
     //   formData
     // );
     //http://172.25.1.224:8989/api/SAPAPI/
-    //https://devodos.natsteel.com.sg:8999/
+    //https://odossap.natsteel.com.sg:8999/
     return this.httpClient.post<any>(
-      'https://devodos.natsteel.com.sg/SAP_API/api/SharePointAPI/uploadDrawingFiles',
+      'https://odossap.natsteel.com.sg/SAP_API/api/SharePointAPI/uploadDrawingFiles',
       formData
     );
   }
@@ -2921,7 +2921,7 @@ getSupplierData(productType: string | null): Observable<{
     //let UserName=this.loginService.GetGroupName();
     // return this.httpClient.get<any>(`http://localhost:55592/api/SharePointAPI/deleteDrawing/${CustomerCode}/${ProjectCode}/${DrawingID}`);
     return this.httpClient.get<any>(
-      `https://devodos.natsteel.com.sg/SAP_API/api/SharePointAPI/deleteDrawing/${CustomerCode}/${ProjectCode}/${DrawingID}`
+      `https://odossap.natsteel.com.sg/SAP_API/api/SharePointAPI/deleteDrawing/${CustomerCode}/${ProjectCode}/${DrawingID}`
     );
   }
 
@@ -3440,7 +3440,7 @@ else{
 
   uploadDrawingRepoFile(formData:FormData){
     return this.httpClient.post<any>(
-      'https://devodos.natsteel.com.sg/SAP_API/api/SharePointAPI/uploadDrawingFiles',
+      'https://odossap.natsteel.com.sg/SAP_API/api/SharePointAPI/uploadDrawingFiles',
       formData
     );
   }
@@ -3485,7 +3485,7 @@ else{
                         ddRevision:revision,
                         UserType:UserName
                       }
-    return this.httpClient.post(`https://devodos.natsteel.com.sg/SAP_API/api/SharePointAPI/ShowDirView`,drawingObj,{
+    return this.httpClient.post(`https://odossap.natsteel.com.sg/SAP_API/api/SharePointAPI/ShowDirView`,drawingObj,{
       responseType: 'blob', // Important to specify blob as the response type
     });
     // return this.httpClient.get<any>(this.apiUrl + `reload_Watchlist`);
@@ -3531,7 +3531,7 @@ else{
       formData.append('UserType', UserType);
 
       const request = this.httpClient.post<any>(
-        'https://devodos.natsteel.com.sg/SAP_API/api/SharePointAPI/uploadDrawingFiles',
+        'https://odossap.natsteel.com.sg/SAP_API/api/SharePointAPI/uploadDrawingFiles',
         formData
       );
       requests.push(request);
@@ -3547,7 +3547,7 @@ else{
     ddRevision: number
   ) {
     let UserType = this.loginService.GetUserType();
-    return `https://devodos.natsteel.com.sg/api/SAP_API/SharePointAPI/ShowDirDownload/${ddCustomerCode}/${ddProjectCode}/${ddFileName}/${ddRevision}/${UserType}`;
+    return `https://odossap.natsteel.com.sg/api/SAP_API/SharePointAPI/ShowDirDownload/${ddCustomerCode}/${ddProjectCode}/${ddFileName}/${ddRevision}/${UserType}`;
   }
 
 
@@ -3927,9 +3927,9 @@ else{
     //   formData
     // );
     //http://172.25.1.224:8989/api/SAPAPI/
-    //https://devodos.natsteel.com.sg:8999/
+    //https://odossap.natsteel.com.sg:8999/
     return this.httpClient.post<any>(
-      'https://devodos.natsteel.com.sg/SAP_API/api/SharePointAPI/uploadDrawingFiles_2',
+      'https://odossap.natsteel.com.sg/SAP_API/api/SharePointAPI/uploadDrawingFiles_2',
       formData
     );
 

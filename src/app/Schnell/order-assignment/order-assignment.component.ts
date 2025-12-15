@@ -156,337 +156,6 @@ export class OrderAssignmentComponent implements OnInit {
 
     if (localStorage.getItem('OrdAssgnColumns')) {
       this.OrdAssgnColumns = JSON.parse(localStorage.getItem('OrdAssgnColumns')!);
-      // for (let i = 0; i < this.OrdAssgnColumns.length; i++) {
-      //   if (this.OrdAssgnColumns[i].resizeWidth[i] == '0') {
-      //     this.OrdAssgnColumns = [
-      //       {
-      //         controlName: 'OrderRequestNo',
-      //         displayName: 'Order Request No.',
-      //         chineseDisplayName: '序号',
-      //         field: 'OrderRequestNo',
-      //         colName: 'OrderRequestNo',
-      //         placeholder: 'Search OrderRequestNo',
-      //         isVisible: true,
-      //         width: '5%',
-      //         left: '0',
-      //         resizeWidth: '150',
-      //       },
-      //       {
-      //         controlName: 'OrderNo',
-      //         displayName: 'Order No.',
-      //         chineseDisplayName: '序号',
-      //         field: 'OrderNo',
-      //         colName: 'OrderNo',
-      //         placeholder: 'Search OrderNumber',
-      //         isVisible: true,
-      //         width: '5%',
-      //         left: '0',
-      //         resizeWidth: '100',
-      //       },
-      //       {
-      //         controlName: 'CustCode',
-      //         displayName: 'Customer Code',
-      //         chineseDisplayName: '楼座',
-      //         colName: 'CustCode',
-      //         field: 'CustCode',
-      //         placeholder: 'Search CustCode',
-      //         isVisible: false,
-      //         width: '5%',
-      //         left: '0',
-      //         resizeWidth: '130',
-      //       },
-      //       {
-      //         controlName: 'CustName',
-      //         displayName: 'Customer Name',
-      //         chineseDisplayName: '楼层',
-      //         colName: 'CustName',
-      //         field: 'CustName',
-      //         placeholder: 'Search CustName',
-      //         isVisible: true,
-      //         width: '5%',
-      //         left: '0',
-      //         resizeWidth: '130',
-      //       },
-      //       {
-      //         controlName: 'ProjNo',
-      //         displayName: 'Project No.',
-      //         chineseDisplayName: '产品类型',
-      //         colName: 'ProjNo',
-      //         field: 'ProjNo',
-      //         placeholder: 'Search ProjNo',
-      //         isVisible: false,
-      //         width: '10%',
-      //         left: '0',
-      //         resizeWidth: '100',
-      //       },
-      //       {
-      //         controlName: 'ProjName',
-      //         displayName: 'Project Name.',
-      //         chineseDisplayName: '产品类型',
-      //         colName: 'ProjName',
-      //         field: 'ProjName',
-      //         placeholder: 'Search ProjName',
-      //         isVisible: true,
-      //         width: '10%',
-      //         left: '0',
-      //         resizeWidth: '130',
-      //       },
-      //       {
-      //         controlName: 'CustPoNo',
-      //         displayName: 'Customer PO No.',
-      //         chineseDisplayName: '产品类型',
-      //         colName: 'CustPoNo',
-      //         field: 'CustPoNo',
-      //         placeholder: 'Search CustPoNo',
-      //         isVisible: true,
-      //         width: '10%',
-      //         left: '0',
-      //         resizeWidth: '120',
-      //       },
-      //       {
-      //         controlName: 'ProductType',
-      //         displayName: 'Product Type',
-      //         chineseDisplayName: '工程项目',
-      //         colName: 'ProductType',
-      //         field: 'ProductType',
-      //         placeholder: 'Search ProductType',
-      //         isVisible: true,
-      //         width: '20%',
-      //         left: '0',
-      //         resizeWidth: '100',
-      //       },
-      //       {
-      //         controlName: 'AssignmentStatus',
-      //         displayName: 'Assignment Status',
-      //         chineseDisplayName: '工程项目',
-      //         colName: 'AssignmentStatus',
-      //         field: 'AssignmentStatus',
-      //         placeholder: 'Search AssignmentStatus',
-      //         isVisible: true,
-      //         width: '20%',
-      //         left: '0',
-      //         resizeWidth: '100',
-      //       },
-      //       {
-      //         controlName: 'AssignedTo',
-      //         displayName: 'Assigned To',
-      //         chineseDisplayName: '工程项目',
-      //         colName: 'AssignedTo',
-      //         field: 'AssignedTo',
-      //         placeholder: 'Search AssignedTo',
-      //         isVisible: true,
-      //         width: '20%',
-      //         left: '0',
-      //         resizeWidth: '100',
-      //       },
-      //       {
-      //         controlName: 'NoofCuts',
-      //         displayName: 'No. Of Cuts',
-      //         chineseDisplayName: '楼层',
-      //         colName: 'NoofCuts',
-      //         field: 'NoofCuts',
-      //         placeholder: 'Search NoofCuts',
-      //         isVisible: true,
-      //         width: '5%',
-      //         left: '0',
-      //         resizeWidth: '130',
-      //       },
-      //       {
-      //         controlName: 'NoofPieces',
-      //         displayName: 'No. Of Pieces',
-      //         chineseDisplayName: '楼层',
-      //         colName: 'NoofPieces',
-      //         field: 'NoofPieces',
-      //         placeholder: 'Search NoofPieces',
-      //         isVisible: true,
-      //         width: '5%',
-      //         left: '0',
-      //         resizeWidth: '130',
-      //       },
-      //       {
-      //         controlName: 'SLBendings',
-      //         displayName: 'S/L Bendings',
-      //         chineseDisplayName: '楼层',
-      //         colName: 'SLBendings',
-      //         field: 'SLBendings',
-      //         placeholder: 'Search SLBendings',
-      //         isVisible: true,
-      //         width: '5%',
-      //         left: '0',
-      //         resizeWidth: '130',
-      //       },
-      //       {
-      //         controlName: 'SLPieces',
-      //         displayName: 'S/L Pieces',
-      //         chineseDisplayName: '楼层',
-      //         colName: 'SLPieces',
-      //         field: 'SLPieces',
-      //         placeholder: 'Search SLPieces',
-      //         isVisible: true,
-      //         width: '5%',
-      //         left: '0',
-      //         resizeWidth: '130',
-      //       },
-      //       {
-      //         controlName: 'SCBMRun',
-      //         displayName: 'SCB M-run',
-      //         chineseDisplayName: '楼层',
-      //         colName: 'SCBMRun',
-      //         field: 'SCBMRun',
-      //         placeholder: 'Search SCBMRun',
-      //         isVisible: true,
-      //         width: '5%',
-      //         left: '0',
-      //         resizeWidth: '130',
-      //       },
-      //       {
-      //         controlName: 'SBCPieces',
-      //         displayName: 'SCB Pieces',
-      //         chineseDisplayName: '楼层',
-      //         colName: 'SBCPieces',
-      //         field: 'SBCPieces',
-      //         placeholder: 'Search SBCPieces',
-      //         isVisible: true,
-      //         width: '5%',
-      //         left: '0',
-      //         resizeWidth: '130',
-      //       },
-      //       {
-      //         controlName: 'CouplrBrPeices',
-      //         displayName: 'Coupler Bar Pieces',
-      //         chineseDisplayName: '楼层',
-      //         colName: 'CouplrBrPeices',
-      //         field: 'CouplrBrPeices',
-      //         placeholder: 'Search CouplrBrPeices',
-      //         isVisible: true,
-      //         width: '5%',
-      //         left: '0',
-      //         resizeWidth: '130',
-      //       },
-      //       {
-      //         controlName: 'CouplrEnds',
-      //         displayName: 'Coupler Ends',
-      //         chineseDisplayName: '楼层',
-      //         colName: 'CouplrEnds',
-      //         field: 'CouplrEnds',
-      //         placeholder: 'Search CouplrEnds',
-      //         isVisible: true,
-      //         width: '5%',
-      //         left: '0',
-      //         resizeWidth: '130',
-      //       },
-      //       {
-      //         controlName: 'ContractNo',
-      //         displayName: 'Contract No.',
-      //         chineseDisplayName: '分部',
-      //         colName: 'ContractNo',
-      //         field: 'ContractNo',
-      //         placeholder: 'Search ContractNo',
-      //         isVisible: false,
-      //         width: '5%',
-      //         left: '0',
-      //         resizeWidth: '110',
-      //       },
-      //       {
-      //         controlName: 'CustOrdDate',
-      //         displayName: 'Customer Order Date',
-      //         chineseDisplayName: '建筑构件',
-      //         colName: 'CustOrdDate',
-      //         field: 'CustOrdDate',
-      //         placeholder: 'Search CustOrdDate',
-      //         isVisible: false,
-      //         width: '10%',
-      //         left: '0',
-      //         resizeWidth: '120',
-      //       },
-      //       {
-      //         controlName: 'ReqDelDatefr',
-      //         displayName: 'Required Delivery Date From',
-      //         chineseDisplayName: '加工表号',
-      //         colName: 'ReqDelDatefr',
-      //         field: 'ReqDelDatefr',
-      //         placeholder: 'Search ReqDelDatefr',
-      //         isVisible: true,
-      //         width: '12%',
-      //         left: '0',
-      //         resizeWidth: '100',
-      //       },
-      //       {
-      //         controlName: 'ReqDelDateto',
-      //         displayName: 'Required Delivery Date To',
-      //         chineseDisplayName: '加工表备注',
-      //         colName: 'ReqDelDateto',
-      //         field: 'ReqDelDateto',
-      //         placeholder: 'Search ReqDelDateto',
-      //         isVisible: true,
-      //         width: '12%',
-      //         left: '0',
-      //         resizeWidth: '100',
-      //       },
-      //       {
-      //         controlName: 'ProjSeg',
-      //         displayName: 'Project Segment',
-      //         chineseDisplayName: '交货日期',
-      //         colName: 'ProjSeg',
-      //         field: 'ProjSeg',
-      //         placeholder: 'Search ProjSeg',
-      //         isVisible: false,
-      //         width: '12%',
-      //         left: '0',
-      //         resizeWidth: '130',
-      //       },
-      //       {
-      //         controlName: 'ProjSubSeg',
-      //         displayName: 'Project SubSegment',
-      //         chineseDisplayName: '重量(吨)',
-      //         colName: 'ProjSubSeg',
-      //         field: 'ProjSubSeg',
-      //         placeholder: 'Search ProjSubSeg',
-      //         isVisible: false,
-      //         width: '5%',
-      //         left: '0',
-      //         resizeWidth: '100',
-      //       },
-
-      //       {
-      //         controlName: 'CreateBy',
-      //         displayName: 'Created By',
-      //         chineseDisplayName: '(修改者)',
-      //         colName: 'CreateBy',
-      //         field: 'CreateBy',
-      //         placeholder: 'Search here',
-      //         isVisible: false,
-      //         width: '20%',
-      //         left: '0',
-      //         resizeWidth: '100',
-      //       },
-      //       {
-      //         controlName: 'CreateDate',
-      //         displayName: 'Created Date',
-      //         chineseDisplayName: '(修改日期)',
-      //         colName: 'CreateDate',
-      //         field: 'CreateDate',
-      //         placeholder: 'Search here',
-      //         isVisible: false,
-      //         width: '20%',
-      //         left: '0',
-      //         resizeWidth: '200',
-      //       },
-      //       {
-      //         controlName: 'Score',
-      //         displayName: 'Score (%)',
-      //         chineseDisplayName: '(修改日期)',
-      //         colName: 'Score',
-      //         field: 'Score',
-      //         placeholder: 'Search here',
-      //         isVisible: true,
-      //         width: '5%',
-      //         left: '0',
-      //         resizeWidth: '70',
-      //       },
-      //     ];
-      //   }
-      // }
     } else {
       this.OrdAssgnColumns = [
         {
@@ -908,17 +577,17 @@ export class OrderAssignmentComponent implements OnInit {
       this.selectedProductType,
       this.selectedstatus,null).subscribe({
       next: (data: any[]) => {
-        // this.schnellOrders = data.map(item => ({
-        //   ...item,
-        //   Extralength: 0,
-        //   isSelected: false,
-        //   isEditing: false,
-        //   isWithdrawal: false
-        // }));
         this.schnellOrders = data.map(item => ({
           ...item,
-          isSelected: false
+          //Extralength: 0,
+          isSelected: false,
+          isEditing: false,
+          //isWithdrawal: false
         }));
+        // this.schnellOrders = data.map(item => ({
+        //   ...item,
+        //   isSelected: false
+        // }));
         this.loading = true;
         this.changeDetectorRef.detectChanges();
         console.log(this.schnellOrders)
@@ -1329,17 +998,17 @@ export class OrderAssignmentComponent implements OnInit {
     }
     debugger
     if (validate == true) {
-      const selectedOrders = this.schnellOrders
-      .filter(order => order.isSelected)
-      .map(order => ( order.OrderRequestNo
-      )); 
-
       // const selectedOrders = this.schnellOrders
       // .filter(order => order.isSelected)
-      // .map(order => ({
-      //   orderRequestNo: order.OrderRequestNo,
-      //   extraLength: order.Extralength
-      // }));
+      // .map(order => ( order.OrderRequestNo
+      // )); 
+
+      const selectedOrders = this.schnellOrders
+      .filter(order => order.isSelected)
+      .map(order => ({
+        orderRequestNo: order.OrderRequestNo,
+        extraLength: order.Extra_cab_cut_length
+      }));
 
 
       this.orderService.SaveOrderAssignment(selectedOrders, this.SelectedCategory[0]).subscribe({
@@ -1581,23 +1250,23 @@ export class OrderAssignmentComponent implements OnInit {
       
   }
 
-//   onEdit( Index: number) {
-//     if (this.schnellOrders[Index].CouplrBrPeices >0)
-//     {
-//       this.schnellOrders[Index].isEditing = true;
-//     }
-//     else
-//     {
-//       alert("Order Request No '"+this.schnellOrders[Index].OrderRequestNo+"' does not contain coupler Item");
-//     }
-// }
+  onEdit( Index: number) {
+    if (this.schnellOrders[Index].CouplrBrPeices >0)
+    {
+      this.schnellOrders[Index].isEditing = true;
+    }
+    else
+    {
+      alert("Order Request No '"+this.schnellOrders[Index].OrderRequestNo+"' does not contain coupler Item");
+    }
+}
 
-// blockInvalid(event: KeyboardEvent) {
-//   // prevent -, +, e, E, ., etc.
-//   if (event.key === '-' || event.key === '+' || event.key === 'e' || event.key === 'E' || event.key === '.') {
-//     event.preventDefault();
-//   }
-// }
+blockInvalid(event: KeyboardEvent) {
+  // prevent -, +, e, E, ., etc.
+  if (event.key === '-' || event.key === '+' || event.key === 'e' || event.key === 'E' || event.key === '.') {
+    event.preventDefault();
+  }
+}
 
 toggleCheckbox(order: any) {
   if (order.AssignmentStatus === 'ASSIGNED' || order.AssignmentStatus === 'CANCEL') {
@@ -1633,17 +1302,17 @@ onSearchClick()
     console.log('this.FromReqDate',this.FromReqDate)
     this.orderService.GetSchnellOrderAssign(null, null, null, null, null,null,this.searchText).subscribe({
       next: (data: any[]) => {
-        // this.schnellOrders = data.map(item => ({
-        //   ...item,
-        //   Extralength: 0,
-        //   isSelected: false,
-        //   isEditing: false,
-        //   isWithdrawal: false
-        // }));
         this.schnellOrders = data.map(item => ({
           ...item,
-          isSelected: false
+          //Extralength: 0,
+          isSelected: false,
+          isEditing: false,
+          //isWithdrawal: false
         }));
+        // this.schnellOrders = data.map(item => ({
+        //   ...item,
+        //   isSelected: false
+        // }));
         this.loading = true;
         this.changeDetectorRef.detectChanges();
         console.log(this.schnellOrders)

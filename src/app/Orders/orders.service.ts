@@ -41,7 +41,7 @@ import { CustomerProjectService } from '../SharedServices/customer-project.servi
 export class OrderService {
 //apiUrl: any = 'http://172.25.1.224:78/';
 apiUrl: any = environment.apiUrl +'OrderService/';
-// apiUrl: any ='https://localhost:5009/'
+ //apiUrl: any ='https://localhost:5009/'
 
   constructor(
     private httpClient: HttpClient,
@@ -4241,5 +4241,61 @@ else{
     //   this.apiUrl +
     //   `getDOMaterial_Delivered/${CustomerCode}/${ProjectCode}/${DONumbers}/${DODate}`
     // );
+  }
+
+    GetTemplate_BatchPrinting(ProductType: any): Observable<any> {
+    // let url=""
+    // if (ProductType=='CAB')
+    // {
+    //   url='http://172.25.1.144:84/api/CABTagPrinting/GetLibrarianFileOutSourcing?productType=CABOutSourcingQA'
+    // }
+    // else  if (ProductType=='MESH')
+    // {
+    //   url='http://172.25.1.144:84/api/CABTagPrinting/GetLibrarianFileOutSourcing?productType=MESHOutSourcingQA'
+    // }
+    // return this.httpClient.get<any[]>(url);
+    return this.httpClient.get<any[]>(
+      this.apiUrl + `GetTemplate_BatchPrinting/${ProductType}`
+    );
+  }
+
+  
+  GetPrinter_BatchPrinting(): Observable<any> {
+    // let url="http://172.25.1.144:84/api/CABTagPrinting/GetPrinterNameOutSourcing"
+    // return this.httpClient.get<any[]>(url);
+    return this.httpClient.get<any[]>(
+      this.apiUrl + `GetPrinter_BatchPrinting`
+    );
+  }
+
+  Print_BatchPrinting(data: {
+    so_no: string,
+    Printername: string,
+    templateName: string,
+    producttype: string
+  }) {
+    // const url = "http://172.25.1.144:84/api/CABTagPrinting/OutSourcingPrint";
+  
+    // return this.httpClient.post(url, data);
+    return this.httpClient.post<any[]>(
+      this.apiUrl + `Print_BatchPrinting`,data
+    );
+  }
+
+  Print_GetOutSourcingStatus(jobId: string) {
+    // const url = `http://172.25.1.144:84/api/CABTagPrinting/GetOutSourcingStatus?jobId=${jobId}`;
+    // return this.httpClient.get<any>(url);
+    return this.httpClient.get<any>(
+      this.apiUrl + `Print_GetOutSourcingStatus/${jobId}`
+    );
+  }
+
+  Print_DownloadPDF(ProductType: any) {
+    // const url = `http://172.25.1.144:84/api/CABTagPrinting/ShowDir`;
+    // return this.httpClient.get(url, {
+    //   responseType: 'blob'
+    // });
+    return this.httpClient.get(
+      this.apiUrl + `Print_DownloadPDF/${ProductType}`, { responseType: 'blob' });
   }
 }

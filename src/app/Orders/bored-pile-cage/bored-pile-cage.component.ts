@@ -396,7 +396,7 @@ export class BoredPileCageComponent {
   ];
 
   gMainBarDiaMixed = [
-    { value: '50,40', label: '50,40' },
+    { value: '50,50', label: '50,50' },
     { value: '50,40', label: '50,40' },
     { value: '50,32', label: '50,32' },
     { value: '50,28', label: '50,28' },
@@ -22366,19 +22366,42 @@ export class BoredPileCageComponent {
       }
     });
   }
+  // libConfig() {
+  //   this.isLoading = true;
+  //   if (this.customerCode) {
+  //     const modalRef = this.modalService.open(SpiralDialogComponent);
+  //     modalRef.componentInstance.customerCode = this.customerCode;
+  //     modalRef.componentInstance.projectCode = this.projectCode;
+  //     let obj = {
+  //       CustomerCode: this.customerCode,
+  //       ProjectCode: this.projectCode,
+  //     };
+  //     this.orderService.getBPCConfig_bpc(obj).subscribe((response: any) => {
+  //       this.isLoading = false;
+  //       modalRef.componentInstance.isWrapping = response;
+  //     });
+  //   } else {
+  //     this.isLoading = false;
+  //     alert('Please select customer and project.');
+  //   }
+  //   this.isLoading = false;
+  // }
   libConfig() {
+    debugger
     this.isLoading = true;
     if (this.customerCode) {
-      const modalRef = this.modalService.open(SpiralDialogComponent);
-      modalRef.componentInstance.customerCode = this.customerCode;
-      modalRef.componentInstance.projectCode = this.projectCode;
+      
       let obj = {
         CustomerCode: this.customerCode,
         ProjectCode: this.projectCode,
       };
       this.orderService.getBPCConfig_bpc(obj).subscribe((response: any) => {
         this.isLoading = false;
-        modalRef.componentInstance.isWrapping = response;
+        const modalRef = this.modalService.open(SpiralDialogComponent);
+              modalRef.componentInstance.customerCode = this.customerCode;
+              modalRef.componentInstance.projectCode = this.projectCode;
+              modalRef.componentInstance.isWrapping = response;
+      
       });
     } else {
       this.isLoading = false;

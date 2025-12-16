@@ -57,7 +57,7 @@ export class MainBarNumberComponent implements OnInit {
   itemsPerPage: number = 10;
   paginatedMachineList: any[] = [];
   sendData!: BoredPileCustomMainBarModel;
-  selectedLayer: string = 'InnerLayer';
+ selectedLayer: string = 'OuterLayer';
   layerBarCount: any;
   lDist: any;
   outerList: any = [];
@@ -126,31 +126,24 @@ export class MainBarNumberComponent implements OnInit {
 
   toggleMainBar(bar: any, event: Event): void {
     const selectedBars = this.machineList.filter((mbar: any) => mbar.selected);
-    // if (selectedBars.length === 1 && bar.selected) {
-    //   this.toastr.warning('At least one Main Bar must be enabled!', 'Warning', {
-    //     closeButton: true,
-    //     timeOut: 3000,
-    //     positionClass: 'toast-top-right',
-    //   });
-    //   event.preventDefault();
-    //   return;
-    // }
     bar.selected = !bar.selected;
      this.updateMainToggleState();
+   if (this.pileType == 'Double-Layer' || this.Insert_BPC_Structuremarking.main_bar_arrange == 'In-Out') {
+    this.createMainDoubleBarImage();
+  } else {
+    this.createMainBarImage();
+  }
   }
   toggleMainBarLayers(bar: any, event: Event, list: any): void {
     const selectedBars = list.filter((mbar: any) => mbar.selected);
-    // if (selectedBars.length === 1 && bar.selected) {
-    //   this.toastr.warning('At least one Main Bar must be enabled!', 'Warning', {
-    //     closeButton: true,
-    //     timeOut: 3000,
-    //     positionClass: 'toast-top-right',
-    //   });
-    //   event.preventDefault();
-    //   return;
-    // }
+   
     bar.selected = !bar.selected;
      this.updateMainToggleState();
+      if (this.pileType == 'Double-Layer' || this.Insert_BPC_Structuremarking.main_bar_arrange == 'In-Out') {
+    this.createMainDoubleBarImage();
+  } else {
+    this.createMainBarImage();
+  }
   }
 
   dismissModal() {
@@ -832,93 +825,132 @@ export class MainBarNumberComponent implements OnInit {
     this.imageSrc = this.canvas.nativeElement.toDataURL('image/png');
   }
 
+  // createMainDoubleBarImage(): void {
+  //   debugger;
+  //   const ctx = this.canvas.nativeElement.getContext('2d');
+
+  //   if (!ctx) {
+  //     console.error('Canvas context not available.');
+  //     return;
+  //   }
+
+  //   const centerX = 200;
+  //   const centerY = 200;
+  //   const outerRadius = 150;
+  //   const innerRadius = 130;
+
+  //   const myBlackPen = 'black';
+  //   const myGrayPen = 'gray';
+  //   const myBluePen = 'blue';
+  //   const myRedPen = 'red';
+  //   const myGreenPen = 'green';
+
+  //   // Clear previous drawings
+  //   ctx.clearRect(0, 0, 400, 400);
+
+  //   // Draw outer circle
+  //   ctx.beginPath();
+  //   ctx.arc(centerX, centerY, outerRadius, 0, 2 * Math.PI);
+  //   ctx.fillStyle = 'white';
+  //   ctx.fill();
+  //   ctx.lineWidth = 2;
+  //   ctx.strokeStyle = myBlackPen;
+  //   ctx.stroke();
+
+  //   let list =
+  //     this.selectedLayer === 'OuterLayer' ? this.outerList : this.innerList;
+  //   // Draw main bars (Outer Layer)
+  //   list.forEach((bar: any, index: number) => {
+  //     debugger;
+  //     const angleInRadians = (bar.angle - 90) * (Math.PI / 180);
+  //     const xOuter = centerX + outerRadius * Math.cos(angleInRadians);
+  //     const yOuter = centerY + outerRadius * Math.sin(angleInRadians);
+
+  //     if (!bar.selected) {
+  //       ctx.strokeStyle = myBlackPen;
+  //       ctx.lineWidth = 2;
+  //       ctx.beginPath();
+  //       ctx.moveTo(xOuter - 5, yOuter - 5);
+  //       ctx.lineTo(xOuter + 5, yOuter + 5);
+  //       ctx.moveTo(xOuter + 5, yOuter - 5);
+  //       ctx.lineTo(xOuter - 5, yOuter + 5);
+  //       ctx.stroke();
+  //     } else {
+  //       // Draw regular filled circle for enabled bars
+  //       ctx.beginPath();
+  //       ctx.arc(xOuter, yOuter, 6, 0, 2 * Math.PI);
+
+  //       if (this.pileType.trim().toLowerCase() === 'single-layer') {
+  //         if (this.mainbarType === 'Mixed' && this.mainbarArrange != 'In-Out') {
+  //           ctx.fillStyle =
+  //             this.mainbarType === 'Mixed' && index % 2 === 0
+  //               ? myRedPen
+  //               : myGreenPen;
+  //         } else if (
+  //           (this.mainbarType == 'Single' || this.mainbarType === 'Mixed') &&
+  //           this.mainbarArrange === 'In-Out'
+  //         ) {
+  //           ctx.fillStyle =
+  //             this.selectedLayer === 'OuterLayer' ? myRedPen : myGreenPen;
+  //         } else {
+  //           ctx.fillStyle = myRedPen;
+  //         }
+  //       } else if (this.pileType.trim().toLowerCase() === 'double-layer') {
+  //         ctx.fillStyle =
+  //           this.selectedLayer === 'OuterLayer' ? myRedPen : myGreenPen;
+  //       } else {
+  //         ctx.fillStyle = myRedPen;
+  //       }
+
+  //       ctx.fill();
+  //     }
+
+  //     // Draw ID label
+  //     ctx.font = 'bold 14px Arial';
+  //     ctx.fillStyle = myBluePen;
+  //     ctx.fillText(bar.id.toString(), xOuter - 6, yOuter - 6);
+  //   });
+
+  //   // Draw axes
+  //   ctx.beginPath();
+  //   ctx.moveTo(0, centerY);
+  //   ctx.lineTo(400, centerY);
+  //   ctx.moveTo(centerX, 0);
+  //   ctx.lineTo(centerX, 400);
+  //   ctx.strokeStyle = myBlackPen;
+  //   ctx.stroke();
+
+  //   // Convert canvas to image URL
+  //   this.imageSrc = this.canvas.nativeElement.toDataURL('image/png');
+  // }
   createMainDoubleBarImage(): void {
-    debugger;
-    const ctx = this.canvas.nativeElement.getContext('2d');
+  const ctx = this.canvas.nativeElement.getContext('2d');
+  if (!ctx) return;
 
-    if (!ctx) {
-      console.error('Canvas context not available.');
-      return;
-    }
+  const centerX = 200;
+  const centerY = 200;
+  const outerRadius = 150;
+  const innerRadius = 130;
+  const myBlackPen = 'black';
 
-    const centerX = 200;
-    const centerY = 200;
-    const outerRadius = 150;
-    const innerRadius = 130;
+  ctx.clearRect(0, 0, 400, 400);
 
-    const myBlackPen = 'black';
-    const myGrayPen = 'gray';
-    const myBluePen = 'blue';
-    const myRedPen = 'red';
-    const myGreenPen = 'green';
+  // Draw Outer Circle
+  ctx.beginPath();
+  ctx.arc(centerX, centerY, outerRadius, 0, 2 * Math.PI);
+  ctx.strokeStyle = 'black';
+  ctx.stroke();
 
-    // Clear previous drawings
-    ctx.clearRect(0, 0, 400, 400);
+  // Draw Inner Circle
+  ctx.beginPath();
+  ctx.arc(centerX, centerY, innerRadius, 0, 2 * Math.PI);
+  ctx.strokeStyle = 'gray';
+  ctx.stroke();
 
-    // Draw outer circle
-    ctx.beginPath();
-    ctx.arc(centerX, centerY, outerRadius, 0, 2 * Math.PI);
-    ctx.fillStyle = 'white';
-    ctx.fill();
-    ctx.lineWidth = 2;
-    ctx.strokeStyle = myBlackPen;
-    ctx.stroke();
-
-    let list =
-      this.selectedLayer === 'OuterLayer' ? this.outerList : this.innerList;
-    // Draw main bars (Outer Layer)
-    list.forEach((bar: any, index: number) => {
-      debugger;
-      const angleInRadians = (bar.angle - 90) * (Math.PI / 180);
-      const xOuter = centerX + outerRadius * Math.cos(angleInRadians);
-      const yOuter = centerY + outerRadius * Math.sin(angleInRadians);
-
-      if (!bar.selected) {
-        ctx.strokeStyle = myBlackPen;
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.moveTo(xOuter - 5, yOuter - 5);
-        ctx.lineTo(xOuter + 5, yOuter + 5);
-        ctx.moveTo(xOuter + 5, yOuter - 5);
-        ctx.lineTo(xOuter - 5, yOuter + 5);
-        ctx.stroke();
-      } else {
-        // Draw regular filled circle for enabled bars
-        ctx.beginPath();
-        ctx.arc(xOuter, yOuter, 6, 0, 2 * Math.PI);
-
-        if (this.pileType.trim().toLowerCase() === 'single-layer') {
-          if (this.mainbarType === 'Mixed' && this.mainbarArrange != 'In-Out') {
-            ctx.fillStyle =
-              this.mainbarType === 'Mixed' && index % 2 === 0
-                ? myRedPen
-                : myGreenPen;
-          } else if (
-            (this.mainbarType == 'Single' || this.mainbarType === 'Mixed') &&
-            this.mainbarArrange === 'In-Out'
-          ) {
-            ctx.fillStyle =
-              this.selectedLayer === 'OuterLayer' ? myRedPen : myGreenPen;
-          } else {
-            ctx.fillStyle = myRedPen;
-          }
-        } else if (this.pileType.trim().toLowerCase() === 'double-layer') {
-          ctx.fillStyle =
-            this.selectedLayer === 'OuterLayer' ? myRedPen : myGreenPen;
-        } else {
-          ctx.fillStyle = myRedPen;
-        }
-
-        ctx.fill();
-      }
-
-      // Draw ID label
-      ctx.font = 'bold 14px Arial';
-      ctx.fillStyle = myBluePen;
-      ctx.fillText(bar.id.toString(), xOuter - 6, yOuter - 6);
-    });
-
-    // Draw axes
+  // Draw both layers
+  this.drawBars(ctx, this.outerList, outerRadius, 'OuterLayer');
+  this.drawBars(ctx, this.innerList, innerRadius, 'InnerLayer');
+    //   // Draw axes
     ctx.beginPath();
     ctx.moveTo(0, centerY);
     ctx.lineTo(400, centerY);
@@ -927,10 +959,38 @@ export class MainBarNumberComponent implements OnInit {
     ctx.strokeStyle = myBlackPen;
     ctx.stroke();
 
-    // Convert canvas to image URL
-    this.imageSrc = this.canvas.nativeElement.toDataURL('image/png');
-  }
+  this.imageSrc = this.canvas.nativeElement.toDataURL('image/png');
+}
 
+drawBars(ctx: CanvasRenderingContext2D, list: any[], radius: number, layer: string) {
+  const centerX = 200;
+  const centerY = 200;
+
+  list.forEach((bar, index) => {
+    const angle = (bar.angle - 90) * (Math.PI / 180);
+    const x = centerX + radius * Math.cos(angle);
+    const y = centerY + radius * Math.sin(angle);
+
+    // Draw enabled/disabled
+    ctx.beginPath();
+    if (!bar.selected) {
+      ctx.moveTo(x - 5, y - 5);
+      ctx.lineTo(x + 5, y + 5);
+      ctx.moveTo(x + 5, y - 5);
+      ctx.lineTo(x - 5, y + 5);
+      ctx.strokeStyle = 'black';
+      ctx.stroke();
+    } else {
+      ctx.arc(x, y, 6, 0, Math.PI * 2);
+      ctx.fillStyle = layer === 'OuterLayer' ? 'red' : 'green';
+      ctx.fill();
+    }
+
+    // Bar ID
+    ctx.fillStyle = 'blue';
+    ctx.fillText(bar.id, x - 6, y - 6);
+  });
+}
   templateChange(event: any) {
     console.log('templateChange=>', event);
   }
@@ -1015,7 +1075,7 @@ export class MainBarNumberComponent implements OnInit {
     console.log('this.noOfMainBarToUpdate=>', this.noOfMainBarToUpdate);
   }
 
-   toggleAll(event: Event): void {
+toggleAll(event: Event): void {
   const checked = (event.target as HTMLInputElement).checked;
   this.allSelected = checked;
   if (this.pileType !== 'Double-Layer' && this.Insert_BPC_Structuremarking.main_bar_arrange !== 'In-Out') {
@@ -1025,6 +1085,12 @@ export class MainBarNumberComponent implements OnInit {
   } else {
     this.innerList.forEach((bar:any) => (bar.selected = checked));
   }
+  if (this.pileType == 'Double-Layer' || this.Insert_BPC_Structuremarking.main_bar_arrange == 'In-Out') {
+    this.createMainDoubleBarImage();
+  } else {
+    this.createMainBarImage();
+  }
+
 }
 
 updateMainToggleState(): void {

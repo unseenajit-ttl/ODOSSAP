@@ -13,7 +13,7 @@
         <div class="col-md-2">
           <!-- <label class="required-label" style="padding-right:5px;">* </label> -->
           <label class="form-label"><b>Supplier</b></label>
-          <ng-select [selectOnTab]="true" [(ngModel)]="selectedsupplier" class="w-100" placeholder="Supplier">
+          <ng-select [selectOnTab]="true" [(ngModel)]="selectedsupplier" class="w-100" placeholder="Supplier" (change)="onSupplierChange($event)">
             <ng-option *ngFor="let sList of Suppliertlist" [value]="sList.vendorcode">
               {{ sList.vendorcode }}-{{sList.VendorName}}
             </ng-option>
@@ -24,7 +24,7 @@
           <label class="form-label"><b>Delivery In</b></label>
           <div class="d-flex align-items-center">
             <ng-select class="fixed-select me-2" [selectOnTab]="true" [(ngModel)]="selectedDeliveredIn"
-              placeholder="Delivery In">
+              placeholder="Delivery In" (change)="onDeliveryInChange($event)">
               <ng-option [value]="1">1</ng-option>
               <ng-option [value]="2">2</ng-option>
               <ng-option [value]="3">3</ng-option>
@@ -48,7 +48,7 @@
           <!-- <label class="required-label" style="padding-right:5px;">* </label> -->
           <label class="form-label"><b>SO Number</b></label>
           <ng-select [selectOnTab]="true" [(ngModel)]="selectedSONo" class="w-100" placeholder="So No"
-            (open)="GetSoNo()">
+            >
             <ng-option *ngFor="let sList of SoNolist" [value]="sList.order_no">
               {{ sList.order_no }}
             </ng-option>
@@ -145,6 +145,21 @@
         </div>
       </div>
 
+      <div *ngIf="!isPrintLoading"
+     style="
+        z-index: 999;
+        position: fixed;
+        top:0;
+        left:0;
+        right:0;
+        bottom:0;
+        background: rgba(0,0,0,0.3);
+     ">
+  <div class="d-flex align-items-center justify-content-center" style="height: 100%;">
+    <div id="spinner" class="loader"></div>
+  </div>
+</div>
+
       <div style="margin-left: 0.9%;">
         <div class="table-responsive table-wrapper-scroll-y my-custom-scrollbar" *ngIf="loading">
           <cdk-virtual-scroll-viewport itemSize="100" #scrollViewportENT (scroll)="syncScroll($event)"
@@ -237,33 +252,40 @@
       <div class="col-md-2">
         <!-- <label class="required-label" style="padding-right:5px;">* </label> -->
         <label class="form-label"><b>Product Type</b></label>
-        <ng-select [selectOnTab]="true" [(ngModel)]="selectedproductype" class="w-100" placeholder="Product Type">
+        <ng-select [selectOnTab]="true" [(ngModel)]="selectedproductype" class="w-100" placeholder="Product Type"
+        (change)="GetTemplateName()">
           <ng-option *ngFor="let pList of producttypelist" [value]="pList.product_type">
             {{ pList.product_type }}
           </ng-option>
         </ng-select>
       </div>
-      <div class="col-md-2">
+      <div class="col-md-3">
         <!-- <label class="required-label" style="padding-right:5px;">* </label> -->
         <label class="form-label"><b>Template</b></label>
-        <ng-select class="fixed-select me-2" [selectOnTab]="true" placeholder="Template"></ng-select>
+        <ng-select class="fixed-select me-2" [selectOnTab]="true" [(ngModel)]="selectedTemplate" placeholder="Template"  
+        class="w-150"  >
+        <ng-option *ngFor="let pList of Templatelist" [value]="pList.Name">
+          {{ pList.DisplayName }}
+        </ng-option>
+      </ng-select>
       </div>
       <div class="col-md-2">
         <!-- <label class="required-label" style="padding-right:5px;">* </label> -->
         <label class="form-label"><b>Printer Name</b></label>
         <ng-select [selectOnTab]="true" [(ngModel)]="selectedPrinter" class="w-100" placeholder="Printer Name">
-          <ng-option *ngFor="let pList of PrinterNameList" [value]="pList.name">
-            {{ pList.name }}
+          <ng-option *ngFor="let pList of PrinterNameList" [value]="pList.Name">
+            {{ pList.Name }}
           </ng-option>
         </ng-select>
       </div>
       <div class="col-md-2">
         <label class="form-label"> </label>
         <div class="d-flex">
-          <button class="btn btn-primary btn-sm" type="button" ngbTooltip="Print">Print</button>
+          <button class="btn btn-primary btn-sm" type="button" ngbTooltip="Print" (click)="Print()">Print</button>
         </div>
       </div>
     </div>
 
   </div>
 </div>
+

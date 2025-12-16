@@ -1465,11 +1465,9 @@ export class ShapemasterComponent implements OnInit {
       }
       const modalRef = this.modalService.open(addFormulaComponent, ngbModalOptions);
       modalRef.componentInstance.ShapeId = this.selected_Shape;
-      modalRef.componentInstance.shapegroup == this.selected_Meshshapegroup;
+      modalRef.componentInstance.shapegroup = this.selected_Meshshapegroup;
+      modalRef.componentInstance.chrShapeType = this.ShapeCodeDetailsList[0].chrShapeType;
     }
-
-
-
 
   }
 

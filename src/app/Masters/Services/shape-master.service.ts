@@ -204,5 +204,10 @@ UpdateShapeHeaderDetails(object:UpdateShape) {
   //return this.httpClient.post<any>(`https://localhost:5004/UpdateShapeHeaderDetails/${UserID}`, object);
   
 }
+ShapeCodeFormulaDelete(id: number): Observable<any> {
+  return this.httpClient.delete<any>( `${this.apiUrl}ShapeService/ShapeCodeFormulaDelete/${id}`,
+
+  );
+}
 
 }

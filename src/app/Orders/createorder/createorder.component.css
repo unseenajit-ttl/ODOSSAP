@@ -139,3 +139,14 @@ padding-left: -10px;
 
 
 }
+
+.main-page {
+  margin-top: -11px;
+}
+
+@media only screen and (max-width: 900px),
+  (min-device-width: 900px) and (max-device-width: 1024px) {
+  .main-page {
+    margin-top: 0 !important;
+  }
+}

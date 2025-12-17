@@ -69,12 +69,28 @@ export class ReloadService {
   ReloadDetailingSubTab$: Observable<any> =
     this.reloadComponentDetailingSubTab.asObservable();
 
+    
+  reloadAccessRight = new EventEmitter<any>();
+  reloadAccessRight$: Observable<any> = this.reloadAccessRight.asObservable();
+  
+  // For Updating Data of CustomerProject in Mobile View
   reloadCustomerList = new EventEmitter<any>();
   reloadCustomerList$: Observable<any> = this.reloadCustomerList.asObservable();
-
+  
   reloadProjectList = new EventEmitter<any>();
   reloadProjectList$: Observable<any> = this.reloadProjectList.asObservable();
 
-  reloadAccessRight = new EventEmitter<any>();
-  reloadAccessRight$: Observable<any> = this.reloadAccessRight.asObservable();
+  reloadAddresslistEmitter = new EventEmitter<any>();
+  reloadAddressList$: Observable<any> = this.reloadAddresslistEmitter.asObservable();
+
+  reloadAddressSideMenuEmitter = new EventEmitter<any>();
+  reloadAddressSideMenu$ : Observable<any> = this.reloadAddressSideMenuEmitter.asObservable();
+
+  reloadCustomerCodeMobileEmitter = new EventEmitter<any>();
+  reloadCustomerCodeMobile$: Observable<any> = this.reloadCustomerCodeMobileEmitter.asObservable();
+  reloadProjectCodeMobileEmitter = new EventEmitter<any>();
+  reloadProjectCodeMobile$: Observable<any> = this.reloadProjectCodeMobileEmitter.asObservable();
+  reloadAddressCodeMobileEmitter = new EventEmitter<any>();
+  reloadAddressCodeMobile$: Observable<any> = this.reloadAddressCodeMobileEmitter.asObservable();
+  
 }

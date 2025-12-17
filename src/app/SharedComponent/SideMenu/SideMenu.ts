@@ -82,7 +82,7 @@ export class SideMenu implements OnInit {
 
   expanded: boolean = true;
 
-  [x: string]: any;
+  // [x: string]: any;
   public DisplayName: any = '';
   customerList: any = [];
   addressList: any = [];
@@ -92,7 +92,7 @@ export class SideMenu implements OnInit {
   SelectProductCode: any = null;
   currentDateTime: any;
   SelectProjectCode: any[] = [];
-    SelectAddress: any[] = [];
+  SelectAddress: any[] = [];
 
   ProjectList: any;
   filteredOptions: any = [];
@@ -103,6 +103,7 @@ export class SideMenu implements OnInit {
   isPanelOpen: boolean = false;
 
   searchAddressText: string = "";
+  searchaddresstext: string = "";
 
 
   //Detailing
@@ -115,8 +116,12 @@ export class SideMenu implements OnInit {
   DetailingProjectfilteredOptions: any = [];
   searchDetailingcustomertext: any;
   searchDetailingprojecttext: any;
+  filteredDetailingProjectOptions: any;
   //Detailing
   isOrdering: boolean = false;
+
+
+  CustomerPlaceholder: any;
 
   UserName: any = '';
   menu: NavItem[] = [
@@ -385,7 +390,28 @@ export class SideMenu implements OnInit {
         this.SelectAddress[0] = this.dropdown.getAddressList()[0];
       }
     });
-    
+
+    // Reloading info from MobileView
+    this.reloadService.reloadCustomerSideMenu$.subscribe((data) => {
+      // Update the selected Address when routing from 5 pages to CreateOrder.
+      this.SelectCustomerCode = this.dropdown.getCustomerCode();
+      this.changeCustomer_Reload(this.SelectCustomerCode);
+    });
+
+    this.reloadService.reloadProjectSideMenu$.subscribe((data) => {
+      // Update the selected Address when routing from 5 pages to CreateOrder.
+      this.SelectProjectCode = this.dropdown.getProjectCode();
+      this.changeProjectforBoth({ value: this.SelectProjectCode[0] },"O", true, false, false, false) // Same as if called manually
+    });
+
+    this.reloadService.reloadAddressSideMenu$.subscribe((data) => {
+      // Update the selected Address when routing from 5 pages to CreateOrder.
+      if(this.dropdown.getAddressList()[0]) {
+        this.SelectAddress = this.dropdown.getAddressList();
+        let tObj = { value: this.addressList[0].id };
+        this.AddressChanged(tObj, false, false);
+      }
+    });
 
     this.reloadService.reloadSideMenu$.subscribe((data) => {
       this.CloseSideMenu();
@@ -552,6 +578,8 @@ export class SideMenu implements OnInit {
 
         console.log('customer', response);
 
+        this.UpdateCustomerList_Mobile();
+
         // Run the following loginc incase only a single customer option is available.
         if (response.length == 1) {
           this.SelectCustomerCode = response[0].CustomerCode;
@@ -627,6 +655,8 @@ export class SideMenu implements OnInit {
           this.projectList = response;
           console.log('this.projectList -> ', this.projectList);
           this.filteredProjectOptions = response;
+
+          this.UpdateProjectList_Mobile();
 
           // Run the following logic in case there is only a single project option in the list.
           if (response.length == 1) {
@@ -1491,6 +1521,7 @@ export class SideMenu implements OnInit {
     if(type=="O")
     {
       this.changecustomer(event);
+      this.UpdateCustomerCode_Mobile();
       this.SelectDetailingCustomerCode = event.value;
       this.changeDetailingcustomer(event);
 
@@ -1556,7 +1587,8 @@ export class SideMenu implements OnInit {
     if(type=="O")
     {
       this.onSelectionChange(event);
-
+      this.UpdateProjectCode_Mobile();
+      
       if (pAddressChanged == false && pAutoSelectAddress == false && pAddressRemoved_Flag == false) {
         setTimeout(() => {
           this.GetAddress(this.SelectProjectCode);
@@ -1609,12 +1641,15 @@ export class SideMenu implements OnInit {
         console.log('addressList', response);
         this.filteredAddressOptions = response;
 
+        this.UpdateAddressList_Mobile();
+
         this.FilterAddressforCustomers();
         
         // Run the following logic in case there is only a single project option in the list.
         if (this.addressList.length == 1) {
           let tObj = { value: this.addressList[0].id };
           this.AddressChanged(tObj, true, true);
+          this.UpdateAddressCode_Mobile();
         }
       },
       error: (e) => { },
@@ -1730,5 +1765,30 @@ export class SideMenu implements OnInit {
         }
       }, 200);
     }
+  }
+
+  UpdateCustomerList_Mobile() {
+    this.loginService.customerList_Ordering = this.customerList;
+    this.reloadService.reloadCustomerList.emit(this.customerList);
+  }
+
+  UpdateProjectList_Mobile() {
+    this.loginService.projectList_Ordering = this.projectList;
+    this.reloadService.reloadProjectList.emit(this.projectList);
+  }
+
+  UpdateAddressList_Mobile() {
+    this.loginService.addressList_Ordering = this.addressList;
+    this.reloadService.reloadAddresslistEmitter.emit(this.addressList);
+  }
+
+  UpdateCustomerCode_Mobile() {
+    this.reloadService.reloadCustomerCodeMobileEmitter.emit(this.SelectCustomerCode);
+  }
+  UpdateProjectCode_Mobile() {
+    this.reloadService.reloadProjectCodeMobileEmitter.emit(this.SelectProjectCode);
+  }
+  UpdateAddressCode_Mobile() {
+    this.reloadService.reloadAddressCodeMobileEmitter.emit(this.SelectAddress);
   }
 }

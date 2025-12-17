@@ -59,18 +59,17 @@ export class createorderComponent implements OnInit {
   searchResult = true;
   closeResult = '';
   searchText: any = '';
-  customerList: any = [];
+  CustomerList: any = [];
 
   istoggel: boolean = false;
   ProjectCode: any = undefined;
   hideTable: boolean = true;
-  projectList: any = [];
   loadingData = false;
   activeorderarray: ActiveOrderArray[] = [];
   activeorderarray_backup: ActiveOrderArray[] = [];
   isExpand: boolean = false;
   toggleFilters = false;
-  ProjectList: any
+  ProjectList: any[] = [];
   iscapping: boolean = false;
   currentPage = 1;
   pageSize = 0;
@@ -159,6 +158,7 @@ export class createorderComponent implements OnInit {
     this.createOrderForm = this.formBuilder.group({
       customer: new FormControl('', Validators.required),
       project: new FormControl('', Validators.required),
+      address: new FormControl('', Validators.required),
       wbs1: new FormControl('', Validators.required),
       wbs2: new FormControl('', Validators.required),
       wbs3: new FormControl('', Validators.required),
@@ -177,51 +177,83 @@ export class createorderComponent implements OnInit {
     debugger
     this.commonService.changeTitle('Create Orders | ODOS');
     this.reloadService.reloadCustomer$.subscribe((data) => {
-      this.createOrderForm.controls['customer'].patchValue(this.dropdown.getCustomerCode());
-      this.GetOrderCustomer();
-      this.projectList = [];
-      this.ProjectList = [];
+    this.createOrderForm.controls['customer'].patchValue(this.dropdown.getCustomerCode());
+    // this.GetOrderCustomer();
+    this.ProjectList = [];
+    this.ProjectCode = "";
+    this.createOrderForm.controls['project'].patchValue(this.ProjectCode);
 
-      // this.createSharedService.tempOrderSummaryList = []
+    // this.createSharedService.tempOrderSummaryList = []
+    // this.GetOrderProjectsList(this.createOrderForm.controls['customer'].value);
 
-      this.createOrderForm.controls['project'].patchValue(this.ProjectList);
-      this.GetOrderProjectsList(this.createOrderForm.controls['customer'].value);
+    });
 
+    this.reloadService.reloadCustomerList$.subscribe((data) => {
+      // let lTitle = this.commonService.GetTitle();
+      if (this.loginService.customerList_Ordering) {
+        this.CustomerList = this.loginService.customerList_Ordering;
+      }
+    });
+
+    this.reloadService.reloadProjectList$.subscribe((data) => {
+      // let lTitle = this.commonService.GetTitle();
+      if (this.loginService.projectList_Ordering) {
+        this.ProjectList = this.loginService.projectList_Ordering;
+      }
     });
 
     this.reloadService.reload$.subscribe((data) => {
       console.log("yes yes yes", data)
       if (true) {
         this.createOrderForm.controls['customer'].patchValue(this.dropdown.getCustomerCode());
-        this.ProjectList = this.dropdown.getProjectCode();
-        this.ProjectList = this.ProjectList[0]
-        this.createOrderForm.controls['project'].patchValue(this.ProjectList);
+        let lProjectCode = this.dropdown.getProjectCode();
+        this.ProjectCode = lProjectCode[0];
+        this.createOrderForm.controls['project'].patchValue(this.ProjectCode);
 
         // this.createSharedService.tempOrderSummaryList = []
 
         this.openTabs = true
         this.Loaddata();
       }
-      // this.GetDeleteGridList(this.activeorderForm.controls['customer'].value, this.ProjectList);
+      // this.GetDeleteGridList(this.activeorderForm.controls['customer'].value, this.ProjectCode);
+    });
+
+    this.reloadService.reloadAddressList$.subscribe((data) => {
+      if (this.loginService.addressList_Ordering) {
+        this.AddressList = this.loginService.addressList_Ordering;
+      }
+    });
+
+    this.reloadService.reloadAddressCodeMobile$.subscribe((data) => {
+      let lAddressCode = this.dropdown.getAddressList(); // Refresh the selected Customer Code.
+      this.SelectedAddressCode = lAddressCode ? lAddressCode[0] : '';
+      this.createOrderForm.controls['address'].patchValue(this.SelectedAddressCode);
     });
 
     this.changeDetectorRef.detectChanges();
     this.loadingData = true;
     //console.log(this.loadingData)
 
+    if (this.loginService.customerList_Ordering) {
+      this.CustomerList = this.loginService.customerList_Ordering;
+    }
+    if (this.loginService.projectList_Ordering) {
+      this.ProjectList = this.loginService.projectList_Ordering;
+    }
+
 
     this.createOrderForm.controls['customer'].patchValue(this.dropdown.getCustomerCode());
-    this.ProjectList = this.dropdown.getProjectCode();
-    this.ProjectList = this.ProjectList[0]
-    this.createOrderForm.controls['project'].patchValue(this.ProjectList);
+    let lProjectCode = this.dropdown.getProjectCode();
+    this.ProjectCode = lProjectCode[0];
+    this.createOrderForm.controls['project'].patchValue(this.ProjectCode);
     this.Loaddata();
     // this.GetOrderCustomer();
 
   }
   Loaddata() {
-    this.GetOrderCustomer();
-    this.GetOrderProjectsList(this.createOrderForm.controls['customer'].value);
-    this.GetProductListData(this.createOrderForm.controls['customer'].value, this.ProjectList)
+    // this.GetOrderCustomer();
+    // this.GetOrderProjectsList(this.createOrderForm.controls['customer'].value);
+    this.GetProductListData(this.createOrderForm.controls['customer'].value, this.ProjectCode)
   }
 
   showDetails(item: any) {
@@ -263,7 +295,14 @@ export class createorderComponent implements OnInit {
 
   changecustomer(event: any) {
     //console.log(event);
-    this.GetOrderProjectsList(event)
+    // this.GetOrderProjectsList(event)
+    let lCustomerCode = event;
+    this.dropdown.setCustomerCode(lCustomerCode);
+    // Refresh the Value of CustomerCode in SideMenu;
+    this.reloadService.reloadCustomerSideMenu.emit();
+  
+    this.ProjectCode = ''; // Auto clear the selected project on customer change.
+    this.changeproject([]);
 
   }
   reloadPage() {
@@ -273,16 +312,20 @@ export class createorderComponent implements OnInit {
     if (event.length == 0) {
       this.activeorderarray = [];
       this.hideTable = true;
+      this.dropdown.setProjectCode([]);
+      this.reloadService.reloadProjectSideMenu.emit();
       return;
     }
     console.log(event)
     this.hideTable = false
-    this.GetProductListData(this.createOrderForm.controls['customer'].value, event);
+    this.dropdown.setProjectCode([this.ProjectCode]);
+    this.reloadService.reloadProjectSideMenu.emit();
 
-    this.GetOrderGridList(this.createOrderForm.controls['customer'].value, event)
-
+    // this.GetProductListData(this.createOrderForm.controls['customer'].value, event);
+    // this.GetOrderGridList(this.createOrderForm.controls['customer'].value, event)
     // this.reloadPage();
   }
+
   // changestatus(iscreated:any,isdetailing:any,isposted:any,isreleased:any)
   // {
   //   this.Loaddata();
@@ -525,18 +568,6 @@ export class createorderComponent implements OnInit {
     // this.filterData();
   }
 
-  selectAll() {
-    this.ProjectList = this.projectList.map((option: { ProjectCode: any; }) => option.ProjectCode);
-    this.createOrderForm.controls['project'].patchValue(this.ProjectList);
-    this.changeproject(this.ProjectList)
-  }
-
-  clearAll() {
-    this.hideTable = true
-    this.ProjectList = [];
-    this.activeorderarray = [];
-  }
-
   recordSelected() {
     debugger;
     for (let i = 0; i < this.activeorderarray.length; i++) {
@@ -608,38 +639,38 @@ export class createorderComponent implements OnInit {
     }
     return totalweight
   }
-  GetOrderCustomer(): void {
-    debugger;
-    let pGroupName = this.loginService.GetGroupName();
-    let pUserType = this.loginService.GetUserType()
-    this.orderService.GetCustomers(pGroupName, pUserType).subscribe({
-      next: (response) => {
-        this.customerList = response;
-        console.log("customer", response)
-      },
-      error: (e) => {
-      },
-      complete: () => {
-        // this.loading = false;
-      },
-    });
-  }
-  GetOrderProjectsList(customerCode: any): void {
+  // GetOrderCustomer(): void {
+  //   debugger;
+  //   let pGroupName = this.loginService.GetGroupName();
+  //   let pUserType = this.loginService.GetUserType()
+  //   this.orderService.GetCustomers(pGroupName, pUserType).subscribe({
+  //     next: (response) => {
+  //       this.customerList = response;
+  //       console.log("customer", response)
+  //     },
+  //     error: (e) => {
+  //     },
+  //     complete: () => {
+  //       // this.loading = false;
+  //     },
+  //   });
+  // }
+  // GetOrderProjectsList(customerCode: any): void {
 
-    let pGroupName = this.loginService.GetGroupName();
-    let pUserType = this.loginService.GetUserType()
+  //   let pGroupName = this.loginService.GetGroupName();
+  //   let pUserType = this.loginService.GetUserType()
 
-    this.orderService.GetProjects(customerCode, pUserType, pGroupName).subscribe({
-      next: (response) => {
-        this.projectList = response;
-      },
-      error: (e) => {
-      },
-      complete: () => {
-        // this.loading = false;
-      },
-    });
-  }
+  //   this.orderService.GetProjects(customerCode, pUserType, pGroupName).subscribe({
+  //     next: (response) => {
+  //       this.ProjectList = response;
+  //     },
+  //     error: (e) => {
+  //     },
+  //     complete: () => {
+  //       // this.loading = false;
+  //     },
+  //   });
+  // }
   public onPageChange(pageNum: number): void {
     this.pageSize = this.itemsPerPage * (pageNum - 1);
     //this.LoadShapeGroupList();
@@ -713,7 +744,7 @@ export class createorderComponent implements OnInit {
           // let lProcessItem: any = localStorage.getItem('CreateDataProcess');
           // lProcessItem = JSON.parse(lProcessItem);
           if (lProcessItem) {
-            if (lProcessItem.pSelectedSE.includes('NONWBS' || 'nonwbs')) {
+            if (lProcessItem.pSelectedSE.includes('NONWBS') || lProcessItem.pSelectedSE.includes('nonwbs')) {
               this.projectSelect = false;
             }
           }
@@ -868,6 +899,17 @@ export class createorderComponent implements OnInit {
       }
     }
     return false;
+  }
+
+  // ------------------ADDRESS CODE----------------------- //
+  AddressList: any[] = [];
+  SelectedAddressCode: string = "";
+
+  changeAddress(event: any) {
+    console.log('SelectedAddressCode', this.SelectedAddressCode);
+    // Refresh the AddressCode in SideMenu;
+    this.dropdown.setAddressList([this.SelectedAddressCode]);
+    this.reloadService.reloadAddressSideMenuEmitter.emit();
   }
 }
 

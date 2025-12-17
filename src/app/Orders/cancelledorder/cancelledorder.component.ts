@@ -185,6 +185,7 @@ export class CancelledorderComponent implements OnInit {
     this.canceledorderForm = this.formBuilder.group({
       customer: new FormControl('', Validators.required),
       project: new FormControl('', Validators.required),
+      address: new FormControl('', Validators.required),
       wbs1: new FormControl('', Validators.required),
       wbs2: new FormControl('', Validators.required),
       wbs3: new FormControl('', Validators.required),
@@ -335,6 +336,18 @@ export class CancelledorderComponent implements OnInit {
       if (data === 'Cancelled Orders') {
         this.Loaddata(); // Refresh the Table Data based on the selected Customer & Project Codes.
       }
+    });
+
+    this.reloadService.reloadAddressList$.subscribe((data) => {
+      if (this.loginService.addressList_Ordering) {
+        this.AddressList = this.loginService.addressList_Ordering;
+      }
+    });
+
+    this.reloadService.reloadAddressCodeMobile$.subscribe((data) => {
+      let lAddressCode = this.dropdown.getAddressList(); // Refresh the selected Customer Code.
+      this.SelectedAddressCode = lAddressCode;
+      this.canceledorderForm.controls['address'].patchValue(lAddressCode);
     });
 
     if(localStorage.getItem('cancelFixedColumns')){
@@ -2109,5 +2122,33 @@ export class CancelledorderComponent implements OnInit {
       console.error(error);
       return false;
     }
+  }
+
+  // ------------------ADDRESS CODE----------------------- //
+  AddressList: any[] = [];
+  SelectedAddressCode: any[] = [];
+
+  changeAddress(event: any) {
+    console.log('SelectedAddressCode', this.SelectedAddressCode);
+    // Refresh the AddressCode in SideMenu;
+    this.dropdown.setAddressList(this.SelectedAddressCode);
+    this.reloadService.reloadAddressSideMenuEmitter.emit();
+  }
+
+  selectAll_Address() {
+    this.SelectedAddressCode = this.ProjectList.map(
+      (option: { ProjectCode: any }) => option.ProjectCode
+    );
+    this.canceledorderForm.controls['address'].patchValue(
+      this.SelectedAddressCode
+    );
+    this.changeAddress(this.SelectedAddressCode);
+  }
+
+  ClearAll_Address() {
+    this.hideTable = true;
+    this.SelectedAddressCode = [];
+    this.canceledorderarray = [];
+    this.changeAddress(this.SelectedAddressCode);
   }
 }

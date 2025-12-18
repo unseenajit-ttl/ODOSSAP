@@ -65,8 +65,8 @@ export class createorderComponent implements OnInit {
   ProjectCode: any = undefined;
   hideTable: boolean = true;
   loadingData = false;
-  activeorderarray: ActiveOrderArray[] = [];
-  activeorderarray_backup: ActiveOrderArray[] = [];
+  // activeorderarray: ActiveOrderArray[] = [];
+  // activeorderarray_backup: ActiveOrderArray[] = [];
   isExpand: boolean = false;
   toggleFilters = false;
   ProjectList: any[] = [];
@@ -240,12 +240,23 @@ export class createorderComponent implements OnInit {
     if (this.loginService.projectList_Ordering) {
       this.ProjectList = this.loginService.projectList_Ordering;
     }
+    if (this.loginService.addressList_Ordering) {
+      this.AddressList = this.loginService.addressList_Ordering;
+    }
 
 
     this.createOrderForm.controls['customer'].patchValue(this.dropdown.getCustomerCode());
     let lProjectCode = this.dropdown.getProjectCode();
     this.ProjectCode = lProjectCode[0];
     this.createOrderForm.controls['project'].patchValue(this.ProjectCode);
+    let lAddressCode = this.dropdown.getAddressList();
+    this.SelectedAddressCode = lAddressCode[0];
+    if (this.SelectedAddressCode) {
+      this.createOrderForm.controls['address'].patchValue(
+        this.SelectedAddressCode
+      );
+    }
+
     this.Loaddata();
     // this.GetOrderCustomer();
 
@@ -309,9 +320,10 @@ export class createorderComponent implements OnInit {
     window.location.reload();
   }
   changeproject(event: any) {
-    if (event.length == 0) {
-      this.activeorderarray = [];
+    if (event == undefined || event.length == 0) {
+      // this.activeorderarray = [];
       this.hideTable = true;
+      this.SelectedAddressCode = "";
       this.dropdown.setProjectCode([]);
       this.reloadService.reloadProjectSideMenu.emit();
       return;
@@ -326,23 +338,6 @@ export class createorderComponent implements OnInit {
     // this.reloadPage();
   }
 
-  // changestatus(iscreated:any,isdetailing:any,isposted:any,isreleased:any)
-  // {
-  //   this.Loaddata();
-  //  this.iscreated=iscreated;
-  //  this.isdetailing=isdetailing;
-  //  this.isposted=isposted;
-  //  this.isreleased=isreleased;
-
-
-  // }
-
-  download() {
-    // let fileName = 'ActiveOrders';
-    // const blob = new Blob(this.activeorderarray, { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
-    // saveAs(blob, fileName + '.xlsx');
-
-  }
   getTodayDate(): string {
     let currentDate: Date
     currentDate = new Date();
@@ -368,135 +363,6 @@ export class createorderComponent implements OnInit {
     return num.toString().padStart(2, '0');
   }
 
-  giveRowcolor(item: any) {
-    // 'ispending':false,'isdeliverytoday':true, 'isnextday':false
-    debugger;
-    let currentDate = this.getTodayDate()
-    let tomorrowDate = this.getTomorrowDate()
-    console.log('date:', tomorrowDate)
-    var color = '#ffffff'
-    if (item.ispending) {
-      color = '#fbbb6f';
-    }
-    else if (item.OrderStatus == 'Production' && item.PlanDeliveryDate.replace(/-/g, '') == currentDate) {
-      color = '#5de9d1a8';
-
-    }
-    else if (item.OrderStatus == 'Production' && item.PlanDeliveryDate.replace(/-/g, '') == tomorrowDate) {
-      color = '#E5F5FF ';
-    }
-
-    return color
-
-  }
-
-  searchData() {
-    debugger
-    this.activeorderarray = JSON.parse(JSON.stringify(this.activeorderarray_backup));
-
-    if (this.OrderNumber != undefined && this.OrderNumber != "") {
-      this.activeorderarray = this.activeorderarray.filter(item =>
-        item.OrderNo?.toLowerCase().includes(this.OrderNumber.trim().toLowerCase())
-      );
-    };
-    if (this.PONumber != undefined && this.PONumber != "") {
-      this.activeorderarray = this.activeorderarray.filter(item =>
-        item.PONo?.toLowerCase().includes(this.PONumber.trim().toLowerCase())
-      );
-    };
-    if (this.StartReqDate != "" && this.StartReqDate != null && this.EndReqDate != "" && this.EndReqDate != null) {
-      // console.log(this.activeorderarray[0].RequiredDate.replace(/-/g, ''))
-      this.activeorderarray = this.activeorderarray.filter(item =>
-        item.RequiredDate.replace(/-/g, '') <= this.EndReqDate && item.RequiredDate.replace(/-/g, '') >= this.StartReqDate
-      );
-    };
-
-    if (this.StartPlanDate != "" && this.StartPlanDate != null && this.EndPlanDate != "" && this.EndPlanDate != null) {
-      // console.log(this.activeorderarray[0].RequiredDate.replace(/-/g, ''))
-      this.activeorderarray = this.activeorderarray.filter(item =>
-        item.PlanDeliveryDate.replace(/-/g, '') <= this.EndPlanDate && item.PlanDeliveryDate.replace(/-/g, '') >= this.StartPlanDate
-      );
-    };
-    if (this.StartPODate != "" && this.StartPODate != null && this.EndPODate != "" && this.EndPODate != null) {
-      // console.log(this.activeorderarray[0].RequiredDate.replace(/-/g, ''))
-      this.activeorderarray = this.activeorderarray.filter(item =>
-        item.PODate.replace(/-/g, '') <= this.EndPODate && item.PODate.replace(/-/g, '') >= this.StartPODate
-      );
-    };
-    if (this.WBS1 != undefined && this.WBS1 != "") {
-      this.activeorderarray = this.activeorderarray.filter(item =>
-        item.WBS1?.toLowerCase().includes(this.WBS1.trim().toLowerCase())
-      );
-    };
-    if (this.WBS2 != undefined && this.WBS2 != "") {
-      this.activeorderarray = this.activeorderarray.filter(item =>
-        item.WBS2?.toLowerCase().includes(this.WBS2.trim().toLowerCase())
-      );
-    };
-    if (this.WBS3 != undefined && this.WBS3 != "") {
-      this.activeorderarray = this.activeorderarray.filter(item =>
-        item.WBS3?.toLowerCase().includes(this.WBS3.trim().toLowerCase())
-      );
-    };
-    if (this.ProductType != undefined && this.ProductType != "") {
-      this.activeorderarray = this.activeorderarray.filter(item =>
-        item.ProdType?.toLowerCase().includes(this.ProductType.trim().toLowerCase())
-      );
-    };
-    if (this.StructureElement != undefined && this.StructureElement != "") {
-      this.activeorderarray = this.activeorderarray.filter(item =>
-        item.StructureElement?.toLowerCase().includes(this.StructureElement.trim().toLowerCase())
-      );
-    };
-    if (this.BBSNo != undefined && this.BBSNo != "") {
-      this.activeorderarray = this.activeorderarray.filter(item =>
-        item.BBSNo?.toLowerCase().includes(this.BBSNo.trim().toLowerCase())
-      );
-    };
-    if (this.BBSDesc != undefined && this.BBSDesc != "") {
-      this.activeorderarray = this.activeorderarray.filter(item =>
-        item.BBSDesc?.toLowerCase().includes(this.BBSDesc.trim().toLowerCase())
-      );
-    };
-    if (this.PODate != undefined && this.PODate != "") {
-      this.activeorderarray = this.activeorderarray.filter(item =>
-        item.PODate?.toLowerCase().includes(this.PODate.trim().toLowerCase())
-      );
-    };
-    if (this.Tonnage != undefined && this.Tonnage != "") {
-      this.activeorderarray = this.activeorderarray.filter(item =>
-        item.OrderWeight?.toLowerCase().includes(this.Tonnage.trim().toLowerCase())
-      );
-    };
-    if (this.SubmittedBy != undefined && this.SubmittedBy != "") {
-      this.activeorderarray = this.activeorderarray.filter(item =>
-        item.SubmittedBy?.toLowerCase().includes(this.SubmittedBy.trim().toLowerCase())
-      );
-    };
-    if (this.CreatedBy != undefined && this.CreatedBy != "") {
-      this.activeorderarray = this.activeorderarray.filter(item =>
-        item.DataEnteredBy?.toLowerCase().includes(this.CreatedBy.trim().toLowerCase())
-      );
-    };
-    if (this.ProjectTitle != undefined && this.ProjectTitle != "") {
-      this.activeorderarray = this.activeorderarray.filter(item =>
-        item.ProjectTitle?.toLowerCase().includes(this.ProjectTitle.trim().toLowerCase())
-      );
-    };
-    if (this.OrderStatus != undefined && this.OrderStatus != "") {
-      this.activeorderarray = this.activeorderarray.filter(item =>
-        item.OrderStatus?.toLowerCase().includes(this.OrderStatus.trim().toLowerCase())
-      );
-    };
-
-  }
-  dateChange(date: any) {
-    console.log(date.value)
-    if (date.value == "") {
-      this.activeorderarray = JSON.parse(JSON.stringify(this.activeorderarray_backup));
-    }
-  }
-
   getDate(date: any) {
     if (date == '') {
       return ''
@@ -513,109 +379,6 @@ export class createorderComponent implements OnInit {
   }
 
 
-  reqdateRangeChange(dateRangeStart: HTMLInputElement, dateRangeEnd: HTMLInputElement) {
-    this.StartReqDate = "";
-    this.StartReqDate = "";
-    //StartReqDate
-    this.StartReqDate = dateRangeStart.value
-    this.StartReqDate = this.getDate(this.StartReqDate)
-    //EndReqDate
-    this.EndReqDate = dateRangeEnd.value
-    this.EndReqDate = this.getDate(this.EndReqDate)
-    this.changeDetectorRef.detectChanges();
-
-    console.log(this.StartReqDate);
-    console.log(this.EndReqDate)
-    if (this.StartReqDate != "" && this.EndReqDate != "") {
-      this.searchData()
-    }
-    // this.filterData();
-  }
-  plandeliDateRangeChange(dateRangeStart: HTMLInputElement, dateRangeEnd: HTMLInputElement) {
-    this.StartPlanDate = "";
-    this.StartPlanDate = "";
-    //StartPlanDate
-    this.StartPlanDate = dateRangeStart.value
-    this.StartPlanDate = this.getDate(this.StartPlanDate)
-    //EndReqDate
-    this.EndPlanDate = dateRangeEnd.value
-    this.EndPlanDate = this.getDate(this.EndPlanDate)
-    this.changeDetectorRef.detectChanges();
-
-    console.log(this.StartPlanDate);
-    console.log(this.EndPlanDate)
-    if (this.StartPlanDate != "" && this.EndPlanDate != "") {
-      this.searchData()
-    }
-    // this.filterData();
-  }
-  POdateRangeChange(dateRangeStart: HTMLInputElement, dateRangeEnd: HTMLInputElement) {
-    this.StartPODate = "";
-    this.StartPODate = "";
-    //StartPODate
-    this.StartPODate = dateRangeStart.value
-    this.StartPODate = this.getDate(this.StartPODate)
-    //EndReqDate
-    this.EndPODate = dateRangeEnd.value
-    this.EndPODate = this.getDate(this.EndPODate)
-    this.changeDetectorRef.detectChanges();
-
-    console.log(this.StartPODate);
-    console.log(this.EndPODate)
-    if (this.StartPODate != "" && this.EndPODate != "") {
-      this.searchData()
-    }
-    // this.filterData();
-  }
-
-  recordSelected() {
-    debugger;
-    for (let i = 0; i < this.activeorderarray.length; i++) {
-      if (this.activeorderarray[i].isSelected) {
-        this.disablewithdraw = false
-        this.disablesubmit = false
-        return;
-      }
-    }
-    this.disablewithdraw = true
-    this.disablesubmit = true
-  }
-
-
-  Reset_Filter() {
-    this.OrderNumber = undefined
-    this.PONumber = undefined
-    this.RequiredDate = undefined
-    this.WBS1 = undefined
-    this.WBS2 = undefined
-    this.WBS3 = undefined
-    this.ProductType = undefined
-    this.StructureElement = undefined
-    this.BBSNo = undefined
-    this.BBSDesc = undefined
-    this.PODate = undefined
-    this.Tonnage = undefined
-    this.SubmittedBy = undefined
-    this.CreatedBy = undefined
-    this.ProjectTitle = undefined
-    this.OrderStatus = undefined
-
-    this.StartReqDate = null
-    this.EndReqDate = null
-
-    this.StartPlanDate = null
-    this.EndPlanDate = null
-
-    this.StartPODate = null
-    this.EndPODate = null
-
-    this.ReqdateRange.reset();
-    this.PlanDelidateRange.reset();
-    this.POdateRange.reset();
-
-    this.searchData()
-  }
-
   Copy(item: any) {
     item = JSON.stringify(item, null, 2);
     console.log(item)
@@ -627,50 +390,6 @@ export class createorderComponent implements OnInit {
 
   Withdraw() { }
 
-  GetOrderGridList(customerCode: any, projectCodes: any): void {
-
-  }
-  getTotalWeight(producttype: any) {
-    let totalweight = 0
-    for (let i = 0; i < this.activeorderarray.length; i++) {
-      if (this.activeorderarray[i].ProdType == producttype) {
-        totalweight = totalweight + Number(this.activeorderarray[i].OrderWeight)
-      }
-    }
-    return totalweight
-  }
-  // GetOrderCustomer(): void {
-  //   debugger;
-  //   let pGroupName = this.loginService.GetGroupName();
-  //   let pUserType = this.loginService.GetUserType()
-  //   this.orderService.GetCustomers(pGroupName, pUserType).subscribe({
-  //     next: (response) => {
-  //       this.customerList = response;
-  //       console.log("customer", response)
-  //     },
-  //     error: (e) => {
-  //     },
-  //     complete: () => {
-  //       // this.loading = false;
-  //     },
-  //   });
-  // }
-  // GetOrderProjectsList(customerCode: any): void {
-
-  //   let pGroupName = this.loginService.GetGroupName();
-  //   let pUserType = this.loginService.GetUserType()
-
-  //   this.orderService.GetProjects(customerCode, pUserType, pGroupName).subscribe({
-  //     next: (response) => {
-  //       this.ProjectList = response;
-  //     },
-  //     error: (e) => {
-  //     },
-  //     complete: () => {
-  //       // this.loading = false;
-  //     },
-  //   });
-  // }
   public onPageChange(pageNum: number): void {
     this.pageSize = this.itemsPerPage * (pageNum - 1);
     //this.LoadShapeGroupList();
@@ -679,42 +398,6 @@ export class createorderComponent implements OnInit {
   OnPageSizeChange(pageSize: number) {
     this.pageSize = 0;
     this.currentPage = 1;
-  }
-
-  downloadFile() {
-    let listTodownload = [];
-    for (let i = 0; i < this.activeorderarray.length; i++) {
-      let obj = {
-        OrderNumber: this.activeorderarray[i].OrderNo,
-        PONumber: this.activeorderarray[i].PONo,
-        RequiredDate: this.activeorderarray[i].RequiredDate,
-        PlanDeliverdate: "",
-        WBS1: this.activeorderarray[i].WBS1,
-        WBS2: this.activeorderarray[i].WBS2,
-        WBS3: this.activeorderarray[i].WBS3,
-        ProductType: this.activeorderarray[i].ProdType,
-        StructureElement: this.activeorderarray[i].StructureElement,
-        BBSNo: this.activeorderarray[i].BBSNo,
-        BBSDesc: this.activeorderarray[i].BBSDesc,
-        OrderStatus: this.activeorderarray[i].OrderStatus
-      }
-      listTodownload.push(obj)
-    }
-    // listTodownload = this.activeorderarray;
-    this.name = 'ActiveOrderList'
-    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(listTodownload);
-    const workbook: XLSX.WorkBook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
-    const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-    this.saveAsExcelFile(excelBuffer, 'export');
-
-  }
-  private saveAsExcelFile(buffer: any, fileName: string): void {
-    const data: Blob = new Blob([buffer], { type: 'application/octet-stream' });
-    const url = window.URL.createObjectURL(data);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = this.name + ".xlsx";
-    link.click();
   }
 
   GetProductListData(pCustomerCode: any, pProjectCode: any) {
@@ -799,71 +482,49 @@ export class createorderComponent implements OnInit {
 
 
   //RegionStart: Tab Switch Validations.
- 
+
   disableProjectTab: boolean = false;
   disableNonProjectTab:boolean=false;
 
   check_NonProjectOrders(): boolean {
-
     // Check if the currently selected order from NON-Project tab has some quantity selected.
-
     // If yes, then restrict the user to change tabs.
-
     let lCreatedOrders = this.createSharedService.tempOrderSummaryList;
-
     if (lCreatedOrders) {
-
       if (lCreatedOrders.length != 0) {
-
         let lSelectedQtys = lCreatedOrders.pSelectedQty;
-
         for (let i = 0; i < lSelectedQtys.length; i++) {
-
           // If any of the selected Product has quantity then disable tab switch.
-
           if (lSelectedQtys[i] != 0 && lSelectedQtys[i] != undefined) {
-
             this.disableProjectTab = true;
-
             return true;
-
           }
-
         }
-
       }
-
     }
-
     this.disableProjectTab = false;
-
     return false; // if all the conditions are false, then return false.
-
   }
 
   show_AlertMessage(): void {
-
     if (this.disableProjectTab) {
-
       alert('Please remove the quatity of the selected Products');
-
     }
-
   }
 
   //RegionEnd: Tab Switch Validations.
   check_ProjectOrders(){
     // Check if the currently selected order from NON-Project tab has some quantity selected.
     // If yes, then restrict the user to change tabs.
- 
+
     let lCreatedOrders = this.createSharedService.tempProjectOrderSummaryList;
- 
+
     if (lCreatedOrders) {
       if (lCreatedOrders.length != 0) {
         let lSelectedQtys = lCreatedOrders.pSelectedQty;
         let lSelectedScheduled = lCreatedOrders.pSelectedScheduled;
         for (let i = 0; i < lSelectedQtys.length; i++) {
- 
+
           // If any of the selected Product has quantity then disable tab switch.
           // if (lSelectedQtys[i] != 0 && lSelectedQtys[i] != undefined && lSelectedScheduled[i] == 'N') {
             if (lSelectedQtys[i] != 0 && lSelectedQtys[i] != undefined) {

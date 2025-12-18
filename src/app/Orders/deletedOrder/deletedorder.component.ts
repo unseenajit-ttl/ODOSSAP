@@ -428,14 +428,21 @@ export class DeletedorderComponent implements OnInit {
     if (this.loginService.projectList_Ordering) {
       this.ProjectList = this.loginService.projectList_Ordering;
     }
-
+    if (this.loginService.addressList_Ordering) {
+      this.AddressList = this.loginService.addressList_Ordering;
+    }
     // LOADING VALUES
     this.deletedorderForm.controls['customer'].patchValue(
       this.dropdown.getCustomerCode()
     );
     this.SelectedProjectCodes = this.dropdown.getProjectCode();
     this.deletedorderForm.controls['project'].patchValue(this.SelectedProjectCodes);
-
+    this.SelectedAddressCode = this.dropdown.getAddressList();
+    if (this.SelectedAddressCode) {
+      this.deletedorderForm.controls['address'].patchValue(
+        this.SelectedAddressCode
+      );
+    }
     // LOADING LIST AND TABLE DATA
     this.Loaddata();
   }
@@ -1861,17 +1868,19 @@ changecustomer(event: any) {
 
 // RefreshProject: any[] = [];
 changeproject(event: any) {
+  if (event == undefined || event.length == 0) {
+    this.deleteorderarray = [];
+    this.hideTable = true;
+    this.SelectedAddressCode = [];
+    this.dropdown.setProjectCode([]);
+    this.reloadService.reloadProjectSideMenu.emit();
+    return;
+  }
   this.SelectedProjectCodes = event;
   console.log('SelectedProjectCodes', this.SelectedProjectCodes);
   // Refresh the ProjectCode in SideMenu;
   this.dropdown.setProjectCode(this.SelectedProjectCodes);
-
-  if (this.SelectedProjectCodes.length == 0) {
-    this.deleteorderarray = [];
-    this.hideTable = true;
-  }else{
-    this.hideTable = false;
-  }
+  this.hideTable = false;
   this.reloadService.reloadProjectSideMenu.emit();
 }
 

@@ -368,7 +368,7 @@ export class CancelledorderComponent implements OnInit {
               isVisible: true,
               width: '5%',
               resizeWidth: '50',
-               left: '0'
+              left: '0'
             },
             {
               controlName: 'PONo',
@@ -690,12 +690,21 @@ export class CancelledorderComponent implements OnInit {
     if (this.loginService.projectList_Ordering) {
       this.ProjectList = this.loginService.projectList_Ordering;
     }
+    if (this.loginService.addressList_Ordering) {
+      this.AddressList = this.loginService.addressList_Ordering;
+    }
 
     this.canceledorderForm.controls['customer'].patchValue(
       this.dropdown.getCustomerCode()
     );
     this.SelectedProjectCodes = this.dropdown.getProjectCode();
     this.canceledorderForm.controls['project'].patchValue(this.SelectedProjectCodes);
+    this.SelectedAddressCode = this.dropdown.getAddressList();
+    if (this.SelectedAddressCode) {
+      this.canceledorderForm.controls['address'].patchValue(
+        this.SelectedAddressCode
+      );
+    }
 
     this.Loaddata();
     this.searchForm.valueChanges.subscribe((newValue) => {
@@ -2010,17 +2019,19 @@ export class CancelledorderComponent implements OnInit {
   
   // RefreshProject: any[] = [];
   changeproject(event: any) {
+    if (event == undefined || event.length == 0) {
+      this.canceledorderarray = [];
+      this.hideTable = true;
+      this.SelectedAddressCode = [];
+      this.dropdown.setProjectCode([]);
+      this.reloadService.reloadProjectSideMenu.emit();
+      return;
+    }
     this.SelectedProjectCodes = event;
     console.log('SelectedProjectCodes', this.SelectedProjectCodes);
     // Refresh the ProjectCode in SideMenu;
     this.dropdown.setProjectCode(this.SelectedProjectCodes);
-  
-    if (this.SelectedProjectCodes.length == 0) {
-      this.canceledorderarray = [];
-      this.hideTable = true;
-    }else{
-      this.hideTable = false;
-    }
+    this.hideTable = false;
     this.reloadService.reloadProjectSideMenu.emit();
   }
   

@@ -873,6 +873,9 @@ export class DeliveredorderComponent implements OnInit {
     if (this.loginService.projectList_Ordering) {
       this.ProjectList = this.loginService.projectList_Ordering;
     }
+    if (this.loginService.addressList_Ordering) {
+      this.AddressList = this.loginService.addressList_Ordering;
+    }
 
     // LOADING VALUES
     this.deliveredorderForm.controls['customer'].patchValue(
@@ -881,6 +884,12 @@ export class DeliveredorderComponent implements OnInit {
     this.SelectedProjectCodes = this.dropdown.getProjectCode();
     this.deliveredorderForm.controls['project'].patchValue(this.SelectedProjectCodes);
 
+    this.SelectedAddressCode = this.dropdown.getAddressList();
+    if (this.SelectedAddressCode) {
+      this.deliveredorderForm.controls['address'].patchValue(
+        this.SelectedAddressCode
+      );
+    }
     // SET DEFAULT DATE RANGE
     // this.SetDefaultDateRange();
 
@@ -2323,17 +2332,19 @@ export class DeliveredorderComponent implements OnInit {
 
   // RefreshProject: any[] = [];
   changeproject(event: any) {
+    if (event == undefined || event.length == 0) {
+      this.deliveredorderarray = [];
+      this.hideTable = true;
+      this.SelectedAddressCode = [];
+      this.dropdown.setProjectCode([]);
+      this.reloadService.reloadProjectSideMenu.emit();
+      return;
+    }
     this.SelectedProjectCodes = event;
     console.log('SelectedProjectCodes', this.SelectedProjectCodes);
     // Refresh the ProjectCode in SideMenu;
     this.dropdown.setProjectCode(this.SelectedProjectCodes);
-
-    if (this.SelectedProjectCodes.length == 0) {
-      this.deliveredorderarray = [];
-      this.hideTable = true;
-    }else{
-      this.hideTable = false;
-    }
+    this.hideTable = false;
     this.reloadService.reloadProjectSideMenu.emit();
   }
 

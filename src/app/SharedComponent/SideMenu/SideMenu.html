@@ -15,11 +15,11 @@
       </div>
     
       <div #dropdown class="col-md-8">
+        <!-- Ordering Pages -->
         <div id="ordering" class="displayDropdown create-order-wrapper"
           *ngIf="DisplayName=='Cancelled Orders'||DisplayName=='Drawing Approval'||DisplayName=='Upcoming Orders'||DisplayName=='Deleted Orders'||DisplayName=='Components'||DisplayName=='Delivered Orders'||DisplayName=='Active Orders'||DisplayName=='Draft Orders'||DisplayName=='Drawing Repository'"
           >
           <!-- WORKING -->
-
           <!-- CUSTOMER & PROJECT TEXT HEADING--START -->
           <div class="single-inline-info" *ngIf="ShowSingleCustomer()" #customerText>{{displayCustomer_Single()}}</div>
           <div class="single-inline-info" *ngIf="ShowSingleProject()" #projectText>{{displayProject_Single()}}</div>
@@ -135,89 +135,81 @@
               </mat-option>
             </mat-select>
           </mat-form-field>
-
-
-        </div>
-      <div id="createOrder" class="create-order-wrapper" *ngIf="showCreateOrderDropdown()">
-      
-        <div class="single-inline-info" *ngIf="ShowSingleCustomer()">
-          {{displayCustomer_Single()}}
-        </div>
-      
-        <div class="single-inline-info" *ngIf="ShowSingleProject()">
-          {{displayProject_Single()}}
-        </div>
-      
-        <div class="single-inline-info" *ngIf="ShowSingleAddress()">
-          {{displayAddress_Single()}}
         </div>
 
+        <!-- Create Order Page -->
+        <div id="createOrder" class="displayDropdown create-order-wrapper" *ngIf="showCreateOrderDropdown()">
+          <div class="single-inline-info" *ngIf="ShowSingleCustomer()">
+            {{displayCustomer_Single()}}
+          </div>
+          <div class="single-inline-info" *ngIf="ShowSingleProject()">
+            {{displayProject_Single()}}
+          </div>
+          <div class="single-inline-info" *ngIf="ShowSingleAddress()">
+            {{displayAddress_Single()}}
+          </div>
 
+          <!-- CUSTOMER DROPDOWN -->
+          <mat-form-field *ngIf="!ShowSingleCustomer()" class="responsive-field" style="height: 50px;">
+            <mat-select #createCustomer placeholder="Select a Customer"
+                        (openedChange)="onDropdownOpenedChange($event,'InputCustomerCreateOrder')"
+                        (selectionChange)="changeCustomerForBoth($event,'O')"
+                        [(ngModel)]="SelectCustomerCode"
+                        style="font-weight: bold;">
+              <mat-option style="position: sticky; top: 0; background: #fff; z-index: 10;">
+                <input #InputCustomerCreateOrder matInput placeholder="Search" [(ngModel)]="searchcustomertext"
+                    (click)="$event.stopPropagation()" (keydown)="onSearchInputKeydown($event)" 
+                    (ngModelChange)="updateFilteredOptions(searchcustomertext)" />
+              </mat-option>
 
+              <mat-option *ngFor="let sList of filteredOptions" [value]="sList.CustomerCode">
+                {{sList.CustomerName}} ({{sList.CustomerCode}})
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
 
-  <!-- CUSTOMER DROPDOWN -->
-  <mat-form-field *ngIf="!ShowSingleCustomer()" class="responsive-field" style="height: 50px;">
-    <mat-select #createCustomer placeholder="Select a Customer"
-                (openedChange)="onDropdownOpenedChange($event,'InputCustomerCreateOrder')"
-                (selectionChange)="changeCustomerForBoth($event,'O')"
-                [(ngModel)]="SelectCustomerCode"
-                style="font-weight: bold;">
-      <mat-option style="position: sticky; top: 0; background: #fff; z-index: 10;">
-        <input #InputCustomerCreateOrder matInput placeholder="Search" [(ngModel)]="searchcustomertext"
-            (click)="$event.stopPropagation()" (keydown)="onSearchInputKeydown($event)" 
-            (ngModelChange)="updateFilteredOptions(searchcustomertext)" />
-      </mat-option>
+          <!-- PROJECT DROPDOWN -->
+          <mat-form-field *ngIf="!ShowSingleProject()" class="responsive-field" style="height: 50px;">
+            <mat-select #createProject placeholder="Select a Project"
+                        (openedChange)="onDropdownOpenedChange($event,'InputProjectCreateOrder')"
+                        (selectionChange)="changeProjectforBoth($event,'O', true, false, false, false)"
+                        [(ngModel)]="SelectProjectCode[0]">
+              <mat-option style="position: sticky; top: 0; background: #fff; z-index: 10;">
+                <input #InputProjectCreateOrder matInput placeholder="Search" [(ngModel)]="searchprojecttext"
+                      (click)="$event.stopPropagation()" (keydown)="onSearchInputKeydown($event)"
+                      (ngModelChange)="updateFilteredProjectOptions(searchprojecttext)" />
+              </mat-option>
 
-      <mat-option *ngFor="let sList of filteredOptions" [value]="sList.CustomerCode">
-        {{sList.CustomerName}} ({{sList.CustomerCode}})
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+              <mat-option *ngFor="let sList of filteredProjectOptions" [value]="sList.ProjectCode">
+                {{sList.ProjectTitle}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
 
-  <!-- PROJECT DROPDOWN -->
-  <mat-form-field *ngIf="!ShowSingleProject()" class="responsive-field" style="height: 50px;">
-    <mat-select #createProject placeholder="Select a Project"
-                (openedChange)="onDropdownOpenedChange($event,'InputProjectCreateOrder')"
-                (selectionChange)="changeProjectforBoth($event,'O', true, false, false, false)"
-                [(ngModel)]="SelectProjectCode[0]">
-      <mat-option style="position: sticky; top: 0; background: #fff; z-index: 10;">
-        <input #InputProjectCreateOrder matInput placeholder="Search" [(ngModel)]="searchprojecttext"
-              (click)="$event.stopPropagation()" (keydown)="onSearchInputKeydown($event)"
-              (ngModelChange)="updateFilteredProjectOptions(searchprojecttext)" />
-      </mat-option>
+          <!-- ADDRESS DROPDOWN -->
+          <mat-form-field *ngIf="!ShowSingleAddress()" class="responsive-field" style="height: 50px;">
+            <mat-select placeholder="Select Address"
+                        [(ngModel)]="SelectAddress[0]"
+                        (selectionChange)="AddressChanged($event, true, false);UpdateAddressCode_Mobile()"
+                        (openedChange)="searchAddressText=''">
 
-      <mat-option *ngFor="let sList of filteredProjectOptions" [value]="sList.ProjectCode">
-        {{sList.ProjectTitle}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+              <mat-option>
+                <input matInput placeholder="Search"
+                      [(ngModel)]="searchAddressText"
+                      (click)="$event.stopPropagation()"
+                      (ngModelChange)="filterAddressList(searchAddressText)" />
+              </mat-option>
 
-  <!-- ADDRESS DROPDOWN -->
-  <mat-form-field *ngIf="!ShowSingleAddress()" class="responsive-field" style="height: 50px;">
-    <mat-select placeholder="Select Address"
-                [(ngModel)]="SelectAddress[0]"
-                (selectionChange)="AddressChanged($event, true, false);UpdateAddressCode_Mobile()"
-                (openedChange)="searchAddressText=''">
-
-      <mat-option>
-        <input matInput placeholder="Search"
-               [(ngModel)]="searchAddressText"
-               (click)="$event.stopPropagation()"
-               (ngModelChange)="filterAddressList(searchAddressText)" />
-      </mat-option>
-
-      <mat-option *ngFor="let sList of filteredAddressOptions" [value]="sList.id">
-        {{sList.projectAddress}} ({{sList.id}})
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-
-</div>
+              <mat-option *ngFor="let sList of filteredAddressOptions" [value]="sList.id">
+                {{sList.projectAddress}} ({{sList.id}})
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
 
         <!-- Detailing Part  -->
         <div id="detailing" class="displayDropdown" *ngIf="ShowDetailling()" style="display: flex; align-items: center;justify-content: center;">
           &nbsp;
-
           <mat-form-field style="padding-top: 16px; height: 60px; min-width: 363px !important">
             <mat-select #detailingCustomer placeholder="Select a Customer"
               (openedChange)="onDropdownOpenedChange($event,'InputCustomerDetailling')"

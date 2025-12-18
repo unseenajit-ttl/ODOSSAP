@@ -31,6 +31,7 @@
                             formControlName="customer"
                             class="w-auto"
                             (change)="changecustomer($event)"
+                            appendTo="body"
                           >
                             <ng-option
                               *ngFor="let sList of CustomerList"
@@ -50,6 +51,7 @@
                             class="w-auto"
                             [multiple]="true"
                             (change)="changeproject($event)"
+                            appendTo="body"
                             style="max-height: 65px; z-index: 5"
                           >
                             <ng-template
@@ -90,7 +92,7 @@
                         <div class="col-md-3">
                           <label class="form-label"><b>Address</b></label> <br />
                           <ng-select formControlName="address" [(ngModel)]="SelectedAddressCode" [closeOnSelect]="false"
-                            class="w-auto" [multiple]="true" (change)="changeAddress($event)"
+                            class="w-auto" [multiple]="true" (change)="changeAddress($event)" appendTo="body"
                             style="max-height: 65px; z-index: 5">
                             <ng-template ng-header-tmp *ngIf="AddressList.length != 0">
                               <div style="

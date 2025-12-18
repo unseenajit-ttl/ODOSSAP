@@ -343,13 +343,13 @@ export class SideMenu implements OnInit {
   Tempcustomercode: any;
   TempProjectCode: any;
   ngOnInit() {
-    this.Tempcustomercode = localStorage.getItem('CustomerCode');
-    this.TempProjectCode = localStorage.getItem('ProjectCode');
-    if (this.Tempcustomercode != null) {
-      this.dropdown.setCustomerCode(this.Tempcustomercode);
-      this.SelectDetailingCustomerCode = this.Tempcustomercode;
-      this.GetDetailingProject(this.SelectDetailingCustomerCode);
-    }
+    // this.Tempcustomercode = localStorage.getItem('CustomerCode');
+    // this.TempProjectCode = localStorage.getItem('ProjectCode');
+    // if (this.Tempcustomercode != null) {
+    //   this.dropdown.setCustomerCode(this.Tempcustomercode);
+    //   this.SelectDetailingCustomerCode = this.Tempcustomercode;
+    //   this.GetDetailingProject(this.SelectDetailingCustomerCode);
+    // }
     // if(this.TempProjectCode!=null)
     // {
     //   this.dropdown.setProjectCode(this.TempProjectCode);

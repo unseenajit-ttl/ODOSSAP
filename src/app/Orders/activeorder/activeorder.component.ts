@@ -838,6 +838,9 @@ export class activeorderComponent implements OnInit {
     if (this.loginService.projectList_Ordering) {
       this.ProjectList = this.loginService.projectList_Ordering;
     }
+    if (this.loginService.addressList_Ordering) {
+      this.AddressList = this.loginService.addressList_Ordering;
+    }
 
     this.activeorderForm.controls['customer'].patchValue(
       this.dropdown.getCustomerCode()
@@ -846,6 +849,12 @@ export class activeorderComponent implements OnInit {
     this.activeorderForm.controls['project'].patchValue(
       this.SelectedProjectCodes
     );
+    this.SelectedAddressCode = this.dropdown.getAddressList();
+    if (this.SelectedAddressCode) {
+      this.activeorderForm.controls['address'].patchValue(
+        this.SelectedAddressCode
+      );
+    }
 
     this.Loaddata();
     // this.GetOrderCustomer();
@@ -3449,8 +3458,17 @@ export class activeorderComponent implements OnInit {
 
   // RefreshProject: any[] = [];
   changeproject(event: any) {
+    if (event == undefined || event.length == 0) {
+      this.activeorderarray = [];
+      this.hideTable = true;
+      this.SelectedAddressCode = [];
+      this.dropdown.setProjectCode([]);
+      this.reloadService.reloadProjectSideMenu.emit();
+      return;
+    }
     console.log('SelectedProjectCodes', this.SelectedProjectCodes);
     // Refresh the ProjectCode in SideMenu;
+    this.hideTable = false;
     this.dropdown.setProjectCode(this.SelectedProjectCodes);
     this.reloadService.reloadProjectSideMenu.emit();
   }

@@ -566,6 +566,9 @@ export class orderdraftComponent implements OnInit {
     if (this.loginService.projectList_Ordering) {
       this.ProjectList = this.loginService.projectList_Ordering;
     }
+    if (this.loginService.addressList_Ordering) {
+        this.AddressList = this.loginService.addressList_Ordering;
+    }
 
     this.draftOrderForm.controls['customer'].patchValue(
       this.dropdown.getCustomerCode()
@@ -574,7 +577,13 @@ export class orderdraftComponent implements OnInit {
     this.draftOrderForm.controls['project'].patchValue(
       this.SelectedProjectCodes
     );
-
+    this.SelectedAddressCode = this.dropdown.getAddressList();
+    if (this.SelectedAddressCode) {
+      this.draftOrderForm.controls['address'].patchValue(
+        this.SelectedAddressCode
+      );
+    }
+    
     this.Loaddata();
     this.searchForm.valueChanges.subscribe((newValue) => {
       this.SetDelayForLoader();
@@ -2473,7 +2482,16 @@ export class orderdraftComponent implements OnInit {
 
   // RefreshProject: any[] = [];
   changeproject(event: any) {
+    if (event == undefined || event.length == 0) {
+      this.DraftedOrderArray = [];
+      this.hideTable = true;
+      this.SelectedAddressCode = [];
+      this.dropdown.setProjectCode([]);
+      this.reloadService.reloadProjectSideMenu.emit();
+      return;
+    }
     console.log('SelectedProjectCodes', this.SelectedProjectCodes);
+    this.hideTable = false;
     // Refresh the ProjectCode in SideMenu;
     this.dropdown.setProjectCode(this.SelectedProjectCodes);
     this.reloadService.reloadProjectSideMenu.emit();

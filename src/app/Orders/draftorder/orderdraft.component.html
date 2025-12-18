@@ -20,7 +20,7 @@
                       <div class="row">
                         <div class="col-md-4">
                           <label class="form-label"><b>Customer</b></label> <br />
-                          <ng-select formControlName="customer" class="w-auto" (change)="changecustomer($event)">
+                          <ng-select formControlName="customer" class="w-auto" (change)="changecustomer($event)" appendTo="body">
                             <ng-option *ngFor="let sList of CustomerList" [value]="sList.CustomerCode">
                               {{ sList.CustomerName }} ({{
                               sList.CustomerCode
@@ -32,7 +32,7 @@
                         <div class="col-md-4">
                           <label class="form-label"><b>Project</b></label> <br />
                           <ng-select formControlName="project" [(ngModel)]="SelectedProjectCodes" [closeOnSelect]="false"
-                            class="w-auto" [multiple]="true" (change)="changeproject($event)"
+                            class="w-auto" [multiple]="true" (change)="changeproject($event)" appendTo="body"
                             style="max-height: 65px; z-index: 5">
                             <ng-template ng-header-tmp *ngIf="ProjectList.length != 0">
                               <div style="
@@ -58,7 +58,7 @@
                         <div class="col-md-4">
                           <label class="form-label"><b>Address</b></label> <br />
                           <ng-select formControlName="address" [(ngModel)]="SelectedAddressCode" [closeOnSelect]="false"
-                            class="w-auto" [multiple]="true" (change)="changeAddress($event)"
+                            class="w-auto" [multiple]="true" (change)="changeAddress($event)" appendTo="body"
                             style="max-height: 65px; z-index: 5">
                             <ng-template ng-header-tmp *ngIf="AddressList.length != 0">
                               <div style="

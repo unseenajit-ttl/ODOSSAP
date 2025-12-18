@@ -6,7 +6,7 @@
         <b> Cancelled Orders (取消的订单)</b>
       </span>
       </h3>
-      <div class="card-body" style="margin-top:-50px !important;">
+      <div class="card-body main-page">
         <div class="filter ">
           <form [formGroup]="canceledorderForm" (ngSubmit)="onSubmit()">
             <div class="row mobile-customer-project">
@@ -45,6 +45,28 @@
                             </ng-template>
                             <ng-option *ngFor="let sList of ProjectList" [value]="sList.ProjectCode" >
                               {{ sList.ProjectTitle }}
+                            </ng-option>
+                          </ng-select>
+                        </div>
+                        <div class="col-md-3">
+                          <label class="form-label"><b>Address</b></label> <br />
+                          <ng-select formControlName="address" [(ngModel)]="SelectedAddressCode" [closeOnSelect]="false"
+                            class="w-auto" [multiple]="true" (change)="changeAddress($event)"
+                            style="max-height: 65px; z-index: 5">
+                            <ng-template ng-header-tmp *ngIf="AddressList.length != 0">
+                              <div style=" justify-content: space-between; display: flex; ">
+                                <button class="btn btn-link" style="padding: 4px; border: 0px; margin: 0px"
+                                  (click)="selectAll_Address()">
+                                  Select All
+                                </button>
+                                <button class="btn btn-link" style="padding: 4px; border: 0px; margin: 0px"
+                                  (click)="ClearAll_Address()">
+                                  Clear All
+                                </button>
+                              </div>
+                            </ng-template>
+                            <ng-option *ngFor="let sList of AddressList" [value]="sList.id">
+                              {{ sList.projectAddress }} ({{ sList.id }})
                             </ng-option>
                           </ng-select>
                         </div>

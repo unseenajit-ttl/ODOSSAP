@@ -90,14 +90,14 @@
               placeholder="Select Address"
               [(ngModel)]="SelectAddress"
               [state]="SelectAddress" 
-              (selectionChange)="AddressChanged($event, false, false)" 
+              (selectionChange)="AddressChanged($event, false, false);UpdateAddressCode_Mobile()" 
               (openedChange)="searchAddressText=''" multiple onSelectionChange
               style="font-weight: bold;"
             > -->
             <mat-select #OrderngAddress id="select" 
               placeholder="Select an Address"
               (openedChange)="searchAddressText=''"
-              (selectionChange)="AddressChanged($event, false, false)" 
+              (selectionChange)="AddressChanged($event, false, false);UpdateAddressCode_Mobile()" 
               multiple 
               [(ngModel)]="SelectAddress"
               [state]="SelectAddress" 
@@ -196,7 +196,7 @@
   <mat-form-field *ngIf="!ShowSingleAddress()" class="responsive-field" style="height: 50px;">
     <mat-select placeholder="Select Address"
                 [(ngModel)]="SelectAddress[0]"
-                (selectionChange)="AddressChanged($event, true, false)"
+                (selectionChange)="AddressChanged($event, true, false);UpdateAddressCode_Mobile()"
                 (openedChange)="searchAddressText=''">
 
       <mat-option>

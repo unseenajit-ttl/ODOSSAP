@@ -225,6 +225,7 @@ export class DeliveredorderComponent implements OnInit {
     this.deliveredorderForm = this.formBuilder.group({
       customer: new FormControl('', Validators.required),
       project: new FormControl('', Validators.required),
+      address: new FormControl('', Validators.required),
       wbs1: new FormControl('', Validators.required),
       wbs2: new FormControl('', Validators.required),
       wbs3: new FormControl('', Validators.required),
@@ -310,6 +311,18 @@ export class DeliveredorderComponent implements OnInit {
       if (data === 'Delivered Orders') {
         this.Loaddata(); // Refresh the Table Data based on the selected Customer & Project Codes.
       }
+    });
+
+    this.reloadService.reloadAddressList$.subscribe((data) => {
+      if (this.loginService.addressList_Ordering) {
+        this.AddressList = this.loginService.addressList_Ordering;
+      }
+    });
+
+    this.reloadService.reloadAddressCodeMobile$.subscribe((data) => {
+      let lAddressCode = this.dropdown.getAddressList(); // Refresh the selected Customer Code.
+      this.SelectedAddressCode = lAddressCode;
+      this.deliveredorderForm.controls['address'].patchValue(lAddressCode);
     });
 
     if (localStorage.getItem('deliveredFixedColumns')) {
@@ -2473,5 +2486,33 @@ export class DeliveredorderComponent implements OnInit {
       console.error(error);
       return false;
     }
+  }
+
+  // ------------------ADDRESS CODE----------------------- //
+  AddressList: any[] = [];
+  SelectedAddressCode: any[] = [];
+
+  changeAddress(event: any) {
+    console.log('SelectedAddressCode', this.SelectedAddressCode);
+    // Refresh the AddressCode in SideMenu;
+    this.dropdown.setAddressList(this.SelectedAddressCode);
+    this.reloadService.reloadAddressSideMenuEmitter.emit();
+  }
+
+  selectAll_Address() {
+    this.SelectedAddressCode = this.ProjectList.map(
+      (option: { ProjectCode: any }) => option.ProjectCode
+    );
+    this.deliveredorderForm.controls['address'].patchValue(
+      this.SelectedAddressCode
+    );
+    this.changeAddress(this.SelectedAddressCode);
+  }
+
+  ClearAll_Address() {
+    this.hideTable = true;
+    this.SelectedAddressCode = [];
+    this.deliveredorderarray = [];
+    this.changeAddress(this.SelectedAddressCode);
   }
 }

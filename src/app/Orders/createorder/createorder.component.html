@@ -5,7 +5,7 @@
             <b> Create New Orders (创建新订单)</b>
             </span>
         </h3>
-        <div class="card-body" style="margin-top:-11px !important;">
+        <div class="card-body main-page">
             <div class="filter ">
                 <form [formGroup]="createOrderForm" (ngSubmit)="onSubmit()">
                     <div class="row logo">
@@ -23,8 +23,8 @@
                                             <div class="col-md-3">
                                                 <label class="form-label">Customer</label> <br>
                                                 <ng-select formControlName="customer" class="w-auto"
-                                                    (change)="changecustomer($event)">
-                                                    <ng-option *ngFor="let sList of customerList"
+                                                    (change)="changecustomer($event)" appendTo="body">
+                                                    <ng-option *ngFor="let sList of CustomerList"
                                                         [value]="sList.CustomerCode">
                                                         {{sList.CustomerName}} ({{sList.CustomerCode}})
                                                     </ng-option>
@@ -33,23 +33,34 @@
                                             <div class="col-md-3">
                                                 <label class="form-label">Project</label> <br>
                                                 <ng-select formControlName="project" [(ngModel)]="ProjectCode"
-                                                    class="w-auto" (change)="changeproject($event)"
+                                                    class="w-auto" (change)="changeproject($event)" appendTo="body"
                                                     style="max-height: 65px;z-index:5">
-                                                    <!-- <ng-template ng-header-tmp *ngIf="projectList.length != 0">
-                                                        <div style="justify-content: space-between;display: flex;">
-                                                            <button class="btn btn-link"
-                                                                style="padding:4px;border:0px;margin:0px;"
-                                                                (click)="selectAll()">Select
-                                                                All</button>
-                                                            <button class="btn btn-link"
-                                                                style="padding:4px;border:0px;margin:0px;"
-                                                                (click)="clearAll()">Clear
-                                                                All</button>
-                                                        </div>
-                                                    </ng-template> -->
-                                                    <ng-option *ngFor="let sList of projectList"
+                                                    <ng-option *ngFor="let sList of ProjectList"
                                                         [value]="sList.ProjectCode">
                                                         {{sList.ProjectTitle}} ({{sList.ProjectCode}})
+                                                    </ng-option>
+                                                </ng-select>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <label class="form-label"><b>Address</b></label> <br />
+                                                <ng-select formControlName="address" [(ngModel)]="SelectedAddressCode"
+                                                    class="w-auto" (change)="changeAddress($event)" appendTo="body"
+                                                    style="max-height: 65px; z-index: 5">
+                                                    <!-- <ng-template ng-header-tmp *ngIf="AddressList.length != 0">
+                                                        <div style=" justify-content: space-between; display: flex; ">
+                                                            <button class="btn btn-link" style="padding: 4px; border: 0px; margin: 0px"
+                                                            (click)="selectAll_Address()">
+                                                            Select All
+                                                            </button>
+                                                            <button class="btn btn-link" style="padding: 4px; border: 0px; margin: 0px"
+                                                            (click)="ClearAll_Address()">
+                                                            Clear All
+                                                            </button>
+                                                        </div>
+                                                    </ng-template> -->
+                                                    <ng-option *ngFor="let sList of AddressList" [value]="sList.id">
+                                                    {{ sList.projectAddress }} ({{ sList.id }})
                                                     </ng-option>
                                                 </ng-select>
                                             </div>

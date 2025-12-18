@@ -19,8 +19,10 @@ export class LoginService {
   DisplayName = '';
   UserID:any  = 0;
   HolidayList:any=[];
+
   customerList_Ordering: any;
   projectList_Ordering: any;
+  addressList_Ordering: any;
 
   ValidatedAddress: any;
 

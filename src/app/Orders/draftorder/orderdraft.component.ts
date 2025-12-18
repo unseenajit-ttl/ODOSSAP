@@ -197,6 +197,10 @@ export class orderdraftComponent implements OnInit {
   ProjectList: any[] = [];
   CustomerList: any[] = [];
   SelectedProjectCodes: any[] = [];
+
+  AddressList: any[] = [];
+  SelectedAddressCode: any[] = [];
+
   isMobile = window.innerWidth;
   CabJobIDs:any[]=[]
 
@@ -221,6 +225,7 @@ export class orderdraftComponent implements OnInit {
     this.draftOrderForm = this.formBuilder.group({
       customer: new FormControl('', Validators.required),
       project: new FormControl('', Validators.required),
+      address: new FormControl('', Validators.required),
       wbs1: new FormControl('', Validators.required),
       wbs2: new FormControl('', Validators.required),
       wbs3: new FormControl('', Validators.required),
@@ -282,16 +287,20 @@ export class orderdraftComponent implements OnInit {
     });
 
     this.reloadService.reloadCustomerList$.subscribe((data) => {
-      // let lTitle = this.commonService.GetTitle();
       if (this.loginService.customerList_Ordering) {
         this.CustomerList = this.loginService.customerList_Ordering;
       }
     });
 
     this.reloadService.reloadProjectList$.subscribe((data) => {
-      // let lTitle = this.commonService.GetTitle();
       if (this.loginService.projectList_Ordering) {
         this.ProjectList = this.loginService.projectList_Ordering;
+      }
+    });
+
+    this.reloadService.reloadAddressList$.subscribe((data) => {
+      if (this.loginService.addressList_Ordering) {
+        this.AddressList = this.loginService.addressList_Ordering;
       }
     });
 
@@ -322,6 +331,14 @@ export class orderdraftComponent implements OnInit {
         this.Loaddata(); // Refresh the Table Data based on the selected Customer & Project Codes.
       }
     });
+
+    this.reloadService.reloadAddressCodeMobile$.subscribe((data) => {
+      let lAddressCode = this.dropdown.getAddressList(); // Refresh the selected Customer Code.
+      this.SelectedAddressCode = lAddressCode;
+      this.draftOrderForm.controls['address'].patchValue(lAddressCode);
+    });
+
+    
 
     if (localStorage.getItem('draftColumns')) {
       this.draftColumns = JSON.parse(localStorage.getItem('draftColumns')!);
@@ -1003,6 +1020,23 @@ export class orderdraftComponent implements OnInit {
     this.SelectedProjectCodes = [];
     this.DraftedOrderArray = [];
     this.changeproject(this.SelectedProjectCodes);
+  }
+
+  selectAll_Address() {
+    this.SelectedAddressCode = this.ProjectList.map(
+      (option: { ProjectCode: any }) => option.ProjectCode
+    );
+    this.draftOrderForm.controls['address'].patchValue(
+      this.SelectedAddressCode
+    );
+    this.changeAddress(this.SelectedAddressCode);
+  }
+
+  ClearAll_Address() {
+    this.hideTable = true;
+    this.SelectedAddressCode = [];
+    this.DraftedOrderArray = [];
+    this.changeAddress(this.SelectedAddressCode);
   }
 
   recordSelected(item: any, i: number) {
@@ -2016,7 +2050,7 @@ export class orderdraftComponent implements OnInit {
   // }
   getDateCompare(dateToCompare: any, actualDate: any) {
     // let lReturn = false;
-    console.log('getDateCompare=>', dateToCompare, actualDate);
+    // console.log('getDateCompare=>', dateToCompare, actualDate);
     if (
       dateToCompare &&
       dateToCompare != '' &&
@@ -2443,6 +2477,13 @@ export class orderdraftComponent implements OnInit {
     // Refresh the ProjectCode in SideMenu;
     this.dropdown.setProjectCode(this.SelectedProjectCodes);
     this.reloadService.reloadProjectSideMenu.emit();
+  }
+
+  changeAddress(event: any) {
+    console.log('SelectedAddressCode', this.SelectedAddressCode);
+    // Refresh the AddressCode in SideMenu;
+    this.dropdown.setAddressList(this.SelectedAddressCode);
+    this.reloadService.reloadAddressSideMenuEmitter.emit();
   }
 
   pSearchRefreshFlag: boolean = false;

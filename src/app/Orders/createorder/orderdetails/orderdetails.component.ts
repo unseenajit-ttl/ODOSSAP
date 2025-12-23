@@ -4105,9 +4105,7 @@ export class OrderdetailsComponent {
       if (lColumnName == 'BarEachQty' && !isNaN(lEQty) && lEQty > 1000) {
         alert('Are you sure Member Qty is ' + lEQty + '?');
       }
-      if (!isNaN(lMQty) && !isNaN(lEQty)) {
-        args.item['BarTotalQty'] = lMQty * lEQty;
-      }
+      
 
       if (lColumnName == 'BarMemberQty' && lMQty < 0 ) {
         this.toastr.error("Quantity cannot be less than 0.");
@@ -4126,6 +4124,10 @@ export class OrderdetailsComponent {
         args.grid.focus();
         args.grid.editActiveCell();
         return;
+      }
+
+      if (!isNaN(lMQty) && !isNaN(lEQty)) {
+        args.item['BarTotalQty'] = lMQty * lEQty;
       }
     }
 
